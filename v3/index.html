@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OFFBEAT — Unconventional Technology</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap');
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #020206;
+            --bg-card: #08090f;
+            --border: #141828;
+            --glow: #00ccff;
+            --glow-2: #00fff2;
+            --violet: #7c3aed;
+            --hot: #ff3d71;
+            --green: #00e676;
+            --text: #e6eaf4;
+            --text-2: #6e7599;
+            --text-3: #2d3150;
+        }
+
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        /* Animated mesh gradient background */
+        .mesh-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse 800px 600px at 20% 20%, rgba(0, 204, 255, 0.04) 0%, transparent 50%),
+                radial-gradient(ellipse 600px 800px at 80% 70%, rgba(124, 58, 237, 0.04) 0%, transparent 50%);
+        }
+
+        /* Scanline effect */
+        .scanlines {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 204, 255, 0.008) 2px,
+                rgba(0, 204, 255, 0.008) 4px
+            );
+        }
+
+        /* Nav */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(2, 2, 6, 0.75);
+            backdrop-filter: blur(20px);
+        }
+
+        .brand {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            position: relative;
+        }
+
+        .brand::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--glow), var(--violet));
+            animation: brand-line 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes brand-line {
+            0% { transform: scaleX(0.3); transform-origin: left; }
+            100% { transform: scaleX(1); transform-origin: left; }
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .header-nav a {
+            color: var(--text-2);
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .header-nav a:hover { color: var(--glow); }
+
+        /* Hero — massive centered with animated border box */
+        .hero {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6rem 2rem;
+        }
+
+        .hero-box {
+            position: relative;
+            max-width: 900px;
+            padding: 5rem 4rem;
+            text-align: center;
+        }
+
+        /* Animated corner borders */
+        .hero-box::before, .hero-box::after,
+        .hero-box .corner-bl, .hero-box .corner-br {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            border-color: var(--glow);
+            border-style: solid;
+            border-width: 0;
+            opacity: 0.4;
+            animation: corner-glow 4s ease-in-out infinite alternate;
+        }
+
+        .hero-box::before { top: 0; left: 0; border-top-width: 2px; border-left-width: 2px; }
+        .hero-box::after { top: 0; right: 0; border-top-width: 2px; border-right-width: 2px; }
+        .hero-box .corner-bl { bottom: 0; left: 0; border-bottom-width: 2px; border-left-width: 2px; }
+        .hero-box .corner-br { bottom: 0; right: 0; border-bottom-width: 2px; border-right-width: 2px; }
+
+        @keyframes corner-glow {
+            0% { opacity: 0.2; width: 40px; height: 40px; }
+            100% { opacity: 0.6; width: 80px; height: 80px; }
+        }
+
+        .hi-label {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.75rem;
+            color: var(--glow);
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+        }
+
+        .hero-title {
+            font-size: clamp(2.8rem, 7vw, 5.5rem);
+            font-weight: 800;
+            line-height: 1.08;
+            letter-spacing: -0.04em;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-title .glow-word {
+            background: linear-gradient(135deg, var(--glow), var(--glow-2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+        }
+
+        .hero-title .glow-word::after {
+            content: attr(data-text);
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: linear-gradient(135deg, var(--glow), var(--glow-2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: blur(30px);
+            opacity: 0.4;
+            z-index: -1;
+        }
+
+        .hero-p {
+            font-size: 1.1rem;
+            color: var(--text-2);
+            line-height: 1.75;
+            max-width: 520px;
+            margin: 0 auto 3rem;
+        }
+
+        .hero-ctas {
+            display: flex;
+            gap: 1.25rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-glow {
+            padding: 0.85rem 2.5rem;
+            border: 1px solid var(--glow);
+            background: transparent;
+            color: var(--glow);
+            font-weight: 600;
+            font-size: 0.95rem;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s;
+        }
+
+        .btn-glow::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--glow);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .btn-glow:hover {
+            color: var(--bg);
+            box-shadow: 0 0 40px rgba(0, 204, 255, 0.2), inset 0 0 40px rgba(0, 204, 255, 0.1);
+        }
+
+        .btn-glow:hover::before { opacity: 1; }
+        .btn-glow span { position: relative; z-index: 1; }
+
+        .btn-ghost {
+            padding: 0.85rem 2.5rem;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text);
+            font-weight: 500;
+            font-size: 0.95rem;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .btn-ghost:hover { border-color: var(--text-2); }
+
+        /* Content sections */
+        .section {
+            position: relative;
+            z-index: 1;
+            padding: 7rem 2rem;
+        }
+
+        .wrap { max-width: 1100px; margin: 0 auto; }
+
+        .tag-line {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.72rem;
+            color: var(--glow);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            margin-bottom: 0.75rem;
+        }
+
+        h2 {
+            font-size: clamp(2rem, 4.5vw, 3.2rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.15;
+            margin-bottom: 0.75rem;
+        }
+
+        .sub {
+            color: var(--text-2);
+            font-size: 1.05rem;
+            line-height: 1.7;
+            max-width: 550px;
+            margin-bottom: 3.5rem;
+        }
+
+        /* Hex grid cards */
+        .hex-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .hex-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2.25rem;
+            position: relative;
+            transition: all 0.5s;
+        }
+
+        .hex-card::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: 16px;
+            padding: 1px;
+            background: linear-gradient(var(--border), var(--border));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            transition: background 0.5s;
+        }
+
+        .hex-card:hover::before {
+            background: linear-gradient(135deg, var(--glow), var(--violet));
+        }
+
+        .hex-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 50px rgba(0, 204, 255, 0.06);
+        }
+
+        .hex-card .icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: rgba(0, 204, 255, 0.06);
+            border: 1px solid rgba(0, 204, 255, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .hex-card h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 0.6rem;
+        }
+
+        .hex-card p {
+            color: var(--text-2);
+            font-size: 0.88rem;
+            line-height: 1.6;
+        }
+
+        /* Showcase section */
+        .showcase-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .showcase-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2.5rem;
+            transition: all 0.4s;
+            position: relative;
+        }
+
+        .showcase-item:hover {
+            border-color: rgba(0, 204, 255, 0.15);
+        }
+
+        .showcase-item .label {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .label-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+
+        .dot-live { background: var(--green); animation: pulse-dot 2s infinite; }
+        .dot-dev { background: var(--glow); animation: pulse-dot 2s infinite 0.5s; }
+        .dot-soon { background: var(--violet); }
+
+        @keyframes pulse-dot {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(0, 230, 118, 0.4); }
+            50% { box-shadow: 0 0 6px 3px rgba(0, 230, 118, 0.1); }
+        }
+
+        .showcase-item h3 { font-size: 1.4rem; font-weight: 700; margin-bottom: 0.6rem; }
+        .showcase-item p { color: var(--text-2); font-size: 0.9rem; line-height: 1.65; }
+
+        .showcase-item.featured {
+            grid-column: span 2;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .featured-visual {
+            background: linear-gradient(135deg, rgba(0, 204, 255, 0.03), rgba(124, 58, 237, 0.03));
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            color: var(--text-2);
+            line-height: 1.8;
+        }
+
+        .featured-visual .cmd { color: var(--glow); }
+        .featured-visual .out { color: var(--green); }
+        .featured-visual .dim { color: var(--text-3); }
+
+        /* CTA */
+        .final-cta {
+            text-align: center;
+            padding: 8rem 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .final-cta .wrap { position: relative; }
+
+        .final-cta h2 { margin-bottom: 1rem; }
+        .final-cta p { color: var(--text-2); margin-bottom: 2.5rem; font-size: 1.05rem; }
+
+        .email-link {
+            font-family: 'Fira Code', monospace;
+            font-size: 1.2rem;
+            color: var(--glow);
+            text-decoration: none;
+            position: relative;
+            padding-bottom: 4px;
+        }
+
+        .email-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, var(--glow), var(--violet));
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.4s;
+        }
+
+        .email-link:hover::after { transform: scaleX(1); transform-origin: left; }
+
+        /* Footer */
+        footer {
+            position: relative;
+            z-index: 1;
+            padding: 1.5rem 3rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.78rem;
+            color: var(--text-3);
+        }
+
+        footer a { color: var(--text-2); text-decoration: none; }
+        footer a:hover { color: var(--glow); }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .hex-grid { grid-template-columns: 1fr; }
+            .showcase-grid { grid-template-columns: 1fr; }
+            .showcase-item.featured { grid-column: span 1; grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 640px) {
+            header { padding: 1rem 1.5rem; }
+            .header-nav { display: none; }
+            .hero-box { padding: 3rem 1.5rem; }
+            footer { flex-direction: column; gap: 0.5rem; text-align: center; padding: 1.5rem; }
+        }
+
+        /* Scroll animation */
+        .anim {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .anim.in { opacity: 1; transform: none; }
+    </style>
+</head>
+<body>
+    <div class="mesh-bg"></div>
+    <div class="scanlines"></div>
+
+    <header>
+        <div class="brand">OFFBEAT</div>
+        <ul class="header-nav">
+            <li><a href="#capabilities">Capabilities</a></li>
+            <li><a href="#portfolio">Portfolio</a></li>
+            <li><a href="#reach">Reach Out</a></li>
+        </ul>
+    </header>
+
+    <section class="hero">
+        <div class="hero-box">
+            <div class="corner-bl"></div>
+            <div class="corner-br"></div>
+            <div class="hi-label">Offbeat, Inc. — Technology Company</div>
+            <h1 class="hero-title">
+                We make<br><span class="glow-word" data-text="unconventional">unconventional</span><br>technology.
+            </h1>
+            <p class="hero-p">Proprietary software. Autonomous AI systems. Revenue engines that run while you sleep. We build tools for people who refuse to do things the normal way.</p>
+            <div class="hero-ctas">
+                <a href="#portfolio" class="btn-glow"><span>View Projects</span></a>
+                <a href="#capabilities" class="btn-ghost">Our Capabilities</a>
+            </div>
+        </div>
+    </section>
+
+    <div class="section" id="capabilities">
+        <div class="wrap">
+            <div class="tag-line anim">Capabilities</div>
+            <h2 class="anim">What we're good at.</h2>
+            <p class="sub anim">We don't try to be everything. These are the areas where we deliver outsized results.</p>
+
+            <div class="hex-grid">
+                <div class="hex-card anim">
+                    <div class="icon">🛠️</div>
+                    <h3>Software Engineering</h3>
+                    <p>From desktop apps to web platforms. Clean, reliable code with professional-grade UIs. We specialize in tools for creative professionals and high-stakes data workflows.</p>
+                </div>
+                <div class="hex-card anim">
+                    <div class="icon">🔄</div>
+                    <h3>Autonomous AI Systems</h3>
+                    <p>AI agents that operate 24/7 on dedicated hardware. Self-maintaining, self-reporting systems that produce tangible output with minimal human oversight.</p>
+                </div>
+                <div class="hex-card anim">
+                    <div class="icon">💰</div>
+                    <h3>Revenue Automation</h3>
+                    <p>10+ years of affiliate marketing and digital revenue generation. Battle-tested strategies backed by data and powered by automated systems.</p>
+                </div>
+                <div class="hex-card anim">
+                    <div class="icon">🎧</div>
+                    <h3>Music Technology</h3>
+                    <p>Tools for professional DJs and audiophiles. Library management, audio analysis, metadata automation. Built by a performer who understands the problems firsthand.</p>
+                </div>
+                <div class="hex-card anim">
+                    <div class="icon">🌐</div>
+                    <h3>Web & Deployment</h3>
+                    <p>Modern web applications, static sites, and deployment pipelines. From concept to production with automated CI/CD and zero-downtime deploys.</p>
+                </div>
+                <div class="hex-card anim">
+                    <div class="icon">🔒</div>
+                    <h3>Security-First Design</h3>
+                    <p>Every system we build starts with hardened security. Sandboxed execution, encrypted credentials, audit logging, and defense-in-depth from day one.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section" id="portfolio" style="background: rgba(8, 9, 15, 0.8);">
+        <div class="wrap">
+            <div class="tag-line anim">Portfolio</div>
+            <h2 class="anim">Projects & Products.</h2>
+            <p class="sub anim">Live products, active builds, and what drops next.</p>
+
+            <div class="showcase-grid">
+                <div class="showcase-item featured anim">
+                    <div>
+                        <div class="label"><span class="label-dot dot-dev"></span> Active Development</div>
+                        <h3>PrepDeck</h3>
+                        <p>Professional DJ library management. Confidence scoring, automated metadata repair, beatgrid verification, batch processing, and intelligent preparation workflows for massive music collections. Designed to be the most reliable tool in a DJ's arsenal.</p>
+                    </div>
+                    <div class="featured-visual">
+                        <span class="dim">// PrepDeck dashboard</span><br>
+                        <span class="cmd">library.confidence</span> <span class="out">→ 94.2% EXCELLENT</span><br>
+                        <span class="cmd">tracks.total</span> <span class="out">→ 12,482</span><br>
+                        <span class="cmd">tracks.verified</span> <span class="out">→ 11,890</span><br>
+                        <span class="cmd">issues.critical</span> <span class="out">→ 4 (blocking export)</span><br>
+                        <span class="cmd">scan.status</span> <span class="out">→ BACKGROUND 42%</span><br>
+                        <span class="cmd">bpm.coverage</span> <span class="out">→ 12,407 / 12,482</span><br>
+                        <span class="cmd">artwork.health</span> <span class="out">→ 98%</span>
+                    </div>
+                </div>
+
+                <div class="showcase-item anim">
+                    <div class="label"><span class="label-dot dot-live"></span> Live & Profitable</div>
+                    <h3>AfterLotto</h3>
+                    <p>Revenue-generating platform in the lottery analytics space. Running profitably for years. Currently undergoing a major frontend and feature modernization.</p>
+                </div>
+
+                <div class="showcase-item anim">
+                    <div class="label"><span class="label-dot dot-dev"></span> Active Development</div>
+                    <h3>DatBotty</h3>
+                    <p>Fully autonomous AI assistant on dedicated hardware. Manages projects, deploys code, generates audio briefings, and produces 24/7 value with zero babysitting required.</p>
+                </div>
+
+                <div class="showcase-item anim" style="grid-column: span 2; text-align: center; padding: 3rem;">
+                    <div class="label" style="justify-content: center;"><span class="label-dot dot-soon"></span> More Coming</div>
+                    <h3>What's Next?</h3>
+                    <p style="max-width: 500px; margin: 0 auto;">New software products, automation tools, and revenue experiments. We're always building. If you want to be involved, reach out.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="final-cta" id="reach">
+        <div class="wrap">
+            <div class="tag-line anim" style="text-align: center;">Reach Out</div>
+            <h2 class="anim">Let's make something <span style="color: var(--glow)">different</span>.</h2>
+            <p class="anim">Collaboration, consulting, investment, or just good conversation about technology and what's possible.</p>
+            <a href="mailto:contact@offbeatinc.com" class="email-link anim">contact@offbeatinc.com</a>
+        </div>
+    </div>
+
+    <footer>
+        <div>&copy; 2026 Offbeat, Inc. — All rights reserved.</div>
+        <div>
+            <a href="https://muthaeffincrash.com">mutha effin CRASH</a>
+        </div>
+    </footer>
+
+    <script>
+        // Scroll reveal
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((e, i) => {
+                if (e.isIntersecting) {
+                    setTimeout(() => e.target.classList.add('in'), i * 60);
+                }
+            });
+        }, { threshold: 0.08 });
+
+        document.querySelectorAll('.anim').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
