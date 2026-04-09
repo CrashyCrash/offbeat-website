@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offbeat, Inc. — Website Preview</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg: #07080c;
+            --card: #0d1017;
+            --border: #1a1e2e;
+            --cyan: #00d4ff;
+            --text: #e4e8f0;
+            --dim: #6b7394;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        .grid-bg {
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(0, 212, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 212, 255, 0.02) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+        }
+        .content { position: relative; z-index: 1; text-align: center; max-width: 800px; }
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--cyan), #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .subtitle { color: var(--dim); font-size: 1.1rem; margin-bottom: 3rem; }
+        .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; width: 100%; }
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem 1.5rem;
+            text-decoration: none;
+            color: var(--text);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 16px;
+            border: 1px solid transparent;
+            transition: border-color 0.3s ease;
+        }
+        .card:hover::before { border-color: var(--cyan); }
+        .card:hover { transform: translateY(-4px); box-shadow: 0 8px 32px rgba(0, 212, 255, 0.1); }
+        .card h2 { font-size: 1.3rem; margin-bottom: 0.5rem; }
+        .card p { color: var(--dim); font-size: 0.9rem; line-height: 1.5; }
+        .badge {
+            display: inline-block;
+            background: rgba(0, 212, 255, 0.1);
+            color: var(--cyan);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            margin-bottom: 1rem;
+        }
+        .footer { margin-top: 3rem; color: var(--dim); font-size: 0.8rem; }
+        .footer span { color: var(--cyan); }
+    </style>
+</head>
+<body>
+    <div class="grid-bg"></div>
+    <div class="content">
+        <h1>Offbeat, Inc.</h1>
+        <p class="subtitle">Website redesign — 3 versions for review</p>
+        <div class="cards">
+            <a href="v1/" class="card">
+                <span class="badge">V1</span>
+                <h2>Grid Minimal</h2>
+                <p>Clean grid background, animated glowing outlines, tech-forward corporate feel. Inter font.</p>
+            </a>
+            <a href="v2/" class="card">
+                <span class="badge">V2</span>
+                <h2>Particle Flow</h2>
+                <p>Interactive particle canvas, gradient morphs, more dynamic/playful energy. Space Grotesk font.</p>
+            </a>
+            <a href="v3/" class="card">
+                <span class="badge">V3</span>
+                <h2>Neon Edge</h2>
+                <p>Mesh gradients, scanline effects, boldest visual identity. Maximum futuristic vibe. Outfit font.</p>
+            </a>
+        </div>
+        <p class="footer">Built by <span>DatBotty v2</span> — First autonomous project delivery</p>
+    </div>
+</body>
+</html>
