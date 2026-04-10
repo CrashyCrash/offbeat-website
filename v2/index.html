@@ -181,25 +181,49 @@
         }
 
         .outline-text {
-            background: linear-gradient(135deg, var(--glow), var(--glow-2));
-            -webkit-background-clip: text;
+            -webkit-text-stroke: 2px var(--glow);
             -webkit-text-fill-color: transparent;
-            background-clip: text;
             position: relative;
+            display: inline-block;
+            filter: drop-shadow(0 0 12px rgba(0, 204, 255, 0.3));
         }
 
+        /* Glitch layers */
+        .outline-text::before,
         .outline-text::after {
             content: 'the unusual.';
             position: absolute;
             left: 0;
             top: 0;
-            background: linear-gradient(135deg, var(--glow), var(--glow-2));
-            -webkit-background-clip: text;
+            -webkit-text-stroke: 2px var(--glow);
             -webkit-text-fill-color: transparent;
-            background-clip: text;
-            filter: blur(30px);
-            opacity: 0.35;
             z-index: -1;
+        }
+
+        .outline-text::before {
+            animation: glitch-1 4s infinite;
+            -webkit-text-stroke-color: var(--glow-2);
+        }
+
+        .outline-text::after {
+            animation: glitch-2 4s infinite;
+            -webkit-text-stroke-color: #7c3aed;
+        }
+
+        @keyframes glitch-1 {
+            0%, 90%, 100% { clip-path: inset(0 0 0 0); transform: none; }
+            92% { clip-path: inset(20% 0 40% 0); transform: translate(-3px, 1px); }
+            94% { clip-path: inset(60% 0 10% 0); transform: translate(3px, -1px); }
+            96% { clip-path: inset(0 0 70% 0); transform: translate(-2px, 0); }
+            98% { clip-path: inset(50% 0 20% 0); transform: translate(2px, 1px); }
+        }
+
+        @keyframes glitch-2 {
+            0%, 88%, 100% { clip-path: inset(0 0 0 0); transform: none; }
+            90% { clip-path: inset(40% 0 20% 0); transform: translate(3px, -1px); }
+            93% { clip-path: inset(10% 0 50% 0); transform: translate(-3px, 1px); }
+            95% { clip-path: inset(70% 0 5% 0); transform: translate(2px, 0); }
+            97% { clip-path: inset(30% 0 40% 0); transform: translate(-1px, -1px); }
         }
 
         .hero-desc {
