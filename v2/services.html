@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services — Offbeat, Inc. | AI, Software & Marketing</title>
+    <meta name="description" content="Offbeat, Inc. offers AI automation systems, custom software development, and data-driven digital marketing. Real results, no fluff. Based in South Carolina.">
+    <meta name="theme-color" content="#00ccff">
+    <meta property="og:title" content="Services — Offbeat, Inc.">
+    <meta property="og:description" content="AI automation, custom software, and digital marketing that delivers real results.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://crashycrash.github.io/offbeat-website/v2/services.html">
+    <meta name="twitter:card" content="summary">
+    <link rel="canonical" href="https://crashycrash.github.io/offbeat-website/v2/services.html">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ProfessionalService",
+      "name": "Offbeat, Inc.",
+      "url": "https://crashycrash.github.io/offbeat-website/v2/services.html",
+      "description": "AI automation systems, custom software development, and data-driven digital marketing.",
+      "areaServed": "US",
+      "serviceType": ["AI Automation", "Custom Software Development", "Digital Marketing", "Affiliate Marketing"],
+      "parentOrganization": {
+        "@type": "Organization",
+        "name": "Offbeat, Inc.",
+        "url": "https://crashycrash.github.io/offbeat-website/v2/"
+      }
+    }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap');
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #020206;
+            --bg-2: #08090f;
+            --bg-3: #0c0d16;
+            --glow: #00ccff;
+            --glow-2: #00fff2;
+            --blue: #3b82f6;
+            --violet: #7c3aed;
+            --teal: #14b8a6;
+            --green: #00e676;
+            --text: #e6eaf4;
+            --text-2: #6e7599;
+            --text-3: #2d3150;
+            --border: #141828;
+        }
+
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        .mesh-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse 800px 600px at 20% 20%, rgba(0, 204, 255, 0.04) 0%, transparent 50%),
+                radial-gradient(ellipse 600px 800px at 80% 70%, rgba(124, 58, 237, 0.04) 0%, transparent 50%);
+        }
+
+        .scanlines {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.015) 2px, rgba(0,0,0,0.015) 4px);
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem 3rem;
+            background: rgba(2, 2, 6, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            font-size: 1rem;
+            font-weight: 800;
+            letter-spacing: 0.3em;
+            color: #fff;
+            position: relative;
+            text-decoration: none;
+        }
+
+        .logo::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--glow), var(--violet), var(--glow));
+            background-size: 200% 100%;
+            animation: logoLine 3s linear infinite;
+        }
+
+        @keyframes logoLine {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+
+        .nav-items {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-items a {
+            color: var(--text-2);
+            text-decoration: none;
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+            transition: color 0.3s;
+        }
+
+        .nav-items a:hover { color: var(--glow); }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 6rem 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .sec-tag {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--glow);
+            margin-bottom: 1.5rem;
+        }
+
+        .sec-tag::before {
+            content: '';
+            width: 40px;
+            height: 1px;
+            background: var(--glow);
+        }
+
+        h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+        }
+
+        h2 {
+            font-size: clamp(1.6rem, 3vw, 2.5rem);
+            font-weight: 700;
+            line-height: 1.15;
+            margin-bottom: 1rem;
+        }
+
+        .hero-services {
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            padding-top: 5rem;
+        }
+
+        .hero-desc {
+            color: var(--text-2);
+            font-size: 1.1rem;
+            line-height: 1.7;
+            max-width: 700px;
+        }
+
+        /* Service Cards */
+        .services-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .service-card {
+            background: var(--bg-2);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2.5rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .service-card:hover {
+            border-color: rgba(0, 204, 255, 0.2);
+            box-shadow: 0 0 40px rgba(0, 204, 255, 0.04);
+        }
+
+        .service-number {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.7rem;
+            color: var(--glow);
+            letter-spacing: 0.15em;
+            margin-bottom: 1rem;
+        }
+
+        .service-card h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+
+        .service-card p {
+            color: var(--text-2);
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+
+        .service-list {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .service-list li {
+            padding: 0.35rem 0.8rem;
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            font-size: 0.78rem;
+            font-family: 'Fira Code', monospace;
+            color: var(--text-2);
+        }
+
+        /* Case Studies */
+        .case-study {
+            background: var(--bg-2);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            transition: border-color 0.3s;
+        }
+
+        .case-study:hover {
+            border-color: rgba(0, 204, 255, 0.15);
+        }
+
+        .case-label {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--green);
+            margin-bottom: 0.75rem;
+        }
+
+        .case-study h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.6rem;
+        }
+
+        .case-study p {
+            color: var(--text-2);
+            font-size: 0.92rem;
+            line-height: 1.7;
+        }
+
+        .case-metrics {
+            display: flex;
+            gap: 2rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .metric {
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--glow);
+            display: block;
+        }
+
+        .metric-label {
+            font-size: 0.75rem;
+            color: var(--text-2);
+            font-family: 'Fira Code', monospace;
+            letter-spacing: 0.05em;
+        }
+
+        /* CTA Section */
+        .cta {
+            text-align: center;
+            padding: 6rem 2rem;
+            position: relative;
+        }
+
+        .cta p {
+            color: var(--text-2);
+            font-size: 1.05rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-email {
+            font-family: 'Fira Code', monospace;
+            font-size: 1.15rem;
+            color: var(--glow);
+            text-decoration: none;
+            position: relative;
+            padding-bottom: 4px;
+        }
+
+        .cta-email::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, var(--glow), var(--violet));
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.4s;
+        }
+
+        .cta-email:hover::after { transform: scaleX(1); transform-origin: left; }
+
+        .cta-note {
+            font-size: 0.82rem;
+            color: var(--text-3);
+            margin-top: 1.5rem;
+        }
+
+        footer {
+            position: relative;
+            z-index: 1;
+            padding: 1.5rem 3rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.78rem;
+            color: var(--text-3);
+        }
+
+        footer a {
+            color: var(--text-2);
+            text-decoration: none;
+        }
+
+        footer a:hover { color: var(--glow); }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .reveal.active { opacity: 1; transform: none; }
+
+        @media (max-width: 768px) {
+            nav { padding: 1rem 1.5rem; }
+            .nav-items { display: none; }
+            .case-metrics { gap: 1.5rem; }
+            footer { flex-direction: column; gap: 0.5rem; text-align: center; padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="mesh-bg"></div>
+    <div class="scanlines"></div>
+
+    <nav>
+        <a href="index.html" class="logo">OFFBEAT</a>
+        <ul class="nav-items">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#work">Our Work</a></li>
+            <li><a href="tools.html">Tools</a></li>
+            <li><a href="#contact">Get Started</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero-services">
+        <div class="container">
+            <div class="sec-tag reveal">Services</div>
+            <h1 class="reveal">We build systems<br>that <span style="color: var(--glow)">work for you</span>.</h1>
+            <p class="hero-desc reveal">Automation that runs while you sleep. Software that solves the actual problem. Marketing that compounds over time. We focus on things that generate real, measurable value.</p>
+        </div>
+    </section>
+
+    <section id="services" style="background: var(--bg-2);">
+        <div class="container">
+            <div class="sec-tag reveal">What We Offer</div>
+            <h2 class="reveal">Three ways we can help.</h2>
+
+            <div class="services-grid">
+                <div class="service-card reveal">
+                    <div class="service-number">01 — AI & AUTOMATION</div>
+                    <h3>Autonomous AI Systems</h3>
+                    <p>We build AI agents that run 24/7 on dedicated hardware. They monitor your systems, execute tasks, generate reports, and make decisions without constant babysitting. Think of it as hiring a tireless digital employee that never calls in sick.</p>
+                    <ul class="service-list">
+                        <li>24/7 operation</li>
+                        <li>self-healing</li>
+                        <li>task automation</li>
+                        <li>monitoring</li>
+                        <li>reporting</li>
+                        <li>data analysis</li>
+                    </ul>
+                </div>
+
+                <div class="service-card reveal">
+                    <div class="service-number">02 — CUSTOM SOFTWARE</div>
+                    <h3>Purpose-Built Applications</h3>
+                    <p>Off-the-shelf software works for most people. But when your workflow has specific requirements that no existing tool quite nails, that's where we come in. Clean code, reliable performance, built for professionals who need things to just work.</p>
+                    <ul class="service-list">
+                        <li>desktop apps</li>
+                        <li>web platforms</li>
+                        <li>APIs</li>
+                        <li>data pipelines</li>
+                        <li>integrations</li>
+                        <li>automation scripts</li>
+                    </ul>
+                </div>
+
+                <div class="service-card reveal">
+                    <div class="service-number">03 — DIGITAL MARKETING</div>
+                    <h3>Data-Driven Growth</h3>
+                    <p>A decade of experience in affiliate marketing, SEO, and conversion optimization. We build automated funnels that compound over time. No vanity metrics — just revenue that shows up in your bank account.</p>
+                    <ul class="service-list">
+                        <li>SEO audits</li>
+                        <li>affiliate strategy</li>
+                        <li>content systems</li>
+                        <li>conversion optimization</li>
+                        <li>analytics</li>
+                        <li>automated funnels</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="work">
+        <div class="container">
+            <div class="sec-tag reveal">Track Record</div>
+            <h2 class="reveal">Real results. Not slides.</h2>
+
+            <div class="case-study reveal">
+                <div class="case-label">Case Study — Affiliate Marketing</div>
+                <h3>AfterLotto</h3>
+                <p>Built a lottery analytics platform from scratch. It's been profitable for years with minimal maintenance. Currently being modernized with expanded features while continuing to generate revenue on autopilot.</p>
+                <div class="case-metrics">
+                    <div class="metric">
+                        <span class="metric-value">Years</span>
+                        <span class="metric-label">Running Profitable</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value">&lt;1s</span>
+                        <span class="metric-label">Page Load Time</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value">Minimal</span>
+                        <span class="metric-label">Ongoing Maintenance</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="case-study reveal">
+                <div class="case-label">Case Study — AI Automation</div>
+                <h3>DatBotty: 24/7 Autonomous Operations</h3>
+                <p>An AI assistant running on dedicated server hardware that manages projects, deploys websites, monitors systems, generates revenue reports, and communicates via Telegram briefings. Fully autonomous with self-healing capabilities and zero-downtime operation.</p>
+                <div class="case-metrics">
+                    <div class="metric">
+                        <span class="metric-value">24/7</span>
+                        <span class="metric-label">Uptime</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value">3x/day</span>
+                        <span class="metric-label">Auto Reports</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value">Self</span>
+                        <span class="metric-label">Healing</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="case-study reveal">
+                <div class="case-label">Case Study — Music Technology</div>
+                <h3>PrepDeck: Professional DJ Tool</h3>
+                <p>A desktop application for professional DJs to manage, analyze, and prepare massive music libraries. Automated beatgrid verification, intelligent metadata repair, and batch processing designed for performers who demand absolute confidence in every track.</p>
+                <div class="case-metrics">
+                    <div class="metric">
+                        <span class="metric-value">Pro</span>
+                        <span class="metric-label">Grade Quality</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value">Batch</span>
+                        <span class="metric-label">Processing</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value">Auto</span>
+                        <span class="metric-label">Analysis</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta" id="contact">
+        <div class="container" style="position: relative; z-index: 1;">
+            <div class="sec-tag reveal" style="justify-content: center;">Get Started</div>
+            <h2 class="reveal">Got a problem that needs <span style="color: var(--glow)">solving</span>?</h2>
+            <p class="reveal">Tell us what you're working on. If it's a good fit, we'll tell you exactly how we'd approach it. No pitch decks, no discovery calls that waste everyone's time.</p>
+            <a href="mailto:contact@offbeatinc.com" class="cta-email reveal">contact@offbeatinc.com</a>
+            <p class="cta-note reveal">We typically respond within 24 hours.</p>
+        </div>
+    </section>
+
+    <footer>
+        <div>&copy; 2026 Offbeat, Inc.</div>
+        <div>
+            <a href="index.html">Home</a> &nbsp;|&nbsp;
+            <a href="https://muthaeffincrash.com">mutha effin CRASH</a>
+        </div>
+    </footer>
+
+    <script>
+        const obs = new IntersectionObserver((entries) => {
+            entries.forEach((e, i) => {
+                if (e.isIntersecting) {
+                    setTimeout(() => e.target.classList.add('active'), i * 60);
+                }
+            });
+        }, { threshold: 0.08 });
+        document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+    </script>
+</body>
+</html>

@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recommended Tools — Offbeat, Inc.</title>
+    <meta name="description" content="Curated recommendations for DJ equipment, music production tools, AI hardware, and developer essentials. Hand-tested and battle-proven picks from Offbeat, Inc.">
+    <meta name="theme-color" content="#00ccff">
+    <meta property="og:title" content="Recommended Tools — Offbeat, Inc.">
+    <meta property="og:description" content="Hand-tested picks for DJs, music producers, AI builders, and developers.">
+    <meta property="og:type" content="website">
+    <link rel="canonical" href="https://crashycrash.github.io/offbeat-website/v2/tools.html">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap');
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #020206;
+            --bg-2: #08090f;
+            --bg-3: #0c0d16;
+            --glow: #00ccff;
+            --glow-2: #00fff2;
+            --blue: #3b82f6;
+            --violet: #7c3aed;
+            --teal: #14b8a6;
+            --green: #00e676;
+            --text: #e6eaf4;
+            --text-2: #6e7599;
+            --text-3: #2d3150;
+            --border: #141828;
+        }
+
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        .mesh-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse 800px 600px at 20% 20%, rgba(0, 204, 255, 0.04) 0%, transparent 50%),
+                radial-gradient(ellipse 600px 800px at 80% 70%, rgba(124, 58, 237, 0.04) 0%, transparent 50%);
+        }
+
+        .scanlines {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 204, 255, 0.008) 2px, rgba(0, 204, 255, 0.008) 4px);
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.2rem 3rem;
+            background: rgba(2, 2, 6, 0.85);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            font-size: 1.1rem;
+            font-weight: 800;
+            letter-spacing: 0.15em;
+            color: #fff;
+            text-decoration: none;
+            position: relative;
+        }
+
+        .logo::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--glow), var(--violet));
+            animation: shimmerLine 3s infinite;
+        }
+
+        @keyframes shimmerLine {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        .nav-items {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+        }
+
+        .nav-items a {
+            color: var(--text-2);
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            transition: color 0.3s;
+        }
+
+        .nav-items a:hover { color: var(--glow); }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 6rem 2rem 4rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .page-header {
+            text-align: center;
+            padding-top: 6rem;
+            margin-bottom: 2rem;
+        }
+
+        .page-header h1 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 800;
+        }
+
+        .page-header p {
+            color: var(--text-2);
+            font-size: 1.05rem;
+            max-width: 640px;
+            margin: 1rem auto 0;
+            line-height: 1.7;
+        }
+
+        .affiliate-note {
+            text-align: center;
+            font-size: 0.78rem;
+            color: var(--text-3);
+            margin-bottom: 3rem;
+            font-style: italic;
+        }
+
+        .category {
+            margin-bottom: 4rem;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .category-icon {
+            font-size: 1.6rem;
+        }
+
+        .category-header h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .category-header p {
+            color: var(--text-2);
+            font-size: 0.9rem;
+            margin-left: auto;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .product-card {
+            background: var(--bg-2);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .product-card:hover {
+            border-color: rgba(0, 204, 255, 0.2);
+            box-shadow: 0 0 20px rgba(0, 204, 255, 0.05);
+        }
+
+        .product-tag {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--glow);
+            margin-bottom: 0.6rem;
+        }
+
+        .product-card h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-card .desc {
+            color: var(--text-2);
+            font-size: 0.88rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .product-card .why {
+            font-size: 0.82rem;
+            color: var(--teal);
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .product-link {
+            display: inline-block;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            color: var(--glow);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border: 1px solid rgba(0, 204, 255, 0.3);
+            border-radius: 6px;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .product-link:hover {
+            background: rgba(0, 204, 255, 0.1);
+            color: #fff;
+        }
+
+        footer {
+            position: relative;
+            z-index: 1;
+            padding: 1.5rem 3rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.78rem;
+            color: var(--text-3);
+        }
+
+        footer a { color: var(--text-2); text-decoration: none; }
+        footer a:hover { color: var(--glow); }
+
+        @media (max-width: 768px) {
+            nav { padding: 1rem 1.5rem; }
+            .nav-items { display: none; }
+            .product-grid { grid-template-columns: 1fr; }
+            .category-header { flex-direction: column; align-items: flex-start; }
+            .category-header p { margin-left: 0; }
+            footer { flex-direction: column; gap: 0.5rem; text-align: center; padding: 1.5rem; }
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .reveal.active { opacity: 1; transform: none; }
+    </style>
+</head>
+<body>
+    <div class="mesh-bg"></div>
+    <div class="scanlines"></div>
+
+    <nav>
+        <a href="index.html" class="logo">OFFBEAT</a>
+        <ul class="nav-items">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="tools.html" style="color: var(--glow);">Tools</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="page-header reveal">
+            <h1>Recommended <span style="color: var(--glow)">Tools</span></h1>
+            <p>Everything listed here has been personally tested and used in real-world projects. These are the tools we actually rely on — not just popular picks.</p>
+        </div>
+
+        <p class="affiliate-note reveal">Some links below are affiliate links. If you buy through them, we earn a small commission at no extra cost to you. It helps keep the lights on.</p>
+
+        <!-- DJ & Live Performance -->
+        <div class="category reveal">
+            <div class="category-header">
+                <span class="category-icon">🎧</span>
+                <h2>DJ &amp; Live Performance</h2>
+                <p>Battle-tested gear for gigging DJs</p>
+            </div>
+            <div class="product-grid">
+                <div class="product-card">
+                    <div class="product-tag">Headphones</div>
+                    <h3>Audio-Technica ATH-M50x</h3>
+                    <div class="desc">Professional studio monitor headphones with exceptional clarity across all frequencies. The industry standard for DJs and producers who need accurate monitoring.</div>
+                    <div class="why">Why we use it: Flat response, foldable build, survives touring. Under $150 — hard to beat at any price.</div>
+                    <a href="https://www.amazon.com/dp/B00HVLUR86?tag=offbeat0f-20" class="product-link" target="_blank" rel="noopener">View on Amazon →</a>
+                </div>
+                <div class="product-card">
+                    <div class="product-tag">DJ Controller</div>
+                    <h3>Pioneer DDJ-FLX10</h3>
+                    <div class="desc">4-channel performance DJ controller for Serato DJ Pro and rekordbox. Full-size jog wheels, dedicated FX controls, and USB-C connectivity.</div>
+                    <div class="why">Why we use it: Works natively with both major DJ platforms. The 4 channels are essential for complex mixing with tons of transitions.</div>
+                    <a href="https://www.amazon.com/dp/B0BRN5DLNX?tag=offbeat0f-20" class="product-link" target="_blank" rel="noopener">View on Amazon →</a>
+                </div>
+                <div class="product-card">
+                    <div class="product-tag">USB Drive</div>
+                    <h3>Samsung T7 Shield (2TB)</h3>
+                    <div class="desc">Rugged portable SSD with USB 3.2 speeds. IP65 dust and water resistant — perfect for gig bags and outdoor events.</div>
+                    <div class="why">Why we use it: When your entire music library is on one drive, you need speed AND durability. This thing survives everything.</div>
+                    <a href="https://www.amazon.com/dp/B09VLJB2DC?tag=offbeat0f-20" class="product-link" target="_blank" rel="noopener">View on Amazon →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Music Production -->
+        <div class="category reveal">
+            <div class="category-header">
+                <span class="category-icon">🎵</span>
+                <h2>Music Production</h2>
+                <p>Quality audio tools for the studio</p>
+            </div>
+            <div class="product-grid">
+                <div class="product-card">
+                    <div class="product-tag">Audio Interface</div>
+                    <h3>Focusrite Scarlett 2i2 (4th Gen)</h3>
+                    <div class="desc">USB-C audio interface with class-leading preamps. Ultra-low latency, 192kHz/24-bit resolution. The most popular interface for a reason.</div>
+                    <div class="why">Why we use it: Dead simple, rock solid drivers, excellent preamps. Just works every single time.</div>
+                    <a href="https://www.amazon.com/dp/B0C5JRSBCK?tag=offbeat0f-20" class="product-link" target="_blank" rel="noopener">View on Amazon →</a>
+                </div>
+                <div class="product-card">
+                    <div class="product-tag">Studio Monitors</div>
+                    <h3>KRK Rokit 5 G4</h3>
+                    <div class="desc">5" bi-amped studio monitors with built-in DSP-driven room correction. Front-firing port eliminates wall placement issues.</div>
+                    <div class="why">Why we use it: Affordable, room-correcting, and they give you an honest picture of your mix. Essential for bedroom studios.</div>
+                    <a href="https://www.amazon.com/dp/B07YZP4BJ5?tag=offbeat0f-20" class="product-link" target="_blank" rel="noopener">View on Amazon →</a>
+                </div>
+                <div class="product-card">
+                    <div class="product-tag">MIDI Controller</div>
+                    <h3>Akai Professional MPK Mini MK3</h3>
+                    <div class="desc">25-key USB MIDI keyboard with 8 MPC-style pads, 8 knobs, and an OLED display. Compact enough to throw in any bag.</div>
+                    <div class="why">Why we use it: Perfect for beat-making on the go. The pads are genuinely good for the price.</div>
+                    <a href="https://www.amazon.com/dp/B0886ZPWC8?tag=offbeat0f-20" class="product-link" target="_blank" rel="noopener">View on Amazon →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI & Automation Hardware -->
+        <div class="category reveal">
+            <div class="category-header">
+                <span class="category-icon">🤖</span>
+                <h2>AI &amp; Automation Hardware</h2>
+                <p>The metal that runs our AI agents</p>
+            </div>
+            <div class="product-grid">
+                <div class="product-card">
+                    <div class="product-tag">RAM</div>
+                    <h3>Corsair Vengeance DDR5 96GB</h3>
+                    <div class="desc">96GB (2×48GB) DDR5-5600 desktop memory kit. When you're running multiple Docker containers, LLMs, and browser automation simultaneously, 32GB isn't enough.</div>
+                    <div class="why">Why we use it: Our DatBotty server runs at 96GB. Docker + n8n + OpenClaw + Playwright all running 24/7 without swapping.</div>
+                    <a href="https://www.amazon.com/dp/B0CG9QBRG3?tag=offbeat0f-20" class="product-link" target="_blank" rel="noopener">View on Amazon →</a>
+                </div>
+                <div class="product-card">
+                    <div class="product-tag">Storage</div>
+                    <h3>Samsung 990 Pro 2TB NVMe</h3>
+                    <div class="desc">PCIe 4.0 NVMe SSD with 7,450 MB/s sequential read. Fast enough for AI model loading, Docker volumes, and database operations simultaneously.</div>
+                    <div class="why">Why we use it: When your AI agent is hitting SQLite, running browser automation, and processing audio all at once — disk speed matters.</div>
+                    <a href="https://www.amazon.com/dp/B0CHGT4KLH?tag=offbeat0f-20" class="product-link" target="_blank" rel="noopener">View on Amazon →</a>
+                </div>
+                <div class="product-card">
+                    <div class="product-tag">UPS</div>
+                    <h3>CyberPower CP1500PFCLCD</h3>
+                    <div class="desc">1500VA/1000W PFC Sinewave UPS with LCD panel. Pure sine wave output is critical for sensitive electronics running 24/7.</div>
+                    <div class="why">Why we use it: A 24/7 AI server with no UPS is a ticking time bomb. This one handles clean shutdowns during outages.</div>
+                    <a href="https://www.amazon.com/dp/B00429N19W?tag=offbeat0f-20" class="product-link" target="_blank" rel="noopener">View on Amazon →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Developer Essentials -->
+        <div class="category reveal">
+            <div class="category-header">
+                <span class="category-icon">💻</span>
+                <h2>Developer Essentials</h2>
+                <p>Daily drivers for building software</p>
+            </div>
+            <div class="product-grid">
+                <div class="product-card">
+                    <div class="product-tag">Mechanical Keyboard</div>
+                    <h3>Keychron Q1 Pro</h3>
+                    <div class="desc">75% wireless mechanical keyboard with QMK/VIA support. Hot-swappable switches, full aluminum body, gasket mount for a satisfying typing feel.</div>
+                    <div class="why">Why we use it: Programmable, wireless, and a genuinely excellent typing experience. Huge upgrade from any stock keyboard.</div>
+                    <a href="https://www.amazon.com/dp/B0BZ42JQQ7?tag=offbeat0f-20" class="product-link" target="_blank" rel="noopener">View on Amazon →</a>
+                </div>
+                <div class="product-card">
+                    <div class="product-tag">Monitor</div>
+                    <h3>LG 27UK850-W 4K</h3>
+                    <div class="desc">27" 4K UHD IPS monitor with USB-C, HDR10, and 99% sRGB coverage. The sweet spot between screen real estate and pixel density for code.</div>
+                    <div class="why">Why we use it: 4K at 27" means sharp text all day. The USB-C port is great for laptop connectivity. Color accuracy is a bonus for web dev.</div>
+                    <a href="https://www.amazon.com/dp/B078GVTD9N?tag=offbeat0f-20" class="product-link" target="_blank" rel="noopener">View on Amazon →</a>
+                </div>
+                <div class="product-card">
+                    <div class="product-tag">Webcam</div>
+                    <h3>Logitech C920x HD Pro</h3>
+                    <div class="desc">1080p HD webcam with dual stereo microphones and auto-focus. The standard for remote meetings and streaming.</div>
+                    <div class="why">Why we use it: Reliable, good image quality, works on every platform without driver headaches.</div>
+                    <a href="https://www.amazon.com/dp/B085TFF7M1?tag=offbeat0f-20" class="product-link" target="_blank" rel="noopener">View on Amazon →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div>&copy; 2026 Offbeat, Inc.</div>
+        <div>
+            <a href="https://muthaeffincrash.com">mutha effin CRASH</a>
+        </div>
+    </footer>
+
+    <script>
+        const obs = new IntersectionObserver((entries) => {
+            entries.forEach((e, i) => {
+                if (e.isIntersecting) {
+                    setTimeout(() => e.target.classList.add('active'), i * 60);
+                }
+            });
+        }, { threshold: 0.08 });
+        document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+    </script>
+</body>
+</html>
