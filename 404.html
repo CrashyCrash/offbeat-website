@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>404 — Page Not Found | Offbeat</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Google Fonts: Outfit -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      background: #020206;
+      color: #fff;
+      font-family: 'Outfit', Arial, sans-serif;
+      min-height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+    }
+    .glow {
+      color: #00ccff;
+      text-shadow: 0 0 8px #00ccff88, 0 0 16px #00ccff44;
+    }
+    .big404 {
+      font-size: 7rem;
+      font-weight: 700;
+      margin-bottom: 0.2em;
+      letter-spacing: 0.05em;
+    }
+    .message {
+      font-size: 1.5rem;
+      margin-bottom: 1.5em;
+      color: #e0e0e0;
+    }
+    .redirect {
+      font-size: 1.1rem;
+      color: #00ccff;
+      opacity: 0.8;
+    }
+    @media (max-width: 600px) {
+      .big404 {
+        font-size: 3.5rem;
+      }
+      .message {
+        font-size: 1.1rem;
+      }
+    }
+  </style>
+  <script>
+    setTimeout(function() {
+      window.location.href = "https://crashycrash.github.io/offbeat-website/v3/";
+    }, 5000);
+  </script>
+</head>
+<body>
+  <div>
+    <div class="big404 glow">404</div>
+    <div class="message">
+      Oops! This page wandered off the <span class="glow">offbeat</span> path.<br>
+      Let's get you back on track.
+    </div>
+    <div class="redirect">
+      Redirecting to the <span class="glow">homepage</span> in <span id="countdown">5</span> seconds...
+    </div>
+  </div>
+  <script>
+    // Countdown timer
+    let seconds = 5;
+    const countdownEl = document.getElementById('countdown');
+    setInterval(function() {
+      seconds--;
+      if (seconds >= 0) {
+        countdownEl.textContent = seconds;
+      }
+    }, 1000);
+  </script>
+</body>
+</html>
