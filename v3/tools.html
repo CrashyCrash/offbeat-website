@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Offbeat Recommended Tools & Gear</title>
+    <meta name="description" content="Battle-tested tools and gear recommended by Offbeat, Inc. for DJs, producers, and software engineers.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="canonical" href="https://crashycrash.github.io/offbeat-website/v3/tools.html">
+    <!-- Open Graph tags -->
+    <meta property="og:title" content="Offbeat Recommended Tools & Gear">
+    <meta property="og:description" content="Battle-tested tools and gear recommended by Offbeat, Inc. for DJs, producers, and software engineers.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://crashycrash.github.io/offbeat-website/v3/tools.html">
+    <meta property="og:image" content="https://crashycrash.github.io/offbeat-website/v3/og-image.png">
+    <style>
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap');
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #020206;
+            --bg-card: #08090f;
+            --border: #141828;
+            --glow: #00ccff;
+            --glow-2: #00fff2;
+            --violet: #7c3aed;
+            --hot: #ff3d71;
+            --green: #00e676;
+            --text: #e6eaf4;
+            --text-2: #6e7599;
+            --text-3: #2d3150;
+        }
+
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        .mesh-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse 800px 600px at 20% 20%, rgba(0, 204, 255, 0.04) 0%, transparent 50%),
+                radial-gradient(ellipse 600px 800px at 80% 70%, rgba(124, 58, 237, 0.04) 0%, transparent 50%);
+        }
+
+        .scanlines {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 204, 255, 0.008) 2px,
+                rgba(0, 204, 255, 0.008) 4px
+            );
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(2, 2, 6, 0.75);
+            backdrop-filter: blur(20px);
+        }
+
+        .brand {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            position: relative;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .brand::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--glow), var(--violet));
+            animation: brand-line 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes brand-line {
+            0% { transform: scaleX(0.3); transform-origin: left; }
+            100% { transform: scaleX(1); transform-origin: left; }
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .header-nav a {
+            color: var(--text-2);
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .header-nav a:hover { color: var(--glow); }
+        .header-nav .active { color: var(--glow); }
+
+        .section {
+            position: relative;
+            z-index: 1;
+            padding: 7rem 2rem 2rem;
+        }
+
+        .wrap { max-width: 1100px; margin: 0 auto; }
+
+        .tag-line {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.72rem;
+            color: var(--glow);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            margin-bottom: 0.75rem;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: clamp(2.4rem, 6vw, 4rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.15;
+            margin-bottom: 0.75rem;
+            text-align: center;
+        }
+
+        .sub {
+            color: var(--text-2);
+            font-size: 1.05rem;
+            line-height: 1.7;
+            max-width: 550px;
+            margin: 0 auto 3.5rem;
+            text-align: center;
+        }
+
+        .category-block {
+            margin-bottom: 4rem;
+        }
+
+        .category-title {
+            font-family: 'Fira Code', monospace;
+            font-size: 1rem;
+            color: var(--glow);
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            margin-bottom: 1.2rem;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .product-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem 1.5rem 1.5rem;
+            position: relative;
+            transition: all 0.5s;
+            display: flex;
+            flex-direction: column;
+            min-height: 180px;
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: 16px;
+            padding: 1px;
+            background: linear-gradient(var(--border), var(--border));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            transition: background 0.5s;
+        }
+
+        .product-card:hover::before {
+            background: linear-gradient(135deg, var(--glow), var(--violet));
+        }
+
+        .product-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 50px rgba(0, 204, 255, 0.06);
+        }
+
+        .product-name {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 0.6rem;
+        }
+
+        .product-link {
+            display: inline-block;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            color: var(--glow);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border: 1px solid rgba(0, 204, 255, 0.3);
+            border-radius: 6px;
+            transition: background 0.3s, color 0.3s;
+            margin-top: auto;
+            align-self: flex-start;
+        }
+
+        .product-link:hover {
+            background: rgba(0, 204, 255, 0.1);
+            color: #fff;
+        }
+
+        footer {
+            position: relative;
+            z-index: 1;
+            padding: 1.5rem 3rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.78rem;
+            color: var(--text-3);
+            margin-top: 2rem;
+        }
+
+        footer a { color: var(--text-2); text-decoration: none; }
+        footer a:hover { color: var(--glow); }
+
+        @media (max-width: 768px) {
+            header { padding: 1rem 1.5rem; }
+            .header-nav { gap: 1rem; }
+            .wrap { padding: 0 1rem; }
+            .product-grid { grid-template-columns: 1fr; }
+            footer { flex-direction: column; gap: 0.5rem; text-align: center; padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="mesh-bg"></div>
+    <div class="scanlines"></div>
+    <header>
+        <a href="index.html" class="brand">OFFBEAT</a>
+        <nav>
+            <ul class="header-nav">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="tools.html" class="active">Tools</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="section">
+            <div class="wrap">
+                <div class="tag-line">Battle-tested gear & tools</div>
+                <h1>Recommended <span style="background: linear-gradient(135deg, var(--glow), var(--glow-2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Tools</span></h1>
+                <div class="sub">Hand-picked hardware and essentials for DJs, music producers, and software engineers. All links are affiliate (Amazon) and help support Offbeat, Inc.</div>
+                <!-- DJ & Live Performance -->
+                <div class="category-block">
+                    <div class="category-title">DJ & Live Performance</div>
+                    <div class="product-grid">
+                        <div class="product-card">
+                            <div class="product-name">Audio-Technica ATH-M50x</div>
+                            <a href="https://www.amazon.com/s?k=Audio-Technica+ATH-M50x+Headphones&tag=offbeat0f-20" class="product-link" target="_blank" rel="noopener">View on Amazon →</a>
+                        </div>
+                        <div class="product-card">
+                            <div class="product-name">Pioneer DDJ-FLX10</div>
+                            <a href="https://www.amazon.com/s?k=Pioneer+DDJ-FLX10+DJ+Controller&tag=offbeat0f-20" class="product-link" target="_blank" rel="noopener">View on Amazon →</a>
+                        </div>
+                        <div class="product-card">
+                            <div class="product-name">Samsung T7 Shield (2TB)</div>
+                            <a href="https://www.amazon.com/s?k=Samsung+T7+Shield+2TB+Portable+SSD&tag=offbeat0f-20" class="product-link" target="_blank" rel="noopener">View on Amazon →</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Music Production -->
+                <div class="category-block">
+                    <div class="category-title">Music Production</div>
+                    <div class="product-grid">
+                        <div class="product-card">
+                            <div class="product-name">Focusrite Scarlett 2i2 (4th Gen)</div>
+                            <a href="https://www.amazon.com/s?k=Focusrite+Scarlett+2i2+4th+Gen+Audio+Interface&tag=offbeat0f-20" class="product-link" target="_blank" rel="noopener">View on Amazon →</a>
+                        </div>
+                        <div class="product-card">
+                            <div class="product-name">KRK Rokit 5 G4</div>
+                            <a href="https://www.amazon.com/s?k=KRK+Rokit+5+G4+Studio+Monitor&tag=offbeat0f-20" class="product-link" target="_blank" rel="noopener">View on Amazon →</a>
+                        </div>
+                        <div class="product-card">
+                            <div class="product-name">Akai Professional MPK Mini MK3</div>
+                            <a href="https://www.amazon.com/s?k=Akai+Professional+MPK+Mini+MK3+MIDI+Controller&tag=offbeat0f-20" class="product-link" target="_blank" rel="noopener">View on Amazon →</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- AI & Automation Hardware -->
+                <div class="category-block">
+                    <div class="category-title">AI & Automation Hardware</div>
+                    <div class="product-grid">
+                        <div class="product-card">
+                            <div class="product-name">Corsair Vengeance DDR5 96GB</div>
+                            <a href="https://www.amazon.com/s?k=Corsair+Vengeance+DDR5+96GB+5600&tag=offbeat0f-20" class="product-link" target="_blank" rel="noopener">View on Amazon →</a>
+                        </div>
+                        <div class="product-card">
+                            <div class="product-name">Samsung 990 Pro 2TB NVMe</div>
+                            <a href="https://www.amazon.com/s?k=Samsung+990+Pro+2TB+NVMe+SSD&tag=offbeat0f-20" class="product-link" target="_blank" rel="noopener">View on Amazon →</a>
+                        </div>
+                        <div class="product-card">
+                            <div class="product-name">CyberPower CP1500PFCLCD</div>
+                            <a href="https://www.amazon.com/s?k=CyberPower+CP1500PFCLCD+UPS+1500VA&tag=offbeat0f-20" class="product-link" target="_blank" rel="noopener">View on Amazon →</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Developer Essentials -->
+                <div class="category-block">
+                    <div class="category-title">Developer Essentials</div>
+                    <div class="product-grid">
+                        <div class="product-card">
+                            <div class="product-name">Keychron Q1 Pro</div>
+                            <a href="https://www.amazon.com/s?k=Keychron+Q1+Pro+Mechanical+Keyboard&tag=offbeat0f-20" class="product-link" target="_blank" rel="noopener">View on Amazon →</a>
+                        </div>
+                        <div class="product-card">
+                            <div class="product-name">LG 27UK850-W 4K</div>
+                            <a href="https://www.amazon.com/s?k=LG+27+4K+UHD+IPS+Monitor+USB-C+HDR&tag=offbeat0f-20" class="product-link" target="_blank" rel="noopener">View on Amazon →</a>
+                        </div>
+                        <div class="product-card">
+                            <div class="product-name">Logitech C920x HD Pro</div>
+                            <a href="https://www.amazon.com/s?k=Logitech+C920x+HD+Pro+Webcam+1080p&tag=offbeat0f-20" class="product-link" target="_blank" rel="noopener">View on Amazon →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <div>© 2024 Offbeat, Inc.</div>
+        <div>
+            <a href="index.html">Home</a> &nbsp;|&nbsp; 
+            <a href="services.html">Services</a> &nbsp;|&nbsp; 
+            <a href="tools.html" style="color: var(--glow);">Tools</a>
+        </div>
+    </footer>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "name": "Offbeat Recommended Gear",
+      "description": "Battle-tested tools and gear recommended by Offbeat, Inc. for DJs, producers, and software engineers.",
+      "url": "https://crashycrash.github.io/offbeat-website/v3/tools.html",
+      "numberOfItems": 12,
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Audio-Technica ATH-M50x",
+          "url": "https://www.amazon.com/s?k=Audio-Technica+ATH-M50x+Headphones&tag=offbeat0f-20"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Pioneer DDJ-FLX10",
+          "url": "https://www.amazon.com/s?k=Pioneer+DDJ-FLX10+DJ+Controller&tag=offbeat0f-20"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Samsung T7 Shield (2TB)",
+          "url": "https://www.amazon.com/s?k=Samsung+T7+Shield+2TB+Portable+SSD&tag=offbeat0f-20"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "Focusrite Scarlett 2i2 (4th Gen)",
+          "url": "https://www.amazon.com/s?k=Focusrite+Scarlett+2i2+4th+Gen+Audio+Interface&tag=offbeat0f-20"
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
+          "name": "KRK Rokit 5 G4",
+          "url": "https://www.amazon.com/s?k=KRK+Rokit+5+G4+Studio+Monitor&tag=offbeat0f-20"
+        },
+        {
+          "@type": "ListItem",
+          "position": 6,
+          "name": "Akai Professional MPK Mini MK3",
+          "url": "https://www.amazon.com/s?k=Akai+Professional+MPK+Mini+MK3+MIDI+Controller&tag=offbeat0f-20"
+        },
+        {
+          "@type": "ListItem",
+          "position": 7,
+          "name": "Corsair Vengeance DDR5 96GB",
+          "url": "https://www.amazon.com/s?k=Corsair+Vengeance+DDR5+96GB+5600&tag=offbeat0f-20"
+        },
+        {
+          "@type": "ListItem",
+          "position": 8,
+          "name": "Samsung 990 Pro 2TB NVMe",
+          "url": "https://www.amazon.com/s?k=Samsung+990+Pro+2TB+NVMe+SSD&tag=offbeat0f-20"
+        },
+        {
+          "@type": "ListItem",
+          "position": 9,
+          "name": "CyberPower CP1500PFCLCD",
+          "url": "https://www.amazon.com/s?k=CyberPower+CP1500PFCLCD+UPS+1500VA&tag=offbeat0f-20"
+        },
+        {
+          "@type": "ListItem",
+          "position": 10,
+          "name": "Keychron Q1 Pro",
+          "url": "https://www.amazon.com/s?k=Keychron+Q1+Pro+Mechanical+Keyboard&tag=offbeat0f-20"
+        },
+        {
+          "@type": "ListItem",
+          "position": 11,
+          "name": "LG 27UK850-W 4K",
+          "url": "https://www.amazon.com/s?k=LG+27+4K+UHD+IPS+Monitor+USB-C+HDR&tag=offbeat0f-20"
+        },
+        {
+          "@type": "ListItem",
+          "position": 12,
+          "name": "Logitech C920x HD Pro",
+          "url": "https://www.amazon.com/s?k=Logitech+C920x+HD+Pro+Webcam+1080p&tag=offbeat0f-20"
+        }
+      ]
+    }
+    </script>
+</body>
+</html>
