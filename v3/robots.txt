@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://crashycrash.github.io/offbeat-website/v3/sitemap.xml
