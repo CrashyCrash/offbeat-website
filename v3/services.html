@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Professional AI-powered services by DatBotty v2: Content Automation, SEO Optimization, Affiliate Marketing, and Autonomous Operations.">
+    <title>Services — DatBotty v2 Capabilities | Offbeat</title>
+    <link rel="canonical" href="https://crashycrash.github.io/offbeat-website/v3/services.html">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap');
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #020206;
+            --bg-card: #08090f;
+            --border: #141828;
+            --glow: #00ccff;
+            --glow-2: #00fff2;
+            --violet: #7c3aed;
+            --hot: #ff3d71;
+            --green: #00e676;
+            --text: #e6eaf4;
+            --text-2: #6e7599;
+            --text-3: #2d3150;
+        }
+
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Animated mesh gradient background */
+        .mesh-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse 800px 600px at 20% 20%, rgba(0, 204, 255, 0.04) 0%, transparent 50%),
+                radial-gradient(ellipse 600px 800px at 80% 70%, rgba(124, 58, 237, 0.04) 0%, transparent 50%);
+        }
+
+        /* Scanline effect */
+        .scanlines {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 204, 255, 0.008) 2px,
+                rgba(0, 204, 255, 0.008) 4px
+            );
+        }
+
+        /* Nav */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(2, 2, 6, 0.75);
+            backdrop-filter: blur(20px);
+        }
+
+        .brand {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            position: relative;
+        }
+
+        .brand::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--glow), var(--violet));
+            animation: brand-line 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes brand-line {
+            0% { transform: scaleX(0.3); transform-origin: left; }
+            100% { transform: scaleX(1); transform-origin: left; }
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .header-nav a {
+            color: var(--text-2);
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .header-nav a:hover { color: var(--glow); }
+
+        /* Main section */
+        .section {
+            position: relative;
+            z-index: 1;
+            padding: 8rem 2rem 5rem 2rem;
+        }
+
+        .wrap { max-width: 900px; margin: 0 auto; }
+
+        .tag-line {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.72rem;
+            color: var(--glow);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            margin-bottom: 0.75rem;
+        }
+
+        h1 {
+            font-size: clamp(2.3rem, 6vw, 3.5rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            margin-bottom: 0.8rem;
+            text-align: center;
+        }
+
+        .sub {
+            color: var(--text-2);
+            font-size: 1.08rem;
+            line-height: 1.7;
+            max-width: 600px;
+            margin: 0 auto 3.5rem auto;
+            text-align: center;
+        }
+
+        /* Services grid */
+        .hex-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .hex-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2.25rem;
+            position: relative;
+            transition: all 0.5s;
+            overflow: hidden;
+        }
+
+        .hex-card::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: 16px;
+            padding: 1px;
+            background: linear-gradient(var(--border), var(--border));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            transition: background 0.5s;
+        }
+
+        .hex-card:hover::before {
+            background: linear-gradient(135deg, var(--glow), var(--violet));
+        }
+
+        .hex-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 50px rgba(0, 204, 255, 0.06);
+        }
+
+        .hex-card .icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: rgba(0, 204, 255, 0.06);
+            border: 1px solid rgba(0, 204, 255, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .hex-card h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 0.6rem;
+        }
+
+        .hex-card p {
+            color: var(--text-2);
+            font-size: 0.96rem;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        footer {
+            width: 100%;
+            padding: 2.5rem 0 1.5rem 0;
+            text-align: center;
+            color: var(--text-2);
+            font-size: 0.93rem;
+            margin-top: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+        footer span {
+            color: var(--glow);
+        }
+
+        @media (max-width: 700px) {
+            header {
+                padding: 1.2rem 1.2rem;
+            }
+            .section {
+                padding: 7rem 1rem 3rem 1rem;
+            }
+            .wrap {
+                max-width: 98vw;
+            }
+            .hex-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="mesh-bg"></div>
+    <div class="scanlines"></div>
+    <header>
+        <div class="brand">OFFBEAT</div>
+        <nav>
+            <ul class="header-nav">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="services.html" style="color:var(--glow);font-weight:700;">Services</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="section">
+            <div class="wrap">
+                <div class="tag-line">DatBotty v2 — Professional Services</div>
+                <h1>
+                    <span class="glow-word" data-text="AI System Capabilities">AI System Capabilities</span>
+                </h1>
+                <div class="sub">
+                    Unlock the power of autonomous AI for your business. DatBotty v2 delivers advanced automation, optimization, and growth solutions — engineered for scale, reliability, and results.
+                </div>
+                <div class="hex-grid">
+                    <div class="hex-card">
+                        <div class="icon" style="color:var(--glow);">
+                            <!-- AI Content Automation SVG -->
+                            <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 28 28">
+                                <rect x="4" y="4" width="20" height="20" rx="5"/>
+                                <path d="M9 14h10M14 9v10"/>
+                            </svg>
+                        </div>
+                        <h3>AI Content Automation</h3>
+                        <p>
+                            End-to-end content generation, scheduling, and publishing powered by advanced AI. Automate blogs, product descriptions, emails, and more — with human-level quality and speed.
+                        </p>
+                    </div>
+                    <div class="hex-card">
+                        <div class="icon" style="color:var(--violet);">
+                            <!-- SEO Optimization SVG -->
+                            <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 28 28">
+                                <circle cx="14" cy="14" r="8"/>
+                                <path d="M14 10v4l2.5 2.5"/>
+                            </svg>
+                        </div>
+                        <h3>SEO Optimization</h3>
+                        <p>
+                            Automated keyword research, on-page optimization, and technical audits. Boost your search rankings and organic traffic with AI-driven strategies and continuous improvement.
+                        </p>
+                    </div>
+                    <div class="hex-card">
+                        <div class="icon" style="color:var(--hot);">
+                            <!-- Affiliate Marketing SVG -->
+                            <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 28 28">
+                                <path d="M7 21l7-7 4 4 3-3"/>
+                                <circle cx="7" cy="21" r="2"/>
+                                <circle cx="21" cy="7" r="2"/>
+                            </svg>
+                        </div>
+                        <h3>Affiliate Marketing</h3>
+                        <p>
+                            Intelligent affiliate campaign management, link tracking, and conversion optimization. Grow your revenue streams with data-driven automation and reporting.
+                        </p>
+                    </div>
+                    <div class="hex-card">
+                        <div class="icon" style="color:var(--green);">
+                            <!-- Autonomous Operations SVG -->
+                            <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 28 28">
+                                <rect x="4" y="8" width="20" height="12" rx="4"/>
+                                <path d="M8 8V6a6 6 0 0 1 12 0v2"/>
+                            </svg>
+                        </div>
+                        <h3>Autonomous Operations</h3>
+                        <p>
+                            24/7 system monitoring, self-healing workflows, and zero-touch deployments. DatBotty v2 keeps your business running smoothly — no human intervention required.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        &copy; 2024 <span>Offbeat, Inc.</span> — Powered by <span>DatBotty v2</span>
+    </footer>
+</body>
+</html>
