@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ — Offbeat, Inc. (V3)</title>
+    <meta name="robots" content="noindex">
+    <!-- Google Fonts: Outfit -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #020206;
+            --card: #11111c;
+            --border: #222249;
+            --glow: #00ccff;
+            --text: #e3e8f3;
+            --dim: #717a90;
+            --footer-bg: #050517;
+        }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+        .nav {
+            width: 100%;
+            max-width: 800px;
+            margin: 2rem auto 1.5rem;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+        }
+        .nav a {
+            color: var(--glow);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.05rem;
+            padding: 0.4rem 1rem;
+            border-radius: 6px;
+            background: rgba(0, 204, 255, 0.07);
+            transition: background 0.2s;
+        }
+        .nav a:hover {
+            background: rgba(0, 204, 255, 0.18);
+        }
+        .faq-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(90deg, var(--glow) 0%, #5d46fa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .faq-subtitle {
+            color: var(--dim);
+            text-align: center;
+            font-size: 1.15rem;
+            margin-bottom: 2.5rem;
+        }
+        .faq-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto 2.5rem;
+        }
+        .faq-card {
+            background: var(--card);
+            border: 1.5px solid var(--border);
+            border-radius: 16px;
+            padding: 1.6rem 1.2rem 1.2rem 1.2rem;
+            box-shadow: 0 0 24px 4px rgba(0, 204, 255, 0.08), 0 2px 24px 0 rgba(64, 90, 230, 0.04);
+            position: relative;
+            transition: box-shadow 0.2s, border-color 0.2s;
+        }
+        .faq-card:hover, .faq-card:focus-within {
+            border-color: var(--glow);
+            box-shadow: 0 0 24px 8px rgba(0, 204, 255, 0.18), 0 2px 32px 0 rgba(64, 90, 230, 0.05);
+        }
+        .faq-q {
+            font-size: 1.19rem;
+            font-weight: 700;
+            color: var(--glow);
+            margin-bottom: 0.3rem;
+            letter-spacing: 0.02em;
+        }
+        .faq-a {
+            color: var(--dim);
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+        .footer {
+            width: 100%;
+            background: var(--footer-bg);
+            color: var(--dim);
+            text-align: center;
+            padding: 1.05rem 0;
+            font-size: 0.97rem;
+            margin-top: auto;
+            letter-spacing: 0.04em;
+        }
+        .footer span {
+            color: var(--glow);
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <a href="../index.html">&larr; Back to Home</a>
+    </div>
+    <main>
+        <div class="faq-title">Offbeat, Inc. — FAQ</div>
+        <div class="faq-subtitle">Frequently Asked Questions about our AI automation, affiliate innovations, and DatBotty ops.</div>
+        <div class="faq-list">
+            <div class="faq-card">
+                <div class="faq-q">1. What is Offbeat, Inc. and what do you offer?</div>
+                <div class="faq-a">
+                    Offbeat, Inc. is a technology company specializing in advanced AI automation, affiliate marketing tools, and workflow solutions. We help businesses unlock new efficiencies and revenue using next-gen intelligence and digital automation.
+                </div>
+            </div>
+            <div class="faq-card">
+                <div class="faq-q">2. What does AI automation mean for businesses?</div>
+                <div class="faq-a">
+                    AI automation enables organizations to streamline repetitive tasks, analyze data intelligently, and optimize decision-making using artificial intelligence. Our systems integrate smoothly with your workflow, saving time and boosting productivity.
+                </div>
+            </div>
+            <div class="faq-card">
+                <div class="faq-q">3. How do your affiliate tools work?</div>
+                <div class="faq-a">
+                    Our affiliate tools allow creators and companies to track, manage, and grow their affiliate programs. With automated reporting, smart tracking links, and campaign optimization, users maximize earnings and minimize manual effort.
+                </div>
+            </div>
+            <div class="faq-card">
+                <div class="faq-q">4. What is DatBotty and how does it help clients?</div>
+                <div class="faq-a">
+                    DatBotty is our autonomous AI operations system managing integration, analytics, and delivery for Offbeat projects. It ensures reliability, scalability, and real-time insights, empowering clients with seamless services and faster results.
+                </div>
+            </div>
+            <div class="faq-card">
+                <div class="faq-q">5. Are my workflows customizable with Offbeat’s tools?</div>
+                <div class="faq-a">
+                    Yes! Offbeat’s automation and affiliate platforms are designed for flexibility. You can tailor workflows, reporting, and integrations to fit your unique business needs, with full API access and modular features.
+                </div>
+            </div>
+            <div class="faq-card">
+                <div class="faq-q">6. Is my data secure when using Offbeat services?</div>
+                <div class="faq-a">
+                    Absolutely. Offbeat employs industry-standard encryption, robust authentication, and strict compliance. DatBotty always monitors security in real-time, ensuring your data stays safe and private.
+                </div>
+            </div>
+            <div class="faq-card">
+                <div class="faq-q">7. What industries do you typically work with?</div>
+                <div class="faq-a">
+                    We serve clients across tech, ecommerce, digital media, and SaaS, but our solutions adapt to any sector where automation and affiliate marketing can drive value. Get in touch to see how Offbeat fits your business!
+                </div>
+            </div>
+            <div class="faq-card">
+                <div class="faq-q">8. How can I start using Offbeat’s products or get support?</div>
+                <div class="faq-a">
+                    You can reach out via our website or email for demos, onboarding, and support. DatBotty will help you seamlessly launch and manage your solutions — no technical expertise required.
+                </div>
+            </div>
+        </div>
+    </main>
+    <div class="footer">
+        &copy; 2024 Offbeat, Inc. &mdash; Powered by <span>DatBotty</span> v3 <!-- Neon Edge -->
+    </div>
+</body>
+</html>
