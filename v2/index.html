@@ -128,14 +128,22 @@
         }
 
         .nav-items a {
-            color: var(--text-2);
+            color: #bfc7e6;
             text-decoration: none;
             font-size: 0.9rem;
             font-weight: 500;
             transition: color 0.3s;
+            outline: none;
         }
 
         .nav-items a:hover { color: var(--glow); }
+
+        .nav-items a:focus {
+            outline: 2px solid var(--glow);
+            outline-offset: 2px;
+            color: var(--glow);
+            background: rgba(0,204,255,0.08);
+        }
 
         /* Hero with animated corner borders */
         .hero {
@@ -601,8 +609,8 @@
     <div class="mesh-bg"></div>
     <div class="scanlines"></div>
 
-    <nav>
-        <div class="logo">OFFBEAT</div>
+    <nav aria-label="Main navigation">
+        <a href="index.html" class="logo">OFFBEAT</a>
         <ul class="nav-items">
             <li><a href="#what">What We Do</a></li>
             <li><a href="#projects">Projects</a></li>
