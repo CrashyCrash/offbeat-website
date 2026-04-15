@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact — Offbeat, Inc.</title>
+    <meta name="description" content="Get in touch with Offbeat, Inc. — reach out for AI automation, affiliate marketing, and software services inquiries.">
+    <link rel="canonical" href="https://crashycrash.github.io/offbeat-website/v3/contact.html">
+    <!-- Open Graph -->
+    <meta property="og:title" content="Contact — Offbeat, Inc.">
+    <meta property="og:description" content="Get in touch with Offbeat, Inc. — reach out for AI automation, affiliate marketing, and software services inquiries.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://crashycrash.github.io/offbeat-website/v3/contact.html">
+    <!-- Google Fonts: Outfit -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- JSON-LD LocalBusiness -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "Offbeat Inc",
+      "url": "https://crashycrash.github.io/offbeat-website/v3/"
+    }
+    </script>
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #020206;
+            --bg-card: #08090f;
+            --border: #141828;
+            --border-hover: #222249;
+            --glow: #00ccff;
+            --glow-2: #00fff2;
+            --violet: #7c3aed;
+            --text: #e6eaf4;
+            --text-2: #6e7599;
+            --text-3: #2d3150;
+        }
+
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Mesh gradient background */
+        .mesh-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse 800px 600px at 20% 20%, rgba(0, 204, 255, 0.04) 0%, transparent 50%),
+                radial-gradient(ellipse 600px 800px at 80% 70%, rgba(124, 58, 237, 0.04) 0%, transparent 50%);
+        }
+
+        /* Scanline effect */
+        .scanlines {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 204, 255, 0.008) 2px,
+                rgba(0, 204, 255, 0.008) 4px
+            );
+        }
+
+        /* Header / Nav */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(2, 2, 6, 0.75);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(20, 24, 40, 0.6);
+        }
+
+        .brand {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            color: var(--glow);
+            text-decoration: none;
+            text-shadow: 0 0 18px rgba(0, 204, 255, 0.35);
+        }
+
+        .header-nav {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .header-nav a {
+            color: var(--text-2);
+            text-decoration: none;
+            font-size: 0.97rem;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            transition: color 0.2s;
+        }
+
+        .header-nav a:hover,
+        .header-nav a.active {
+            color: var(--glow);
+        }
+
+        /* Main content */
+        main {
+            flex: 1;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 9rem 1.5rem 4rem;
+        }
+
+        .tag-line {
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--glow);
+            margin-bottom: 1rem;
+            opacity: 0.85;
+        }
+
+        h1 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 0.75rem;
+            line-height: 1.15;
+        }
+
+        h1 span {
+            background: linear-gradient(135deg, var(--glow), var(--glow-2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .sub {
+            color: var(--text-2);
+            font-size: 1.05rem;
+            text-align: center;
+            max-width: 540px;
+            line-height: 1.65;
+            margin-bottom: 3rem;
+        }
+
+        /* Contact form card */
+        .contact-card {
+            width: 100%;
+            max-width: 580px;
+            background: var(--bg-card);
+            border: 1.5px solid var(--border);
+            border-radius: 20px;
+            padding: 2.5rem 2.2rem;
+            box-shadow:
+                0 0 32px 4px rgba(0, 204, 255, 0.07),
+                0 4px 40px 0 rgba(64, 90, 230, 0.05);
+            transition: border-color 0.25s, box-shadow 0.25s;
+        }
+
+        .contact-card:hover {
+            border-color: var(--border-hover);
+            box-shadow:
+                0 0 40px 8px rgba(0, 204, 255, 0.12),
+                0 4px 48px 0 rgba(64, 90, 230, 0.07);
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.45rem;
+            margin-bottom: 1.4rem;
+        }
+
+        label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            color: var(--text-2);
+            text-transform: uppercase;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        textarea {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            padding: 0.8rem 1rem;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            color: var(--text);
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            resize: none;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        textarea:focus {
+            border-color: var(--glow);
+            box-shadow: 0 0 0 3px rgba(0, 204, 255, 0.1);
+        }
+
+        textarea {
+            min-height: 140px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 0.9rem 1.5rem;
+            background: linear-gradient(135deg, var(--glow) 0%, var(--glow-2) 100%);
+            border: none;
+            border-radius: 10px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            color: #020206;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
+            box-shadow: 0 0 20px 2px rgba(0, 204, 255, 0.25);
+            text-transform: uppercase;
+            margin-top: 0.3rem;
+        }
+
+        .submit-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+            box-shadow: 0 0 32px 6px rgba(0, 204, 255, 0.35);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Footer */
+        footer {
+            position: relative;
+            z-index: 1;
+            padding: 1.5rem 3rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.83rem;
+            color: var(--text-2);
+        }
+
+        footer a {
+            color: var(--text-2);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        footer a:hover {
+            color: var(--glow);
+        }
+
+        /* Responsive */
+        @media (max-width: 700px) {
+            header {
+                padding: 1rem 1.2rem;
+            }
+            .header-nav {
+                gap: 1rem;
+            }
+            main {
+                padding: 7rem 1rem 3rem;
+            }
+            .contact-card {
+                padding: 1.8rem 1.2rem;
+            }
+            footer {
+                flex-direction: column;
+                gap: 0.6rem;
+                text-align: center;
+                padding: 1.2rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="mesh-bg"></div>
+    <div class="scanlines"></div>
+
+    <header>
+        <a href="index.html" class="brand">OFFBEAT</a>
+        <nav>
+            <ul class="header-nav">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="tools.html">Tools</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+                <li><a href="contact.html" class="active">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="tag-line">Get in Touch</div>
+        <h1>Contact <span>Offbeat</span></h1>
+        <p class="sub">Have a question, project idea, or just want to say hello? Fill out the form below and we'll get back to you shortly.</p>
+
+        <div class="contact-card">
+            <form id="contact-form">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" placeholder="Your full name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="you@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" placeholder="Tell us how we can help…" required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Send Message</button>
+            </form>
+            <div id="form-success" style="display:none; text-align:center; padding: 1.5rem 0;">
+                <div style="font-size:2rem; margin-bottom:0.5rem;">✅</div>
+                <div style="font-size:1.1rem; font-weight:600; color: var(--glow);">Message sent!</div>
+                <div style="color: var(--text-2); margin-top:0.4rem; font-size:0.97rem;">Thanks for reaching out — we'll be in touch soon.</div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div>© 2024 Offbeat, Inc.</div>
+        <div>
+            <a href="index.html">Home</a> &nbsp;|&nbsp;
+            <a href="services.html">Services</a> &nbsp;|&nbsp;
+            <a href="tools.html">Tools</a> &nbsp;|&nbsp;
+            <a href="faq.html">FAQ</a> &nbsp;|&nbsp;
+            <a href="contact.html" style="color: var(--glow);">Contact</a>
+        </div>
+    </footer>
+    <script>
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            this.style.display = 'none';
+            document.getElementById('form-success').style.display = 'block';
+        });
+    </script>
+</body>
+</html>
