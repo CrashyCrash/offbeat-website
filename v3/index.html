@@ -631,14 +631,14 @@
                 We make<br><span class="glow-word" data-text="original">original</span><br>technology.
             </h1>
             <div class="hero-search">
-                <form class="hero-search-form" id="site-search-form" role="search" autocomplete="off" aria-label="Search the Offbeat v3 site">
+                <form class="hero-search-form" id="site-search-form" role="search" autocomplete="off">
                     <label class="sr-only" for="site-search-input">Search pages</label>
                     <input
                         id="site-search-input"
                         class="hero-search-input"
                         type="search"
                         name="query"
-                        placeholder="Search Offbeat pages (services, tools, faq...)"
+                        placeholder="Search Offbeat pages (services, tools, FAQ...)"
                         aria-expanded="false"
                         aria-controls="search-results"
                         aria-autocomplete="list"
@@ -774,6 +774,7 @@
         const searchForm = document.getElementById('site-search-form');
         const searchInput = document.getElementById('site-search-input');
         const searchResults = document.getElementById('search-results');
+        const searchContainer = document.querySelector('.hero-search');
         let searchTimer;
         let activeIndex = -1;
         let currentResults = [];
@@ -792,6 +793,11 @@
             });
 
             activeIndex = nextIndex;
+            if (nextIndex < 0) {
+                searchInput.setAttribute('aria-activedescendant', '');
+                return;
+            }
+
             const activeOption = searchResults.querySelector(`#search-result-${nextIndex}`);
             searchInput.setAttribute('aria-activedescendant', activeOption ? activeOption.id : '');
         };
@@ -861,16 +867,13 @@
             } else if (event.key === 'ArrowUp') {
                 event.preventDefault();
                 setActiveResult((activeIndex - 1 + currentResults.length) % currentResults.length);
-            } else if (event.key === 'Enter' && activeIndex >= 0 && currentResults[activeIndex]) {
-                event.preventDefault();
-                window.location.href = currentResults[activeIndex].url;
             } else if (event.key === 'Escape') {
                 closeResults();
             }
         });
 
         document.addEventListener('click', (event) => {
-            if (!searchForm.contains(event.target) && !searchResults.contains(event.target)) {
+            if (!searchContainer.contains(event.target)) {
                 closeResults();
             }
         });
