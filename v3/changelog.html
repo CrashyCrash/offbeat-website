@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DatBotty Changelog — Offbeat v3</title>
+    <meta name="description" content="Recent DatBotty improvements across Offbeat v3 design, status reporting, GitHub Actions automation, and cloud agent workflows." />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg: #020206;
+            --panel: #0b0f1f;
+            --text: #eef2ff;
+            --text-2: #a9b4d0;
+            --text-3: #6f7d9f;
+            --border: #19233e;
+            --glow: #00ccff;
+            --violet: #7c3aed;
+        }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        .mesh-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse 800px 600px at 20% 20%, rgba(0, 204, 255, 0.05) 0%, transparent 50%),
+                radial-gradient(ellipse 700px 700px at 80% 70%, rgba(124, 58, 237, 0.05) 0%, transparent 50%);
+        }
+        .scanlines {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.2;
+            background: repeating-linear-gradient(
+                to bottom,
+                transparent,
+                transparent 2px,
+                rgba(255, 255, 255, 0.02) 3px
+            );
+        }
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(2, 2, 6, 0.75);
+            backdrop-filter: blur(20px);
+        }
+        .brand {
+            color: var(--text);
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            position: relative;
+        }
+        .brand::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--glow), var(--violet));
+        }
+        .header-nav {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        .header-nav a {
+            color: var(--text-2);
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        .header-nav a:hover,
+        .header-nav .active { color: var(--glow); }
+        .page {
+            position: relative;
+            z-index: 1;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 9rem 1.5rem 4rem;
+        }
+        .tag-line {
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--glow);
+            margin-bottom: 1rem;
+        }
+        h1 {
+            font-size: clamp(2.2rem, 4.5vw, 3.8rem);
+            line-height: 1.02;
+            letter-spacing: -0.03em;
+            margin-bottom: 0.85rem;
+        }
+        h1 span {
+            background: linear-gradient(120deg, var(--glow), #7ee6ff 42%, var(--violet));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .sub {
+            color: var(--text-2);
+            font-size: 1.05rem;
+            max-width: 760px;
+            line-height: 1.7;
+            margin-bottom: 2rem;
+        }
+        .log-grid {
+            display: grid;
+            gap: 1rem;
+        }
+        .log-card {
+            background: linear-gradient(145deg, rgba(11, 15, 31, 0.9), rgba(6, 9, 19, 0.95));
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.35rem;
+            box-shadow: 0 0 0 1px rgba(0, 204, 255, 0.04) inset;
+        }
+        .log-meta {
+            font-size: 0.8rem;
+            color: var(--text-3);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+        .log-card h2 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+        .log-card p {
+            color: var(--text-2);
+            line-height: 1.68;
+            font-size: 0.98rem;
+        }
+        .highlight { color: var(--glow); }
+        footer {
+            position: relative;
+            z-index: 1;
+            border-top: 1px solid var(--border);
+            color: var(--text-3);
+            font-size: 0.78rem;
+            text-align: center;
+            padding: 1.6rem 1rem 2.1rem;
+            margin-top: 2rem;
+        }
+        @media (max-width: 860px) {
+            header { padding: 1rem 1.25rem; }
+            .header-nav { gap: 1rem; flex-wrap: wrap; justify-content: flex-end; }
+            .page { padding-top: 8.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="mesh-bg"></div>
+    <div class="scanlines"></div>
+
+    <header>
+        <a href="index.html" class="brand">OFFBEAT</a>
+        <ul class="header-nav">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="tools.html">Tools</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="privacy.html">Privacy</a></li>
+            <li><a href="status.html">Status</a></li>
+            <li><a href="changelog.html" class="active">Changelog</a></li>
+        </ul>
+    </header>
+
+    <main class="page">
+        <div class="tag-line">DatBotty Improvement Log</div>
+        <h1>Recent <span>v3 improvements</span>.</h1>
+        <p class="sub">A running changelog for the latest DatBotty platform upgrades powering Offbeat’s v3 experience.</p>
+
+        <section class="log-grid">
+            <article class="log-card">
+                <div class="log-meta">v3 / Design Refresh</div>
+                <h2>Dark interface upgrade deployed</h2>
+                <p>Rolled out the new v3 dark visual system with <span class="highlight">#020206</span> background depth, cyan glow accents (<span class="highlight">#00ccff</span>), mesh gradients, and scanline atmosphere for a cleaner high-contrast operator UI.</p>
+            </article>
+            <article class="log-card">
+                <div class="log-meta">Operations / Monitoring</div>
+                <h2>Status page introduced</h2>
+                <p>Published the DatBotty live status page to expose service health, component uptime, and environment telemetry in a single destination for rapid operational visibility.</p>
+            </article>
+            <article class="log-card">
+                <div class="log-meta">CI/CD / Automation</div>
+                <h2>GitHub Actions workflows expanded</h2>
+                <p>Automated routine checks and deployment tasks through GitHub Actions so DatBotty services can validate changes, monitor schedules, and keep delivery pipelines stable without manual intervention.</p>
+            </article>
+            <article class="log-card">
+                <div class="log-meta">Agent Infrastructure</div>
+                <h2>Cloud agent integration enabled</h2>
+                <p>Connected cloud agent execution to support autonomous issue handling, workflow dispatch, and faster maintenance cycles across the Offbeat toolchain.</p>
+            </article>
+        </section>
+    </main>
+
+    <footer>© 2024 Offbeat, Inc. · DatBotty changelog</footer>
+</body>
+</html>
