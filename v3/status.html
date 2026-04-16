@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DatBotty Status - Offbeat, Inc.</title>
+    <meta name="description" content="Live status dashboard for DatBotty systems, including Telegram Bot, OpenClaw AI, n8n workflows, GitHub Actions, Offbeat Website, and GitHub Cloud Agent.">
+    <link rel="canonical" href="https://crashycrash.github.io/offbeat-website/v3/status.html">
+    <meta property="og:title" content="DatBotty Status - Offbeat, Inc.">
+    <meta property="og:description" content="Live status dashboard for DatBotty systems and services.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://crashycrash.github.io/offbeat-website/v3/status.html">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "DatBotty Status - Offbeat, Inc.",
+      "url": "https://crashycrash.github.io/offbeat-website/v3/status.html",
+      "description": "Live status dashboard for DatBotty systems and services."
+    }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #020206;
+            --card: #08090f;
+            --border: #141828;
+            --border-hover: #222249;
+            --glow: #00ccff;
+            --glow-2: #00fff2;
+            --text: #e6eaf4;
+            --text-2: #6e7599;
+            --ok: #00e676;
+            --ok-bg: rgba(0, 230, 118, 0.14);
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .mesh-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse 780px 560px at 20% 20%, rgba(0, 204, 255, 0.05) 0%, transparent 52%),
+                radial-gradient(ellipse 600px 800px at 82% 72%, rgba(0, 255, 242, 0.05) 0%, transparent 52%);
+        }
+
+        .scanlines {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 204, 255, 0.008) 2px,
+                rgba(0, 204, 255, 0.008) 4px
+            );
+        }
+
+        main {
+            position: relative;
+            z-index: 1;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 4.5rem 1.4rem 3rem;
+        }
+
+        .top {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 2.2rem;
+            align-items: center;
+        }
+
+        h1 {
+            font-size: clamp(2rem, 6vw, 3rem);
+            line-height: 1.08;
+            letter-spacing: -0.02em;
+        }
+
+        h1 span {
+            background: linear-gradient(135deg, var(--glow), var(--glow-2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .intro {
+            color: var(--text-2);
+            margin-top: 0.7rem;
+            line-height: 1.65;
+            max-width: 720px;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: var(--glow);
+            border: 1px solid rgba(0, 204, 255, 0.38);
+            background: rgba(0, 204, 255, 0.06);
+            border-radius: 10px;
+            padding: 0.7rem 1rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s, color 0.2s;
+            transform: none;
+        }
+
+        .back-btn:hover,
+        .back-btn:focus-visible {
+            background: rgba(0, 204, 255, 0.12);
+            border-color: rgba(0, 255, 242, 0.5);
+            color: var(--glow-2);
+            box-shadow: 0 0 20px rgba(0, 204, 255, 0.2);
+            transform: none;
+        }
+
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1rem;
+        }
+
+        .card {
+            background: var(--card);
+            border: 1.5px solid var(--border);
+            border-radius: 16px;
+            padding: 1.15rem 1.05rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            border-color: var(--border-hover);
+            box-shadow: 0 0 25px rgba(0, 204, 255, 0.1);
+        }
+
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .card h2 {
+            font-size: 1.03rem;
+            line-height: 1.25;
+            letter-spacing: 0.01em;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            background: var(--ok-bg);
+            color: var(--ok);
+            border: 1px solid rgba(0, 230, 118, 0.35);
+            border-radius: 999px;
+            padding: 0.18rem 0.62rem;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            white-space: nowrap;
+        }
+
+        .card p {
+            color: var(--text-2);
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .last-updated {
+            margin-top: 1.5rem;
+            color: var(--text-2);
+            font-size: 0.92rem;
+            border-top: 1px solid var(--border);
+            padding-top: 1rem;
+        }
+
+        .last-updated time {
+            color: var(--glow);
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="mesh-bg"></div>
+    <div class="scanlines"></div>
+    <main>
+        <div class="top">
+            <div>
+                <h1><span>DatBotty</span> Live Status</h1>
+                <p class="intro">Real-time operational overview of core DatBotty infrastructure and automation services.</p>
+            </div>
+            <a class="back-btn" href="index.html">← Back to v3 Home</a>
+        </div>
+
+        <section class="status-grid" aria-label="DatBotty component status">
+            <article class="card">
+                <div class="card-top"><h2>Telegram Bot</h2><span class="badge">Operational</span></div>
+                <p>Message routing, command parsing, and chat interactions are responding normally.</p>
+            </article>
+            <article class="card">
+                <div class="card-top"><h2>OpenClaw AI</h2><span class="badge">Operational</span></div>
+                <p>Prompt handling and AI task execution pipelines are stable and available.</p>
+            </article>
+            <article class="card">
+                <div class="card-top"><h2>n8n Workflows</h2><span class="badge">Operational</span></div>
+                <p>Automation jobs are processing on schedule with healthy trigger and webhook delivery.</p>
+            </article>
+            <article class="card">
+                <div class="card-top"><h2>GitHub Actions</h2><span class="badge">Operational</span></div>
+                <p>CI/CD workflows, validation runs, and deployment automations are online.</p>
+            </article>
+            <article class="card">
+                <div class="card-top"><h2>Offbeat Website</h2><span class="badge">Operational</span></div>
+                <p>Public pages and static assets are serving with normal latency and uptime.</p>
+            </article>
+            <article class="card">
+                <div class="card-top"><h2>GitHub Cloud Agent</h2><span class="badge">Operational</span></div>
+                <p>Cloud agent orchestration and coding automation channels are currently healthy.</p>
+            </article>
+        </section>
+
+        <p class="last-updated">Last Updated: <time datetime="2026-04-16">April 16, 2026</time></p>
+    </main>
+</body>
+</html>
