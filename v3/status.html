@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Live status dashboard for DatBotty — the autonomous AI system powering Offbeat, Inc. operations.">
+    <meta property="og:title" content="DatBotty Status — Offbeat, Inc.">
+    <meta property="og:description" content="Live status of DatBotty autonomous AI components and services.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://crashycrash.github.io/offbeat-website/v3/status.html">
+    <link rel="canonical" href="https://crashycrash.github.io/offbeat-website/v3/status.html">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "DatBotty Status",
+      "url": "https://crashycrash.github.io/offbeat-website/v3/status.html",
+      "description": "Live operational status dashboard for DatBotty autonomous AI system.",
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "Offbeat, Inc.",
+        "url": "https://crashycrash.github.io/offbeat-website/v3/"
+      }
+    }
+    </script>
+    <title>DatBotty Status — Offbeat, Inc.</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap');
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #020206;
+            --bg-card: #08090f;
+            --border: #141828;
+            --glow: #00ccff;
+            --glow-2: #00fff2;
+            --violet: #7c3aed;
+            --hot: #ff3d71;
+            --green: #00e676;
+            --text: #e6eaf4;
+            --text-2: #6e7599;
+            --text-3: #2d3150;
+        }
+
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .mesh-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse 800px 600px at 20% 20%, rgba(0, 204, 255, 0.04) 0%, transparent 50%),
+                radial-gradient(ellipse 600px 800px at 80% 70%, rgba(124, 58, 237, 0.04) 0%, transparent 50%);
+        }
+
+        .scanlines {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 204, 255, 0.008) 2px,
+                rgba(0, 204, 255, 0.008) 4px
+            );
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(2, 2, 6, 0.75);
+            backdrop-filter: blur(20px);
+        }
+
+        .brand {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            position: relative;
+            text-decoration: none;
+            color: var(--text);
+        }
+
+        .brand::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--glow), var(--violet));
+            animation: brand-line 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes brand-line {
+            0% { transform: scaleX(0.3); transform-origin: left; }
+            100% { transform: scaleX(1); transform-origin: left; }
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .header-nav a {
+            color: var(--text-2);
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .header-nav a:hover { color: var(--glow); }
+        .header-nav .active { color: var(--glow); }
+
+        /* Page container */
+        .page {
+            position: relative;
+            z-index: 1;
+            padding: 9rem 2rem 6rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .page-label {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.75rem;
+            color: var(--glow);
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .page-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            margin-bottom: 0.75rem;
+        }
+
+        .page-title span {
+            background: linear-gradient(135deg, var(--glow), var(--glow-2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-sub {
+            color: var(--text-2);
+            font-size: 1.05rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .last-updated {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.72rem;
+            color: var(--text-3);
+            margin-bottom: 3.5rem;
+        }
+
+        /* Overall status banner */
+        .overall-status {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(0, 230, 118, 0.06);
+            border: 1px solid rgba(0, 230, 118, 0.2);
+            border-radius: 10px;
+            padding: 1.25rem 1.75rem;
+            margin-bottom: 3rem;
+        }
+
+        .overall-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--green);
+            box-shadow: 0 0 12px var(--green);
+            animation: pulse-green 2s ease-in-out infinite;
+            flex-shrink: 0;
+        }
+
+        @keyframes pulse-green {
+            0%, 100% { box-shadow: 0 0 8px var(--green); opacity: 1; }
+            50% { box-shadow: 0 0 20px var(--green); opacity: 0.85; }
+        }
+
+        .overall-text {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--green);
+        }
+
+        .overall-sub {
+            font-size: 0.8rem;
+            color: var(--text-2);
+            margin-left: auto;
+            font-family: 'Fira Code', monospace;
+        }
+
+        /* Status grid */
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 4rem;
+        }
+
+        .status-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem 1.75rem;
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.3s;
+        }
+
+        .status-card:hover {
+            border-color: rgba(0, 204, 255, 0.2);
+        }
+
+        .status-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(0, 204, 255, 0.15), transparent);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+        }
+
+        .card-name {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .card-icon {
+            font-size: 1.1rem;
+        }
+
+        .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.72rem;
+            font-family: 'Fira Code', monospace;
+            font-weight: 500;
+            color: var(--green);
+            background: rgba(0, 230, 118, 0.08);
+            border: 1px solid rgba(0, 230, 118, 0.2);
+            border-radius: 20px;
+            padding: 0.25rem 0.65rem;
+        }
+
+        .badge-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--green);
+            animation: pulse-green 2.5s ease-in-out infinite;
+        }
+
+        .card-desc {
+            font-size: 0.82rem;
+            color: var(--text-2);
+            line-height: 1.6;
+        }
+
+        .card-meta {
+            margin-top: 0.85rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.68rem;
+            color: var(--text-3);
+        }
+
+        /* Metrics row */
+        .metrics-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-bottom: 4rem;
+        }
+
+        .metric-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.25rem 1.5rem;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--glow), var(--glow-2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.1;
+            margin-bottom: 0.35rem;
+        }
+
+        .metric-label {
+            font-size: 0.75rem;
+            color: var(--text-2);
+            font-family: 'Fira Code', monospace;
+            letter-spacing: 0.05em;
+        }
+
+        /* Section header */
+        .section-label {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.7rem;
+            color: var(--text-3);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            margin-top: 3rem;
+        }
+
+        /* GitHub Actions table */
+        .actions-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 4rem;
+            font-size: 0.85rem;
+        }
+
+        .actions-table th {
+            text-align: left;
+            padding: 0.6rem 1rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.68rem;
+            font-weight: 500;
+            color: var(--text-3);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .actions-table td {
+            padding: 0.85rem 1rem;
+            border-bottom: 1px solid rgba(20, 24, 40, 0.5);
+            color: var(--text-2);
+            vertical-align: middle;
+        }
+
+        .actions-table tr:last-child td { border-bottom: none; }
+
+        .workflow-name {
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.68rem;
+            font-family: 'Fira Code', monospace;
+            border-radius: 20px;
+            padding: 0.2rem 0.6rem;
+            border: 1px solid;
+        }
+
+        .pill-active { color: var(--green); border-color: rgba(0,230,118,0.3); background: rgba(0,230,118,0.06); }
+        .pill-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+
+        footer {
+            position: relative;
+            z-index: 1;
+            padding: 2rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border);
+            font-size: 0.78rem;
+            color: var(--text-3);
+        }
+
+        footer a {
+            color: var(--text-2);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        footer a:hover { color: var(--glow); }
+
+        @media (max-width: 640px) {
+            header { padding: 1rem 1.25rem; }
+            .header-nav { gap: 1rem; }
+            .page { padding: 8rem 1.25rem 4rem; }
+            .overall-sub { display: none; }
+            footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+        }
+
+        /* Scroll animation */
+        .anim { opacity: 0; transform: translateY(18px); transition: opacity 0.5s ease, transform 0.5s ease; }
+        .anim.in { opacity: 1; transform: none; }
+    </style>
+</head>
+<body>
+    <div class="mesh-bg"></div>
+    <div class="scanlines"></div>
+
+    <header>
+        <a href="index.html" class="brand">OFFBEAT</a>
+        <ul class="header-nav">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="tools.html">Tools</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="status.html" class="active">Status</a></li>
+        </ul>
+    </header>
+
+    <main class="page">
+        <div class="page-label anim">System Status</div>
+        <h1 class="page-title anim">DatBotty is <span>operational</span>.</h1>
+        <p class="page-sub anim">Live status of all autonomous systems running 24/7 for Offbeat, Inc.</p>
+        <p class="last-updated anim" id="lastUpdated">Last updated: —</p>
+
+        <div class="overall-status anim">
+            <div class="overall-dot"></div>
+            <span class="overall-text">All Systems Operational</span>
+            <span class="overall-sub">igpu-k11 // Ubuntu 24.04 // 96 GB RAM</span>
+        </div>
+
+        <div class="section-label anim">Core Components</div>
+        <div class="status-grid">
+
+            <div class="status-card anim">
+                <div class="card-header">
+                    <div class="card-name"><span class="card-icon">🤖</span> Telegram Bot</div>
+                    <div class="status-badge"><div class="badge-dot"></div> Operational</div>
+                </div>
+                <p class="card-desc">24/7 command interface and briefing delivery. Sends morning, midday, and evening reports. Accepts on-demand commands via @datbotty_assistant_bot.</p>
+                <div class="card-meta">Long-poll listener · 14 commands · 3 briefings/day</div>
+            </div>
+
+            <div class="status-card anim">
+                <div class="card-header">
+                    <div class="card-name"><span class="card-icon">🧠</span> OpenClaw AI</div>
+                    <div class="status-badge"><div class="badge-dot"></div> Operational</div>
+                </div>
+                <p class="card-desc">Dockerized LLM agent with 13 installed skills. Handles web research, affiliate intelligence, SEO analysis, and autonomous task execution.</p>
+                <div class="card-meta">Docker · Gemini Flash Lite · 13 skills</div>
+            </div>
+
+            <div class="status-card anim">
+                <div class="card-header">
+                    <div class="card-name"><span class="card-icon">⚙️</span> n8n Workflows</div>
+                    <div class="status-badge"><div class="badge-dot"></div> Operational</div>
+                </div>
+                <p class="card-desc">Automation workflow engine with encrypted credential vault. Handles integrations, webhooks, and deterministic task routing between services.</p>
+                <div class="card-meta">Docker · Encrypted vault · 192.168.0.2:5678</div>
+            </div>
+
+            <div class="status-card anim">
+                <div class="card-header">
+                    <div class="card-name"><span class="card-icon">🔄</span> GitHub Actions</div>
+                    <div class="status-badge"><div class="badge-dot"></div> Operational</div>
+                </div>
+                <p class="card-desc">Cloud-native CI/CD pipeline. Runs scheduled health checks, auto-merges Copilot PRs, dispatches Cloud Agent tasks, and monitors deployments — all for free.</p>
+                <div class="card-meta">4 active workflows · 2000 min/mo free</div>
+            </div>
+
+            <div class="status-card anim">
+                <div class="card-header">
+                    <div class="card-name"><span class="card-icon">🌐</span> Offbeat Website</div>
+                    <div class="status-badge"><div class="badge-dot"></div> Operational</div>
+                </div>
+                <p class="card-desc">GitHub Pages deployment with 11 live pages. Automatically expanded by the Cloud Agent via Issue → PR → auto-merge pipeline with zero human input.</p>
+                <div class="card-meta">crashycrash.github.io/offbeat-website · 11 pages live</div>
+            </div>
+
+            <div class="status-card anim">
+                <div class="card-header">
+                    <div class="card-name"><span class="card-icon">☁️</span> GitHub Cloud Agent</div>
+                    <div class="status-badge"><div class="badge-dot"></div> Operational</div>
+                </div>
+                <p class="card-desc">Copilot-powered cloud agent that builds and deploys code in GitHub's cloud. Creates PRs autonomously from Issues — zero local compute, entirely free quota.</p>
+                <div class="card-meta">copilot-swe-agent[bot] · Separate cloud quota · Auto-merge enabled</div>
+            </div>
+
+            <div class="status-card anim">
+                <div class="card-header">
+                    <div class="card-name"><span class="card-icon">💬</span> Copilot REST API</div>
+                    <div class="status-badge"><div class="badge-dot"></div> Operational</div>
+                </div>
+                <p class="card-desc">Direct API access to all Copilot models for local dispatch. Handles file creation, code generation, and analysis tasks using free 0x models at no cost.</p>
+                <div class="card-meta">api.individual.githubcopilot.com · gpt-4.1, gpt-4o, gpt-5-mini (0x free)</div>
+            </div>
+
+            <div class="status-card anim">
+                <div class="card-header">
+                    <div class="card-name"><span class="card-icon">🏠</span> Home Assistant</div>
+                    <div class="status-badge"><div class="badge-dot"></div> Operational</div>
+                </div>
+                <p class="card-desc">Smart home integration layer at 192.168.0.198. Connected to DatBotty for environmental awareness and home automation capabilities.</p>
+                <div class="card-meta">192.168.0.198 · Local network</div>
+            </div>
+
+        </div>
+
+        <div class="section-label anim">Key Metrics</div>
+        <div class="metrics-row anim">
+            <div class="metric-card">
+                <div class="metric-value">11</div>
+                <div class="metric-label">Live Pages</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">13</div>
+                <div class="metric-label">AI Skills</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">93%</div>
+                <div class="metric-label">Task Success</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">24/7</div>
+                <div class="metric-label">Autonomous</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">4</div>
+                <div class="metric-label">Actions Running</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">0x</div>
+                <div class="metric-label">Core Model Cost</div>
+            </div>
+        </div>
+
+        <div class="section-label anim">GitHub Actions Workflows</div>
+        <table class="actions-table anim">
+            <thead>
+                <tr>
+                    <th>Workflow</th>
+                    <th>Schedule</th>
+                    <th>Purpose</th>
+                    <th>State</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="workflow-name">Dispatch Cloud Agent Task</td>
+                    <td>3x daily + on-demand</td>
+                    <td>Creates Issues → assigns Copilot to build in cloud</td>
+                    <td><span class="pill pill-active"><span class="pill-dot"></span> active</span></td>
+                </tr>
+                <tr>
+                    <td class="workflow-name">Auto-Merge Copilot PRs</td>
+                    <td>Every 15 min</td>
+                    <td>Converts drafts → merges clean copilot/* PRs automatically</td>
+                    <td><span class="pill pill-active"><span class="pill-dot"></span> active</span></td>
+                </tr>
+                <tr>
+                    <td class="workflow-name">DatBotty Health &amp; Status</td>
+                    <td>Every 3 hours</td>
+                    <td>Checks all 11 live pages + repo commit activity</td>
+                    <td><span class="pill pill-active"><span class="pill-dot"></span> active</span></td>
+                </tr>
+                <tr>
+                    <td class="workflow-name">DatBotty Watchdog</td>
+                    <td>Every 6 hours</td>
+                    <td>Monitors site availability and stall detection</td>
+                    <td><span class="pill pill-active"><span class="pill-dot"></span> active</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+    </main>
+
+    <footer>
+        <div>&copy; 2026 Offbeat, Inc. — All rights reserved.</div>
+        <div>
+            <a href="https://muthaeffincrash.com">mutha effin CRASH</a>
+        </div>
+    </footer>
+
+    <script>
+        // Set last updated to build date
+        document.getElementById('lastUpdated').textContent =
+            'Last updated: ' + new Date().toLocaleDateString('en-US', {
+                year: 'numeric', month: 'long', day: 'numeric'
+            });
+
+        // Scroll reveal
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((e, i) => {
+                if (e.isIntersecting) {
+                    setTimeout(() => e.target.classList.add('in'), i * 60);
+                }
+            });
+        }, { threshold: 0.05 });
+
+        document.querySelectorAll('.anim').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
