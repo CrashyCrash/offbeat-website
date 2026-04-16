@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="DatBotty work showcase: autonomous deployments and system builds for Offbeat, Inc.">
+    <meta property="og:title" content="DatBotty Work — Offbeat, Inc.">
+    <meta property="og:description" content="A showcase of what DatBotty has autonomously built and deployed.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://crashycrash.github.io/offbeat-website/v3/work.html">
+    <link rel="canonical" href="https://crashycrash.github.io/offbeat-website/v3/work.html">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "name": "DatBotty completed deployments",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "item": {
+            "@type": "CreativeWork",
+            "name": "Offbeat website v3",
+            "url": "https://crashycrash.github.io/offbeat-website/v3/index.html"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "item": {
+            "@type": "CreativeWork",
+            "name": "SEO implementation",
+            "url": "https://crashycrash.github.io/offbeat-website/v3/index.html"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "item": {
+            "@type": "CreativeWork",
+            "name": "Cloud Agent pipeline",
+            "url": "https://crashycrash.github.io/offbeat-website/v3/status.html"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "item": {
+            "@type": "CreativeWork",
+            "name": "GitHub Actions automation",
+            "url": "https://github.com/CrashyCrash/offbeat-website/actions"
+          }
+        }
+      ]
+    }
+    </script>
+    <title>DatBotty Work — Offbeat, Inc.</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap');
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #020206;
+            --bg-card: #08090f;
+            --border: #141828;
+            --glow: #00ccff;
+            --glow-2: #00fff2;
+            --violet: #7c3aed;
+            --text: #e6eaf4;
+            --text-2: #6e7599;
+            --text-3: #2d3150;
+        }
+
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .mesh-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse 800px 600px at 20% 20%, rgba(0, 204, 255, 0.04) 0%, transparent 50%),
+                radial-gradient(ellipse 600px 800px at 80% 70%, rgba(124, 58, 237, 0.04) 0%, transparent 50%);
+        }
+
+        .scanlines {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 204, 255, 0.008) 2px,
+                rgba(0, 204, 255, 0.008) 4px
+            );
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(2, 2, 6, 0.75);
+            backdrop-filter: blur(20px);
+        }
+
+        .brand {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            position: relative;
+            text-decoration: none;
+            color: var(--text);
+        }
+
+        .brand::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--glow), var(--violet));
+            animation: brand-line 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes brand-line {
+            0% { transform: scaleX(0.3); transform-origin: left; }
+            100% { transform: scaleX(1); transform-origin: left; }
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .header-nav a {
+            color: var(--text-2);
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .header-nav a:hover { color: var(--glow); }
+        .header-nav .active { color: var(--glow); }
+
+        .page {
+            position: relative;
+            z-index: 1;
+            padding: 9rem 2rem 6rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .page-label {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.75rem;
+            color: var(--glow);
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .page-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            margin-bottom: 0.75rem;
+        }
+
+        .page-title span {
+            background: linear-gradient(135deg, var(--glow), var(--glow-2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-sub {
+            color: var(--text-2);
+            font-size: 1.05rem;
+            margin-bottom: 3rem;
+            max-width: 760px;
+        }
+
+        .work-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .work-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .work-card:hover { border-color: rgba(0, 204, 255, 0.2); }
+
+        .work-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(0, 204, 255, 0.15), transparent);
+        }
+
+        .card-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+        }
+
+        .card-desc {
+            color: var(--text-2);
+            font-size: 0.92rem;
+            line-height: 1.6;
+            flex-grow: 1;
+        }
+
+        .badge-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.45rem;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            border-radius: 999px;
+            border: 1px solid rgba(0, 204, 255, 0.25);
+            background: rgba(0, 204, 255, 0.08);
+            color: #9bdff3;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.68rem;
+            line-height: 1;
+            padding: 0.32rem 0.65rem;
+        }
+
+        .card-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            width: fit-content;
+            border-radius: 999px;
+            border: 1px solid rgba(0, 204, 255, 0.35);
+            background: rgba(0, 204, 255, 0.08);
+            color: var(--glow);
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 0.5rem 0.95rem;
+            transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+        }
+
+        .card-link:hover {
+            background: rgba(0, 204, 255, 0.14);
+            border-color: rgba(0, 204, 255, 0.6);
+            color: var(--glow-2);
+        }
+
+        .card-link.disabled {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        footer {
+            position: relative;
+            z-index: 1;
+            padding: 2rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border);
+            font-size: 0.78rem;
+            color: var(--text-3);
+        }
+
+        footer a {
+            color: var(--text-2);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        footer a:hover { color: var(--glow); }
+
+        @media (max-width: 760px) {
+            header { padding: 1rem 1.25rem; }
+            .header-nav { gap: 1rem; }
+            .page { padding: 8rem 1.25rem 4rem; }
+            footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+    <div class="mesh-bg"></div>
+    <div class="scanlines"></div>
+
+    <header>
+        <a href="index.html" class="brand">OFFBEAT</a>
+        <ul class="header-nav">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="tools.html">Tools</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="status.html">Status</a></li>
+            <li><a href="work.html" class="active">Work</a></li>
+        </ul>
+    </header>
+
+    <main class="page">
+        <div class="page-label">Autonomous Builds</div>
+        <h1 class="page-title">What DatBotty has <span>deployed</span>.</h1>
+        <p class="page-sub">A snapshot of production work DatBotty shipped autonomously through the Offbeat automation stack.</p>
+
+        <section class="work-grid" aria-label="DatBotty completed work">
+            <article class="work-card">
+                <h2 class="card-title">Offbeat website v3</h2>
+                <p class="card-desc">Designed and shipped the third-generation Offbeat site with a dark futuristic visual system and production-ready content pages.</p>
+                <div class="badge-row">
+                    <span class="badge">HTML5</span>
+                    <span class="badge">CSS3</span>
+                    <span class="badge">GitHub Pages</span>
+                </div>
+                <a class="card-link" href="index.html">Open live page</a>
+            </article>
+
+            <article class="work-card">
+                <h2 class="card-title">SEO implementation</h2>
+                <p class="card-desc">Implemented page-level metadata and structured data coverage to improve crawl quality, indexing clarity, and discoverability.</p>
+                <div class="badge-row">
+                    <span class="badge">Meta Tags</span>
+                    <span class="badge">Open Graph</span>
+                    <span class="badge">JSON-LD</span>
+                </div>
+                <a class="card-link disabled" href="#" aria-disabled="true">Live link not public</a>
+            </article>
+
+            <article class="work-card">
+                <h2 class="card-title">Cloud Agent pipeline</h2>
+                <p class="card-desc">Built a GitHub-native delivery flow where issues dispatch cloud agent work, generate pull requests, and merge cleanly with minimal intervention.</p>
+                <div class="badge-row">
+                    <span class="badge">GitHub Cloud Agent</span>
+                    <span class="badge">Issues</span>
+                    <span class="badge">Pull Requests</span>
+                </div>
+                <a class="card-link" href="status.html">View pipeline status</a>
+            </article>
+
+            <article class="work-card">
+                <h2 class="card-title">GitHub Actions automation</h2>
+                <p class="card-desc">Configured automations for health checks, workflow dispatching, and autonomous PR handling to keep DatBotty online around the clock.</p>
+                <div class="badge-row">
+                    <span class="badge">GitHub Actions</span>
+                    <span class="badge">CI/CD</span>
+                    <span class="badge">Cron Workflows</span>
+                </div>
+                <a class="card-link" href="https://github.com/CrashyCrash/offbeat-website/actions" target="_blank" rel="noopener">Open Actions</a>
+            </article>
+        </section>
+    </main>
+
+    <footer>
+        <div>&copy; 2026 Offbeat, Inc. — All rights reserved.</div>
+        <div>
+            <a href="https://muthaeffincrash.com">mutha effin CRASH</a>
+        </div>
+    </footer>
+</body>
+</html>
