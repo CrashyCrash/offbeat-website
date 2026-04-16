@@ -1,14 +1,14 @@
 {
-  "generated_at": "2026-04-16T07:48:09Z",
+  "generated_at": "2026-04-16T13:46:14Z",
   "live_pages": 15,
   "prs_merged": 7,
   "issues_dispatched": 8,
-  "open_issues": 12,
+  "open_issues": 24,
   "active_workflows": 8,
-  "open_prs": 10,
+  "open_prs": 22,
   "pages_up": 10,
   "pages_checked": 10,
-  "last_commit_offbeat": "2026-04-16T03:47:34Z",
-  "last_commit_msg": "Auto-merge: Verify consistent meta charset and viewport across all v2/ HTML file",
-  "last_commit_sha": "1ba538d"
+  "last_commit_offbeat": "2026-04-16T12:34:03Z",
+  "last_commit_msg": "Apply pending session changes: task-pool reorder + expand-pool guardrails",
+  "last_commit_sha": "07a399f"
 }
