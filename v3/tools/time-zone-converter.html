@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DJ Time Zone Converter — Offbeat Tools</title>
+    <meta name="description" content="Convert DJ event times across major US, EU, UK, and AU booking markets instantly with Offbeat's time zone converter.">
+    <meta property="og:title" content="DJ Time Zone Converter — Offbeat Tools">
+    <meta property="og:description" content="Instantly convert event time from one market to all major DJ booking time zones.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://crashycrash.github.io/offbeat-website/v3/tools/time-zone-converter.html">
+    <meta property="og:image" content="https://crashycrash.github.io/offbeat-website/v3/og-image.png">
+    <link rel="canonical" href="https://crashycrash.github.io/offbeat-website/v3/tools/time-zone-converter.html">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "DJ Time Zone Converter",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "Any",
+      "url": "https://crashycrash.github.io/offbeat-website/v3/tools/time-zone-converter.html",
+      "description": "A browser-based time zone converter for DJs booking events across major US, EU, UK, and AU markets."
+    }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap');
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #020206;
+            --bg-card: #08090f;
+            --border: #141828;
+            --glow: #00ccff;
+            --glow-2: #00fff2;
+            --violet: #7c3aed;
+            --hot: #ff3d71;
+            --green: #00e676;
+            --text: #e6eaf4;
+            --text-2: #6e7599;
+            --text-3: #2d3150;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        .mesh-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse 800px 600px at 20% 20%, rgba(0, 204, 255, 0.04) 0%, transparent 50%),
+                radial-gradient(ellipse 600px 800px at 80% 70%, rgba(124, 58, 237, 0.04) 0%, transparent 50%);
+        }
+
+        .scanlines {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 204, 255, 0.008) 2px,
+                rgba(0, 204, 255, 0.008) 4px
+            );
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(2, 2, 6, 0.75);
+            backdrop-filter: blur(20px);
+        }
+
+        .brand {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            color: #fff;
+            text-decoration: none;
+            position: relative;
+        }
+
+        .brand::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--glow), var(--violet));
+            animation: brand-line 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes brand-line {
+            0% { transform: scaleX(0.3); transform-origin: left; }
+            100% { transform: scaleX(1); transform-origin: left; }
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .header-nav a {
+            color: var(--text-2);
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .header-nav a:hover, .header-nav .active { color: var(--glow); }
+
+        main {
+            position: relative;
+            z-index: 1;
+            padding: 8rem 2rem 2.5rem;
+        }
+
+        .wrap {
+            max-width: 1080px;
+            margin: 0 auto;
+        }
+
+        .tag-line {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.75rem;
+            color: var(--glow);
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            margin-bottom: 0.8rem;
+        }
+
+        h1 {
+            font-size: clamp(2.2rem, 5vw, 3.6rem);
+            margin-bottom: 0.8rem;
+        }
+
+        .sub {
+            max-width: 760px;
+            color: var(--text-2);
+            line-height: 1.7;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.4rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1rem;
+        }
+
+        .field label {
+            display: block;
+            font-size: 0.82rem;
+            color: var(--text-2);
+            margin-bottom: 0.45rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        input[type="datetime-local"], select {
+            width: 100%;
+            background: #05070d;
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 0.7rem 0.8rem;
+            font-family: inherit;
+            font-size: 0.96rem;
+        }
+
+        .zones-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .zone-option {
+            display: flex;
+            gap: 0.6rem;
+            align-items: flex-start;
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 0.65rem 0.75rem;
+        }
+
+        .zone-option input { margin-top: 0.2rem; accent-color: var(--glow); }
+        .zone-option strong { display: block; font-size: 0.92rem; }
+        .zone-option span { display: block; font-size: 0.78rem; color: var(--text-2); }
+
+        .actions {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.82rem;
+            border-radius: 8px;
+            border: 1px solid rgba(0, 204, 255, 0.35);
+            color: var(--glow);
+            background: rgba(0, 204, 255, 0.06);
+            padding: 0.6rem 1rem;
+            cursor: pointer;
+            transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+            transform: none;
+        }
+
+        .action-btn:hover,
+        .action-btn:focus-visible {
+            background: rgba(0, 204, 255, 0.14);
+            color: #fff;
+            border-color: var(--glow);
+            transform: none;
+        }
+
+        #summary {
+            color: var(--text-2);
+            margin: 0.9rem 0 0.2rem;
+            line-height: 1.6;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 0.8rem;
+        }
+
+        th, td {
+            padding: 0.7rem 0.65rem;
+            border-bottom: 1px solid var(--border);
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            color: var(--text-2);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        td small { color: var(--text-2); }
+
+        footer {
+            position: relative;
+            z-index: 1;
+            padding: 1.5rem 3rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            gap: 0.8rem;
+            font-size: 0.78rem;
+            color: var(--text-3);
+        }
+
+        footer a { color: var(--text-2); text-decoration: none; }
+        footer a:hover { color: var(--glow); }
+
+        @media (max-width: 900px) {
+            header { padding: 1rem 1.4rem; }
+            .header-nav { gap: 1rem; }
+            .form-grid { grid-template-columns: 1fr; }
+            footer { flex-direction: column; text-align: center; padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="mesh-bg"></div>
+    <div class="scanlines"></div>
+    <header>
+        <a href="../index.html" class="brand">OFFBEAT</a>
+        <nav>
+            <ul class="header-nav">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../services.html">Services</a></li>
+                <li><a href="../tools.html" class="active">Tools</a></li>
+                <li><a href="../faq.html">FAQ</a></li>
+                <li><a href="../privacy.html">Privacy</a></li>
+                <li><a href="../status.html">Status</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="wrap">
+            <div class="tag-line">DJ Tools</div>
+            <h1>Time Zone Converter</h1>
+            <p class="sub">Built for DJ booking workflows: set your local event time, choose your source city/time zone, and instantly compare against major US, EU, UK, and AU markets.</p>
+
+            <div class="card">
+                <div class="form-grid">
+                    <div class="field">
+                        <label for="eventTime">Event Local Time</label>
+                        <input id="eventTime" type="datetime-local" value="2026-05-15T21:00">
+                    </div>
+                    <div class="field">
+                        <label for="sourceZone">Source City / Time Zone</label>
+                        <select id="sourceZone"></select>
+                    </div>
+                </div>
+                <div class="zones-grid" id="zonesGrid"></div>
+                <div class="actions">
+                    <button class="action-btn" id="convertBtn" type="button">Convert Time</button>
+                    <button class="action-btn" id="bookingPresetBtn" type="button">Load DJ Booking Preset</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div id="summary"></div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Market</th>
+                            <th>Converted Local Time</th>
+                            <th>Time Zone</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resultsBody"></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <div>© 2024 Offbeat, Inc.</div>
+        <div>
+            <a href="../index.html">Home</a> &nbsp;|&nbsp;
+            <a href="../services.html">Services</a> &nbsp;|&nbsp;
+            <a href="../tools.html" style="color: var(--glow);">Tools</a> &nbsp;|&nbsp;
+            <a href="../faq.html">FAQ</a> &nbsp;|&nbsp;
+            <a href="../privacy.html">Privacy</a>
+        </div>
+    </footer>
+    <script>
+        const MARKETS = [
+            { id: 'charleston', city: 'Charleston, South Carolina', region: 'US East', zone: 'America/New_York' },
+            { id: 'new-york', city: 'New York, New York', region: 'US East', zone: 'America/New_York' },
+            { id: 'chicago', city: 'Chicago, Illinois', region: 'US Central', zone: 'America/Chicago' },
+            { id: 'denver', city: 'Denver, Colorado', region: 'US Mountain', zone: 'America/Denver' },
+            { id: 'los-angeles', city: 'Los Angeles, California', region: 'US West', zone: 'America/Los_Angeles' },
+            { id: 'london', city: 'London, United Kingdom', region: 'UK', zone: 'Europe/London' },
+            { id: 'berlin', city: 'Berlin, Germany', region: 'EU', zone: 'Europe/Berlin' },
+            { id: 'paris', city: 'Paris, France', region: 'EU', zone: 'Europe/Paris' },
+            { id: 'amsterdam', city: 'Amsterdam, Netherlands', region: 'EU', zone: 'Europe/Amsterdam' },
+            { id: 'madrid', city: 'Madrid, Spain', region: 'EU', zone: 'Europe/Madrid' },
+            { id: 'sydney', city: 'Sydney, Australia', region: 'AU', zone: 'Australia/Sydney' },
+            { id: 'melbourne', city: 'Melbourne, Australia', region: 'AU', zone: 'Australia/Melbourne' },
+            { id: 'brisbane', city: 'Brisbane, Australia', region: 'AU', zone: 'Australia/Brisbane' },
+            { id: 'perth', city: 'Perth, Australia', region: 'AU', zone: 'Australia/Perth' }
+        ];
+
+        const BOOKING_PRESET_IDS = ['new-york', 'chicago', 'los-angeles', 'london', 'berlin', 'amsterdam', 'sydney'];
+        const sourceZoneEl = document.getElementById('sourceZone');
+        const zonesGridEl = document.getElementById('zonesGrid');
+        const eventTimeEl = document.getElementById('eventTime');
+        const resultsBodyEl = document.getElementById('resultsBody');
+        const summaryEl = document.getElementById('summary');
+
+        function marketLabel(market) {
+            return `${market.city} (${market.zone})`;
+        }
+
+        function populateSelectors() {
+            MARKETS.forEach((market) => {
+                const option = document.createElement('option');
+                option.value = market.id;
+                option.textContent = marketLabel(market);
+                sourceZoneEl.appendChild(option);
+
+                const wrapper = document.createElement('label');
+                wrapper.className = 'zone-option';
+                wrapper.innerHTML = `
+                    <input type="checkbox" value="${market.id}" ${BOOKING_PRESET_IDS.includes(market.id) ? 'checked' : ''}>
+                    <span><strong>${market.city}</strong><span>${market.region} · ${market.zone}</span></span>
+                `;
+                zonesGridEl.appendChild(wrapper);
+            });
+            sourceZoneEl.value = 'charleston';
+        }
+
+        function parseDateTimeLocal(value) {
+            const match = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})$/.exec(value);
+            if (!match) return null;
+            return {
+                year: Number(match[1]),
+                month: Number(match[2]),
+                day: Number(match[3]),
+                hour: Number(match[4]),
+                minute: Number(match[5])
+            };
+        }
+
+        function offsetMsForZone(timeZone, date) {
+            const parts = new Intl.DateTimeFormat('en-US', {
+                timeZone,
+                timeZoneName: 'shortOffset',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false
+            }).formatToParts(date);
+            const tzPart = parts.find((part) => part.type === 'timeZoneName');
+            const value = tzPart ? tzPart.value : 'GMT+00:00';
+            const match = /GMT([+-])(\d{1,2})(?::?(\d{2}))?/.exec(value);
+            if (!match) return 0;
+            const sign = match[1] === '-' ? -1 : 1;
+            const hours = Number(match[2]);
+            const minutes = Number(match[3] || 0);
+            return sign * ((hours * 60) + minutes) * 60 * 1000;
+        }
+
+        function zonedLocalToUtcMs(localParts, sourceTimeZone) {
+            const naiveUtc = Date.UTC(localParts.year, localParts.month - 1, localParts.day, localParts.hour, localParts.minute);
+            let utcGuess = naiveUtc;
+            for (let i = 0; i < 4; i += 1) {
+                const offset = offsetMsForZone(sourceTimeZone, new Date(utcGuess));
+                utcGuess = naiveUtc - offset;
+            }
+            return utcGuess;
+        }
+
+        function formatInZone(utcMs, zone) {
+            return new Intl.DateTimeFormat('en-US', {
+                timeZone: zone,
+                weekday: 'short',
+                year: 'numeric',
+                month: 'short',
+                day: '2-digit',
+                hour: 'numeric',
+                minute: '2-digit',
+                hour12: true,
+                timeZoneName: 'short'
+            }).format(new Date(utcMs));
+        }
+
+        function selectedMarkets() {
+            return Array.from(zonesGridEl.querySelectorAll('input[type="checkbox"]:checked'))
+                .map((checkbox) => MARKETS.find((market) => market.id === checkbox.value))
+                .filter(Boolean);
+        }
+
+        function applyBookingPreset() {
+            zonesGridEl.querySelectorAll('input[type="checkbox"]').forEach((input) => {
+                input.checked = BOOKING_PRESET_IDS.includes(input.value);
+            });
+            sourceZoneEl.value = 'charleston';
+            eventTimeEl.value = eventTimeEl.value || '2026-05-15T21:00';
+            convert();
+        }
+
+        function convert() {
+            const localParts = parseDateTimeLocal(eventTimeEl.value);
+            if (!localParts) {
+                summaryEl.textContent = 'Please enter a valid event date and time.';
+                resultsBodyEl.innerHTML = '';
+                return;
+            }
+            const sourceMarket = MARKETS.find((market) => market.id === sourceZoneEl.value) || MARKETS[0];
+            const targets = selectedMarkets();
+            if (!targets.length) {
+                summaryEl.textContent = 'Select at least one market to compare.';
+                resultsBodyEl.innerHTML = '';
+                return;
+            }
+
+            const utcMs = zonedLocalToUtcMs(localParts, sourceMarket.zone);
+            summaryEl.textContent = `Source: ${sourceMarket.city} (${sourceMarket.zone}) — ${formatInZone(utcMs, sourceMarket.zone)}`;
+
+            resultsBodyEl.innerHTML = targets.map((market) => `
+                <tr>
+                    <td>${market.city}<br><small>${market.region}</small></td>
+                    <td>${formatInZone(utcMs, market.zone)}</td>
+                    <td><small>${market.zone}</small></td>
+                </tr>
+            `).join('');
+        }
+
+        populateSelectors();
+        document.getElementById('convertBtn').addEventListener('click', convert);
+        document.getElementById('bookingPresetBtn').addEventListener('click', applyBookingPreset);
+        eventTimeEl.addEventListener('change', convert);
+        sourceZoneEl.addEventListener('change', convert);
+        zonesGridEl.addEventListener('change', convert);
+        convert();
+    </script>
+</body>
+</html>
