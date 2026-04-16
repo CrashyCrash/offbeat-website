@@ -219,9 +219,17 @@
         footer a { color: var(--text-2); text-decoration: none; transition: color 0.3s; }
         footer a:hover { color: var(--glow); }
 
-        @media (max-width: 760px) {
-            header { padding: 1rem 1.25rem; }
-            .header-nav { gap: 1rem; }
+        @media (max-width: 768px) {
+            header {
+                padding: 1rem 1.25rem;
+                flex-wrap: wrap;
+                gap: 0.65rem 1rem;
+                align-items: flex-start;
+            }
+            .header-nav {
+                gap: 0.75rem 1rem;
+                flex-wrap: wrap;
+            }
             .page { padding: 8rem 1.25rem 4rem; }
             .entry-head { flex-direction: column; gap: 0.3rem; }
             footer { flex-direction: column; gap: 0.5rem; text-align: center; }
