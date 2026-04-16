@@ -39,14 +39,22 @@ jobs:
             BODY="Automated task dispatched by DatBotty GitHub Actions."
           fi
 
-          ISSUE_URL=$(gh api "repos/${{ github.repository }}/issues" \
+          # Create issue first (GITHUB_TOKEN cannot assign copilot bot directly)
+          ISSUE=$(gh api "repos/${{ github.repository }}/issues" \
             --method POST \
             --field "title=$TASK_TITLE" \
             --field "body=$BODY" \
-            --field 'assignees[]=copilot-swe-agent[bot]' \
-            --jq '.html_url')
+            --jq '{number: .number, url: .html_url}')
 
-          echo "✅ Issue created: $ISSUE_URL"
+          ISSUE_NUM=$(echo "$ISSUE" | jq -r '.number')
+          ISSUE_URL=$(echo "$ISSUE" | jq -r '.url')
+
+          # Add copilot-swe-agent[bot] as assignee (separate call)
+          gh api "repos/${{ github.repository }}/issues/$ISSUE_NUM/assignees" \
+            --method POST \
+            --field 'assignees[]=copilot-swe-agent[bot]' 2>/dev/null || true
+
+          echo "✅ Issue #$ISSUE_NUM created: $ISSUE_URL"
           echo "## Cloud Agent Dispatched" >> $GITHUB_STEP_SUMMARY
           echo "- **Task**: $TASK_TITLE" >> $GITHUB_STEP_SUMMARY
           echo "- **Issue**: $ISSUE_URL" >> $GITHUB_STEP_SUMMARY
@@ -69,14 +77,20 @@ jobs:
             BODY="Review v3/services.html and v3/tools.html for:\n- Vague or weak copy that could be more compelling\n- Missing benefit statements\n- Any broken or placeholder links\n\nImprove the copy where it adds clear value. Keep the futuristic dark design and all existing structure intact."
           fi
 
-          ISSUE_URL=$(gh api "repos/${{ github.repository }}/issues" \
+          ISSUE=$(gh api "repos/${{ github.repository }}/issues" \
             --method POST \
             --field title="$TITLE" \
             --field body="$BODY" \
-            --field "assignees[]=copilot-swe-agent[bot]" \
-            --jq '.html_url')
+            --jq '{number: .number, url: .html_url}')
 
-          echo "✅ Issue created: $ISSUE_URL"
+          ISSUE_NUM=$(echo "$ISSUE" | jq -r '.number')
+          ISSUE_URL=$(echo "$ISSUE" | jq -r '.url')
+
+          gh api "repos/${{ github.repository }}/issues/$ISSUE_NUM/assignees" \
+            --method POST \
+            --field 'assignees[]=copilot-swe-agent[bot]' 2>/dev/null || true
+
+          echo "✅ Issue #$ISSUE_NUM created: $ISSUE_URL"
           echo "## Scheduled Cloud Agent Task" >> $GITHUB_STEP_SUMMARY
           echo "- **Time (UTC)**: $(date -u)" >> $GITHUB_STEP_SUMMARY
           echo "- **Task**: $TITLE" >> $GITHUB_STEP_SUMMARY
