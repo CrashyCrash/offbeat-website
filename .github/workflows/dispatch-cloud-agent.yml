@@ -31,22 +31,26 @@ jobs:
         if: github.event_name == 'workflow_dispatch'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TASK_TITLE: ${{ inputs.title }}
+          TASK_BODY: ${{ inputs.body }}
         run: |
-          BODY="${{ inputs.body }}"
+          BODY="$TASK_BODY"
           if [ -z "$BODY" ]; then
             BODY="Automated task dispatched by DatBotty GitHub Actions."
           fi
 
-          ISSUE_URL=$(gh api "repos/${{ github.repository }}/issues" \
-            --method POST \
-            --field title="${{ inputs.title }}" \
-            --field body="$BODY" \
-            --field "assignees[]=copilot-swe-agent[bot]" \
-            --jq '.html_url')
+          PAYLOAD=$(jq -n \
+            --arg title "$TASK_TITLE" \
+            --arg body "$BODY" \
+            --argjson assignees '["copilot-swe-agent[bot]"]' \
+            '{title: $title, body: $body, assignees: $assignees}')
+
+          ISSUE_URL=$(echo "$PAYLOAD" | gh api "repos/${{ github.repository }}/issues" \
+            --method POST --input - --jq '.html_url')
 
           echo "✅ Issue created: $ISSUE_URL"
           echo "## Cloud Agent Dispatched" >> $GITHUB_STEP_SUMMARY
-          echo "- **Task**: ${{ inputs.title }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Task**: $TASK_TITLE" >> $GITHUB_STEP_SUMMARY
           echo "- **Issue**: $ISSUE_URL" >> $GITHUB_STEP_SUMMARY
 
       - name: Scheduled dispatch — website enhancement task
