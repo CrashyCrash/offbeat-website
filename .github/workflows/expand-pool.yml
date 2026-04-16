@@ -1,0 +1,72 @@
+name: Auto-Expand Task Pool
+
+# The cloud agent reads task-pool.json and adds new high-impact tasks.
+# Runs every 3 days. Auto-merge integrates the PR, growing the pool perpetually.
+# Flywheel: bigger pool -> more diverse tasks -> more improvements -> bigger pool.
+
+on:
+  schedule:
+    - cron: '0 4 */3 * *'
+  workflow_dispatch:
+    inputs:
+      new_task_count:
+        description: 'Number of new tasks to add'
+        required: false
+        default: '8'
+        type: choice
+        options: ['4', '6', '8', '10', '12']
+
+jobs:
+  expand-pool:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      issues: write
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Dispatch pool expansion
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NEW_COUNT: ${{ inputs.new_task_count || '8' }}
+        run: |
+          CURRENT=$(jq 'length' .github/task-pool.json)
+          TITLE="Expand .github/task-pool.json: add ${NEW_COUNT} new high-impact website tasks"
+
+          # Write body to temp file to avoid YAML quoting issues
+          printf '%s\n' \
+            "Read the current .github/task-pool.json in this offbeat-website repository (currently ${CURRENT} tasks)." \
+            "" \
+            "Add exactly ${NEW_COUNT} new, high-impact task entries. Prioritize:" \
+            "- New content pages (tools, tutorials, case studies, interactive utilities)" \
+            "- Interactive JavaScript tools useful to DJs or tech people (zero backend needed)" \
+            "- SEO-improving pages or structured data not yet present" \
+            "- Performance, accessibility, or UX improvements still missing" \
+            "- Revenue-generating content (affiliate, lead gen)" \
+            "" \
+            "Rules for each new task:" \
+            "- Must create REAL user-visible value on crashycrash.github.io/offbeat-website" \
+            "- No duplicates; check existing entries carefully before adding" \
+            "- Do NOT use the words proprietary or unconventional in any copy" \
+            "- Buttons must NEVER lift or move upward on hover" \
+            "- Follow the exact JSON format with title and body fields" \
+            "- Body: specific, actionable, 100-200 words with clear success criteria" \
+            "" \
+            "Write the complete updated file with ALL existing entries plus the new ones appended." \
+            "Do NOT modify or remove any existing entries." \
+            "Commit the updated task-pool.json as the only file change in your PR." > /tmp/body.txt
+
+          BODY=$(cat /tmp/body.txt)
+          NODE_ID=$(gh api "repos/${{ github.repository }}/issues" \
+            --method POST \
+            --field "title=${TITLE}" \
+            --field "body=${BODY}" \
+            --field "labels[]=datbotty-task" \
+            --jq '.node_id')
+          ISSUE_URL=$(gh api "repos/${{ github.repository }}/issues?state=open&per_page=1" --jq '.[0].html_url')
+
+          gh api graphql -f query="mutation { addAssigneesToAssignable(input: { assignableId: \"${NODE_ID}\", assigneeIds: [\"BOT_kgDOC9w8XQ\"] }) { assignable { ... on Issue { number } } } }" 2>/dev/null || true
+
+          echo "Pool ${CURRENT} -> +${NEW_COUNT} tasks. Issue: ${ISSUE_URL}" >> "$GITHUB_STEP_SUMMARY"

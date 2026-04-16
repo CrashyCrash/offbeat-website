@@ -1,0 +1,131 @@
+name: PR Quality Check
+
+# Automatically scores every merged Copilot PR and posts findings as a comment.
+# The cloud agent can read these comments in future runs to improve its output.
+# This creates a quality feedback loop: score -> agent reads score -> output improves.
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [main]
+
+jobs:
+  score-pr:
+    if: >
+      github.event.pull_request.merged == true &&
+      startsWith(github.event.pull_request.head.ref, 'copilot/')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      pull-requests: write
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Score this PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          # Get files changed
+          FILES=$(gh pr view "$PR_NUMBER" --repo "${{ github.repository }}" --json files --jq '.files[].path' 2>/dev/null || echo "unknown")
+          FILE_COUNT=$(echo "$FILES" | grep -c . || echo 0)
+
+          # Check quality signals
+          SCORE=0
+          NOTES=""
+
+          # +20: actually changed files
+          if [ "$FILE_COUNT" -gt 0 ]; then
+            SCORE=$((SCORE + 20))
+            NOTES="${NOTES}\n✅ Changed ${FILE_COUNT} file(s)"
+          else
+            NOTES="${NOTES}\n❌ No files changed"
+          fi
+
+          # +20: new HTML file created
+          if echo "$FILES" | grep -q '\.html$'; then
+            HTML_COUNT=$(echo "$FILES" | grep -c '\.html$')
+            SCORE=$((SCORE + 20))
+            NOTES="${NOTES}\n✅ Includes ${HTML_COUNT} HTML file(s)"
+          fi
+
+          # +15: JSON-LD schema present in changed HTML
+          if echo "$FILES" | grep -q '\.html$'; then
+            for f in $(echo "$FILES" | grep '\.html$'); do
+              if [ -f "$f" ] && grep -q 'application/ld+json' "$f" 2>/dev/null; then
+                SCORE=$((SCORE + 15))
+                NOTES="${NOTES}\n✅ JSON-LD schema present"
+                break
+              fi
+            done
+          fi
+
+          # +15: OG tags present
+          if echo "$FILES" | grep -q '\.html$'; then
+            for f in $(echo "$FILES" | grep '\.html$'); do
+              if [ -f "$f" ] && grep -q 'og:title' "$f" 2>/dev/null; then
+                SCORE=$((SCORE + 15))
+                NOTES="${NOTES}\n✅ OG tags present"
+                break
+              fi
+            done
+          fi
+
+          # +15: meta description present
+          if echo "$FILES" | grep -q '\.html$'; then
+            for f in $(echo "$FILES" | grep '\.html$'); do
+              if [ -f "$f" ] && grep -q 'name="description"' "$f" 2>/dev/null; then
+                SCORE=$((SCORE + 15))
+                NOTES="${NOTES}\n✅ Meta description present"
+                break
+              fi
+            done
+          fi
+
+          # -20: prohibited words
+          if echo "$FILES" | grep -q '\.html$'; then
+            for f in $(echo "$FILES" | grep '\.html$'); do
+              if [ -f "$f" ] && grep -qi 'proprietary\|unconventional' "$f" 2>/dev/null; then
+                SCORE=$((SCORE - 20))
+                NOTES="${NOTES}\n❌ Contains prohibited words (proprietary/unconventional)"
+                break
+              fi
+            done
+          fi
+
+          # +15: task pool was expanded
+          if echo "$FILES" | grep -q 'task-pool.json'; then
+            NEW_COUNT=$(jq 'length' .github/task-pool.json 2>/dev/null || echo 0)
+            SCORE=$((SCORE + 15))
+            NOTES="${NOTES}\n✅ Task pool updated (now ${NEW_COUNT} tasks)"
+          fi
+
+          # Cap score at 100
+          [ "$SCORE" -gt 100 ] && SCORE=100
+          [ "$SCORE" -lt 0 ] && SCORE=0
+
+          # Quality label
+          if [ "$SCORE" -ge 80 ]; then
+            LABEL="Excellent"
+          elif [ "$SCORE" -ge 60 ]; then
+            LABEL="Good"
+          elif [ "$SCORE" -ge 40 ]; then
+            LABEL="Acceptable"
+          else
+            LABEL="Needs improvement"
+          fi
+
+          COMMENT="## PR Quality Score: ${SCORE}/100 (${LABEL})
+
+$(printf '%b' "$NOTES")
+
+_Files changed: ${FILE_COUNT}_
+_Score computed automatically by pr-quality-check.yml_"
+
+          gh pr comment "$PR_NUMBER" --repo "${{ github.repository }}" --body "$COMMENT"
+          echo "PR #${PR_NUMBER} scored ${SCORE}/100 (${LABEL})" >> "$GITHUB_STEP_SUMMARY"
