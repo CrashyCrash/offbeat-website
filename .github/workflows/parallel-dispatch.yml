@@ -1,42 +1,39 @@
 name: Parallel Cloud Agent Dispatch
 
-# PUBLIC REPO = UNLIMITED compute minutes. Run as often as possible.
-# Uses matrix strategy: 6 parallel jobs, each picking a DIFFERENT task from the pool.
-# Runs 8x/day (every 3h) = up to 48 tasks/day dispatched to the cloud agent.
-# Also fires 6 slots on EVERY merged Copilot PR — self-perpetuating cascade loop.
-# Goal: keep a continuous, growing backlog of cloud agent work at all times.
+# ⚠️ BUDGET FREEZE (2026-04-16): All scheduled dispatch SUSPENDED.
+# offbeat-website is a TEST SUBJECT — burning 48 premium cloud agent requests/day
+# for a test subject during budget freeze is prohibited (copilot-instructions.md Rule #20).
+# Manual dispatch via workflow_dispatch is still available when Crash explicitly requests it.
+# To re-enable, uncomment the schedule and pull_request triggers below.
 
 on:
-  schedule:
-    - cron: '0 2 * * *'   # 10:00 PM ET — late night burst
-    - cron: '0 5 * * *'   # 1:00 AM ET  — overnight burst
-    - cron: '0 8 * * *'   # 4:00 AM ET  — pre-dawn burst
-    - cron: '0 11 * * *'  # 7:00 AM ET  — morning burst
-    - cron: '0 14 * * *'  # 10:00 AM ET — late morning burst
-    - cron: '0 17 * * *'  # 1:00 PM ET  — afternoon burst
-    - cron: '0 20 * * *'  # 4:00 PM ET  — late afternoon burst
-    - cron: '0 23 * * *'  # 7:00 PM ET  — evening burst
-  pull_request:
-    types: [closed]
-    branches: [main]
+  # SUSPENDED: scheduled runs (was 8x/day × 6 slots = 48 tasks/day)
+  # schedule:
+  #   - cron: '0 2 * * *'   # 10:00 PM ET
+  #   - cron: '0 5 * * *'   # 1:00 AM ET
+  #   - cron: '0 8 * * *'   # 4:00 AM ET
+  #   - cron: '0 11 * * *'  # 7:00 AM ET
+  #   - cron: '0 14 * * *'  # 10:00 AM ET
+  #   - cron: '0 17 * * *'  # 1:00 PM ET
+  #   - cron: '0 20 * * *'  # 4:00 PM ET
+  #   - cron: '0 23 * * *'  # 7:00 PM ET
+  # SUSPENDED: PR cascade (was firing 4 extra slots on every merged copilot/* PR)
+  # pull_request:
+  #   types: [closed]
+  #   branches: [main]
   workflow_dispatch:
     inputs:
       slots:
         description: 'Number of parallel tasks to dispatch (1–6)'
         required: false
-        default: '6'
+        default: '1'
         type: choice
         options: ['1', '2', '3', '4', '5', '6']
 
 jobs:
   parallel-dispatch:
-    # On PR events, only fire when a copilot/* branch is merged (not every PR)
-    if: >
-      github.event_name == 'schedule' ||
-      github.event_name == 'workflow_dispatch' ||
-      (github.event_name == 'pull_request' &&
-       github.event.pull_request.merged == true &&
-       startsWith(github.event.pull_request.head.ref, 'copilot/'))
+    # BUDGET FREEZE: only manual dispatch allowed
+    if: github.event_name == 'workflow_dispatch'
     strategy:
       matrix:
         slot: [0, 1, 2, 3, 4, 5]
