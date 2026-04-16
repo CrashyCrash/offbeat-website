@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>BPM Calculator & Tempo Tool for DJs | Offbeat</title>
+    <meta name="description" content="Interactive BPM calculator and tempo reference tool for DJs. Tap tempo, BPM-to-milliseconds delay conversion, and half-time/double-time calculations.">
+    <meta property="og:title" content="BPM Calculator & Tempo Tool for DJs | Offbeat">
+    <meta property="og:description" content="Tap tempo, BPM to delay times in milliseconds, and half-time/double-time conversion.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://crashycrash.github.io/offbeat-website/v3/tools/bpm-calculator.html">
+    <meta property="og:image" content="https://crashycrash.github.io/offbeat-website/v3/og-image.png">
+    <link rel="canonical" href="https://crashycrash.github.io/offbeat-website/v3/tools/bpm-calculator.html">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap');
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #020206;
+            --bg-card: #08090f;
+            --border: #141828;
+            --glow: #00ccff;
+            --glow-2: #00fff2;
+            --violet: #7c3aed;
+            --hot: #ff3d71;
+            --green: #00e676;
+            --text: #e6eaf4;
+            --text-2: #6e7599;
+            --text-3: #2d3150;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        .mesh-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse 800px 600px at 20% 20%, rgba(0, 204, 255, 0.04) 0%, transparent 50%),
+                radial-gradient(ellipse 600px 800px at 80% 70%, rgba(124, 58, 237, 0.04) 0%, transparent 50%);
+        }
+
+        .scanlines {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 204, 255, 0.008) 2px,
+                rgba(0, 204, 255, 0.008) 4px
+            );
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(2, 2, 6, 0.75);
+            backdrop-filter: blur(20px);
+        }
+
+        .brand {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            position: relative;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .brand::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--glow), var(--violet));
+            animation: brand-line 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes brand-line {
+            0% { transform: scaleX(0.3); transform-origin: left; }
+            100% { transform: scaleX(1); transform-origin: left; }
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .header-nav a {
+            color: var(--text-2);
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .header-nav a:hover,
+        .header-nav .active { color: var(--glow); }
+
+        main {
+            position: relative;
+            z-index: 1;
+            padding: 8rem 2rem 2rem;
+        }
+
+        .wrap {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .tag-line {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.72rem;
+            color: var(--glow);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            margin-bottom: 0.75rem;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: clamp(2rem, 5vw, 3.6rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.15;
+            margin-bottom: 0.8rem;
+            text-align: center;
+        }
+
+        .sub {
+            color: var(--text-2);
+            font-size: 1rem;
+            line-height: 1.7;
+            margin: 0 auto 1rem;
+            max-width: 620px;
+            text-align: center;
+        }
+
+        .note {
+            text-align: center;
+            color: var(--glow);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            margin-bottom: 2rem;
+        }
+
+        .tool-grid {
+            display: grid;
+            gap: 1.2rem;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+        }
+
+        .card h2 {
+            font-size: 1.2rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .card p {
+            color: var(--text-2);
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .tap-button {
+            width: 100%;
+            min-height: 120px;
+            border-radius: 14px;
+            border: 1px solid var(--glow);
+            background: rgba(0, 204, 255, 0.08);
+            color: #fff;
+            font-size: clamp(1.4rem, 4vw, 2.1rem);
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            transition: background 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .tap-button:hover,
+        .tap-button:focus-visible {
+            background: rgba(0, 204, 255, 0.16);
+            box-shadow: 0 0 0 3px rgba(0, 204, 255, 0.2);
+            transform: none;
+        }
+
+        .tap-stats {
+            margin-top: 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .stat {
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.01);
+        }
+
+        .stat-label {
+            color: var(--text-2);
+            font-size: 0.8rem;
+            margin-bottom: 0.3rem;
+            font-family: 'Fira Code', monospace;
+        }
+
+        .stat-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .field-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        label {
+            font-size: 0.9rem;
+            color: var(--text-2);
+        }
+
+        input[type="number"] {
+            background: #070a13;
+            border: 1px solid var(--border);
+            color: var(--text);
+            border-radius: 8px;
+            padding: 0.65rem 0.75rem;
+            width: 170px;
+            font-size: 1rem;
+        }
+
+        .button {
+            border: 1px solid var(--glow);
+            background: transparent;
+            color: var(--glow);
+            border-radius: 8px;
+            padding: 0.62rem 1rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .button:hover,
+        .button:focus-visible {
+            background: rgba(0, 204, 255, 0.12);
+            color: #fff;
+            box-shadow: 0 0 0 3px rgba(0, 204, 255, 0.18);
+            transform: none;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            overflow: hidden;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+        }
+
+        th, td {
+            text-align: left;
+            padding: 0.7rem;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.92rem;
+        }
+
+        th {
+            color: var(--glow);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.03em;
+        }
+
+        tr:last-child td { border-bottom: none; }
+
+        .tempo-values {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 0.75rem;
+            margin-top: 0.4rem;
+        }
+
+        .tempo-box {
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 0.85rem;
+            background: rgba(255, 255, 255, 0.01);
+        }
+
+        .tempo-box .stat-label { margin-bottom: 0.4rem; }
+
+        footer {
+            position: relative;
+            z-index: 1;
+            padding: 1.5rem 3rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.78rem;
+            color: var(--text-3);
+            margin-top: 2rem;
+        }
+
+        footer a { color: var(--text-2); text-decoration: none; }
+        footer a:hover { color: var(--glow); }
+
+        @media (max-width: 768px) {
+            header { padding: 1rem 1.5rem; }
+            .header-nav { gap: 1rem; }
+            main { padding: 7rem 1rem 1rem; }
+            footer {
+                flex-direction: column;
+                gap: 0.5rem;
+                text-align: center;
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="mesh-bg"></div>
+    <div class="scanlines"></div>
+
+    <header>
+        <a href="../index.html" class="brand">OFFBEAT</a>
+        <nav>
+            <ul class="header-nav">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../services.html">Services</a></li>
+                <li><a href="../tools.html" class="active">Tools</a></li>
+                <li><a href="../faq.html">FAQ</a></li>
+                <li><a href="../privacy.html">Privacy</a></li>
+                <li><a href="../status.html">Status</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="wrap">
+            <div class="tag-line">Free DJ Tools</div>
+            <h1>BPM Calculator & Tempo Reference</h1>
+            <p class="sub">Use tap tempo for fast detection, convert BPM to delay timings, and quickly compute half-time and double-time tempos.</p>
+            <p class="note">Optimized for Dubstep at 145 BPM</p>
+
+            <div class="tool-grid">
+                <section class="card" aria-labelledby="tap-title">
+                    <h2 id="tap-title">Tap Tempo</h2>
+                    <p>Tap repeatedly in time with the track. Live BPM updates every tap, and stabilized BPM appears after 4 or more taps.</p>
+                    <button id="tapButton" class="tap-button" type="button">TAP</button>
+                    <div class="tap-stats" aria-live="polite">
+                        <div class="stat">
+                            <div class="stat-label">Taps</div>
+                            <div id="tapCount" class="stat-value">0</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-label">Live BPM</div>
+                            <div id="liveBpm" class="stat-value">--</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-label">Stabilized BPM</div>
+                            <div id="stableBpm" class="stat-value">--</div>
+                        </div>
+                    </div>
+                    <div class="field-row" style="margin-top: 1rem;">
+                        <button id="resetTap" class="button" type="button">Reset Taps</button>
+                    </div>
+                </section>
+
+                <section class="card" aria-labelledby="ms-title">
+                    <h2 id="ms-title">BPM to Milliseconds</h2>
+                    <p>Enter a BPM to calculate delay times for common note values, including straight, dotted, and triplet timings.</p>
+                    <div class="field-row">
+                        <label for="bpmInput">BPM</label>
+                        <input id="bpmInput" type="number" min="1" step="0.1" value="145" inputmode="decimal">
+                        <button id="calcMs" class="button" type="button">Calculate</button>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Note Value</th>
+                                <th>Straight</th>
+                                <th>Dotted</th>
+                                <th>Triplet</th>
+                            </tr>
+                        </thead>
+                        <tbody id="msRows"></tbody>
+                    </table>
+                </section>
+
+                <section class="card" aria-labelledby="time-title">
+                    <h2 id="time-title">Half-Time / Double-Time</h2>
+                    <p>Convert any tempo to matching half-time and double-time values.</p>
+                    <div class="field-row">
+                        <label for="tempoInput">BPM</label>
+                        <input id="tempoInput" type="number" min="1" step="0.1" value="145" inputmode="decimal">
+                        <button id="calcTempo" class="button" type="button">Convert</button>
+                    </div>
+                    <div class="tempo-values" aria-live="polite">
+                        <div class="tempo-box">
+                            <div class="stat-label">Half-Time BPM</div>
+                            <div id="halfTempo" class="stat-value">72.5</div>
+                        </div>
+                        <div class="tempo-box">
+                            <div class="stat-label">Double-Time BPM</div>
+                            <div id="doubleTempo" class="stat-value">290.0</div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div>© 2024 Offbeat, Inc.</div>
+        <div>
+            <a href="../index.html">Home</a> &nbsp;|&nbsp;
+            <a href="../services.html">Services</a> &nbsp;|&nbsp;
+            <a href="../tools.html" style="color: var(--glow);">Tools</a> &nbsp;|&nbsp;
+            <a href="../faq.html">FAQ</a> &nbsp;|&nbsp;
+            <a href="../privacy.html">Privacy</a>
+        </div>
+    </footer>
+
+    <script>
+        (function () {
+            const tapButton = document.getElementById('tapButton');
+            const resetTap = document.getElementById('resetTap');
+            const tapCount = document.getElementById('tapCount');
+            const liveBpm = document.getElementById('liveBpm');
+            const stableBpm = document.getElementById('stableBpm');
+            const bpmInput = document.getElementById('bpmInput');
+            const calcMs = document.getElementById('calcMs');
+            const msRows = document.getElementById('msRows');
+            const tempoInput = document.getElementById('tempoInput');
+            const calcTempo = document.getElementById('calcTempo');
+            const halfTempo = document.getElementById('halfTempo');
+            const doubleTempo = document.getElementById('doubleTempo');
+
+            let taps = [];
+
+            function formatNumber(value) {
+                return Number.isFinite(value) ? value.toFixed(1) : '--';
+            }
+
+            function resetTaps() {
+                taps = [];
+                tapCount.textContent = '0';
+                liveBpm.textContent = '--';
+                stableBpm.textContent = '--';
+            }
+
+            function handleTap() {
+                const now = Date.now();
+
+                if (taps.length > 0 && now - taps[taps.length - 1] > 2500) {
+                    taps = [];
+                }
+
+                taps.push(now);
+
+                if (taps.length > 12) {
+                    taps.shift();
+                }
+
+                tapCount.textContent = String(taps.length);
+
+                if (taps.length >= 2) {
+                    const lastInterval = taps[taps.length - 1] - taps[taps.length - 2];
+                    const live = 60000 / lastInterval;
+                    liveBpm.textContent = formatNumber(live);
+                }
+
+                if (taps.length >= 4) {
+                    const intervals = [];
+                    for (let i = 1; i < taps.length; i += 1) {
+                        intervals.push(taps[i] - taps[i - 1]);
+                    }
+                    const avg = intervals.reduce((sum, value) => sum + value, 0) / intervals.length;
+                    stableBpm.textContent = formatNumber(60000 / avg);
+                }
+            }
+
+            function updateMsTable() {
+                const bpm = Number.parseFloat(bpmInput.value);
+                if (!Number.isFinite(bpm) || bpm <= 0) {
+                    msRows.innerHTML = '';
+                    return;
+                }
+
+                const beatMs = 60000 / bpm;
+                const noteValues = [
+                    { label: '1/4', multiplier: 1 },
+                    { label: '1/8', multiplier: 0.5 },
+                    { label: '1/16', multiplier: 0.25 }
+                ];
+
+                msRows.innerHTML = noteValues.map((note) => {
+                    const straight = beatMs * note.multiplier;
+                    const dotted = straight * 1.5;
+                    const triplet = straight * (2 / 3);
+                    return '<tr>' +
+                        '<td>' + note.label + '</td>' +
+                        '<td>' + straight.toFixed(2) + ' ms</td>' +
+                        '<td>' + dotted.toFixed(2) + ' ms</td>' +
+                        '<td>' + triplet.toFixed(2) + ' ms</td>' +
+                        '</tr>';
+                }).join('');
+            }
+
+            function updateTempoConversions() {
+                const bpm = Number.parseFloat(tempoInput.value);
+                if (!Number.isFinite(bpm) || bpm <= 0) {
+                    halfTempo.textContent = '--';
+                    doubleTempo.textContent = '--';
+                    return;
+                }
+
+                halfTempo.textContent = (bpm / 2).toFixed(1);
+                doubleTempo.textContent = (bpm * 2).toFixed(1);
+            }
+
+            tapButton.addEventListener('click', handleTap);
+            resetTap.addEventListener('click', resetTaps);
+            calcMs.addEventListener('click', updateMsTable);
+            calcTempo.addEventListener('click', updateTempoConversions);
+            bpmInput.addEventListener('input', updateMsTable);
+            tempoInput.addEventListener('input', updateTempoConversions);
+
+            document.addEventListener('keydown', function (event) {
+                if (event.code === 'Space' && document.activeElement !== bpmInput && document.activeElement !== tempoInput) {
+                    event.preventDefault();
+                    handleTap();
+                }
+            });
+
+            updateMsTable();
+            updateTempoConversions();
+        })();
+    </script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Offbeat BPM Calculator",
+      "applicationCategory": "MusicApplication",
+      "operatingSystem": "Web Browser",
+      "url": "https://crashycrash.github.io/offbeat-website/v3/tools/bpm-calculator.html",
+      "description": "JavaScript-only BPM and tempo tool for DJs with tap tempo, BPM to milliseconds conversion, and half-time/double-time calculations.",
+      "featureList": [
+        "Tap tempo BPM detection",
+        "BPM to milliseconds converter for straight, dotted, and triplet note values",
+        "Half-time and double-time BPM conversion"
+      ],
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+    </script>
+</body>
+</html>
