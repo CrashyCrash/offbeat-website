@@ -35,15 +35,15 @@ jobs:
             [ "$COUNT" -lt 100 ] && break
           done
 
-          # Count total issues created (tasks dispatched total)
-          ISSUES=$(gh api "repos/${{ github.repository }}/issues?state=all&per_page=1" \
-            -i 2>/dev/null | grep -i "^x-total-count:" | awk '{print $2}' | tr -d '[:space:]' || echo "?")
+          # Count total closed issues (tasks completed)
+          ISSUES=$(gh api "repos/${{ github.repository }}/issues?state=closed&per_page=100" \
+            --jq 'length' 2>/dev/null || echo 0)
 
           # Last commit to this repo
           LAST_COMMIT_DATE=$(gh api "repos/${{ github.repository }}/commits?per_page=1" \
             --jq '.[0].commit.committer.date' 2>/dev/null || echo "")
           LAST_COMMIT_MSG=$(gh api "repos/${{ github.repository }}/commits?per_page=1" \
-            --jq '.[0].commit.message' 2>/dev/null | head -c 60 || echo "")
+            --jq '.[0].commit.message' 2>/dev/null | head -c 60 | tr -d '\n' || echo "")
           LAST_COMMIT_SHA=$(gh api "repos/${{ github.repository }}/commits?per_page=1" \
             --jq '.[0].sha[0:7]' 2>/dev/null || echo "")
 
@@ -51,7 +51,7 @@ jobs:
           ACTIVE_WORKFLOWS=$(gh api "repos/${{ github.repository }}/actions/workflows" \
             --jq '[.workflows[] | select(.state == "active")] | length' 2>/dev/null || echo 0)
 
-          # DatBotty repo last commit
+          # DatBotty repo last commit (may 404 — handle gracefully)
           DATBOTTY_COMMIT=$(gh api "repos/CrashyCrash/datbotty-v2/commits?per_page=1" \
             --jq '.[0].commit.committer.date' 2>/dev/null || echo "")
 
@@ -78,18 +78,18 @@ jobs:
 
           GENERATED_AT=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
-          cat > v3/status-data.json <<EOF
+          cat > v3/status-data.json << EOF
           {
             "generated_at": "$GENERATED_AT",
             "live_pages": $PAGES,
             "prs_merged": $PAGED_PRS,
-            "issues_dispatched": "$ISSUES",
+            "issues_dispatched": $ISSUES,
             "active_workflows": $ACTIVE_WORKFLOWS,
             "open_prs": $OPEN_PRS,
             "pages_up": $PAGES_UP,
             "pages_checked": ${#PAGE_URLS[@]},
             "last_commit_offbeat": "$LAST_COMMIT_DATE",
-            "last_commit_msg": $(echo "$LAST_COMMIT_MSG" | jq -Rs .),
+            "last_commit_msg": $(echo "$LAST_COMMIT_MSG" | python3 -c "import sys,json; print(json.dumps(sys.stdin.read().strip()))"),
             "last_commit_sha": "$LAST_COMMIT_SHA",
             "last_commit_datbotty": "$DATBOTTY_COMMIT"
           }
