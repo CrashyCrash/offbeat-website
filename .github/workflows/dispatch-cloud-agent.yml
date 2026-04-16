@@ -1,0 +1,81 @@
+name: Dispatch Cloud Agent Task
+
+on:
+  schedule:
+    # 3x/day — offset from datbotty briefings
+    - cron: '30 12 * * *'   # 8:30 AM ET
+    - cron: '30 19 * * *'   # 3:30 PM ET
+    - cron: '30 2 * * *'    # 10:30 PM ET
+  workflow_dispatch:
+    inputs:
+      title:
+        description: 'Issue title / task for the Cloud Agent'
+        required: true
+        type: string
+      body:
+        description: 'Detailed task description'
+        required: false
+        type: string
+        default: ''
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      issues: write
+      contents: read
+
+    steps:
+      - name: Dispatch manual task
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BODY="${{ inputs.body }}"
+          if [ -z "$BODY" ]; then
+            BODY="Automated task dispatched by DatBotty GitHub Actions."
+          fi
+
+          ISSUE_URL=$(gh api "repos/${{ github.repository }}/issues" \
+            --method POST \
+            --field title="${{ inputs.title }}" \
+            --field body="$BODY" \
+            --field "assignees[]=copilot-swe-agent[bot]" \
+            --jq '.html_url')
+
+          echo "✅ Issue created: $ISSUE_URL"
+          echo "## Cloud Agent Dispatched" >> $GITHUB_STEP_SUMMARY
+          echo "- **Task**: ${{ inputs.title }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Issue**: $ISSUE_URL" >> $GITHUB_STEP_SUMMARY
+
+      - name: Scheduled dispatch — website enhancement task
+        if: github.event_name == 'schedule'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          HOUR=$(date -u +%H)
+
+          if [ "$HOUR" -eq 12 ]; then
+            TITLE="SEO audit: check all v3 pages for missing meta tags, OG tags, or structured data"
+            BODY="Audit all HTML files under v3/ for missing or incomplete SEO elements:\n- meta description present and non-generic\n- og:title, og:description, og:type, og:url present\n- canonical link present\n- JSON-LD schema present and valid\n\nReport findings as a numbered list. Fix any clear gaps. Do NOT remove existing content or change the design."
+          elif [ "$HOUR" -eq 19 ]; then
+            TITLE="Accessibility sweep: WCAG AA check for v3/ pages"
+            BODY="Review all HTML files under v3/ for WCAG AA accessibility gaps:\n- Images missing alt text\n- Interactive elements missing ARIA labels\n- lang attribute present on html element\n- Heading hierarchy logical (h1 > h2 > h3)\n\nReport findings as a numbered list. Apply straightforward text-only fixes. Do NOT change CSS or layout."
+          else
+            TITLE="Content review: improve copy and descriptions on v3/services.html and v3/tools.html"
+            BODY="Review v3/services.html and v3/tools.html for:\n- Vague or weak copy that could be more compelling\n- Missing benefit statements\n- Any broken or placeholder links\n\nImprove the copy where it adds clear value. Keep the futuristic dark design and all existing structure intact."
+          fi
+
+          ISSUE_URL=$(gh api "repos/${{ github.repository }}/issues" \
+            --method POST \
+            --field title="$TITLE" \
+            --field body="$BODY" \
+            --field "assignees[]=copilot-swe-agent[bot]" \
+            --jq '.html_url')
+
+          echo "✅ Issue created: $ISSUE_URL"
+          echo "## Scheduled Cloud Agent Task" >> $GITHUB_STEP_SUMMARY
+          echo "- **Time (UTC)**: $(date -u)" >> $GITHUB_STEP_SUMMARY
+          echo "- **Task**: $TITLE" >> $GITHUB_STEP_SUMMARY
+          echo "- **Issue**: $ISSUE_URL" >> $GITHUB_STEP_SUMMARY
