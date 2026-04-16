@@ -1,0 +1,66 @@
+name: Auto-Merge Copilot PRs
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+jobs:
+  auto-merge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      pull-requests: write
+      contents: write
+
+    steps:
+      - name: Auto-merge Copilot PRs in offbeat-website
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "Checking for open copilot/* PRs..."
+          PRS=$(gh api "repos/${{ github.repository }}/pulls?state=open&per_page=50" \
+            --jq '.[] | select(.head.ref | startswith("copilot/")) | {number: .number, title: .title, draft: .draft}' 2>/dev/null || echo "")
+
+          if [ -z "$PRS" ]; then
+            echo "No copilot/* PRs found."
+            echo "No copilot PRs to merge." >> $GITHUB_STEP_SUMMARY
+            exit 0
+          fi
+
+          echo "$PRS" | jq -c '.' | while read -r PR; do
+            NUMBER=$(echo "$PR" | jq -r '.number')
+            TITLE=$(echo "$PR" | jq -r '.title')
+            IS_DRAFT=$(echo "$PR" | jq -r '.draft')
+
+            echo "PR #$NUMBER: $TITLE [draft=$IS_DRAFT]"
+
+            if [ "$IS_DRAFT" = "true" ]; then
+              echo "  Converting draft → ready..."
+              gh pr ready "$NUMBER" --repo "${{ github.repository }}" 2>&1 || true
+              sleep 5
+            fi
+
+            MERGE_INFO=$(gh api "repos/${{ github.repository }}/pulls/$NUMBER" \
+              --jq '{mergeable: .mergeable, state: .mergeable_state, merged: .merged}')
+            MERGED_ALREADY=$(echo "$MERGE_INFO" | jq -r '.merged')
+            MERGEABLE=$(echo "$MERGE_INFO" | jq -r '.mergeable')
+            STATE=$(echo "$MERGE_INFO" | jq -r '.state')
+
+            if [ "$MERGED_ALREADY" = "true" ]; then
+              echo "  Already merged."
+              continue
+            fi
+
+            if [ "$MERGEABLE" = "true" ] && [ "$STATE" = "clean" ]; then
+              echo "  ✅ Merging..."
+              gh pr merge "$NUMBER" --repo "${{ github.repository }}" --squash \
+                --subject "Auto-merge: $TITLE" 2>&1
+              echo "- ✅ Merged PR #$NUMBER: $TITLE" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "  ⏳ Not yet mergeable (state=$STATE)"
+              echo "- ⏳ PR #$NUMBER pending (state=$STATE)" >> $GITHUB_STEP_SUMMARY
+            fi
+          done
