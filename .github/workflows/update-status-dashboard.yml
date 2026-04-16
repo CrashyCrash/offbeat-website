@@ -51,9 +51,8 @@ jobs:
           ACTIVE_WORKFLOWS=$(gh api "repos/${{ github.repository }}/actions/workflows" \
             --jq '[.workflows[] | select(.state == "active")] | length' 2>/dev/null || echo 0)
 
-          # DatBotty repo last commit (may 404 — handle gracefully)
-          DATBOTTY_COMMIT=$(gh api "repos/CrashyCrash/datbotty-v2/commits?per_page=1" \
-            --jq '.[0].commit.committer.date' 2>/dev/null || echo "")
+          # DatBotty repo — GITHUB_TOKEN can only read this repo; skip cross-repo lookup
+          # DATBOTTY_COMMIT intentionally omitted (403 from token scope)
 
           # Open copilot PRs (queued cloud agent work)
           OPEN_PRS=$(gh api "repos/${{ github.repository }}/pulls?state=open&per_page=50" \
@@ -90,8 +89,7 @@ jobs:
             "pages_checked": ${#PAGE_URLS[@]},
             "last_commit_offbeat": "$LAST_COMMIT_DATE",
             "last_commit_msg": $(echo "$LAST_COMMIT_MSG" | python3 -c "import sys,json; print(json.dumps(sys.stdin.read().strip()))"),
-            "last_commit_sha": "$LAST_COMMIT_SHA",
-            "last_commit_datbotty": "$DATBOTTY_COMMIT"
+            "last_commit_sha": "$LAST_COMMIT_SHA"
           }
           EOF
 
