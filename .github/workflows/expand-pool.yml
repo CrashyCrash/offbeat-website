@@ -41,7 +41,7 @@ jobs:
             "" \
             "Add exactly ${NEW_COUNT} new, high-impact task entries. Prioritize:" \
             "- New content pages (tools, tutorials, case studies, interactive utilities)" \
-            "- Interactive JavaScript tools useful to DJs or tech people (zero backend needed)" \
+            "- Interactive JavaScript tools useful to DJs or tech people (zero backend, no audio processing)" \
             "- SEO-improving pages or structured data not yet present" \
             "- Performance, accessibility, or UX improvements still missing" \
             "- Revenue-generating content (affiliate, lead gen)" \
@@ -51,6 +51,8 @@ jobs:
             "- No duplicates; check existing entries carefully before adding" \
             "- Do NOT use the words proprietary or unconventional in any copy" \
             "- Buttons must NEVER lift or move upward on hover" \
+            "- Do NOT suggest audio-processing tools (BPM/key detectors, audio analyzers, cue-sheet generators, waveform editors)" \
+            "- Do NOT reference PrepDeck in any task" \
             "- Follow the exact JSON format with title and body fields" \
             "- Body: specific, actionable, 100-200 words with clear success criteria" \
             "" \
