@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cue Sheet Generator — Offbeat DJ Tools</title>
+    <meta name="description" content="Build and export DJ set cue sheets with autosave in your browser.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="canonical" href="https://crashycrash.github.io/offbeat-website/v3/tools/cue-sheet-generator.html">
+    <meta property="og:title" content="Cue Sheet Generator — Offbeat DJ Tools">
+    <meta property="og:description" content="Create, autosave, and export DJ set cue sheets directly in your browser.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://crashycrash.github.io/offbeat-website/v3/tools/cue-sheet-generator.html">
+    <meta property="og:image" content="https://crashycrash.github.io/offbeat-website/v3/og-image.png">
+    <style>
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap');
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #020206;
+            --bg-card: #08090f;
+            --border: #141828;
+            --glow: #00ccff;
+            --glow-2: #00fff2;
+            --violet: #7c3aed;
+            --hot: #ff3d71;
+            --green: #00e676;
+            --text: #e6eaf4;
+            --text-2: #6e7599;
+            --text-3: #2d3150;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        .mesh-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse 800px 600px at 20% 20%, rgba(0, 204, 255, 0.04) 0%, transparent 50%),
+                radial-gradient(ellipse 600px 800px at 80% 70%, rgba(124, 58, 237, 0.04) 0%, transparent 50%);
+        }
+
+        .scanlines {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 204, 255, 0.008) 2px,
+                rgba(0, 204, 255, 0.008) 4px
+            );
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(2, 2, 6, 0.75);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .brand {
+            font-size: 1.3rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 1.2rem;
+            list-style: none;
+        }
+
+        .header-nav a {
+            color: var(--text-2);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .header-nav a:hover,
+        .header-nav .active { color: var(--glow); }
+
+        main {
+            position: relative;
+            z-index: 1;
+            padding: 7rem 1.5rem 2rem;
+        }
+
+        .wrap {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .tag-line {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.72rem;
+            color: var(--glow);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            margin-bottom: 0.75rem;
+        }
+
+        h1 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .sub {
+            color: var(--text-2);
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+
+        .panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 1.2rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.9rem;
+        }
+
+        .field-full { grid-column: span 2; }
+
+        label {
+            display: block;
+            font-size: 0.82rem;
+            color: var(--text-2);
+            margin-bottom: 0.3rem;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            background: rgba(2, 2, 6, 0.8);
+            border: 1px solid var(--border);
+            color: var(--text);
+            border-radius: 8px;
+            padding: 0.65rem 0.7rem;
+            font: inherit;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--glow);
+        }
+
+        textarea { min-height: 90px; resize: vertical; }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.7rem;
+            margin-top: 1rem;
+        }
+
+        .btn {
+            border: 1px solid rgba(0, 204, 255, 0.35);
+            background: rgba(0, 204, 255, 0.08);
+            color: var(--text);
+            border-radius: 8px;
+            padding: 0.58rem 0.95rem;
+            font-size: 0.82rem;
+            cursor: pointer;
+            transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+            transform: none;
+        }
+
+        .btn:hover {
+            background: rgba(0, 204, 255, 0.16);
+            border-color: rgba(0, 204, 255, 0.55);
+            transform: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, rgba(0, 204, 255, 0.2), rgba(0, 255, 242, 0.12));
+            border-color: rgba(0, 255, 242, 0.45);
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.84rem;
+        }
+
+        th, td {
+            border-bottom: 1px solid var(--border);
+            padding: 0.6rem;
+            text-align: left;
+            white-space: nowrap;
+            vertical-align: top;
+        }
+
+        th {
+            font-family: 'Fira Code', monospace;
+            color: var(--glow);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+        }
+
+        td:last-child {
+            white-space: normal;
+            min-width: 180px;
+        }
+
+        .empty {
+            color: var(--text-2);
+            font-size: 0.85rem;
+            margin-top: 0.8rem;
+        }
+
+        footer {
+            position: relative;
+            z-index: 1;
+            padding: 1.2rem 2rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.78rem;
+            color: var(--text-3);
+            margin-top: 2rem;
+        }
+
+        footer a { color: var(--text-2); text-decoration: none; }
+        footer a:hover { color: var(--glow); }
+
+        @media (max-width: 800px) {
+            .grid { grid-template-columns: 1fr; }
+            .field-full { grid-column: span 1; }
+            .header-nav { gap: 0.8rem; }
+            header, footer { padding: 1rem; }
+            footer { flex-direction: column; gap: 0.4rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="mesh-bg"></div>
+    <div class="scanlines"></div>
+    <header>
+        <a href="../index.html" class="brand">OFFBEAT</a>
+        <ul class="header-nav">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../services.html">Services</a></li>
+            <li><a href="../tools.html" class="active">Tools</a></li>
+            <li><a href="../faq.html">FAQ</a></li>
+            <li><a href="../privacy.html">Privacy</a></li>
+            <li><a href="../status.html">Status</a></li>
+        </ul>
+    </header>
+
+    <main>
+        <div class="wrap">
+            <div class="tag-line">DJ Tool</div>
+            <h1>Cue Sheet Generator</h1>
+            <p class="sub">Build your set list in-browser with autosave and export it as plain text.</p>
+
+            <section class="panel">
+                <form id="track-form" autocomplete="off">
+                    <div class="grid">
+                        <div>
+                            <label for="track-number">Track #</label>
+                            <input id="track-number" name="trackNumber" type="number" min="1" placeholder="1" required>
+                        </div>
+                        <div>
+                            <label for="bpm">BPM</label>
+                            <input id="bpm" name="bpm" type="number" min="1" step="0.01" placeholder="128" required>
+                        </div>
+                        <div>
+                            <label for="artist">Artist</label>
+                            <input id="artist" name="artist" type="text" placeholder="Artist name" required>
+                        </div>
+                        <div>
+                            <label for="title">Title</label>
+                            <input id="title" name="title" type="text" placeholder="Track title" required>
+                        </div>
+                        <div>
+                            <label for="key">Key</label>
+                            <input id="key" name="key" type="text" placeholder="8A / F#m" required>
+                        </div>
+                        <div>
+                            <label for="intro-type">Intro Type</label>
+                            <select id="intro-type" name="introType" required>
+                                <option value="clean">Clean</option>
+                                <option value="cold">Cold</option>
+                                <option value="synced">Synced</option>
+                            </select>
+                        </div>
+                        <div class="field-full">
+                            <label for="notes">Notes</label>
+                            <textarea id="notes" name="notes" placeholder="Cue points, transition notes, FX notes..."></textarea>
+                        </div>
+                    </div>
+                    <div class="actions">
+                        <button type="submit" class="btn btn-primary">Add Track</button>
+                        <button type="button" id="clear-form" class="btn">Clear</button>
+                        <button type="button" id="export-sheet" class="btn">Export</button>
+                    </div>
+                </form>
+            </section>
+
+            <section class="panel">
+                <h2 style="font-size: 1rem; margin-bottom: 0.8rem;">Live Cue Sheet</h2>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Artist</th>
+                                <th>Title</th>
+                                <th>BPM</th>
+                                <th>Key</th>
+                                <th>Intro</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cue-sheet-body"></tbody>
+                    </table>
+                </div>
+                <div id="empty-state" class="empty">No tracks added yet.</div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div>© 2024 Offbeat, Inc.</div>
+        <div>
+            <a href="../index.html">Home</a> &nbsp;|&nbsp;
+            <a href="../services.html">Services</a> &nbsp;|&nbsp;
+            <a href="../tools.html" style="color: var(--glow);">Tools</a> &nbsp;|&nbsp;
+            <a href="../faq.html">FAQ</a> &nbsp;|&nbsp;
+            <a href="../privacy.html">Privacy</a>
+        </div>
+    </footer>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Cue Sheet Generator",
+      "applicationCategory": "MusicApplication",
+      "operatingSystem": "Any",
+      "description": "A browser-based DJ cue sheet generator with local autosave and plain text export.",
+      "url": "https://crashycrash.github.io/offbeat-website/v3/tools/cue-sheet-generator.html",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Offbeat, Inc."
+      }
+    }
+    </script>
+
+    <script>
+        (function () {
+            const STORAGE_KEY = 'offbeatCueSheetV1';
+            const form = document.getElementById('track-form');
+            const body = document.getElementById('cue-sheet-body');
+            const emptyState = document.getElementById('empty-state');
+            const clearButton = document.getElementById('clear-form');
+            const exportButton = document.getElementById('export-sheet');
+            const fieldNames = ['trackNumber', 'artist', 'title', 'bpm', 'key', 'introType', 'notes'];
+
+            const state = {
+                tracks: [],
+                draft: {
+                    trackNumber: '',
+                    artist: '',
+                    title: '',
+                    bpm: '',
+                    key: '',
+                    introType: 'clean',
+                    notes: ''
+                }
+            };
+
+            function saveState() {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+            }
+
+            function renderTracks() {
+                body.innerHTML = '';
+                state.tracks.forEach((track) => {
+                    const row = document.createElement('tr');
+                    fieldNames.forEach((name) => {
+                        const cell = document.createElement('td');
+                        cell.textContent = track[name] || '';
+                        row.appendChild(cell);
+                    });
+                    body.appendChild(row);
+                });
+                emptyState.style.display = state.tracks.length ? 'none' : 'block';
+            }
+
+            function readFormIntoDraft() {
+                state.draft = {
+                    trackNumber: form.trackNumber.value,
+                    artist: form.artist.value,
+                    title: form.title.value,
+                    bpm: form.bpm.value,
+                    key: form.key.value,
+                    introType: form.introType.value,
+                    notes: form.notes.value
+                };
+                saveState();
+            }
+
+            function writeDraftToForm() {
+                form.trackNumber.value = state.draft.trackNumber || '';
+                form.artist.value = state.draft.artist || '';
+                form.title.value = state.draft.title || '';
+                form.bpm.value = state.draft.bpm || '';
+                form.key.value = state.draft.key || '';
+                form.introType.value = state.draft.introType || 'clean';
+                form.notes.value = state.draft.notes || '';
+            }
+
+            function clearForm() {
+                form.reset();
+                form.introType.value = 'clean';
+                state.draft = {
+                    trackNumber: '',
+                    artist: '',
+                    title: '',
+                    bpm: '',
+                    key: '',
+                    introType: 'clean',
+                    notes: ''
+                };
+                saveState();
+            }
+
+            function exportPlainText() {
+                const lines = ['#\tArtist\tTitle\tBPM\tKey\tIntro\tNotes'];
+                state.tracks.forEach((track) => {
+                    lines.push([
+                        track.trackNumber,
+                        track.artist,
+                        track.title,
+                        track.bpm,
+                        track.key,
+                        track.introType,
+                        (track.notes || '').replace(/\n/g, ' ')
+                    ].join('\t'));
+                });
+
+                const blob = new Blob([lines.join('\n')], { type: 'text/plain;charset=utf-8' });
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = 'cue-sheet.txt';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(link.href);
+            }
+
+            function restoreState() {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (!raw) {
+                    renderTracks();
+                    return;
+                }
+                try {
+                    const parsed = JSON.parse(raw);
+                    if (Array.isArray(parsed.tracks)) {
+                        state.tracks = parsed.tracks.map((track) => ({
+                            trackNumber: String(track.trackNumber || ''),
+                            artist: String(track.artist || ''),
+                            title: String(track.title || ''),
+                            bpm: String(track.bpm || ''),
+                            key: String(track.key || ''),
+                            introType: String(track.introType || 'clean'),
+                            notes: String(track.notes || '')
+                        }));
+                    }
+                    if (parsed.draft && typeof parsed.draft === 'object') {
+                        state.draft = {
+                            trackNumber: String(parsed.draft.trackNumber || ''),
+                            artist: String(parsed.draft.artist || ''),
+                            title: String(parsed.draft.title || ''),
+                            bpm: String(parsed.draft.bpm || ''),
+                            key: String(parsed.draft.key || ''),
+                            introType: String(parsed.draft.introType || 'clean'),
+                            notes: String(parsed.draft.notes || '')
+                        };
+                    }
+                } catch (error) {
+                    localStorage.removeItem(STORAGE_KEY);
+                }
+                writeDraftToForm();
+                renderTracks();
+            }
+
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+                if (!form.reportValidity()) {
+                    return;
+                }
+
+                const track = {
+                    trackNumber: form.trackNumber.value.trim(),
+                    artist: form.artist.value.trim(),
+                    title: form.title.value.trim(),
+                    bpm: form.bpm.value.trim(),
+                    key: form.key.value.trim(),
+                    introType: form.introType.value,
+                    notes: form.notes.value.trim()
+                };
+
+                state.tracks.push(track);
+                renderTracks();
+                clearForm();
+            });
+
+            form.addEventListener('input', readFormIntoDraft);
+            clearButton.addEventListener('click', clearForm);
+            exportButton.addEventListener('click', exportPlainText);
+
+            restoreState();
+        })();
+    </script>
+</body>
+</html>
