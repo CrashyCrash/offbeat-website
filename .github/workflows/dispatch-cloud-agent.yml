@@ -44,15 +44,14 @@ jobs:
             --method POST \
             --field "title=$TASK_TITLE" \
             --field "body=$BODY" \
-            --jq '{number: .number, url: .html_url}')
+            --jq '{number: .number, url: .html_url, node_id: .node_id}')
 
           ISSUE_NUM=$(echo "$ISSUE" | jq -r '.number')
           ISSUE_URL=$(echo "$ISSUE" | jq -r '.url')
+          ISSUE_NODE_ID=$(echo "$ISSUE" | jq -r '.node_id')
 
-          # Add copilot-swe-agent[bot] as assignee (separate call)
-          gh api "repos/${{ github.repository }}/issues/$ISSUE_NUM/assignees" \
-            --method POST \
-            --field 'assignees[]=copilot-swe-agent[bot]' 2>/dev/null || true
+          # Assign Copilot bot via GraphQL (REST API silently drops it)
+          gh api graphql -f query="mutation { addAssigneesToAssignable(input: { assignableId: \"$ISSUE_NODE_ID\", assigneeIds: [\"BOT_kgDOC9w8XQ\"] }) { assignable { ... on Issue { number } } } }" 2>/dev/null || true
 
           echo "✅ Issue #$ISSUE_NUM created: $ISSUE_URL"
           echo "## Cloud Agent Dispatched" >> $GITHUB_STEP_SUMMARY
@@ -81,14 +80,14 @@ jobs:
             --method POST \
             --field title="$TITLE" \
             --field body="$BODY" \
-            --jq '{number: .number, url: .html_url}')
+            --jq '{number: .number, url: .html_url, node_id: .node_id}')
 
           ISSUE_NUM=$(echo "$ISSUE" | jq -r '.number')
           ISSUE_URL=$(echo "$ISSUE" | jq -r '.url')
+          ISSUE_NODE_ID=$(echo "$ISSUE" | jq -r '.node_id')
 
-          gh api "repos/${{ github.repository }}/issues/$ISSUE_NUM/assignees" \
-            --method POST \
-            --field 'assignees[]=copilot-swe-agent[bot]' 2>/dev/null || true
+          # Assign Copilot bot via GraphQL
+          gh api graphql -f query="mutation { addAssigneesToAssignable(input: { assignableId: \"$ISSUE_NODE_ID\", assigneeIds: [\"BOT_kgDOC9w8XQ\"] }) { assignable { ... on Issue { number } } } }" 2>/dev/null || true
 
           echo "✅ Issue #$ISSUE_NUM created: $ISSUE_URL"
           echo "## Scheduled Cloud Agent Task" >> $GITHUB_STEP_SUMMARY
