@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="DatBotty deployment showcase — completed autonomous builds for Offbeat, Inc.">
+    <meta property="og:title" content="DatBotty Work — Offbeat, Inc.">
+    <meta property="og:description" content="A showcase of what DatBotty has autonomously built and deployed.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://crashycrash.github.io/offbeat-website/v3/work.html">
+    <link rel="canonical" href="https://crashycrash.github.io/offbeat-website/v3/work.html">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "name": "DatBotty Completed Deployments",
+      "description": "Production projects autonomously built and deployed by DatBotty.",
+      "url": "https://crashycrash.github.io/offbeat-website/v3/work.html",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "item": {
+            "@type": "CreativeWork",
+            "name": "Offbeat Website v3",
+            "description": "Dark futuristic multi-page website deployment for Offbeat, Inc.",
+            "url": "https://crashycrash.github.io/offbeat-website/v3/index.html"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "item": {
+            "@type": "CreativeWork",
+            "name": "SEO Implementation",
+            "description": "On-page SEO rollout with metadata, canonical URLs, and machine-readable structured data.",
+            "url": "https://crashycrash.github.io/offbeat-website/v3/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "item": {
+            "@type": "CreativeWork",
+            "name": "Cloud Agent Pipeline",
+            "description": "Issue-to-PR autonomous delivery pipeline powered by the GitHub Cloud Agent.",
+            "url": "https://github.com/CrashyCrash/offbeat-website/actions"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "item": {
+            "@type": "CreativeWork",
+            "name": "GitHub Actions Automation",
+            "description": "Scheduled workflows for deployment monitoring, auto-merge, and status checks.",
+            "url": "https://github.com/CrashyCrash/offbeat-website/actions"
+          }
+        }
+      ]
+    }
+    </script>
+    <title>DatBotty Work — Offbeat, Inc.</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap');
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #020206;
+            --bg-card: #08090f;
+            --border: #141828;
+            --glow: #00ccff;
+            --glow-2: #00fff2;
+            --violet: #7c3aed;
+            --text: #e6eaf4;
+            --text-2: #6e7599;
+            --text-3: #2d3150;
+        }
+
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .mesh-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse 800px 600px at 20% 20%, rgba(0, 204, 255, 0.04) 0%, transparent 50%),
+                radial-gradient(ellipse 600px 800px at 80% 70%, rgba(124, 58, 237, 0.04) 0%, transparent 50%);
+        }
+
+        .scanlines {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 204, 255, 0.008) 2px,
+                rgba(0, 204, 255, 0.008) 4px
+            );
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(2, 2, 6, 0.75);
+            backdrop-filter: blur(20px);
+        }
+
+        .brand {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            position: relative;
+            text-decoration: none;
+            color: var(--text);
+        }
+
+        .brand::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--glow), var(--violet));
+            animation: brand-line 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes brand-line {
+            0% { transform: scaleX(0.3); transform-origin: left; }
+            100% { transform: scaleX(1); transform-origin: left; }
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .header-nav a {
+            color: var(--text-2);
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .header-nav a:hover { color: var(--glow); }
+        .header-nav .active { color: var(--glow); }
+
+        .page {
+            position: relative;
+            z-index: 1;
+            padding: 9rem 2rem 6rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .page-label {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.75rem;
+            color: var(--glow);
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .page-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            margin-bottom: 0.75rem;
+        }
+
+        .page-title span {
+            background: linear-gradient(135deg, var(--glow), var(--glow-2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-sub {
+            color: var(--text-2);
+            font-size: 1.05rem;
+            margin-bottom: 3rem;
+            max-width: 760px;
+        }
+
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .project-card {
+            background: linear-gradient(180deg, rgba(8, 9, 15, 0.96), rgba(8, 9, 15, 0.82));
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.9rem;
+            transition: border-color 0.3s;
+        }
+
+        .project-card:hover {
+            border-color: rgba(0, 204, 255, 0.28);
+        }
+
+        .project-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+        }
+
+        .project-desc {
+            color: var(--text-2);
+            font-size: 0.95rem;
+            line-height: 1.55;
+            flex: 1;
+        }
+
+        .badge-row {
+            display: flex;
+            gap: 0.45rem;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            border-radius: 999px;
+            border: 1px solid rgba(0, 204, 255, 0.22);
+            background: rgba(0, 204, 255, 0.08);
+            color: var(--glow);
+            font-size: 0.72rem;
+            font-family: 'Fira Code', monospace;
+            padding: 0.24rem 0.6rem;
+            letter-spacing: 0.01em;
+        }
+
+        .project-link {
+            display: inline-block;
+            align-self: flex-start;
+            color: var(--glow);
+            text-decoration: none;
+            font-size: 0.82rem;
+            font-family: 'Fira Code', monospace;
+            border: 1px solid rgba(0, 204, 255, 0.3);
+            border-radius: 7px;
+            padding: 0.42rem 0.72rem;
+            transition: background 0.25s, color 0.25s, border-color 0.25s;
+        }
+
+        .project-link:hover {
+            background: rgba(0, 204, 255, 0.12);
+            color: #fff;
+            border-color: rgba(0, 204, 255, 0.55);
+        }
+
+        footer {
+            position: relative;
+            z-index: 1;
+            padding: 2rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border);
+            font-size: 0.78rem;
+            color: var(--text-3);
+        }
+
+        footer a {
+            color: var(--text-2);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        footer a:hover { color: var(--glow); }
+
+        @media (max-width: 640px) {
+            header { padding: 1rem 1.25rem; }
+            .header-nav { gap: 1rem; }
+            .page { padding: 8rem 1.25rem 4rem; }
+            footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+    <div class="mesh-bg"></div>
+    <div class="scanlines"></div>
+
+    <header>
+        <a href="index.html" class="brand">OFFBEAT</a>
+        <ul class="header-nav">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="tools.html">Tools</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="status.html">Status</a></li>
+            <li><a href="work.html" class="active">Work</a></li>
+        </ul>
+    </header>
+
+    <main class="page">
+        <div class="page-label">Completed Deployments</div>
+        <h1 class="page-title">DatBotty <span>Work Showcase</span></h1>
+        <p class="page-sub">A compact portfolio of production features DatBotty has autonomously shipped for Offbeat, Inc., from site launches to CI-driven automation.</p>
+
+        <section class="project-grid">
+            <article class="project-card">
+                <h2 class="project-title">Offbeat Website v3</h2>
+                <p class="project-desc">Built and deployed the v3 dark-futuristic website experience with modular pages, responsive layouts, and a unified design system.</p>
+                <div class="badge-row">
+                    <span class="badge">HTML5</span>
+                    <span class="badge">CSS3</span>
+                    <span class="badge">GitHub Pages</span>
+                </div>
+                <a class="project-link" href="https://crashycrash.github.io/offbeat-website/v3/index.html">Live Site</a>
+            </article>
+
+            <article class="project-card">
+                <h2 class="project-title">SEO Implementation</h2>
+                <p class="project-desc">Implemented metadata foundations across v3, including canonical URLs, Open Graph tags, structured data, and crawler-facing assets.</p>
+                <div class="badge-row">
+                    <span class="badge">Meta Tags</span>
+                    <span class="badge">Open Graph</span>
+                    <span class="badge">JSON-LD</span>
+                </div>
+                <a class="project-link" href="https://crashycrash.github.io/offbeat-website/v3/">View Deploy</a>
+            </article>
+
+            <article class="project-card">
+                <h2 class="project-title">Cloud Agent Pipeline</h2>
+                <p class="project-desc">Operationalized an autonomous Issue → Cloud Agent → Pull Request flow so new requirements become merged website improvements without local compute.</p>
+                <div class="badge-row">
+                    <span class="badge">GitHub Issues</span>
+                    <span class="badge">Copilot Agent</span>
+                    <span class="badge">PR Automation</span>
+                </div>
+                <a class="project-link" href="https://github.com/CrashyCrash/offbeat-website/actions">Pipeline Activity</a>
+            </article>
+
+            <article class="project-card">
+                <h2 class="project-title">GitHub Actions Automation</h2>
+                <p class="project-desc">Configured recurring automation for status checks, health monitoring, and auto-merge loops to keep deployments stable and continuously updated.</p>
+                <div class="badge-row">
+                    <span class="badge">GitHub Actions</span>
+                    <span class="badge">CI/CD</span>
+                    <span class="badge">Auto-Merge</span>
+                </div>
+                <a class="project-link" href="https://github.com/CrashyCrash/offbeat-website/actions">View Workflows</a>
+            </article>
+        </section>
+    </main>
+
+    <footer>
+        <div>&copy; 2026 Offbeat, Inc. — All rights reserved.</div>
+        <div>
+            <a href="https://muthaeffincrash.com">mutha effin CRASH</a>
+        </div>
+    </footer>
+</body>
+</html>
