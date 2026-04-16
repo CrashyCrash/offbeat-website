@@ -1,13 +1,14 @@
 {
-  "generated_at": "2026-04-16T01:16:41Z",
+  "generated_at": "2026-04-16T02:10:36Z",
   "live_pages": 15,
   "prs_merged": 6,
-  "issues_dispatched": 14,
-  "active_workflows": 5,
+  "issues_dispatched": 8,
+  "open_issues": 4,
+  "active_workflows": 6,
   "open_prs": 3,
-  "pages_up": 8,
-  "pages_checked": 8,
-  "last_commit_offbeat": "2026-04-16T01:16:22Z",
-  "last_commit_msg": "fix: remove cross-repo datbotty lookup (token scope limited)",
-  "last_commit_sha": "eb73483"
+  "pages_up": 10,
+  "pages_checked": 10,
+  "last_commit_offbeat": "2026-04-16T02:09:56Z",
+  "last_commit_msg": "feat: parallel dispatch workflow + fix status dashboard JSON + update task pool",
+  "last_commit_sha": "0731bc6"
 }
