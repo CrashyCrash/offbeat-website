@@ -48,8 +48,8 @@
     "body": "Add a skip-to-content accessibility link at the top of every v3 HTML file.\n\nPattern: an anchor linking to #main-content with class skip-link, positioned off-screen and shown on focus.\n\nCSS for the skip link: position absolute, left -9999px normally, position static on focus.\n\nAlso add id=main-content to the main element on each page.\n\nReport which files were updated. Apply to all v3 HTML files."
   },
   {
-    "title": "Create v3/changelog.html — DatBotty deployment history",
-    "body": "Create a new file v3/changelog.html showing DatBotty's deployment history.\n\nRequirements:\n- Match v3 dark design (same header/footer as status.html)\n- Timeline layout: each entry has date, what was deployed, current status (live/merged)\n- Include entries for all deployed pages, GitHub Actions setup, Cloud Agent pipeline, SEO work\n- Add Changelog link to nav on all existing v3 pages\n- JSON-LD WebPage schema plus standard OG/meta tags\n- Use cyan accent color for the timeline line"
+    "title": "Create v3/blog.html — Offbeat tech blog index page",
+    "body": "Create a new file v3/blog.html for an Offbeat, Inc. tech blog index.\n\nRequirements:\n- Match v3 dark design (dark background #020206, cyan/blue accents, same header/footer as index.html)\n- Show 3 featured blog post cards in a grid layout:\n  1. 'Building DatBotty: An AI System That Actually Works' — about the journey of building a 24/7 autonomous AI\n  2. 'From Zero to 15 Pages: How AI Built Our Website While We Slept' — about GitHub Cloud Agent deployments\n  3. 'The Tools Behind Offbeat: OpenClaw, GitHub Actions, and the Cloud Agent Pipeline' — tech stack overview\n- Each card: title, date (April 2026), tag pill, short excerpt, 'Read More' link (href='#' placeholder)\n- Page header: 'Thoughts from Offbeat'\n- Include nav linking to v3/index.html, with Status link to status.html\n- Add Blog link to nav on ALL existing v3 pages\n- JSON-LD BlogPosting schema for the first post\n- Buttons must NEVER lift or move on hover\n- Do NOT use the words 'proprietary' or 'unconventional' in copy"
   },
   {
     "title": "Review and fix all canonical link tags in v3 pages",

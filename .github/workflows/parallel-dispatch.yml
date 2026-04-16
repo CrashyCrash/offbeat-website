@@ -1,0 +1,94 @@
+name: Parallel Cloud Agent Dispatch
+
+# Run multiple cloud agent tasks simultaneously for higher throughput.
+# Uses matrix strategy: 3 parallel jobs, each picking a different task from the pool.
+# This triples the work done per trigger vs. the single-task dispatch.
+
+on:
+  schedule:
+    - cron: '0 7 * * *'   # 3:00 AM ET — daily parallel burst (after midnight quiet period)
+  workflow_dispatch:
+    inputs:
+      slots:
+        description: 'Number of parallel tasks to dispatch (1–4)'
+        required: false
+        default: '3'
+        type: choice
+        options: ['1', '2', '3', '4']
+
+jobs:
+  parallel-dispatch:
+    strategy:
+      matrix:
+        slot: [0, 1, 2, 3]
+      fail-fast: false   # one failure shouldn't cancel the others
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      issues: write
+      contents: read
+
+    steps:
+      - name: Checkout (needed for task pool)
+        uses: actions/checkout@v4
+
+      - name: Skip extra slots on manual dispatch
+        id: check-slot
+        env:
+          REQUESTED_SLOTS: ${{ inputs.slots || '3' }}
+          SLOT: ${{ matrix.slot }}
+        run: |
+          # On manual dispatch, only run up to the requested number of slots
+          if [ "$SLOT" -ge "$REQUESTED_SLOTS" ]; then
+            echo "Skipping slot $SLOT (requested $REQUESTED_SLOTS slots)"
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Dispatch task for slot ${{ matrix.slot }}
+        if: steps.check-slot.outputs.skip != 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SLOT: ${{ matrix.slot }}
+        run: |
+          TOTAL=$(jq 'length' .github/task-pool.json)
+          # Each slot picks a different index: day*NUM_SLOTS + slot
+          # 18-task pool with 4 slots = no repeats within a 4.5-day window
+          DAY=$(date -u +%d | sed 's/^0//')
+          NUM_SLOTS=4
+          IDX=$(( (DAY * NUM_SLOTS + SLOT) % TOTAL ))
+
+          TITLE=$(jq -r ".[$IDX].title" .github/task-pool.json)
+          BODY=$(jq -r ".[$IDX].body" .github/task-pool.json)
+
+          echo "Slot $SLOT | Pool idx $IDX / $TOTAL | Task: $TITLE"
+
+          ISSUE=$(gh api "repos/${{ github.repository }}/issues" \
+            --method POST \
+            --field "title=$TITLE" \
+            --field "body=$BODY" \
+            --field "labels[]=datbotty-task" \
+            --jq '{number: .number, url: .html_url, node_id: .node_id}' 2>/dev/null || \
+          gh api "repos/${{ github.repository }}/issues" \
+            --method POST \
+            --field "title=$TITLE" \
+            --field "body=$BODY" \
+            --jq '{number: .number, url: .html_url, node_id: .node_id}')
+
+          ISSUE_NUM=$(echo "$ISSUE" | jq -r '.number')
+          ISSUE_URL=$(echo "$ISSUE" | jq -r '.url')
+          ISSUE_NODE_ID=$(echo "$ISSUE" | jq -r '.node_id')
+
+          # Assign to Copilot cloud agent via GraphQL
+          gh api graphql -f query="mutation {
+            addAssigneesToAssignable(input: {
+              assignableId: \"$ISSUE_NODE_ID\",
+              assigneeIds: [\"BOT_kgDOC9w8XQ\"]
+            }) { assignable { ... on Issue { number } } }
+          }" 2>/dev/null || true
+
+          echo "✅ Issue #$ISSUE_NUM dispatched: $ISSUE_URL"
+          echo "## Slot ${{ matrix.slot }}: $TITLE" >> $GITHUB_STEP_SUMMARY
+          echo "- **Issue**: $ISSUE_URL" >> $GITHUB_STEP_SUMMARY
+          echo "- **Pool index**: $IDX / $TOTAL" >> $GITHUB_STEP_SUMMARY

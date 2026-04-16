@@ -18,48 +18,48 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Generate status-data.json
+      - name: Gather metrics
+        id: metrics
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
         run: |
           # Count live HTML pages in this repo
-          PAGES=$(gh api "repos/${{ github.repository }}/git/trees/main?recursive=1" \
+          PAGES=$(gh api "repos/$REPO/git/trees/main?recursive=1" \
             --jq '[.tree[] | select(.path | endswith(".html"))] | length' 2>/dev/null || echo 0)
 
           # Count merged Copilot PRs (cloud agent work done)
           PAGED_PRS=0
           for PAGE in 1 2 3; do
-            COUNT=$(gh api "repos/${{ github.repository }}/pulls?state=closed&per_page=100&page=$PAGE" \
+            COUNT=$(gh api "repos/$REPO/pulls?state=closed&per_page=100&page=$PAGE" \
               --jq '[.[] | select(.head.ref | startswith("copilot/")) | select(.merged_at != null)] | length' 2>/dev/null || echo 0)
             PAGED_PRS=$((PAGED_PRS + COUNT))
             [ "$COUNT" -lt 100 ] && break
           done
 
-          # Count total closed issues (tasks completed)
-          ISSUES=$(gh api "repos/${{ github.repository }}/issues?state=closed&per_page=100" \
-            --jq 'length' 2>/dev/null || echo 0)
+          # Count all closed issues (tasks completed — includes both cloud_agent + local dispatch tracking)
+          CLOSED_ISSUES=$(gh api "repos/$REPO/issues?state=closed&per_page=100" \
+            --jq '[.[] | select(.pull_request == null)] | length' 2>/dev/null || echo 0)
 
-          # Last commit to this repo
-          LAST_COMMIT_DATE=$(gh api "repos/${{ github.repository }}/commits?per_page=1" \
-            --jq '.[0].commit.committer.date' 2>/dev/null || echo "")
-          LAST_COMMIT_MSG=$(gh api "repos/${{ github.repository }}/commits?per_page=1" \
-            --jq '.[0].commit.message' 2>/dev/null | head -c 60 | tr -d '\n' || echo "")
-          LAST_COMMIT_SHA=$(gh api "repos/${{ github.repository }}/commits?per_page=1" \
-            --jq '.[0].sha[0:7]' 2>/dev/null || echo "")
+          # Count open issues (tasks pending / in progress)
+          OPEN_ISSUES=$(gh api "repos/$REPO/issues?state=open&per_page=100" \
+            --jq '[.[] | select(.pull_request == null)] | length' 2>/dev/null || echo 0)
 
-          # Count active GitHub Actions workflows in this repo
-          ACTIVE_WORKFLOWS=$(gh api "repos/${{ github.repository }}/actions/workflows" \
+          # Last commit info
+          COMMIT_JSON=$(gh api "repos/$REPO/commits?per_page=1" 2>/dev/null || echo '[]')
+          LAST_COMMIT_DATE=$(echo "$COMMIT_JSON" | jq -r '.[0].commit.committer.date // ""')
+          LAST_COMMIT_MSG=$(echo "$COMMIT_JSON" | jq -r '.[0].commit.message // ""' | head -c 80 | tr -d '\n\r')
+          LAST_COMMIT_SHA=$(echo "$COMMIT_JSON" | jq -r '.[0].sha // ""' | head -c 7)
+
+          # Count active GitHub Actions workflows
+          ACTIVE_WORKFLOWS=$(gh api "repos/$REPO/actions/workflows" \
             --jq '[.workflows[] | select(.state == "active")] | length' 2>/dev/null || echo 0)
 
-          # DatBotty repo — GITHUB_TOKEN can only read this repo; skip cross-repo lookup
-          # DATBOTTY_COMMIT intentionally omitted (403 from token scope)
-
           # Open copilot PRs (queued cloud agent work)
-          OPEN_PRS=$(gh api "repos/${{ github.repository }}/pulls?state=open&per_page=50" \
+          OPEN_PRS=$(gh api "repos/$REPO/pulls?state=open&per_page=50" \
             --jq '[.[] | select(.head.ref | startswith("copilot/"))] | length' 2>/dev/null || echo 0)
 
           # Page health check
-          PAGES_UP=0
           PAGE_URLS=(
             "https://crashycrash.github.io/offbeat-website/"
             "https://crashycrash.github.io/offbeat-website/v3/"
@@ -69,32 +69,57 @@ jobs:
             "https://crashycrash.github.io/offbeat-website/v3/privacy.html"
             "https://crashycrash.github.io/offbeat-website/v3/contact.html"
             "https://crashycrash.github.io/offbeat-website/v3/status.html"
+            "https://crashycrash.github.io/offbeat-website/v3/changelog.html"
+            "https://crashycrash.github.io/offbeat-website/404.html"
           )
+          PAGES_UP=0
           for URL in "${PAGE_URLS[@]}"; do
-            STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 8 "$URL")
-            [ "$STATUS" = "200" ] && PAGES_UP=$((PAGES_UP + 1))
+            CODE=$(curl -s -o /dev/null -w "%{http_code}" --max-time 8 "$URL")
+            [ "$CODE" = "200" ] && PAGES_UP=$((PAGES_UP + 1))
           done
 
-          GENERATED_AT=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          # Export all as env vars for next step
+          echo "PAGES=$PAGES"                        >> "$GITHUB_ENV"
+          echo "PAGED_PRS=$PAGED_PRS"                >> "$GITHUB_ENV"
+          echo "CLOSED_ISSUES=$CLOSED_ISSUES"        >> "$GITHUB_ENV"
+          echo "OPEN_ISSUES=$OPEN_ISSUES"            >> "$GITHUB_ENV"
+          echo "ACTIVE_WORKFLOWS=$ACTIVE_WORKFLOWS"  >> "$GITHUB_ENV"
+          echo "OPEN_PRS=$OPEN_PRS"                  >> "$GITHUB_ENV"
+          echo "PAGES_UP=$PAGES_UP"                  >> "$GITHUB_ENV"
+          echo "PAGES_CHECKED=${#PAGE_URLS[@]}"      >> "$GITHUB_ENV"
+          # Use printf %q to safely pass strings containing special chars
+          printf 'LAST_COMMIT_DATE=%s\n' "$LAST_COMMIT_DATE" >> "$GITHUB_ENV"
+          printf 'LAST_COMMIT_MSG=%s\n'  "$LAST_COMMIT_MSG"  >> "$GITHUB_ENV"
+          printf 'LAST_COMMIT_SHA=%s\n'  "$LAST_COMMIT_SHA"  >> "$GITHUB_ENV"
 
-          cat > v3/status-data.json << EOF
-          {
-            "generated_at": "$GENERATED_AT",
-            "live_pages": $PAGES,
-            "prs_merged": $PAGED_PRS,
-            "issues_dispatched": $ISSUES,
-            "active_workflows": $ACTIVE_WORKFLOWS,
-            "open_prs": $OPEN_PRS,
-            "pages_up": $PAGES_UP,
-            "pages_checked": ${#PAGE_URLS[@]},
-            "last_commit_offbeat": "$LAST_COMMIT_DATE",
-            "last_commit_msg": $(echo "$LAST_COMMIT_MSG" | python3 -c "import sys,json; print(json.dumps(sys.stdin.read().strip()))"),
-            "last_commit_sha": "$LAST_COMMIT_SHA"
+      - name: Generate status-data.json
+        run: |
+          # Use python3 for safe JSON generation — avoids shell escaping issues
+          python3 - << 'PYEOF'
+          import json, os, datetime
+
+          data = {
+              "generated_at":      datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
+              "live_pages":        int(os.environ.get("PAGES", 0)),
+              "prs_merged":        int(os.environ.get("PAGED_PRS", 0)),
+              "issues_dispatched": int(os.environ.get("CLOSED_ISSUES", 0)),
+              "open_issues":       int(os.environ.get("OPEN_ISSUES", 0)),
+              "active_workflows":  int(os.environ.get("ACTIVE_WORKFLOWS", 0)),
+              "open_prs":          int(os.environ.get("OPEN_PRS", 0)),
+              "pages_up":          int(os.environ.get("PAGES_UP", 0)),
+              "pages_checked":     int(os.environ.get("PAGES_CHECKED", 0)),
+              "last_commit_offbeat": os.environ.get("LAST_COMMIT_DATE", ""),
+              "last_commit_msg":   os.environ.get("LAST_COMMIT_MSG", ""),
+              "last_commit_sha":   os.environ.get("LAST_COMMIT_SHA", ""),
           }
-          EOF
 
-          echo "Generated status-data.json:"
-          cat v3/status-data.json
+          with open("v3/status-data.json", "w") as f:
+              json.dump(data, f, indent=2)
+              f.write("\n")
+
+          print("Generated v3/status-data.json:")
+          print(json.dumps(data, indent=2))
+          PYEOF
 
       - name: Commit if changed
         run: |
