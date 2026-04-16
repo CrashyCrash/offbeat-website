@@ -1,10 +1,10 @@
 [
   {
-    "title": "Create v3/about.html — About Offbeat, Inc.",
+    "title": "Create v3/about.html \u2014 About Offbeat, Inc.",
     "body": "Create a new file v3/about.html that introduces Offbeat, Inc.\n\nRequirements:\n- Match the v3 dark futuristic design (same CSS variables, header, footer as index.html)\n- Sections: company overview, what we build, tech stack, contact CTA\n- Include JSON-LD Organization schema and standard OG/meta tags\n- Add 'About' link to the nav on ALL existing v3 pages\n- Do NOT use the words 'proprietary' or 'unconventional' in any copy\n- Buttons must NOT lift/translate upward on hover\n- Use the same Outfit+FiraCode fonts, dark bg #020206, glow cyan+violet accents"
   },
   {
-    "title": "Create v3/work.html — DatBotty showcase of completed deployments",
+    "title": "Create v3/work.html \u2014 DatBotty showcase of completed deployments",
     "body": "Create a new file v3/work.html showcasing what DatBotty has autonomously built.\n\nRequirements:\n- Match v3 dark futuristic design (same header/footer as status.html)\n- Grid of project cards showing: Offbeat website v3, SEO implementation, Cloud Agent pipeline, GitHub Actions automation\n- Each card: title, short description, tech used as badge pills, live link where applicable\n- Include JSON-LD ItemList schema\n- Add 'Work' link to the nav on ALL existing v3 pages\n- Buttons must NOT lift on hover"
   },
   {
@@ -29,7 +29,7 @@
   },
   {
     "title": "Add Cookie Policy and CCPA sections to v3/privacy.html",
-    "body": "Add two new sections to v3/privacy.html:\n\n1. Cookie Policy — explain what cookies or localStorage the site uses (if any) and how to opt out\n2. California Privacy Rights (CCPA) — standard notice for CA residents\n\nKeep the same dark design, heading styles, and paragraph copy style as the rest of the page. Add the new sections at the bottom before the footer. Do NOT alter any existing sections."
+    "body": "Add two new sections to v3/privacy.html:\n\n1. Cookie Policy \u2014 explain what cookies or localStorage the site uses (if any) and how to opt out\n2. California Privacy Rights (CCPA) \u2014 standard notice for CA residents\n\nKeep the same dark design, heading styles, and paragraph copy style as the rest of the page. Add the new sections at the bottom before the footer. Do NOT alter any existing sections."
   },
   {
     "title": "Add Twitter Card meta tags to all v3 pages",
@@ -37,7 +37,7 @@
   },
   {
     "title": "Add pricing/tier section to v3/services.html",
-    "body": "Add an engagement tier section to v3/services.html.\n\nTiers to show:\n- Discovery (free intro consultation)\n- Project (fixed scope, custom quote)\n- Ongoing (retainer, custom AI ops)\n\nThree-column grid of tier cards matching the v3 dark futuristic design. Each card: tier name, short description, CTA linking to contact.html. Do NOT show dollar amounts — use Custom Quote or Contact Us.\n\nInsert between the main services grid and the existing CTA section. Match existing CSS variables exactly. Buttons must NOT lift on hover."
+    "body": "Add an engagement tier section to v3/services.html.\n\nTiers to show:\n- Discovery (free intro consultation)\n- Project (fixed scope, custom quote)\n- Ongoing (retainer, custom AI ops)\n\nThree-column grid of tier cards matching the v3 dark futuristic design. Each card: tier name, short description, CTA linking to contact.html. Do NOT show dollar amounts \u2014 use Custom Quote or Contact Us.\n\nInsert between the main services grid and the existing CTA section. Match existing CSS variables exactly. Buttons must NOT lift on hover."
   },
   {
     "title": "Add Powered By tech stack section to v3/index.html",
@@ -48,8 +48,8 @@
     "body": "Add a skip-to-content accessibility link at the top of every v3 HTML file.\n\nPattern: an anchor linking to #main-content with class skip-link, positioned off-screen and shown on focus.\n\nCSS for the skip link: position absolute, left -9999px normally, position static on focus.\n\nAlso add id=main-content to the main element on each page.\n\nReport which files were updated. Apply to all v3 HTML files."
   },
   {
-    "title": "Create v3/blog.html — Offbeat tech blog index page",
-    "body": "Create a new file v3/blog.html for an Offbeat, Inc. tech blog index.\n\nRequirements:\n- Match v3 dark design (dark background #020206, cyan/blue accents, same header/footer as index.html)\n- Show 3 featured blog post cards in a grid layout:\n  1. 'Building DatBotty: An AI System That Actually Works' — about the journey of building a 24/7 autonomous AI\n  2. 'From Zero to 15 Pages: How AI Built Our Website While We Slept' — about GitHub Cloud Agent deployments\n  3. 'The Tools Behind Offbeat: OpenClaw, GitHub Actions, and the Cloud Agent Pipeline' — tech stack overview\n- Each card: title, date (April 2026), tag pill, short excerpt, 'Read More' link (href='#' placeholder)\n- Page header: 'Thoughts from Offbeat'\n- Include nav linking to v3/index.html, with Status link to status.html\n- Add Blog link to nav on ALL existing v3 pages\n- JSON-LD BlogPosting schema for the first post\n- Buttons must NEVER lift or move on hover\n- Do NOT use the words 'proprietary' or 'unconventional' in copy"
+    "title": "Create v3/blog.html \u2014 Offbeat tech blog index page",
+    "body": "Create a new file v3/blog.html for an Offbeat, Inc. tech blog index.\n\nRequirements:\n- Match v3 dark design (dark background #020206, cyan/blue accents, same header/footer as index.html)\n- Show 3 featured blog post cards in a grid layout:\n  1. 'Building DatBotty: An AI System That Actually Works' \u2014 about the journey of building a 24/7 autonomous AI\n  2. 'From Zero to 15 Pages: How AI Built Our Website While We Slept' \u2014 about GitHub Cloud Agent deployments\n  3. 'The Tools Behind Offbeat: OpenClaw, GitHub Actions, and the Cloud Agent Pipeline' \u2014 tech stack overview\n- Each card: title, date (April 2026), tag pill, short excerpt, 'Read More' link (href='#' placeholder)\n- Page header: 'Thoughts from Offbeat'\n- Include nav linking to v3/index.html, with Status link to status.html\n- Add Blog link to nav on ALL existing v3 pages\n- JSON-LD BlogPosting schema for the first post\n- Buttons must NEVER lift or move on hover\n- Do NOT use the words 'proprietary' or 'unconventional' in copy"
   },
   {
     "title": "Review and fix all canonical link tags in v3 pages",
@@ -70,5 +70,61 @@
   {
     "title": "Add alt text and aria-label audit to all v3 images and icons",
     "body": "Review all v3 HTML files for accessibility gaps in images and icons:\n- img tags with empty or missing alt attributes\n- Icon or emoji spans used as meaningful content without aria-label\n- Link elements that are icon-only without accessible text\n\nApply WCAG AA compliant fixes. Use alt empty string for decorative elements. Add aria-label to meaningful icons. Report all findings before applying fixes."
+  },
+  {
+    "title": "Create v3/portfolio.html \u2014 featured work and case studies",
+    "body": "Create a NEW file v3/portfolio.html showcasing Offbeat, Inc. work and case studies.\n\nRequirements:\n- Match v3 dark futuristic design (same CSS variables, header/footer as index.html)\n- Sections: Featured Projects grid (DatBotty autonomous system, Offbeat website v3, PrepDeck concept), Case Study highlights with results achieved\n- Each project card: title, description, technology pills, outcome metric (e.g. '15 pages deployed autonomously')\n- Include JSON-LD ItemList schema\n- Add 'Portfolio' link to nav on ALL existing v3 pages\n- Do NOT use 'proprietary' or 'unconventional' in any copy\n- Buttons must NEVER lift or translate upward on hover\n- Standard OG meta tags and meta description"
+  },
+  {
+    "title": "Create v3/newsletter.html \u2014 Offbeat newsletter signup landing page",
+    "body": "Create a NEW file v3/newsletter.html for an Offbeat, Inc. newsletter signup.\n\nRequirements:\n- Match v3 dark futuristic design (same CSS variables as index.html)\n- Headline: 'Stay ahead of the curve'\n- Short description: what subscribers get (tech insights, DatBotty updates, AI/automation news)\n- Email signup form that POSTs to a mailto: link (static-friendly, no backend needed)\n- Privacy assurance line linking to privacy.html\n- Add 'Newsletter' link to footer on all v3 pages (NOT main nav \u2014 keep nav clean)\n- Include OG/meta tags\n- Buttons must NEVER lift on hover\n- Do NOT use 'proprietary' or 'unconventional'"
+  },
+  {
+    "title": "Add social proof / metrics bar to v3/index.html",
+    "body": "Add a horizontal metrics/social-proof bar to v3/index.html between the hero and the features section.\n\nMetrics to display in a row of 4 stat blocks:\n- '15+ Pages' subtext 'deployed autonomously'\n- '24/7' subtext 'always running'\n- '93%' subtext 'task success rate'\n- '$0' subtext 'AI model cost'\n\nStyling: dark card row, numbers in large cyan font, subtext in muted white. No animation needed \u2014 static display only.\nDo NOT use an animated counter (keep it simple and fast-loading).\nDo NOT alter any existing content. Insert after the hero section."
+  },
+  {
+    "title": "Create v3/case-study-datbotty.html \u2014 DatBotty deep-dive case study",
+    "body": "Create a NEW file v3/case-study-datbotty.html \u2014 a detailed case study about building DatBotty.\n\nRequirements:\n- Match v3 dark design (same header/footer as index.html)\n- Sections: The Challenge (24/7 autonomous ops), The Solution (GitHub Actions + Cloud Agent + OpenClaw), The Results (15 pages, 93% success, 0 cost), Key Technologies used\n- Long-form narrative style, ~800 words total\n- Include Article JSON-LD schema with datePublished: 2026-04-15\n- No external images needed \u2014 use CSS-styled text and code blocks\n- Add 'Case Study' link to footer of services.html and work.html only (not main nav)\n- Standard OG/meta tags\n- Do NOT use 'proprietary' or 'unconventional'"
+  },
+  {
+    "title": "Add dark mode toggle to v3 pages",
+    "body": "Add a simple dark/light mode toggle to all v3 HTML pages.\n\nImplementation:\n- Small sun/moon icon toggle button in the top-right corner of the header\n- Clicking toggles a 'light-mode' class on the <body> element\n- Store preference in localStorage so it persists\n- In light mode: swap --bg-deep to #f8f8fc, --bg-dark to #e8e8f0, text to dark, keep cyan accents\n- Default is always dark (current design)\n- Button styling: minimal icon-only, no border, no background, icon size 20px\n\nApply to ALL v3 HTML files. The toggle CSS and JS can be inline in each file.\nBUTTONS must NOT lift or move on hover.\nReport which files were updated."
+  },
+  {
+    "title": "Add PWA manifest and service worker stub to v3",
+    "body": "Add Progressive Web App support to the v3 website.\n\nFiles to create:\n1. v3/manifest.json \u2014 PWA manifest with: name 'Offbeat Inc.', short_name 'Offbeat', start_url '/offbeat-website/v3/', display 'standalone', background_color '#020206', theme_color '#00d4ff', icons array pointing to a generic icon path\n2. v3/sw.js \u2014 minimal service worker that caches the v3 HTML pages and CSS on install, serves from cache when offline\n\nFiles to update:\n- Add <link rel='manifest' href='manifest.json'> to ALL v3 HTML files\n- Add <meta name='theme-color' content='#00d4ff'> to all v3 HTML files\n- Add minimal SW registration script to all v3 HTML files\n\nReport what was created and which files were updated."
+  },
+  {
+    "title": "Add structured data: SiteNavigationElement schema to v3/index.html",
+    "body": "Add SiteNavigationElement JSON-LD schema to v3/index.html.\n\nSchema to add:\n{\n  '@context': 'https://schema.org',\n  '@type': 'SiteLinksSearchBox',\n  'url': 'https://crashycrash.github.io/offbeat-website/v3/',\n  'potentialAction': {'@type': 'SearchAction', 'target': 'https://crashycrash.github.io/offbeat-website/v3/faq.html', 'query-input': 'required name=search_term_string'}\n}\n\nAlso add ItemPage schema to each non-index v3 page that does not already have a page-level schema.\n\nReport which specific files and schemas were added."
+  },
+  {
+    "title": "Improve v3/services.html: add FAQ accordion section",
+    "body": "Add an inline FAQ section to v3/services.html.\n\n5 questions to include:\n1. How long does a typical project take?\n2. Do you offer ongoing support after delivery?\n3. Can you work with my existing tech stack?\n4. What's your process for AI automation projects?\n5. How do I get started?\n\nUse the same accordion styling as v3/faq.html. Insert the section before the final CTA at the bottom of the page.\nDo NOT modify any existing content. The FAQ link in the answer to question 5 should point to contact.html.\nButtons must NEVER lift on hover."
+  },
+  {
+    "title": "Add 'As featured in' logos section to v3/index.html",
+    "body": "Add a minimal 'Built With' / tech stack logos row to v3/index.html.\n\nShow 6 technology logos/names as text badges only (no image files needed):\nGitHub Copilot, Python, GitHub Actions, OpenClaw, Docker, SQLite\n\nStyling: horizontal row of pill-shaped text badges, muted border color, small font, centered. Label above: 'Powered By' in small caps.\nInsert between the hero stats bar and the features section.\nDo NOT add this if a similar section already exists on the page.\nDo NOT use actual external image URLs for logos \u2014 text-only badges."
+  },
+  {
+    "title": "Audit v3 pages for broken links and missing nav items",
+    "body": "Audit all v3 HTML files for link consistency.\n\nCheck:\n1. Every nav link on every page points to a real file that exists in v3/\n2. Footer links (privacy, contact, faq) are consistent across all pages\n3. Any href='#' placeholder links that should have real destinations by now\n4. Any links to files that no longer exist or moved\n5. Missing nav items (e.g. if blog.html was added, is it in every nav?)\n\nReport all findings as a numbered list with specific file + line references.\nFix any broken links or missing nav items directly.\nDo NOT change any content \u2014 only fix nav and footer links."
+  },
+  {
+    "title": "Create v3/open-source.html \u2014 Offbeat open source contributions page",
+    "body": "Create a NEW file v3/open-source.html about Offbeat's relationship with open source.\n\nRequirements:\n- Match v3 dark futuristic design\n- Section 1: Philosophy \u2014 how Offbeat uses and contributes to open source (OpenClaw, browser-use, etc.)\n- Section 2: Tools We Use \u2014 grid of open source tools (Docker, Python, Playwright, SQLite, Node.js)\n- Section 3: Community \u2014 brief note about building in the open\n- Include OG/meta tags, JSON-LD WebPage schema\n- Link from v3/about.html footer section\n- Do NOT claim Offbeat releases its own open source software\n- Do NOT use 'proprietary' or 'unconventional'\n- Buttons must NEVER lift on hover"
+  },
+  {
+    "title": "Add live GitHub stats badge to v3/status.html",
+    "body": "Add a GitHub repository activity section to v3/status.html.\n\nAdd a row showing:\n- Link to GitHub repo (CrashyCrash/offbeat-website) with star/fork count if fetchable via public API\n- Last commit date (from status-data.json if that field exists, or hardcoded fallback)\n- Number of open issues labeled datbotty-task\n\nFetch data using fetch() in a small inline script that calls the public GitHub REST API (no auth needed for public repos).\nHandle fetch failure gracefully \u2014 show 'Loading...' then 'unavailable' on error.\nInsert the section near the top of the page under the existing metrics row.\nDo NOT break any existing content."
+  },
+  {
+    "title": "Add hreflang and language meta to all v3 pages",
+    "body": "Add basic internationalization metadata to all v3 HTML files.\n\nAdd to every v3 page:\n1. <html lang='en'> attribute (check if already present; add if missing)\n2. <meta name='language' content='English'>\n3. <link rel='alternate' hreflang='en' href='[full URL of this page]'>\n4. <link rel='alternate' hreflang='x-default' href='https://crashycrash.github.io/offbeat-website/v3/'>\n\nThis is a search engine optimization best practice for establishing primary language.\nReport which files were missing the lang attribute and which needed the hreflang links added."
+  },
+  {
+    "title": "Improve v3/blog.html with 2 additional blog post cards",
+    "body": "If v3/blog.html already exists: add 2 more blog post cards to the grid.\n\nNew posts to add:\n1. Title: 'GitHub Copilot Cloud Agent: The Future of Autonomous Coding' \u2014 Date: April 2026, Tag: AI Automation, Excerpt: How the GitHub Copilot cloud agent autonomously creates pull requests from issue descriptions \u2014 and why this changes everything for small teams.\n2. Title: 'DJ to Developer: Building an AI System That Actually Makes Money' \u2014 Date: April 2026, Tag: Indie Hacking, Excerpt: What I learned building DatBotty as a non-developer using AI to write most of the code.\n\nIf v3/blog.html does not exist: create it first with all existing cards from the original task plus these 2 new ones.\nMatch existing card styling exactly. Buttons must NEVER lift on hover."
   }
 ]

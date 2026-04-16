@@ -1,23 +1,37 @@
 name: Parallel Cloud Agent Dispatch
 
 # Run multiple cloud agent tasks simultaneously for higher throughput.
-# Uses matrix strategy: 3 parallel jobs, each picking a different task from the pool.
-# This triples the work done per trigger vs. the single-task dispatch.
+# Uses matrix strategy: 4 parallel jobs, each picking a DIFFERENT task from the pool.
+# Runs 4x/day = up to 16 tasks/day dispatched vs. the old 3/day.
+# Also fires on every merged Copilot PR to keep pipeline continuously full.
 
 on:
   schedule:
-    - cron: '0 7 * * *'   # 3:00 AM ET — daily parallel burst (after midnight quiet period)
+    - cron: '0 5 * * *'   # 1:00 AM ET  — overnight build burst
+    - cron: '0 11 * * *'  # 7:00 AM ET  — morning burst
+    - cron: '0 17 * * *'  # 1:00 PM ET  — afternoon burst
+    - cron: '0 23 * * *'  # 7:00 PM ET  — evening burst
+  pull_request:
+    types: [closed]
+    branches: [main]
   workflow_dispatch:
     inputs:
       slots:
         description: 'Number of parallel tasks to dispatch (1–4)'
         required: false
-        default: '3'
+        default: '4'
         type: choice
         options: ['1', '2', '3', '4']
 
 jobs:
   parallel-dispatch:
+    # On PR events, only fire when a copilot/* branch is merged (not every PR)
+    if: >
+      github.event_name == 'schedule' ||
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'pull_request' &&
+       github.event.pull_request.merged == true &&
+       startsWith(github.event.pull_request.head.ref, 'copilot/'))
     strategy:
       matrix:
         slot: [0, 1, 2, 3]
@@ -35,11 +49,16 @@ jobs:
       - name: Skip extra slots on manual dispatch
         id: check-slot
         env:
-          REQUESTED_SLOTS: ${{ inputs.slots || '3' }}
+          REQUESTED_SLOTS: ${{ inputs.slots || '4' }}
           SLOT: ${{ matrix.slot }}
+          EVENT: ${{ github.event_name }}
         run: |
+          # PR-merge triggers run 2 slots only (just enough to keep the pipeline fed)
+          if [ "$EVENT" = "pull_request" ] && [ "$SLOT" -ge "2" ]; then
+            echo "Skipping slot $SLOT for PR-merge trigger (max 2 slots)"
+            echo "skip=true" >> "$GITHUB_OUTPUT"
           # On manual dispatch, only run up to the requested number of slots
-          if [ "$SLOT" -ge "$REQUESTED_SLOTS" ]; then
+          elif [ "$EVENT" = "workflow_dispatch" ] && [ "$SLOT" -ge "$REQUESTED_SLOTS" ]; then
             echo "Skipping slot $SLOT (requested $REQUESTED_SLOTS slots)"
             echo "skip=true" >> "$GITHUB_OUTPUT"
           else
@@ -53,11 +72,12 @@ jobs:
           SLOT: ${{ matrix.slot }}
         run: |
           TOTAL=$(jq 'length' .github/task-pool.json)
-          # Each slot picks a different index: day*NUM_SLOTS + slot
-          # 18-task pool with 4 slots = no repeats within a 4.5-day window
-          DAY=$(date -u +%d | sed 's/^0//')
+          # Use epoch-based rotation: each 6-hour block × 4 slots = unique task per slot per run.
+          # With 30+ task pool: no repeats within a ~7-day window.
+          EPOCH=$(date +%s)
+          SIX_HOUR_BLOCK=$((EPOCH / 21600))
           NUM_SLOTS=4
-          IDX=$(( (DAY * NUM_SLOTS + SLOT) % TOTAL ))
+          IDX=$(( (SIX_HOUR_BLOCK * NUM_SLOTS + SLOT) % TOTAL ))
 
           TITLE=$(jq -r ".[$IDX].title" .github/task-pool.json)
           BODY=$(jq -r ".[$IDX].body" .github/task-pool.json)
