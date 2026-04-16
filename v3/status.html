@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DatBotty Status — Offbeat, Inc.</title>
+    <meta name="description" content="Live DatBotty system status dashboard for Offbeat, Inc. Monitor bot operations, automation workflows, and core platform health.">
+    <link rel="canonical" href="https://crashycrash.github.io/offbeat-website/v3/status.html">
+    <meta property="og:title" content="DatBotty Status — Offbeat, Inc.">
+    <meta property="og:description" content="Live DatBotty system status dashboard for Offbeat, Inc. Monitor bot operations, automation workflows, and core platform health.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://crashycrash.github.io/offbeat-website/v3/status.html">
+    <meta property="og:image" content="https://crashycrash.github.io/offbeat-website/v3/og-image.png">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "DatBotty Status",
+      "description": "DatBotty live system status dashboard for Offbeat, Inc.",
+      "url": "https://crashycrash.github.io/offbeat-website/v3/status.html",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Offbeat, Inc."
+      }
+    }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap');
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #020206;
+            --bg-card: #08090f;
+            --border: #141828;
+            --glow: #00ccff;
+            --glow-2: #00fff2;
+            --violet: #7c3aed;
+            --green: #00e676;
+            --text: #e6eaf4;
+            --text-2: #6e7599;
+            --text-3: #2d3150;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .mesh-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse 800px 600px at 20% 20%, rgba(0, 204, 255, 0.04) 0%, transparent 50%),
+                radial-gradient(ellipse 600px 800px at 80% 70%, rgba(124, 58, 237, 0.04) 0%, transparent 50%);
+        }
+
+        .scanlines {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 204, 255, 0.008) 2px,
+                rgba(0, 204, 255, 0.008) 4px
+            );
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(2, 2, 6, 0.75);
+            backdrop-filter: blur(20px);
+        }
+
+        .brand {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            color: #fff;
+            text-decoration: none;
+            position: relative;
+        }
+
+        .brand::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--glow), var(--violet));
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .header-nav a {
+            color: var(--text-2);
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .header-nav a:hover,
+        .header-nav .active {
+            color: var(--glow);
+        }
+
+        main {
+            position: relative;
+            z-index: 1;
+            padding: 8rem 2rem 3rem;
+        }
+
+        .wrap {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .tag-line {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.72rem;
+            color: var(--glow);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            margin-bottom: 0.75rem;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: clamp(2.1rem, 5vw, 3.6rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.15;
+            margin-bottom: 0.8rem;
+            text-align: center;
+        }
+
+        h1 span {
+            background: linear-gradient(135deg, var(--glow), var(--glow-2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .sub {
+            color: var(--text-2);
+            font-size: 1.02rem;
+            line-height: 1.7;
+            max-width: 640px;
+            margin: 0 auto 1.4rem;
+            text-align: center;
+        }
+
+        .last-updated {
+            margin: 0 auto 2.5rem;
+            width: fit-content;
+            border: 1px solid rgba(0, 204, 255, 0.25);
+            border-radius: 999px;
+            padding: 0.45rem 0.95rem;
+            color: var(--text-2);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.78rem;
+            background: rgba(0, 204, 255, 0.05);
+        }
+
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.2rem;
+        }
+
+        .status-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.3rem;
+            position: relative;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .status-card:hover {
+            border-color: rgba(0, 204, 255, 0.35);
+            box-shadow: 0 12px 28px rgba(0, 204, 255, 0.08);
+        }
+
+        .component-name {
+            font-size: 1.08rem;
+            font-weight: 700;
+            margin-bottom: 0.7rem;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            border: 1px solid rgba(0, 230, 118, 0.25);
+            border-radius: 999px;
+            padding: 0.28rem 0.7rem;
+            color: var(--green);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.75rem;
+            margin-bottom: 0.8rem;
+            background: rgba(0, 230, 118, 0.08);
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--green);
+            box-shadow: 0 0 8px rgba(0, 230, 118, 0.8);
+            display: inline-block;
+        }
+
+        .status-note {
+            color: var(--text-2);
+            line-height: 1.55;
+            font-size: 0.95rem;
+        }
+
+        .back-row {
+            margin-top: 2rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            border-radius: 8px;
+            border: 1px solid rgba(0, 204, 255, 0.3);
+            padding: 0.6rem 1rem;
+            text-decoration: none;
+            color: var(--glow);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            background: rgba(0, 204, 255, 0.06);
+            transition: background 0.25s, color 0.25s, box-shadow 0.25s;
+        }
+
+        .back-btn:hover {
+            background: rgba(0, 204, 255, 0.12);
+            color: #fff;
+            box-shadow: 0 0 20px rgba(0, 204, 255, 0.12);
+        }
+
+        footer {
+            position: relative;
+            z-index: 1;
+            padding: 1.5rem 3rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.78rem;
+            color: var(--text-3);
+            margin-top: 2rem;
+        }
+
+        footer a { color: var(--text-2); text-decoration: none; }
+        footer a:hover { color: var(--glow); }
+
+        @media (max-width: 768px) {
+            header { padding: 1rem 1.2rem; }
+            .header-nav { gap: 1rem; }
+            main { padding: 7rem 1rem 2.5rem; }
+            footer { flex-direction: column; gap: 0.6rem; text-align: center; padding: 1.2rem 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="mesh-bg"></div>
+    <div class="scanlines"></div>
+    <header>
+        <a href="index.html" class="brand">OFFBEAT</a>
+        <nav>
+            <ul class="header-nav">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="tools.html">Tools</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+                <li><a href="status.html" class="active">Status</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <div class="wrap">
+            <div class="tag-line">Live system telemetry</div>
+            <h1>DatBotty <span>Status Dashboard</span></h1>
+            <p class="sub">Real-time operational snapshot of DatBotty and supporting systems powering Offbeat automation.</p>
+            <p class="last-updated">Last Updated: <time datetime="2026-04-16T00:18:59Z">2026-04-16 00:18 UTC</time></p>
+
+            <section class="status-grid" aria-label="DatBotty component status">
+                <article class="status-card">
+                    <h2 class="component-name">Telegram Bot</h2>
+                    <div class="badge"><span class="dot"></span>Operational</div>
+                    <p class="status-note">Current state: Online. Message handling, command routing, and subscriber delivery are stable.</p>
+                </article>
+                <article class="status-card">
+                    <h2 class="component-name">OpenClaw AI</h2>
+                    <div class="badge"><span class="dot"></span>Operational</div>
+                    <p class="status-note">Current state: Running. AI response generation and prompt orchestration are healthy.</p>
+                </article>
+                <article class="status-card">
+                    <h2 class="component-name">n8n Workflows</h2>
+                    <div class="badge"><span class="dot"></span>Operational</div>
+                    <p class="status-note">Current state: Running. Automation jobs are processing events and scheduled flows on time.</p>
+                </article>
+                <article class="status-card">
+                    <h2 class="component-name">GitHub Actions</h2>
+                    <div class="badge"><span class="dot"></span>Operational</div>
+                    <p class="status-note">Current state: Active. CI pipelines, checks, and deployment workflows are executing successfully.</p>
+                </article>
+                <article class="status-card">
+                    <h2 class="component-name">Offbeat Website</h2>
+                    <div class="badge"><span class="dot"></span>Operational</div>
+                    <p class="status-note">Current state: Live. Public pages are available and serving content with normal latency.</p>
+                </article>
+                <article class="status-card">
+                    <h2 class="component-name">GitHub Cloud Agent</h2>
+                    <div class="badge"><span class="dot"></span>Operational</div>
+                    <p class="status-note">Current state: Enabled. Automated contribution and maintenance workflows are online.</p>
+                </article>
+            </section>
+
+            <div class="back-row">
+                <a class="back-btn" href="index.html">← Back to Offbeat v3</a>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <div>© 2024 Offbeat, Inc.</div>
+        <div>
+            <a href="index.html">Home</a> &nbsp;|&nbsp;
+            <a href="services.html">Services</a> &nbsp;|&nbsp;
+            <a href="tools.html">Tools</a> &nbsp;|&nbsp;
+            <a href="faq.html">FAQ</a> &nbsp;|&nbsp;
+            <a href="status.html" style="color: var(--glow);">Status</a>
+        </div>
+    </footer>
+</body>
+</html>
