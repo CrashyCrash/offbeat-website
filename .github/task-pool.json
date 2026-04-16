@@ -1,0 +1,74 @@
+[
+  {
+    "title": "Create v3/about.html — About Offbeat, Inc.",
+    "body": "Create a new file v3/about.html that introduces Offbeat, Inc.\n\nRequirements:\n- Match the v3 dark futuristic design (same CSS variables, header, footer as index.html)\n- Sections: company overview, what we build, tech stack, contact CTA\n- Include JSON-LD Organization schema and standard OG/meta tags\n- Add 'About' link to the nav on ALL existing v3 pages\n- Do NOT use the words 'proprietary' or 'unconventional' in any copy\n- Buttons must NOT lift/translate upward on hover\n- Use the same Outfit+FiraCode fonts, dark bg #020206, glow cyan+violet accents"
+  },
+  {
+    "title": "Create v3/work.html — DatBotty showcase of completed deployments",
+    "body": "Create a new file v3/work.html showcasing what DatBotty has autonomously built.\n\nRequirements:\n- Match v3 dark futuristic design (same header/footer as status.html)\n- Grid of project cards showing: Offbeat website v3, SEO implementation, Cloud Agent pipeline, GitHub Actions automation\n- Each card: title, short description, tech used as badge pills, live link where applicable\n- Include JSON-LD ItemList schema\n- Add 'Work' link to the nav on ALL existing v3 pages\n- Buttons must NOT lift on hover"
+  },
+  {
+    "title": "Mobile responsiveness audit: fix v3 layout issues on small screens",
+    "body": "Review all HTML files under v3/ for mobile layout problems at 375px and 768px widths.\n\nCheck:\n- Navigation wrapping or overflowing\n- Cards and grids too narrow or cramped\n- Text rendering issues on mobile\n- Any horizontal scroll triggers\n- Footer alignment on small screens\n\nApply CSS-only fixes using @media queries. Do NOT change the desktop design or any content. Report all findings as a numbered list first, then apply fixes."
+  },
+  {
+    "title": "Add Recent Activity timeline section to v3/status.html",
+    "body": "Add a 'Recent Cloud Agent Activity' section to v3/status.html.\n\nRequirements:\n- A timeline/feed of the last 6-8 meaningful things DatBotty deployed\n- Each item: icon + date + short description\n- Example entries: v3/contact.html deployed, SEO structured data added to all pages, Cloud Agent pipeline established, 11 pages verified healthy\n- Use the same dark v3 design with cyan accents\n- Insert the section between the Workflows table and the footer\n- Keep all existing content intact"
+  },
+  {
+    "title": "Add 4 new entries to v3/faq.html",
+    "body": "Add 4 more FAQ entries to v3/faq.html. Add these questions:\n\n1. What kind of tasks can DatBotty handle autonomously?\n2. How does DatBotty avoid making harmful or irreversible changes?\n3. Can DatBotty work while Crash is asleep?\n4. What AI models does DatBotty use and do they cost money?\n\nKeep the exact same accordion/FAQ styling. Add entries at the bottom of the existing list. Do NOT modify any existing entries or the page design."
+  },
+  {
+    "title": "Add BreadcrumbList schema to all v3 pages",
+    "body": "Add BreadcrumbList JSON-LD schema to every HTML file under v3/ that does not already have it.\n\nFormat for each page:\n{\n  \"@context\": \"https://schema.org\",\n  \"@type\": \"BreadcrumbList\",\n  \"itemListElement\": [\n    {\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://crashycrash.github.io/offbeat-website/v3/\"},\n    {\"@type\":\"ListItem\",\"position\":2,\"name\":\"[Page Name]\",\"item\":\"[full URL]\"}\n  ]\n}\n\nAdd inside a script type application/ld+json block. Do NOT remove existing schemas. Report which files were updated."
+  },
+  {
+    "title": "Performance audit: add lazy loading and font preconnect to v3 pages",
+    "body": "Review all v3 HTML files for performance improvements:\n- Add loading=lazy to any img tags missing it\n- Add rel=preconnect for Google Fonts if not already present\n- Check for any render-blocking resources in the head\n- Verify viewport meta tag is present on all pages\n\nApply safe fixes only. Do NOT change design or content. Report findings first."
+  },
+  {
+    "title": "Add Cookie Policy and CCPA sections to v3/privacy.html",
+    "body": "Add two new sections to v3/privacy.html:\n\n1. Cookie Policy — explain what cookies or localStorage the site uses (if any) and how to opt out\n2. California Privacy Rights (CCPA) — standard notice for CA residents\n\nKeep the same dark design, heading styles, and paragraph copy style as the rest of the page. Add the new sections at the bottom before the footer. Do NOT alter any existing sections."
+  },
+  {
+    "title": "Add Twitter Card meta tags to all v3 pages",
+    "body": "Add Twitter Card meta tags to all v3 HTML files that are missing them.\n\nRequired tags to add:\ntwitter:card set to summary\ntwitter:title set to match each page title\ntwitter:description set to match the existing og:description\ntwitter:site set to @offbeatinc\n\nCheck each file. Report which files were missing these. Apply to all v3 HTML files that need them."
+  },
+  {
+    "title": "Add pricing/tier section to v3/services.html",
+    "body": "Add an engagement tier section to v3/services.html.\n\nTiers to show:\n- Discovery (free intro consultation)\n- Project (fixed scope, custom quote)\n- Ongoing (retainer, custom AI ops)\n\nThree-column grid of tier cards matching the v3 dark futuristic design. Each card: tier name, short description, CTA linking to contact.html. Do NOT show dollar amounts — use Custom Quote or Contact Us.\n\nInsert between the main services grid and the existing CTA section. Match existing CSS variables exactly. Buttons must NOT lift on hover."
+  },
+  {
+    "title": "Add Powered By tech stack section to v3/index.html",
+    "body": "Add a minimal Powered By section to v3/index.html listing the key technologies DatBotty runs on.\n\nTech to list: Python, GitHub Actions, GitHub Copilot Cloud Agent, OpenClaw, Gemini, SQLite, Docker, Playwright.\n\nCompact row of pill/badge styled items using v3 dark design and cyan/violet palette. Insert between the feature cards section and the CTA at the bottom. Keep ALL existing content intact. Buttons must NOT lift on hover."
+  },
+  {
+    "title": "Accessibility: add skip-to-content link to all v3 pages",
+    "body": "Add a skip-to-content accessibility link at the top of every v3 HTML file.\n\nPattern: an anchor linking to #main-content with class skip-link, positioned off-screen and shown on focus.\n\nCSS for the skip link: position absolute, left -9999px normally, position static on focus.\n\nAlso add id=main-content to the main element on each page.\n\nReport which files were updated. Apply to all v3 HTML files."
+  },
+  {
+    "title": "Create v3/changelog.html — DatBotty deployment history",
+    "body": "Create a new file v3/changelog.html showing DatBotty's deployment history.\n\nRequirements:\n- Match v3 dark design (same header/footer as status.html)\n- Timeline layout: each entry has date, what was deployed, current status (live/merged)\n- Include entries for all deployed pages, GitHub Actions setup, Cloud Agent pipeline, SEO work\n- Add Changelog link to nav on all existing v3 pages\n- JSON-LD WebPage schema plus standard OG/meta tags\n- Use cyan accent color for the timeline line"
+  },
+  {
+    "title": "Review and fix all canonical link tags in v3 pages",
+    "body": "Audit every HTML file under v3/ for canonical link tags.\n\nRules:\n- Every page needs a canonical link pointing to its full URL at crashycrash.github.io/offbeat-website/v3/\n- index.html canonical should point to the directory URL with trailing slash\n- No page should be missing a canonical\n- Make sure no page points to the wrong canonical\n\nCheck all files. Add or fix missing canonicals. Report which files needed changes."
+  },
+  {
+    "title": "Add animated stat counter to v3/index.html hero section",
+    "body": "Add a compact animated stat counter row to v3/index.html.\n\nStats to animate on scroll (count up from 0 using IntersectionObserver):\n- 11+ Live Pages\n- 24/7 Autonomous\n- 93% Task Success\n- 0x Core Model Cost\n\nInsert the stats row directly below the hero headline and above the CTA buttons. Use a simple JS counter that animates on first scroll into view. Match v3 dark design with cyan gradient values. Do NOT alter any existing hero content."
+  },
+  {
+    "title": "Improve v3/contact.html with response time and FAQ callout",
+    "body": "Make two improvements to v3/contact.html:\n\n1. Add a line near the contact form or CTA: Typical response time is 1-2 business days\n2. Add a FAQ callout: Have a quick question? Check the FAQ first, with a link to faq.html\n\nKeep all existing design, structure, and styling intact. Report what was changed."
+  },
+  {
+    "title": "Add Best Value badge to top product in v3/tools.html",
+    "body": "Review v3/tools.html:\n\n1. Verify all affiliate links correctly use the offbeat0f-20 tag\n2. Add a subtle Best Value badge overlay to ONE product card that most deserves highlighting\n3. Badge style: small cyan pill in the top-right corner of the card, matching v3 CSS variables, border: 1px solid cyan, background with low opacity\n\nDo NOT change any product descriptions, prices, or links beyond verifying affiliate tags. Report what was found and changed."
+  },
+  {
+    "title": "Add alt text and aria-label audit to all v3 images and icons",
+    "body": "Review all v3 HTML files for accessibility gaps in images and icons:\n- img tags with empty or missing alt attributes\n- Icon or emoji spans used as meaningful content without aria-label\n- Link elements that are icon-only without accessible text\n\nApply WCAG AA compliant fixes. Use alt empty string for decorative elements. Add aria-label to meaningful icons. Report all findings before applying fixes."
+  }
+]

@@ -1,0 +1,119 @@
+name: Update Status Dashboard
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'   # Every 6 hours
+  workflow_dispatch:
+
+jobs:
+  update-status:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Generate status-data.json
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Count live HTML pages in this repo
+          PAGES=$(gh api "repos/${{ github.repository }}/git/trees/main?recursive=1" \
+            --jq '[.tree[] | select(.path | endswith(".html"))] | length' 2>/dev/null || echo 0)
+
+          # Count merged Copilot PRs (cloud agent work done)
+          PAGED_PRS=0
+          for PAGE in 1 2 3; do
+            COUNT=$(gh api "repos/${{ github.repository }}/pulls?state=closed&per_page=100&page=$PAGE" \
+              --jq '[.[] | select(.head.ref | startswith("copilot/")) | select(.merged_at != null)] | length' 2>/dev/null || echo 0)
+            PAGED_PRS=$((PAGED_PRS + COUNT))
+            [ "$COUNT" -lt 100 ] && break
+          done
+
+          # Count total issues created (tasks dispatched total)
+          ISSUES=$(gh api "repos/${{ github.repository }}/issues?state=all&per_page=1" \
+            -i 2>/dev/null | grep -i "^x-total-count:" | awk '{print $2}' | tr -d '[:space:]' || echo "?")
+
+          # Last commit to this repo
+          LAST_COMMIT_DATE=$(gh api "repos/${{ github.repository }}/commits?per_page=1" \
+            --jq '.[0].commit.committer.date' 2>/dev/null || echo "")
+          LAST_COMMIT_MSG=$(gh api "repos/${{ github.repository }}/commits?per_page=1" \
+            --jq '.[0].commit.message' 2>/dev/null | head -c 60 || echo "")
+          LAST_COMMIT_SHA=$(gh api "repos/${{ github.repository }}/commits?per_page=1" \
+            --jq '.[0].sha[0:7]' 2>/dev/null || echo "")
+
+          # Count active GitHub Actions workflows in this repo
+          ACTIVE_WORKFLOWS=$(gh api "repos/${{ github.repository }}/actions/workflows" \
+            --jq '[.workflows[] | select(.state == "active")] | length' 2>/dev/null || echo 0)
+
+          # DatBotty repo last commit
+          DATBOTTY_COMMIT=$(gh api "repos/CrashyCrash/datbotty-v2/commits?per_page=1" \
+            --jq '.[0].commit.committer.date' 2>/dev/null || echo "")
+
+          # Open copilot PRs (queued cloud agent work)
+          OPEN_PRS=$(gh api "repos/${{ github.repository }}/pulls?state=open&per_page=50" \
+            --jq '[.[] | select(.head.ref | startswith("copilot/"))] | length' 2>/dev/null || echo 0)
+
+          # Page health check
+          PAGES_UP=0
+          PAGE_URLS=(
+            "https://crashycrash.github.io/offbeat-website/"
+            "https://crashycrash.github.io/offbeat-website/v3/"
+            "https://crashycrash.github.io/offbeat-website/v3/services.html"
+            "https://crashycrash.github.io/offbeat-website/v3/tools.html"
+            "https://crashycrash.github.io/offbeat-website/v3/faq.html"
+            "https://crashycrash.github.io/offbeat-website/v3/privacy.html"
+            "https://crashycrash.github.io/offbeat-website/v3/contact.html"
+            "https://crashycrash.github.io/offbeat-website/v3/status.html"
+          )
+          for URL in "${PAGE_URLS[@]}"; do
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 8 "$URL")
+            [ "$STATUS" = "200" ] && PAGES_UP=$((PAGES_UP + 1))
+          done
+
+          GENERATED_AT=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+
+          cat > v3/status-data.json <<EOF
+          {
+            "generated_at": "$GENERATED_AT",
+            "live_pages": $PAGES,
+            "prs_merged": $PAGED_PRS,
+            "issues_dispatched": "$ISSUES",
+            "active_workflows": $ACTIVE_WORKFLOWS,
+            "open_prs": $OPEN_PRS,
+            "pages_up": $PAGES_UP,
+            "pages_checked": ${#PAGE_URLS[@]},
+            "last_commit_offbeat": "$LAST_COMMIT_DATE",
+            "last_commit_msg": $(echo "$LAST_COMMIT_MSG" | jq -Rs .),
+            "last_commit_sha": "$LAST_COMMIT_SHA",
+            "last_commit_datbotty": "$DATBOTTY_COMMIT"
+          }
+          EOF
+
+          echo "Generated status-data.json:"
+          cat v3/status-data.json
+
+      - name: Commit if changed
+        run: |
+          git config user.name "datbotty-actions[bot]"
+          git config user.email "datbotty-actions@offbeat.inc"
+          git add v3/status-data.json
+          if git diff --cached --quiet; then
+            echo "No changes to status-data.json"
+          else
+            git commit -m "chore: update status dashboard data [skip ci]"
+            git push
+            echo "✅ status-data.json updated and pushed"
+          fi
+
+      - name: Summary
+        run: |
+          echo "## Status Dashboard Updated" >> $GITHUB_STEP_SUMMARY
+          echo "- **Generated at**: $(date -u)" >> $GITHUB_STEP_SUMMARY
+          echo "- **File**: v3/status-data.json" >> $GITHUB_STEP_SUMMARY
+          echo "- **URL**: https://crashycrash.github.io/offbeat-website/v3/status.html" >> $GITHUB_STEP_SUMMARY
