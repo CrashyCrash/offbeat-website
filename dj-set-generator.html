@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DJ Set Generator — mutha effin CRASH</title>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0a0a0f;
+  --card:#0d0d18;
+  --card2:#12121f;
+  --border:#1c1c30;
+  --cyan:#00d4ff;
+  --purple:#9b59b6;
+  --dim:#5a5a7a;
+  --text:#e0e4f4;
+  --glow:rgba(0,212,255,0.18);
+  --glow2:rgba(155,89,182,0.14);
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Courier New',monospace;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* GRID BACKGROUND */
+.grid-bg{
+  position:fixed;inset:0;
+  background-image:
+    linear-gradient(rgba(0,212,255,0.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,212,255,0.025) 1px,transparent 1px);
+  background-size:50px 50px;
+  pointer-events:none;z-index:0;
+}
+
+/* SCAN LINE */
+.scanline{
+  position:fixed;inset:0;pointer-events:none;z-index:1;
+  background:repeating-linear-gradient(
+    0deg,
+    transparent,transparent 2px,
+    rgba(0,0,0,0.08) 2px,rgba(0,0,0,0.08) 4px
+  );
+}
+
+/* MAIN LAYOUT */
+.container{position:relative;z-index:2;max-width:900px;margin:0 auto;padding:2rem 1.5rem 4rem;}
+
+/* HEADER */
+.header{text-align:center;padding:3rem 0 2rem;}
+
+.title-wrap{position:relative;display:inline-block;margin-bottom:0.5rem;}
+
+.title{
+  font-size:clamp(2rem,6vw,3.5rem);
+  font-weight:900;
+  letter-spacing:0.15em;
+  color:var(--cyan);
+  text-transform:uppercase;
+  text-shadow:0 0 20px rgba(0,212,255,0.6),0 0 40px rgba(0,212,255,0.3);
+  animation:pulse-glow 3s ease-in-out infinite;
+  position:relative;
+}
+
+.title::before,.title::after{
+  content:attr(data-text);
+  position:absolute;top:0;left:0;width:100%;height:100%;
+}
+.title::before{
+  color:#ff0040;
+  animation:glitch-1 2.8s infinite;
+  clip-path:polygon(0 0,100% 0,100% 40%,0 40%);
+}
+.title::after{
+  color:#00ff88;
+  animation:glitch-2 2.8s infinite;
+  clip-path:polygon(0 60%,100% 60%,100% 100%,0 100%);
+}
+
+@keyframes glitch-1{
+  0%,90%{transform:translate(0)}
+  91%{transform:translate(-3px,1px)}
+  92%{transform:translate(3px,-1px)}
+  93%{transform:translate(-2px,2px)}
+  94%{transform:translate(2px,0)}
+  100%{transform:translate(0)}
+}
+@keyframes glitch-2{
+  0%,88%{transform:translate(0)}
+  89%{transform:translate(4px,-2px)}
+  90%{transform:translate(-4px,2px)}
+  91%{transform:translate(3px,-1px)}
+  92%{transform:translate(0)}
+  100%{transform:translate(0)}
+}
+@keyframes pulse-glow{
+  0%,100%{text-shadow:0 0 20px rgba(0,212,255,0.6),0 0 40px rgba(0,212,255,0.3)}
+  50%{text-shadow:0 0 30px rgba(0,212,255,0.9),0 0 60px rgba(0,212,255,0.5),0 0 80px rgba(0,212,255,0.2)}
+}
+
+.subtitle{
+  color:var(--purple);
+  font-size:clamp(0.85rem,2.5vw,1.1rem);
+  letter-spacing:0.25em;
+  text-transform:uppercase;
+  margin-bottom:0.5rem;
+  text-shadow:0 0 12px rgba(155,89,182,0.5);
+}
+.tagline{
+  color:var(--dim);
+  font-size:0.8rem;
+  letter-spacing:0.1em;
+  margin-bottom:2.5rem;
+}
+
+/* CONTROLS */
+.controls{
+  display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;
+  margin-bottom:2rem;
+}
+
+.btn{
+  font-family:'Courier New',monospace;
+  font-size:0.95rem;
+  font-weight:700;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  border:none;cursor:pointer;
+  border-radius:4px;
+  padding:0.85rem 2.2rem;
+  position:relative;
+  transition:box-shadow 0.25s ease,background 0.25s ease;
+  /* NO transform/translate on hover per user rules */
+}
+
+.btn-generate{
+  background:#0a0a0f;
+  color:var(--cyan);
+  border:2px solid var(--cyan);
+  box-shadow:0 0 12px rgba(0,212,255,0.25),inset 0 0 12px rgba(0,212,255,0.04);
+  font-size:1.05rem;
+  padding:1rem 2.8rem;
+}
+.btn-generate:hover{
+  background:rgba(0,212,255,0.07);
+  box-shadow:0 0 25px rgba(0,212,255,0.5),inset 0 0 20px rgba(0,212,255,0.08);
+}
+.btn-generate:active{
+  background:rgba(0,212,255,0.12);
+  box-shadow:0 0 35px rgba(0,212,255,0.7),inset 0 0 25px rgba(0,212,255,0.12);
+}
+
+.btn-save{
+  background:#0a0a0f;
+  color:var(--purple);
+  border:2px solid var(--purple);
+  box-shadow:0 0 10px rgba(155,89,182,0.2);
+}
+.btn-save:hover{
+  background:rgba(155,89,182,0.07);
+  box-shadow:0 0 20px rgba(155,89,182,0.4);
+}
+.btn-save:disabled{
+  opacity:0.3;cursor:not-allowed;
+}
+.btn-save:disabled:hover{
+  background:transparent;
+  box-shadow:0 0 10px rgba(155,89,182,0.2);
+}
+
+/* SET INFO BAR */
+.set-info{
+  display:none;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-left:3px solid var(--cyan);
+  border-radius:6px;
+  padding:1rem 1.5rem;
+  margin-bottom:1.5rem;
+  display:none;
+  flex-wrap:wrap;
+  gap:1.5rem;
+  align-items:center;
+}
+.set-info.visible{display:flex;}
+.info-item{display:flex;flex-direction:column;gap:0.2rem;}
+.info-label{color:var(--dim);font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;}
+.info-value{color:var(--cyan);font-size:1rem;font-weight:700;}
+
+/* ENERGY MAP */
+.energy-section{
+  display:none;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:6px;
+  padding:1.25rem 1.5rem;
+  margin-bottom:1.5rem;
+}
+.energy-section.visible{display:block;}
+.section-label{
+  color:var(--dim);font-size:0.72rem;letter-spacing:0.18em;
+  text-transform:uppercase;margin-bottom:1rem;
+}
+.energy-bars{
+  display:flex;align-items:flex-end;gap:3px;height:60px;
+}
+.e-bar{
+  flex:1;border-radius:2px 2px 0 0;min-width:6px;
+  transition:height 0.4s ease,background 0.4s ease;
+  position:relative;
+}
+.e-bar:hover::after{
+  content:attr(data-val);
+  position:absolute;top:-20px;left:50%;transform:translateX(-50%);
+  font-size:0.65rem;color:var(--text);background:rgba(0,0,0,0.8);
+  padding:1px 4px;border-radius:2px;pointer-events:none;
+  white-space:nowrap;
+}
+.chaos-marker{
+  position:absolute;top:-8px;left:50%;transform:translateX(-50%);
+  color:#ffd700;font-size:0.6rem;
+}
+
+/* TIMELINE */
+.timeline-section{display:none;}
+.timeline-section.visible{display:block;}
+
+.timeline{
+  position:relative;padding-left:0;
+  border-left:2px solid var(--border);
+  margin-left:1.5rem;
+  animation:border-pulse 4s ease-in-out infinite;
+}
+@keyframes border-pulse{
+  0%,100%{border-left-color:var(--border)}
+  50%{border-left-color:rgba(0,212,255,0.3)}
+}
+
+.track-card{
+  position:relative;
+  margin-bottom:0.6rem;
+  margin-left:1rem;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:6px;
+  padding:0.9rem 1.1rem;
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  gap:0.75rem;
+  align-items:center;
+  transition:border-color 0.2s ease,box-shadow 0.2s ease;
+}
+.track-card:hover{
+  border-color:rgba(0,212,255,0.2);
+  box-shadow:0 0 15px rgba(0,212,255,0.06);
+}
+.track-card::before{
+  content:'';
+  position:absolute;
+  left:-1.075rem;top:50%;transform:translateY(-50%);
+  width:8px;height:8px;border-radius:50%;
+  background:var(--border);border:2px solid var(--border);
+  transition:background 0.2s,border-color 0.2s;
+}
+.track-card:hover::before{
+  background:var(--cyan);border-color:var(--cyan);
+}
+.track-card.chaos{
+  border-color:rgba(255,215,0,0.3);
+  background:linear-gradient(135deg,var(--card),rgba(255,215,0,0.03));
+}
+.track-card.chaos::before{
+  background:#ffd700;border-color:#ffd700;
+}
+
+.track-num{
+  font-size:0.75rem;color:var(--dim);
+  letter-spacing:0.1em;min-width:28px;
+  text-align:right;
+}
+.track-main{}
+.track-name{
+  font-size:0.95rem;font-weight:700;
+  color:var(--text);margin-bottom:0.2rem;
+}
+.track-tags{
+  display:flex;flex-wrap:wrap;gap:0.4rem;align-items:center;
+}
+.tag{
+  font-size:0.68rem;letter-spacing:0.08em;
+  padding:0.15rem 0.5rem;border-radius:999px;
+  font-weight:600;
+}
+.tag-genre{background:rgba(0,212,255,0.1);color:var(--cyan);border:1px solid rgba(0,212,255,0.2);}
+.tag-bpm{background:rgba(155,89,182,0.1);color:var(--purple);border:1px solid rgba(155,89,182,0.2);}
+.tag-chaos{background:rgba(255,215,0,0.1);color:#ffd700;border:1px solid rgba(255,215,0,0.25);}
+
+.track-right{
+  text-align:right;
+  display:flex;flex-direction:column;gap:0.3rem;align-items:flex-end;
+}
+.energy-display{
+  display:flex;align-items:center;gap:0.4rem;font-size:0.75rem;
+}
+.energy-dots{display:flex;gap:2px;}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--border);}
+.dot.on{background:var(--cyan);}
+.dot.hot{background:#ff6b35;}
+.dot.chaos-dot{background:#ffd700;}
+
+.transition-tag{
+  font-size:0.68rem;color:var(--dim);
+  letter-spacing:0.06em;text-align:right;
+}
+
+/* TRANSITION ARROW */
+.transition-row{
+  margin-left:1rem;margin-bottom:0.4rem;
+  display:flex;align-items:center;gap:0.5rem;
+  padding:0 0 0 0.5rem;
+}
+.trans-line{width:20px;height:1px;background:var(--border);}
+.trans-label{
+  font-size:0.65rem;color:var(--dim);letter-spacing:0.1em;
+  font-style:italic;
+}
+/* time marker */
+.time-marker{
+  font-size:0.62rem;color:var(--dim);
+  letter-spacing:0.1em;margin-top:0.15rem;
+}
+
+/* FOOTER BASS WAVE */
+.footer{
+  text-align:center;margin-top:4rem;padding-top:2rem;
+  border-top:1px solid var(--border);
+  position:relative;overflow:hidden;
+}
+.bass-wave{
+  display:flex;align-items:flex-end;justify-content:center;
+  gap:3px;height:30px;margin-bottom:1rem;
+}
+.wave-bar{
+  width:4px;border-radius:2px 2px 0 0;
+  background:linear-gradient(to top,var(--purple),var(--cyan));
+  opacity:0.5;
+  animation:wave-dance var(--dur,0.6s) ease-in-out var(--delay,0s) infinite alternate;
+}
+@keyframes wave-dance{
+  from{height:3px;opacity:0.3}
+  to{height:var(--max-h,20px);opacity:0.7}
+}
+.footer-text{
+  color:var(--dim);font-size:0.75rem;letter-spacing:0.12em;
+}
+.footer-text a{color:var(--cyan);text-decoration:none;}
+.footer-text a:hover{text-decoration:underline;}
+
+/* EMPTY STATE */
+.empty-state{
+  text-align:center;padding:4rem 2rem;
+  color:var(--dim);
+}
+.empty-icon{
+  font-size:3rem;margin-bottom:1rem;opacity:0.3;
+}
+.empty-state p{font-size:0.85rem;letter-spacing:0.1em;}
+
+/* LOADING BAR */
+.load-bar{
+  position:fixed;top:0;left:0;height:2px;
+  background:linear-gradient(90deg,var(--cyan),var(--purple),var(--cyan));
+  background-size:200% 100%;
+  animation:load-move 0.6s linear;
+  z-index:999;
+  transition:width 0.05s ease;
+}
+@keyframes load-move{
+  0%{background-position:0% 0%}
+  100%{background-position:200% 0%}
+}
+
+/* RESPONSIVE */
+@media(max-width:600px){
+  .container{padding:1.5rem 1rem 3rem;}
+  .track-card{grid-template-columns:auto 1fr;grid-template-rows:auto auto;}
+  .track-right{grid-column:2;flex-direction:row;align-items:center;justify-content:flex-start;}
+  .controls{flex-direction:column;align-items:stretch;}
+  .btn{text-align:center;}
+  .energy-bars{height:45px;}
+  .timeline{margin-left:0.75rem;}
+  .track-card{margin-left:0.75rem;}
+}
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+<div class="scanline"></div>
+
+<div class="container">
+  <!-- HEADER -->
+  <div class="header">
+    <div class="title-wrap">
+      <h1 class="title" data-text="DJ SET GENERATOR">DJ SET GENERATOR</h1>
+    </div>
+    <p class="subtitle">by mutha effin CRASH</p>
+    <p class="tagline">145 BPM · CHAOS · EMOTION · DUBSTEP · HARD HITTING</p>
+  </div>
+
+  <!-- CONTROLS -->
+  <div class="controls">
+    <button class="btn btn-generate" id="btnGenerate" onclick="generateSet()">⚡ GENERATE SET</button>
+    <button class="btn btn-save" id="btnSave" onclick="saveSet()" disabled>▼ SAVE AS TEXT</button>
+  </div>
+
+  <!-- SET INFO -->
+  <div class="set-info" id="setInfo">
+    <div class="info-item">
+      <span class="info-label">Tracks</span>
+      <span class="info-value" id="infoTracks">—</span>
+    </div>
+    <div class="info-item">
+      <span class="info-label">Duration</span>
+      <span class="info-value" id="infoDuration">—</span>
+    </div>
+    <div class="info-item">
+      <span class="info-label">Avg BPM</span>
+      <span class="info-value" id="infoBpm">—</span>
+    </div>
+    <div class="info-item">
+      <span class="info-label">Peak Energy</span>
+      <span class="info-value" id="infoPeak">—</span>
+    </div>
+    <div class="info-item">
+      <span class="info-label">Chaos Moments</span>
+      <span class="info-value" id="infoChaos">—</span>
+    </div>
+  </div>
+
+  <!-- ENERGY MAP -->
+  <div class="energy-section" id="energySection">
+    <div class="section-label">▸ Energy Map</div>
+    <div class="energy-bars" id="energyBars"></div>
+  </div>
+
+  <!-- TIMELINE -->
+  <div class="timeline-section" id="timelineSection">
+    <div class="section-label" style="margin-bottom:0.75rem;">▸ Set Timeline</div>
+    <div class="timeline" id="timeline"></div>
+  </div>
+
+  <!-- EMPTY STATE -->
+  <div class="empty-state" id="emptyState">
+    <div class="empty-icon">🎛</div>
+    <p>HIT GENERATE — YOUR SET AWAITS</p>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="bass-wave" id="bassWave"></div>
+    <p class="footer-text">
+      <a href="index.html">← Offbeat, Inc.</a> &nbsp;·&nbsp;
+      Generated by <span style="color:var(--cyan)">DatBotty v2</span>
+      &nbsp;·&nbsp; <span style="color:var(--dim)">No two sets alike</span>
+    </p>
+  </div>
+</div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────────────
+const GENRES = [
+  'Dubstep','Riddim','Melodic Bass','Bass House',
+  'Hybrid Trap','Color Bass','Tearout','Experimental Bass'
+];
+
+const TRANSITIONS = [
+  'Hard Cut','Filter Sweep','Echo Out','Beatmatch',
+  'Sample Layer','Vocal Chop Bridge','Double Drop'
+];
+
+const CHAOS_TYPES = [
+  '★ DOUBLE DROP','★ TRIPLE SWITCH','★ BREAKDOWN → DROP',
+  '★ VOCAL SCRATCH SECTION','★ REWIND + RELOAD','★ SILENCE DROP'
+];
+
+const ARTIST_WORDS = [
+  'Excision','Subtronics','Sullivan King','Svdden Death',
+  'Space Laces','Illenium','Rezz','Level Up','Zomboy',
+  'Barely Alive','Must Die!','Phantogram',
+  'Virtual Riot','Skrillex','Kill The Noise',
+  'Getter','Infected Mushroom','12th Planet','Bear Grillz',
+  'Spag Heddy','Ganja White Night','Wooli','Dirt Monkey',
+  'PhaseOne','The Anix','Snavs','DISKORD','Eptic'
+];
+
+const TRACK_WORDS = [
+  'Annihilation','Outbreak','Frequency','Overdrive','Signal',
+  'Collapse','Headbanga','Reactor','The Drop','Requiem',
+  'Static','Bassweight','Shutdown','Override','Warhead',
+  'Chaos Theory','Neon Abyss','Fracture','Surge','Breach',
+  'Terraform','Inferno','Cascade','Voltage','Resonance',
+  'Blackout','Neuromancer','Phantom Signal','The Pit','Uprising',
+  'Absolute Zero','Reboot','Demolition','Gridlock','Echo Chamber'
+];
+
+// ── HELPERS ───────────────────────────────────────────────────────────────────
+function rnd(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+function pickN(arr, n) {
+  const a = [...arr]; const out = [];
+  for (let i = 0; i < n; i++) { const idx = Math.floor(Math.random() * a.length); out.push(a[idx]); a.splice(idx,1); }
+  return out;
+}
+
+// ── GENERATE ──────────────────────────────────────────────────────────────────
+let currentSet = null;
+
+function generateSet() {
+  const btn = document.getElementById('btnGenerate');
+  btn.disabled = true;
+  btn.textContent = '⟳ BUILDING SET...';
+
+  // Loading bar
+  const bar = document.createElement('div');
+  bar.className = 'load-bar';
+  bar.style.width = '0%';
+  document.body.appendChild(bar);
+  let w = 0;
+  const grow = setInterval(() => { w = Math.min(w + rnd(8,18), 90); bar.style.width = w + '%'; }, 60);
+
+  setTimeout(() => {
+    clearInterval(grow);
+    bar.style.width = '100%';
+    setTimeout(() => bar.remove(), 300);
+
+    const numTracks = rnd(12,18);
+    const chaosCount = rnd(2,3);
+    const chaosSlots = new Set();
+    // Space chaos moments out: not first 2, not last 1, not adjacent
+    const candidates = [];
+    for (let i = 3; i <= numTracks - 2; i++) candidates.push(i);
+    const shuffled = candidates.sort(() => Math.random() - 0.5);
+    for (let c of shuffled) {
+      if (chaosSlots.size >= chaosCount) break;
+      const near = [...chaosSlots].some(s => Math.abs(s - c) <= 2);
+      if (!near) chaosSlots.add(c);
+    }
+
+    const tracks = [];
+    let time = 0;
+    const bpmBase = rnd(141, 147);
+
+    for (let i = 1; i <= numTracks; i++) {
+      const isChaos = chaosSlots.has(i);
+      const energy = isChaos
+        ? rnd(8, 10)
+        : (i <= 2 ? rnd(4,6) : i >= numTracks - 1 ? rnd(5,8) : rnd(5,10));
+      const bpm = bpmBase + rnd(-2, 3);
+      const genre = pick(GENRES);
+      const name = pick(ARTIST_WORDS) + ' - ' + pick(TRACK_WORDS);
+      const transition = i < numTracks ? pick(TRANSITIONS) : null;
+      const chaosLabel = isChaos ? pick(CHAOS_TYPES) : null;
+      const duration = rnd(90, 180); // seconds per track
+
+      tracks.push({ num:i, name, genre, bpm, energy, transition, isChaos, chaosLabel, startTime:time, duration });
+      time += duration;
+    }
+
+    currentSet = { tracks, chaosCount, totalTime: time };
+
+    renderSet(currentSet);
+    btn.disabled = false;
+    btn.textContent = '⚡ REGENERATE';
+    document.getElementById('btnSave').disabled = false;
+  }, 600);
+}
+
+// ── RENDER ────────────────────────────────────────────────────────────────────
+function renderSet(set) {
+  const { tracks } = set;
+  const totalSec = set.totalTime;
+  const mins = Math.floor(totalSec / 60);
+  const secs = totalSec % 60;
+  const avgBpm = Math.round(tracks.reduce((a,t) => a + t.bpm, 0) / tracks.length);
+  const peakE = Math.max(...tracks.map(t => t.energy));
+
+  // Set info bar
+  const si = document.getElementById('setInfo');
+  si.classList.add('visible');
+  document.getElementById('infoTracks').textContent = tracks.length;
+  document.getElementById('infoDuration').textContent = `${mins}m ${secs.toString().padStart(2,'0')}s`;
+  document.getElementById('infoBpm').textContent = avgBpm + ' BPM';
+  document.getElementById('infoPeak').textContent = peakE + ' / 10';
+  document.getElementById('infoChaos').textContent = '★'.repeat(set.chaosCount);
+
+  // Energy bars
+  const ec = document.getElementById('energySection');
+  ec.classList.add('visible');
+  const eb = document.getElementById('energyBars');
+  eb.innerHTML = '';
+  tracks.forEach(t => {
+    const bar = document.createElement('div');
+    bar.className = 'e-bar';
+    const pct = (t.energy / 10) * 100;
+    const hue = t.isChaos ? '#ffd700' : (t.energy >= 8 ? '#ff6b35' : (t.energy >= 6 ? '#00d4ff' : '#9b59b6'));
+    bar.style.cssText = `height:${pct}%;background:${hue};`;
+    bar.setAttribute('data-val', `T${t.num}: E${t.energy}`);
+    if (t.isChaos) {
+      const star = document.createElement('span');
+      star.className = 'chaos-marker';
+      star.textContent = '★';
+      bar.appendChild(star);
+    }
+    eb.appendChild(bar);
+  });
+
+  // Timeline
+  const ts = document.getElementById('timelineSection');
+  ts.classList.add('visible');
+  const tl = document.getElementById('timeline');
+  tl.innerHTML = '';
+
+  tracks.forEach((t, idx) => {
+    // Track card
+    const card = document.createElement('div');
+    card.className = 'track-card' + (t.isChaos ? ' chaos' : '');
+
+    // Track number + time
+    const minutes = Math.floor(t.startTime / 60);
+    const seconds = t.startTime % 60;
+    const timeStr = `${minutes}:${seconds.toString().padStart(2,'0')}`;
+
+    card.innerHTML = `
+      <div class="track-num">
+        <div>${String(t.num).padStart(2,'0')}</div>
+        <div class="time-marker">${timeStr}</div>
+      </div>
+      <div class="track-main">
+        <div class="track-name">${t.isChaos ? '★ ' : ''}${t.name}</div>
+        <div class="track-tags">
+          <span class="tag tag-genre">${t.genre}</span>
+          <span class="tag tag-bpm">${t.bpm} BPM</span>
+          ${t.isChaos ? `<span class="tag tag-chaos">${t.chaosLabel}</span>` : ''}
+        </div>
+      </div>
+      <div class="track-right">
+        <div class="energy-display">
+          <div class="energy-dots">${renderDots(t.energy, t.isChaos)}</div>
+          <span style="color:${t.isChaos ? '#ffd700' : (t.energy>=8?'#ff6b35':'var(--cyan)')}; font-size:0.8rem; font-weight:700;">${t.energy}</span>
+        </div>
+      </div>
+    `;
+    tl.appendChild(card);
+
+    // Transition row (between tracks)
+    if (t.transition && idx < tracks.length - 1) {
+      const tr = document.createElement('div');
+      tr.className = 'transition-row';
+      tr.innerHTML = `<div class="trans-line"></div><span class="trans-label">${t.transition}</span>`;
+      tl.appendChild(tr);
+    }
+  });
+
+  // Hide empty state
+  document.getElementById('emptyState').style.display = 'none';
+}
+
+function renderDots(energy, isChaos) {
+  let html = '';
+  for (let i = 1; i <= 10; i++) {
+    const cls = i <= energy ? (isChaos ? 'dot chaos-dot' : (energy >= 8 ? 'dot hot' : 'dot on')) : 'dot';
+    html += `<div class="${cls}"></div>`;
+  }
+  return html;
+}
+
+// ── SAVE ──────────────────────────────────────────────────────────────────────
+function saveSet() {
+  if (!currentSet) return;
+  const { tracks } = currentSet;
+
+  let txt = '════════════════════════════════════════\n';
+  txt += '   DJ SET GENERATOR — mutha effin CRASH\n';
+  txt += '   Generated: ' + new Date().toLocaleString() + '\n';
+  txt += '════════════════════════════════════════\n\n';
+  txt += `Tracks: ${tracks.length}  |  `;
+  txt += `Avg BPM: ${Math.round(tracks.reduce((a,t)=>a+t.bpm,0)/tracks.length)}  |  `;
+  txt += `Chaos Moments: ${currentSet.chaosCount}\n\n`;
+  txt += '── SET PLAN ─────────────────────────────\n\n';
+
+  tracks.forEach((t, i) => {
+    const mins = Math.floor(t.startTime / 60);
+    const secs = t.startTime % 60;
+    const timeStr = `${mins}:${secs.toString().padStart(2,'0')}`;
+    txt += `[${timeStr}] Track ${String(t.num).padStart(2,'0')}: ${t.name}\n`;
+    txt += `         Genre: ${t.genre}  |  BPM: ${t.bpm}  |  Energy: ${t.energy}/10\n`;
+    if (t.isChaos) txt += `         ${t.chaosLabel}\n`;
+    if (t.transition) txt += `         → ${t.transition}\n`;
+    txt += '\n';
+  });
+
+  txt += '════════════════════════════════════════\n';
+  txt += '  Built by DatBotty v2 — offbeatinc.com\n';
+  txt += '════════════════════════════════════════\n';
+
+  const blob = new Blob([txt], { type: 'text/plain' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'crash-dj-set-' + Date.now() + '.txt';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(a.href);
+}
+
+// ── BASS WAVE FOOTER ──────────────────────────────────────────────────────────
+(function buildWave() {
+  const container = document.getElementById('bassWave');
+  const numBars = 40;
+  const maxHeights = [4,6,8,10,14,18,22,26,28,26,22,18,14,10,8,6,4,6,10,16,20,28,26,22,18,14,10,8,6,8,12,18,22,26,28,24,18,12,8,4];
+  for (let i = 0; i < numBars; i++) {
+    const bar = document.createElement('div');
+    bar.className = 'wave-bar';
+    const maxH = maxHeights[i] || rnd(4, 24);
+    const dur = (0.3 + Math.random() * 0.6).toFixed(2);
+    const delay = (Math.random() * 0.5).toFixed(2);
+    bar.style.cssText = `--max-h:${maxH}px;--dur:${dur}s;--delay:${delay}s;height:${maxH}px;`;
+    container.appendChild(bar);
+  }
+})();
+
+// Auto-generate on load for immediate wow factor
+window.addEventListener('load', () => setTimeout(generateSet, 300));
+</script>
+</body>
+</html>

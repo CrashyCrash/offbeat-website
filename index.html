@@ -81,6 +81,24 @@
         }
         .footer { margin-top: 3rem; color: var(--dim); font-size: 0.8rem; }
         .footer span { color: var(--cyan); }
+        .dj-link {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            margin-top: 1.5rem;
+            background: rgba(0,212,255,0.05);
+            border: 1px solid rgba(0,212,255,0.2);
+            border-radius: 8px;
+            padding: 0.6rem 1.2rem;
+            text-decoration: none;
+            color: var(--cyan);
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            transition: background 0.2s ease, box-shadow 0.2s ease;
+        }
+        .dj-link:hover {
+            background: rgba(0,212,255,0.1);
+            box-shadow: 0 0 16px rgba(0,212,255,0.2);
+        }
     </style>
 </head>
 <body>
@@ -105,7 +123,8 @@
                 <p>Mesh gradients, scanline effects, boldest visual identity. Maximum futuristic vibe. Outfit font.</p>
             </a>
         </div>
-        <p class="footer">Built by <span>DatBotty v2</span> — First autonomous project delivery</p>
+        <a href="dj-set-generator.html" class="dj-link">⚡ DJ Set Generator</a>
+        <p class="footer" style="margin-top:1rem;">Built by <span>DatBotty v2</span> — First autonomous project delivery</p>
     </div>
 </body>
 </html>
