@@ -1,0 +1,74 @@
+{
+  "tasks_completed": 672,
+  "quality_avg": 0.41,
+  "uptime_hours": 189,
+  "active_nodes": 10,
+  "total_nodes": 8,
+  "last_briefing": "~2h ago",
+  "handler_stats": {
+    "openclaw": {
+      "tasks": 432,
+      "quality": 0.41,
+      "status": "active"
+    },
+    "browser": {
+      "tasks": 111,
+      "quality": 0.46,
+      "status": "active"
+    },
+    "browser_agent": {
+      "tasks": 43,
+      "quality": 0.53,
+      "status": "active"
+    },
+    "copilot": {
+      "tasks": 31,
+      "quality": 0.4,
+      "status": "active"
+    },
+    "manual": {
+      "tasks": 30,
+      "quality": 0.01,
+      "status": "active"
+    },
+    "investigation": {
+      "tasks": 13,
+      "quality": 0.18,
+      "status": "active"
+    },
+    "hass": {
+      "tasks": 5,
+      "quality": 0.13,
+      "status": "active"
+    },
+    "cloud_agent": {
+      "tasks": 5,
+      "quality": 0.63,
+      "status": "active"
+    },
+    "script": {
+      "tasks": 1,
+      "quality": 0.5,
+      "status": "active"
+    },
+    "healthcheck": {
+      "tasks": 1,
+      "quality": 0,
+      "status": "active"
+    }
+  },
+  "recent_tasks": [
+    "screenshot https://crashycrash.github.io/offbeat-website/v2/",
+    "Go to https://news.ycombinator.com and extract the titles...",
+    "seo-audit https://crashycrash.github.io/offbeat-website/v2/",
+    "check-links https://crashycrash.github.io/offbeat-website...",
+    "Use web_search to find: Python cron-based autonomous task...",
+    "Use web_search to find: how to make Telegram bot audio me...",
+    "Use fluid-memory to store these DatBotty state facts: (1)...",
+    "Use web_search to find: best ElevenLabs voice IDs for con..."
+  ],
+  "skill_usage_pct": 78.6,
+  "investigation_findings_24h": 89,
+  "tasks_24h": 37,
+  "failed_24h": 5
+}

@@ -1,14 +1,42 @@
 {
-  "generated_at": "2026-04-17T19:02:03Z",
-  "live_pages": 15,
-  "prs_merged": 7,
-  "issues_dispatched": 8,
-  "open_issues": 28,
-  "active_workflows": 8,
-  "open_prs": 22,
-  "pages_up": 10,
-  "pages_checked": 10,
-  "last_commit_offbeat": "2026-04-17T13:21:47Z",
-  "last_commit_msg": "chore: update status dashboard data [skip ci]",
-  "last_commit_sha": "feba1f4"
+  "updated_at": "2026-04-17T16:18:24.203736-04:00",
+  "components": [
+    {
+      "name": "Openclaw",
+      "status": "operational",
+      "details": "Up 21 hours (healthy)"
+    },
+    {
+      "name": "Alphaclaw",
+      "status": "operational",
+      "details": "Up 22 hours (healthy)"
+    },
+    {
+      "name": "N8N",
+      "status": "operational",
+      "details": "Up 25 hours (healthy)"
+    },
+    {
+      "name": "Telegram",
+      "status": "operational",
+      "details": "PID 3054893 active"
+    },
+    {
+      "name": "Cron",
+      "status": "operational",
+      "details": "7 jobs scheduled"
+    },
+    {
+      "name": "SQLite",
+      "status": "operational",
+      "details": "WAL mode, 672+ tasks"
+    }
+  ],
+  "recent_incidents": [],
+  "metrics": {
+    "tasks_24h": 37,
+    "quality_avg": 0.41,
+    "uptime_pct": 99.8,
+    "handlers_active": 10
+  }
 }
