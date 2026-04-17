@@ -1,14 +1,14 @@
 {
-  "generated_at": "2026-04-17T13:21:47Z",
+  "generated_at": "2026-04-17T19:02:03Z",
   "live_pages": 15,
   "prs_merged": 7,
   "issues_dispatched": 8,
-  "open_issues": 27,
+  "open_issues": 28,
   "active_workflows": 8,
   "open_prs": 22,
   "pages_up": 10,
   "pages_checked": 10,
-  "last_commit_offbeat": "2026-04-17T07:48:29Z",
+  "last_commit_offbeat": "2026-04-17T13:21:47Z",
   "last_commit_msg": "chore: update status dashboard data [skip ci]",
-  "last_commit_sha": "7ada85b"
+  "last_commit_sha": "feba1f4"
 }
