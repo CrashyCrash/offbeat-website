@@ -1,42 +1,14 @@
 {
-  "updated_at": "2026-04-17T16:18:24.203736-04:00",
-  "components": [
-    {
-      "name": "Openclaw",
-      "status": "operational",
-      "details": "Up 21 hours (healthy)"
-    },
-    {
-      "name": "Alphaclaw",
-      "status": "operational",
-      "details": "Up 22 hours (healthy)"
-    },
-    {
-      "name": "N8N",
-      "status": "operational",
-      "details": "Up 25 hours (healthy)"
-    },
-    {
-      "name": "Telegram",
-      "status": "operational",
-      "details": "PID 3054893 active"
-    },
-    {
-      "name": "Cron",
-      "status": "operational",
-      "details": "7 jobs scheduled"
-    },
-    {
-      "name": "SQLite",
-      "status": "operational",
-      "details": "WAL mode, 672+ tasks"
-    }
-  ],
-  "recent_incidents": [],
-  "metrics": {
-    "tasks_24h": 37,
-    "quality_avg": 0.41,
-    "uptime_pct": 99.8,
-    "handlers_active": 10
-  }
+  "generated_at": "2026-04-18T02:29:10Z",
+  "live_pages": 17,
+  "prs_merged": 7,
+  "issues_dispatched": 8,
+  "open_issues": 29,
+  "active_workflows": 8,
+  "open_prs": 22,
+  "pages_up": 10,
+  "pages_checked": 10,
+  "last_commit_offbeat": "2026-04-17T23:14:08Z",
+  "last_commit_msg": "Add DJ Set Generator page",
+  "last_commit_sha": "c075506"
 }
