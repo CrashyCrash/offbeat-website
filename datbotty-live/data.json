@@ -1,102 +1,102 @@
 {
-  "generated_at": "Apr 22, 2026 at 5:50 PM",
-  "generated_ts": "2026-04-22T21:50:06.933229+00:00",
+  "generated_at": "Apr 22, 2026 at 6:08 PM",
+  "generated_ts": "2026-04-22T22:08:01.142632+00:00",
   "commits": [
+    {
+      "sha": "f051f789",
+      "subject": "fix(auto-patch): watchdog.py:self_heal_db_corruption \u2014 Add retry for git show to improve resilience against transie",
+      "when": "0 seconds ago",
+      "tag": "autonomous"
+    },
+    {
+      "sha": "bda6aa03",
+      "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 6:05 PM",
+      "when": "3 minutes ago",
+      "tag": "autonomous"
+    },
+    {
+      "sha": "ddcd9a0b",
+      "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 5:55 PM",
+      "when": "12 minutes ago",
+      "tag": "autonomous"
+    },
+    {
+      "sha": "8b834dfa",
+      "subject": "docs(session-EE): update COMPLETED.md with P1 proof + IDEAS.md 0.12 lessons",
+      "when": "14 minutes ago",
+      "tag": "manual-session"
+    },
+    {
+      "sha": "8f0c960d",
+      "subject": "fix(session-EE): 4 more code-patch chain bugs + watchdog TZ false-positive",
+      "when": "15 minutes ago",
+      "tag": "manual-session"
+    },
+    {
+      "sha": "702e722d",
+      "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 5:50 PM",
+      "when": "18 minutes ago",
+      "tag": "autonomous"
+    },
     {
       "sha": "15bd9d4f",
       "subject": "fix(auto-patch): orchestrator_quality.py:_apply_tier_constraints \u2014 Add validation for tier input; raise error for invalid tiers",
-      "when": "0 seconds ago",
+      "when": "18 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "17465d31",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 5:40 PM",
-      "when": "10 minutes ago",
+      "when": "28 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "4181a14f",
       "subject": "feat(session-DD): fix 3 code-patch chain bugs + dashboard push + docs update",
-      "when": "16 minutes ago",
+      "when": "34 minutes ago",
       "tag": "manual-session"
     },
     {
       "sha": "59507f1e",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 5:25 PM",
-      "when": "25 minutes ago",
+      "when": "43 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "669bf056",
       "subject": "fix(agent-finding): ran propose_code_patch.py on agent recommendation",
-      "when": "25 minutes ago",
+      "when": "43 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "1dcceec8",
       "subject": "feat(session-CC): first autonomous code-patch commit proven + 4-bug fix in chain",
-      "when": "32 minutes ago",
+      "when": "50 minutes ago",
       "tag": "manual-session"
     },
     {
       "sha": "19204dc3",
       "subject": "fix(queue): queue_doctor pruned+refreshed 1 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 5:15 PM",
-      "when": "35 minutes ago",
+      "when": "53 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "9cd0131b",
       "subject": "fix(agent-finding): ran task_quality_audit.py on agent recommendation",
-      "when": "39 minutes ago",
+      "when": "57 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "fa858a48",
       "subject": "fix(auto-patch): investigate.py:run_cmd \u2014 Log failing command in run_cmd for better debugging",
-      "when": "39 minutes ago",
+      "when": "57 minutes ago",
       "tag": "autonomous"
-    },
-    {
-      "sha": "fa0d78de",
-      "subject": "protocol(session-BB2): harden session rules \u2014 mandatory end checklist + proactive gap scan",
-      "when": "62 minutes ago",
-      "tag": "manual-session"
-    },
-    {
-      "sha": "aba15473",
-      "subject": "milestone(session-BB2): Copilot<->OpenClaw MCP bridge fully operational",
-      "when": "2 hours ago",
-      "tag": "manual-session"
-    },
-    {
-      "sha": "a388c183",
-      "subject": "fix(session-BB2): rewrite MCP server with pure stdlib \u2014 no mcp package needed",
-      "when": "2 hours ago",
-      "tag": "manual-session"
-    },
-    {
-      "sha": "b80a0476",
-      "subject": "fix(queue): queue_doctor pruned+refreshed 1 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 3:45 PM",
-      "when": "2 hours ago",
-      "tag": "autonomous"
-    },
-    {
-      "sha": "3ed102a5",
-      "subject": "fix(queue): queue_doctor pruned+refreshed 1 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 3:35 PM",
-      "when": "2 hours ago",
-      "tag": "autonomous"
-    },
-    {
-      "sha": "328a5abb",
-      "subject": "feat(session-BB): Copilot<->OpenClaw integration via MCP + model override",
-      "when": "2 hours ago",
-      "tag": "manual-session"
     }
   ],
   "commits_today": {
-    "total": 87,
-    "autonomous": 59,
-    "manual": 28
+    "total": 93,
+    "autonomous": 63,
+    "manual": 30
   },
   "recent_tasks": [
     {
@@ -104,7 +104,7 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-22 21:50",
+      "when": "2026-04-22 22:08",
       "finding": null
     },
     {
@@ -112,7 +112,7 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-22 21:50",
+      "when": "2026-04-22 22:08",
       "finding": null
     },
     {
@@ -120,7 +120,7 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-22 21:50",
+      "when": "2026-04-22 22:07",
       "finding": null
     },
     {
@@ -128,79 +128,7 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-22 21:50",
-      "finding": null
-    },
-    {
-      "label": "\ud83e\udd16 reality-checker Store top failure finding as structure",
-      "handler": "openclaw",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-22 21:45",
-      "finding": "[agent:reality-checker][q=0.550]Low quality tasks and failure to develop quality analysis scripts | Insufficient development and deployment of quality assurance mechanisms | hub/scripts/task_quality_audit.py"
-    },
-    {
-      "label": "\ud83e\udd16 sre 1 task failures in last 24h. Query DB for most com",
-      "handler": "openclaw",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-22 21:45",
-      "finding": null
-    },
-    {
-      "label": "\ud83e\udd16 reality-checker Specific low-q tasks last 24h: #1734(q",
-      "handler": "openclaw",
-      "q": 0.55,
-      "q_class": "mid",
-      "when": "2026-04-22 21:45",
-      "finding": null
-    },
-    {
-      "label": "Develop script to analyze investigation task failures",
-      "handler": "openclaw",
-      "q": 0.69,
-      "q_class": "high",
-      "when": "2026-04-22 21:45",
-      "finding": null
-    },
-    {
-      "label": "\ud83d\udd27 sync_scripts_to_workspace.py",
-      "handler": "script",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-22 21:45",
-      "finding": null
-    },
-    {
-      "label": "\ud83d\udd27 audit_trend_tracker.py",
-      "handler": "script",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-22 21:45",
-      "finding": null
-    },
-    {
-      "label": "\ud83e\udd16 sre code-read-store: Read hub_scripts/watchdog.py line",
-      "handler": "openclaw",
-      "q": 0.55,
-      "q_class": "mid",
-      "when": "2026-04-22 21:45",
-      "finding": null
-    },
-    {
-      "label": "\ud83e\udd16 sre code-read-store: Read hub_scripts/orchestrator_qua",
-      "handler": "openclaw",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-22 21:40",
-      "finding": null
-    },
-    {
-      "label": "\ud83e\udd16 sre code-read-store: Read hub_scripts/investigate.py l",
-      "handler": "openclaw",
-      "q": 0.55,
-      "q_class": "mid",
-      "when": "2026-04-22 21:40",
+      "when": "2026-04-22 22:07",
       "finding": null
     },
     {
@@ -208,15 +136,15 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-22 21:40",
+      "when": "2026-04-22 22:05",
       "finding": null
     },
     {
-      "label": "\ud83d\udd27 queue_doctor.py",
+      "label": "\ud83d\udd27 task_quality_audit.py",
       "handler": "script",
-      "q": 0.74,
+      "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-22 21:40",
+      "when": "2026-04-22 22:05",
       "finding": null
     },
     {
@@ -224,55 +152,139 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-22 21:40",
+      "when": "2026-04-22 22:05",
       "finding": null
     },
     {
-      "label": "\ud83d\udd27 export_status.py",
+      "label": "\ud83d\udd27 queue_doctor.py",
+      "handler": "script",
+      "q": 0.74,
+      "q_class": "high",
+      "when": "2026-04-22 22:05",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 export_status.py [2026-04-22T22:00]",
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-22 21:40",
+      "when": "2026-04-22 22:05",
       "finding": null
     },
     {
-      "label": "\ud83d\udd27 budget_tracker.py",
+      "label": "\ud83d\udd27 audit_trend_tracker.py",
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-22 21:40",
+      "when": "2026-04-22 22:05",
       "finding": null
     },
     {
-      "label": "\ud83d\udd27 gen_dashboard_data.py",
-      "handler": "script",
-      "q": 0.76,
+      "label": "\ud83e\udde0 The task 'Generate script-based code improvement repo",
+      "handler": "openclaw",
+      "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-22 21:40",
+      "when": "2026-04-22 22:00",
+      "finding": "OpenClaw [detailed][q=0.77]: Script not found: Generate script-based code improvement report. | /home/node/.openclaw/workspace/generate_script_based_code_improvement_report.py | ```python"
+    },
+    {
+      "label": "\ud83e\udde0 Read hub/logs/orchestrator.log last 30 lines. Identif",
+      "handler": "openclaw",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-22 22:00",
       "finding": null
     },
     {
-      "label": "\ud83d\udd27 patch_dispatcher.py",
+      "label": "\ud83d\udd27 orchestrator_quality.py",
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-22 21:35",
+      "when": "2026-04-22 22:00",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 export_status.py [2026-04-22T21:45]",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-22 22:00",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 budget_tracker.py [2026-04-22T21:45]",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-22 22:00",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 queue_doctor.py",
+      "handler": "script",
+      "q": 0.74,
+      "q_class": "high",
+      "when": "2026-04-22 21:55",
+      "finding": null
+    },
+    {
+      "label": "Develop script to analyze investigation task failures",
+      "handler": "openclaw",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-22 21:55",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 sync_scripts_to_workspace.py",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-22 21:55",
+      "finding": null
+    },
+    {
+      "label": "\ud83e\udd16 sre code-read-store: Read hub_scripts/watchdog.py line",
+      "handler": "openclaw",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-22 21:55",
+      "finding": "[agent:sre][q=0.300]hub/scripts/watchdog.py | self_heal_db_corruption | Add retry for git show to improve resilience against transient failures."
+    },
+    {
+      "label": "\ud83e\udd16 sre code-read-store: Read hub_scripts/orchestrator_qua",
+      "handler": "openclaw",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-22 21:55",
       "finding": null
     }
   ],
   "handler_stats": [
     {
       "handler": "script",
-      "runs": 44,
+      "runs": 65,
       "avg_q": 0.71
     },
     {
       "handler": "openclaw",
-      "runs": 27,
-      "avg_q": 0.59
+      "runs": 33,
+      "avg_q": 0.61
     }
   ],
   "loop_events": [
+    {
+      "name": "apply_agent_finding.py",
+      "q": 0.7,
+      "when": "2026-04-22 22:08",
+      "output": "und finding from task #1776 (2026-04-22 21:55:43)"
+    },
+    {
+      "name": "self_improver.py",
+      "q": 0.7,
+      "when": "2026-04-22 22:07",
+      "output": "avg_q=0.594"
+    },
     {
       "name": "apply_agent_finding.py",
       "q": 0.7,
@@ -308,24 +320,12 @@
       "q": 0.7,
       "when": "2026-04-22 21:35",
       "output": "[apply_agent_finding] Git commit failed: On branch main"
-    },
-    {
-      "name": "self_improver.py",
-      "q": 0.7,
-      "when": "2026-04-22 21:25",
-      "output": "avg_q=0.594"
-    },
-    {
-      "name": "apply_agent_finding.py",
-      "q": 0.75,
-      "when": "2026-04-22 21:25",
-      "output": "sk #1713 \u2014 unparseable output"
     }
   ],
   "latest_finding": {
-    "pattern": "[agent:reality-checker][q=0.550]Low quality tasks and failure to develop quality",
-    "root_cause": "Insufficient development and deployment of quality assurance mechanisms",
-    "fix_script": "hub/scripts/task_quality_audit.py",
-    "when": "2026-04-22 21:45"
+    "pattern": "[agent:sre][q=0.300]hub/scripts/watchdog.py",
+    "root_cause": "self_heal_db_corruption",
+    "fix_script": "Add retry for git show to improve resilience against transient failures.",
+    "when": "2026-04-22 21:55"
   }
 }
