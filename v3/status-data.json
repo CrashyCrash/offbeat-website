@@ -1,110 +1,14 @@
 {
-  "updated_at": "2026-04-22T10:03:36-04:00",
-  "components": [
-    {
-      "name": "Openclaw",
-      "status": "operational",
-      "details": "Up 4 hours (healthy)",
-      "uptime": "up 4 hours (healthy)"
-    },
-    {
-      "name": "Alphaclaw",
-      "status": "operational",
-      "details": "Up 4 hours (healthy)",
-      "uptime": "up 4 hours (healthy)"
-    },
-    {
-      "name": "N8N",
-      "status": "operational",
-      "details": "Up 5 days (healthy)",
-      "uptime": "up 5 days (healthy)"
-    },
-    {
-      "name": "Telegram",
-      "status": "degraded",
-      "details": "Process not running",
-      "uptime": "N/A"
-    },
-    {
-      "name": "Cron",
-      "status": "operational",
-      "details": "12 jobs scheduled",
-      "uptime": "N/A"
-    },
-    {
-      "name": "SQLite",
-      "status": "operational",
-      "details": "WAL mode, 42+ tasks",
-      "uptime": "N/A"
-    }
-  ],
-  "cron_jobs": [
-    {
-      "script": "cron-briefing.sh",
-      "schedule": "0 7 * * *",
-      "full_command": "/home/igpu/Desktop/AI\\ Projects/DatBotty/hub/scripts/cron-briefing.sh morning"
-    },
-    {
-      "script": "cron-briefing.sh",
-      "schedule": "0 14 * * *",
-      "full_command": "/home/igpu/Desktop/AI\\ Projects/DatBotty/hub/scripts/cron-briefing.sh midday"
-    },
-    {
-      "script": "cron-briefing.sh",
-      "schedule": "0 21 * * *",
-      "full_command": "/home/igpu/Desktop/AI\\ Projects/DatBotty/hub/scripts/cron-briefing.sh evening"
-    },
-    {
-      "script": "cron-healthcheck.sh",
-      "schedule": "0 */6 * * *",
-      "full_command": "/home/igpu/Desktop/AI\\ Projects/DatBotty/hub/scripts/cron-healthcheck.sh"
-    },
-    {
-      "script": "cron-watchdog.sh",
-      "schedule": "*/15 * * * *",
-      "full_command": "/home/igpu/Desktop/AI\\ Projects/DatBotty/hub/scripts/cron-watchdog.sh"
-    },
-    {
-      "script": "datbotty-autocommit.log",
-      "schedule": "0 */4 * * *",
-      "full_command": "/home/igpu/Desktop/AI\\ Projects/DatBotty/hub/scripts/cron-autocommit.sh >> /home..."
-    },
-    {
-      "script": "investigate.log",
-      "schedule": "*/45 * * * *",
-      "full_command": "cd '/home/igpu/Desktop/AI Projects/DatBotty' && set -a && source .env && set +a ..."
-    },
-    {
-      "script": "weekly_report.log",
-      "schedule": "0 9 * * 1",
-      "full_command": "cd '/home/igpu/Desktop/AI Projects/DatBotty' && set -a && source .env && set +a ..."
-    },
-    {
-      "script": "orchestrator.log",
-      "schedule": "0 * * * *",
-      "full_command": "cd '/home/igpu/Desktop/AI Projects/DatBotty' && set -a && source .env && set +a ..."
-    },
-    {
-      "script": "track_round.log",
-      "schedule": "*/30 * * * *",
-      "full_command": "cd '/home/igpu/Desktop/AI Projects/DatBotty' && hub/venv/bin/python hub/scripts/..."
-    },
-    {
-      "script": "investigate.log",
-      "schedule": "40 * * * *",
-      "full_command": "cd '/home/igpu/Desktop/AI Projects/DatBotty' && set -a && source .env && set +a ..."
-    },
-    {
-      "script": "seed_tasks.log",
-      "schedule": "0 */6 * * *",
-      "full_command": "cd '/home/igpu/Desktop/AI Projects/DatBotty' && set -a && source .env && set +a ..."
-    }
-  ],
-  "cron_count": 12,
-  "recent_incidents": [],
-  "metrics": {
-    "tasks_24h": 42,
-    "quality_avg": 0.58,
-    "uptime_pct": 99.8
-  }
+  "generated_at": "2026-04-22T19:14:57Z",
+  "live_pages": 18,
+  "prs_merged": 7,
+  "issues_dispatched": 8,
+  "open_issues": 45,
+  "active_workflows": 8,
+  "open_prs": 22,
+  "pages_up": 10,
+  "pages_checked": 10,
+  "last_commit_offbeat": "2026-04-22T19:05:27Z",
+  "last_commit_msg": "data(dashboard): refresh DatBotty live dashboard \u2014 Apr 22, 2026 at 3:05 PM",
+  "last_commit_sha": "567a69c"
 }
