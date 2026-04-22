@@ -1,74 +1,390 @@
 {
-  "tasks_completed": 672,
-  "quality_avg": 0.41,
-  "uptime_hours": 189,
-  "active_nodes": 10,
-  "total_nodes": 8,
-  "last_briefing": "~2h ago",
+  "tasks_completed": 42,
+  "quality_avg": 0.58,
+  "uptime_hours": 1,
+  "active_nodes": 5,
+  "total_nodes": 5,
+  "last_briefing": "44h ago",
   "handler_stats": {
+    "script": {
+      "tasks": 30,
+      "success_count": 17,
+      "failure_count": 1,
+      "quality": 0.4,
+      "success_rate": 56.7,
+      "status": "active"
+    },
     "openclaw": {
-      "tasks": 432,
-      "quality": 0.41,
+      "tasks": 24,
+      "success_count": 22,
+      "failure_count": 0,
+      "quality": 0.48,
+      "success_rate": 91.7,
+      "status": "active"
+    },
+    "unknown": {
+      "tasks": 14,
+      "success_count": 0,
+      "failure_count": 0,
+      "quality": 0.0,
+      "success_rate": 0.0,
       "status": "active"
     },
     "browser": {
-      "tasks": 111,
-      "quality": 0.46,
-      "status": "active"
-    },
-    "browser_agent": {
-      "tasks": 43,
-      "quality": 0.53,
-      "status": "active"
-    },
-    "copilot": {
-      "tasks": 31,
-      "quality": 0.4,
-      "status": "active"
-    },
-    "manual": {
-      "tasks": 30,
-      "quality": 0.01,
+      "tasks": 2,
+      "success_count": 2,
+      "failure_count": 0,
+      "quality": 0.47,
+      "success_rate": 100.0,
       "status": "active"
     },
     "investigation": {
-      "tasks": 13,
-      "quality": 0.18,
+      "tasks": 1,
+      "success_count": 1,
+      "failure_count": 0,
+      "quality": 0.08,
+      "success_rate": 100.0,
       "status": "active"
     },
-    "hass": {
-      "tasks": 5,
-      "quality": 0.13,
-      "status": "active"
+    "browser_agent": {
+      "tasks": 0,
+      "success_count": 0,
+      "failure_count": 0,
+      "quality": 0.0,
+      "success_rate": 0.0,
+      "status": "inactive"
+    },
+    "copilot": {
+      "tasks": 0,
+      "success_count": 0,
+      "failure_count": 0,
+      "quality": 0.0,
+      "success_rate": 0.0,
+      "status": "inactive"
     },
     "cloud_agent": {
-      "tasks": 5,
-      "quality": 0.63,
-      "status": "active"
-    },
-    "script": {
-      "tasks": 1,
-      "quality": 0.5,
-      "status": "active"
-    },
-    "healthcheck": {
-      "tasks": 1,
-      "quality": 0,
-      "status": "active"
+      "tasks": 0,
+      "success_count": 0,
+      "failure_count": 0,
+      "quality": 0.0,
+      "success_rate": 0.0,
+      "status": "inactive"
     }
   },
+  "overall_success_rate": 59.2,
   "recent_tasks": [
-    "screenshot https://crashycrash.github.io/offbeat-website/v2/",
-    "Go to https://news.ycombinator.com and extract the titles...",
-    "seo-audit https://crashycrash.github.io/offbeat-website/v2/",
-    "check-links https://crashycrash.github.io/offbeat-website...",
-    "Use web_search to find: Python cron-based autonomous task...",
-    "Use web_search to find: how to make Telegram bot audio me...",
-    "Use fluid-memory to store these DatBotty state facts: (1)...",
-    "Use web_search to find: best ElevenLabs voice IDs for con..."
+    "fluid-memory to retrieve relevant facts about: DISPATCH REDU\u2026",
+    "fluid-memory to check script task reliability and suggest im\u2026",
+    "fluid-memory to look up 'error' error patterns and suggest f\u2026",
+    "agent:reality-checker Store top failure finding to fluid-mem\u2026",
+    "agent:devops-automator Identify lowest-ROI handler from live\u2026",
+    "agent:sre Identify the #1 failure pattern from live DB stats",
+    "agent:reality-checker Audit last 48h done tasks for q<0.30",
+    "fluid-memory to retrieve ALL stored facts about DatBotty v2.\u2026",
+    "check-links https://crashycrash.github.io/offbeat-website/v3\u2026",
+    "hub/scripts/export_status.py"
   ],
-  "skill_usage_pct": 78.6,
-  "investigation_findings_24h": 89,
-  "tasks_24h": 37,
-  "failed_24h": 5
+  "skill_usage_pct": 33.8,
+  "investigation_findings_24h": 16,
+  "tasks_24h": 42,
+  "failed_24h": 1,
+  "cron_jobs_total": 12,
+  "cron_jobs": [
+    {
+      "script": "cron-briefing.sh",
+      "schedule": "0 7 * * *",
+      "full_command": "/home/igpu/Desktop/AI\\ Projects/DatBotty/hub/scripts/cron-briefing.sh morning"
+    },
+    {
+      "script": "cron-briefing.sh",
+      "schedule": "0 14 * * *",
+      "full_command": "/home/igpu/Desktop/AI\\ Projects/DatBotty/hub/scripts/cron-briefing.sh midday"
+    },
+    {
+      "script": "cron-briefing.sh",
+      "schedule": "0 21 * * *",
+      "full_command": "/home/igpu/Desktop/AI\\ Projects/DatBotty/hub/scripts/cron-briefing.sh evening"
+    },
+    {
+      "script": "cron-healthcheck.sh",
+      "schedule": "0 */6 * * *",
+      "full_command": "/home/igpu/Desktop/AI\\ Projects/DatBotty/hub/scripts/cron-healthcheck.sh"
+    },
+    {
+      "script": "cron-watchdog.sh",
+      "schedule": "*/15 * * * *",
+      "full_command": "/home/igpu/Desktop/AI\\ Projects/DatBotty/hub/scripts/cron-watchdog.sh"
+    },
+    {
+      "script": "datbotty-autocommit.log",
+      "schedule": "0 */4 * * *",
+      "full_command": "/home/igpu/Desktop/AI\\ Projects/DatBotty/hub/scripts/cron-autocommit.sh >> /home..."
+    },
+    {
+      "script": "investigate.log",
+      "schedule": "*/45 * * * *",
+      "full_command": "cd '/home/igpu/Desktop/AI Projects/DatBotty' && set -a && source .env && set +a ..."
+    },
+    {
+      "script": "weekly_report.log",
+      "schedule": "0 9 * * 1",
+      "full_command": "cd '/home/igpu/Desktop/AI Projects/DatBotty' && set -a && source .env && set +a ..."
+    },
+    {
+      "script": "orchestrator.log",
+      "schedule": "0 * * * *",
+      "full_command": "cd '/home/igpu/Desktop/AI Projects/DatBotty' && set -a && source .env && set +a ..."
+    },
+    {
+      "script": "track_round.log",
+      "schedule": "*/30 * * * *",
+      "full_command": "cd '/home/igpu/Desktop/AI Projects/DatBotty' && hub/venv/bin/python hub/scripts/..."
+    }
+  ],
+  "recent_rounds": {
+    "recent": [
+      {
+        "round": 57,
+        "status": "verified",
+        "sessions": 2,
+        "title_count": 2,
+        "dispatched_at": "2026-04-20"
+      },
+      {
+        "round": 57,
+        "status": "dispatched",
+        "sessions": 3,
+        "title_count": 3,
+        "dispatched_at": "2026-04-20"
+      },
+      {
+        "round": 58,
+        "status": "verified",
+        "sessions": 2,
+        "title_count": 2,
+        "dispatched_at": "2026-04-20"
+      },
+      {
+        "round": 58,
+        "status": "dispatched",
+        "sessions": 3,
+        "title_count": 3,
+        "dispatched_at": "2026-04-20"
+      },
+      {
+        "round": 59,
+        "status": "dispatched",
+        "sessions": 3,
+        "title_count": 3,
+        "dispatched_at": "2026-04-20"
+      }
+    ],
+    "total_dispatched": 43,
+    "avg_sessions_per_round": 2.6,
+    "status_distribution": {
+      "verified": 2,
+      "dispatched": 3
+    }
+  },
+  "quality_metrics": {
+    "handler_averages": {
+      "openclaw": 0.362,
+      "browser": 0.64,
+      "investigation": 0.25
+    },
+    "category_averages": {
+      "web-research": 0.362,
+      "extraction": 0.64,
+      "analysis": 0.25,
+      "code": 0.5,
+      "monitoring": 0.5,
+      "smart-home": 0.5,
+      "manual": 0.5
+    },
+    "recommendation": "Prioritize extraction tasks (64% avg quality). Investigate analysis issues (25% avg \u2014 needs review).",
+    "recent_task_counts_7d": {
+      "openclaw": 480,
+      "browser": 12,
+      "investigation": 8
+    }
+  },
+  "error_metrics": {
+    "error_categories": {
+      "other": 1
+    },
+    "top_failing_handlers": {
+      "script": {
+        "failures": 1,
+        "total": 30,
+        "failure_pct": 3.3
+      }
+    },
+    "failure_rate_24h": 1.8
+  },
+  "retry_statistics": {
+    "total_retried": 0,
+    "total_retry_attempts": 0,
+    "avg_retries_per_task": 0.0,
+    "successful_retries": 0
+  },
+  "performance_trends": {
+    "hourly_tasks": [
+      {
+        "hour": "unknown",
+        "tasks": 57,
+        "completed": 42,
+        "success_pct": 73.7
+      }
+    ],
+    "success_trend_24h": 0.0
+  },
+  "system_health": {
+    "success_rate": 82.0,
+    "availability": 100.0,
+    "quality": 57.6,
+    "overall": 82.5
+  },
+  "dispatcher_daemon": {
+    "rounds_dispatched_24h": 11,
+    "avg_time_between_rounds_min": 13.4,
+    "last_dispatch_ago_min": 1274,
+    "dispatch_success_rate": 61.6,
+    "daemon_uptime_hours": 31,
+    "reliability_score": 33.3,
+    "total_dispatches_tracked": 45,
+    "failed_dispatch_attempts": 28,
+    "recent_dispatch_events": [
+      {
+        "timestamp": "2026-04-21 15:41:16",
+        "status": "success",
+        "type": "dispatch",
+        "round": "98"
+      },
+      {
+        "timestamp": "2026-04-21 15:48:08",
+        "status": "success",
+        "type": "dispatch",
+        "round": "99"
+      },
+      {
+        "timestamp": "2026-04-21 15:55:02",
+        "status": "success",
+        "type": "dispatch",
+        "round": "100"
+      },
+      {
+        "timestamp": "2026-04-21 16:01:56",
+        "status": "success",
+        "type": "dispatch",
+        "round": "101"
+      },
+      {
+        "timestamp": "2026-04-21 16:08:50",
+        "status": "success",
+        "type": "dispatch",
+        "round": "102"
+      },
+      {
+        "timestamp": "2026-04-21 16:21:46",
+        "status": "success",
+        "type": "dispatch",
+        "round": "103"
+      },
+      {
+        "timestamp": "2026-04-21 16:28:40",
+        "status": "success",
+        "type": "dispatch",
+        "round": "104"
+      },
+      {
+        "timestamp": "2026-04-21 16:35:34",
+        "status": "success",
+        "type": "dispatch",
+        "round": "105"
+      },
+      {
+        "timestamp": "2026-04-21 16:42:28",
+        "status": "success",
+        "type": "dispatch",
+        "round": "106"
+      },
+      {
+        "timestamp": "2026-04-21 16:49:23",
+        "status": "success",
+        "type": "dispatch",
+        "round": "107"
+      }
+    ]
+  },
+  "analytics": {
+    "quality_distribution": {
+      "ranges": {
+        "critical_0_0.25": 34,
+        "poor_0.25_0.50": 3,
+        "fair_0.50_0.75": 34,
+        "good_0.75_1.0": 0
+      },
+      "total_tasks": 71,
+      "avg_quality": 0.35
+    },
+    "handler_performance_trends": {
+      "handler_trends": {
+        "script": {
+          "success_rate_24h": 56.7,
+          "success_rate_7d": 56.7,
+          "trend": "stable",
+          "trend_delta": 0.0,
+          "quality_24h": 0.4,
+          "tasks_24h": 30
+        },
+        "openclaw": {
+          "success_rate_24h": 91.7,
+          "success_rate_7d": 91.7,
+          "trend": "stable",
+          "trend_delta": 0.0,
+          "quality_24h": 0.48,
+          "tasks_24h": 24
+        },
+        "investigation": {
+          "success_rate_24h": 100.0,
+          "success_rate_7d": 100.0,
+          "trend": "stable",
+          "trend_delta": 0.0,
+          "quality_24h": 0.08,
+          "tasks_24h": 1
+        },
+        "browser": {
+          "success_rate_24h": 100.0,
+          "success_rate_7d": 100.0,
+          "trend": "stable",
+          "trend_delta": 0.0,
+          "quality_24h": 0.47,
+          "tasks_24h": 2
+        }
+      }
+    },
+    "task_diversity": {
+      "diversity_score": 64.3,
+      "unique_titles": 27,
+      "total_tasks_analyzed": 42,
+      "repetition_risk": "moderate"
+    },
+    "tier_progress": {
+      "self_improvement_commits_24h": 16,
+      "total_commits_24h": 968,
+      "tasks_24h": 57,
+      "rounds_24h": 0,
+      "tier_2_ready": true,
+      "tier_2_targets": {
+        "self_improvement_commits": 3,
+        "min_tasks_per_day": 50
+      }
+    },
+    "capacity_utilization": {
+      "tasks_per_hour": 42.0,
+      "quality_score_per_hour": 35.0,
+      "utilization_pct": 100.0,
+      "uptime_hours": 1
+    }
+  }
 }

@@ -1,59 +1,71 @@
 {
-  "generated_at": "Apr 22, 2026 at 10:33 AM",
-  "generated_ts": "2026-04-22T14:33:16.071322+00:00",
+  "generated_at": "Apr 22, 2026 at 10:42 AM",
+  "generated_ts": "2026-04-22T14:42:26.739559+00:00",
   "commits": [
+    {
+      "sha": "fff079f6",
+      "subject": "docs(session-V): dashboard URL live \u2014 update NEXT_SESSION_PROMPT",
+      "when": "8 minutes ago",
+      "tag": "manual-session"
+    },
+    {
+      "sha": "511801bd",
+      "subject": "data(dashboard): refresh DatBotty live dashboard \u2014 Apr 22, 2026 at 10:33 AM",
+      "when": "9 minutes ago",
+      "tag": "autonomous"
+    },
     {
       "sha": "db40c712",
       "subject": "feat(dashboard): DatBotty Live Dashboard \u2014 visual proof of autonomous operation",
-      "when": "9 seconds ago",
+      "when": "9 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "351dff98",
       "subject": "data(dashboard): refresh DatBotty live dashboard \u2014 Apr 22, 2026 at 10:32 AM",
-      "when": "23 seconds ago",
+      "when": "10 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "dfb4dcb8",
       "subject": "docs(session-U): update PLAN.md + NEXT_SESSION_PROMPT for session-V",
-      "when": "26 minutes ago",
+      "when": "35 minutes ago",
       "tag": "manual-session"
     },
     {
       "sha": "6f7c235a",
       "subject": "fix(agent-finding): ran self_improver.py on agent recommendation",
-      "when": "29 minutes ago",
+      "when": "38 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "6b03a99f",
       "subject": "feat(session-U): apply_agent_finding.py \u2014 closes agent\u2192fix\u2192commit loop",
-      "when": "31 minutes ago",
+      "when": "41 minutes ago",
       "tag": "manual-session"
     },
     {
       "sha": "faa6f5ad",
       "subject": "fix(bugs): 3 silent failures fixed \u2014 all caught by DB evidence",
-      "when": "34 minutes ago",
+      "when": "44 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "5888cfbb",
       "subject": "feat(session-T): self_improver.py + queue pivot toward real autonomous improvements",
-      "when": "41 minutes ago",
+      "when": "50 minutes ago",
       "tag": "manual-session"
     },
     {
       "sha": "2d42e2e0",
       "subject": "fix(self-improver): remove 1 low-ROI task(s) from queue",
-      "when": "44 minutes ago",
+      "when": "53 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "59c28824",
       "subject": "fix(session-S): DB permanently excluded from git; agency-agent quality scoring fixed",
-      "when": "72 minutes ago",
+      "when": "82 minutes ago",
       "tag": "manual-session"
     },
     {
@@ -79,18 +91,6 @@
       "subject": "fix(session-P): 5 quality+gate2 fixes \u2014 agency-agent DB injection, dedup fallback, pending task filter",
       "when": "3 hours ago",
       "tag": "manual-session"
-    },
-    {
-      "sha": "c004202d",
-      "subject": "feat(session-O): fix agency-agent routing, add 3 agent tasks, wire n8n inbound loop",
-      "when": "3 hours ago",
-      "tag": "manual-session"
-    },
-    {
-      "sha": "8090f234",
-      "subject": "feat(session-N): wire n8n notify to orchestrator, activate health monitor, register SRE+DevOps agents",
-      "when": "4 hours ago",
-      "tag": "manual-session"
     }
   ],
   "recent_tasks": [
@@ -98,6 +98,14 @@
       "label": "\ud83d\udd27 apply_agent_finding.py",
       "handler": "script",
       "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-22 14:33",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 gen_dashboard_data.py",
+      "handler": "script",
+      "q": 0.74,
       "q_class": "high",
       "when": "2026-04-22 14:33",
       "finding": null
@@ -245,20 +253,12 @@
       "q_class": "mid",
       "when": "2026-04-22 13:17",
       "finding": null
-    },
-    {
-      "label": "\ud83e\udd16 devops-automator Confirm DB health: counts by status l",
-      "handler": "openclaw",
-      "q": 0.55,
-      "q_class": "mid",
-      "when": "2026-04-22 13:16",
-      "finding": null
     }
   ],
   "handler_stats": [
     {
       "handler": "script",
-      "runs": 22,
+      "runs": 23,
       "avg_q": 0.7
     },
     {
