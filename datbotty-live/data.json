@@ -1,114 +1,301 @@
 {
-  "generated_at": "Apr 22, 2026 at 4:00 PM",
-  "generated_ts": "2026-04-22T20:00:06.728643+00:00",
+  "generated_at": "Apr 22, 2026 at 5:15 PM",
+  "generated_ts": "2026-04-22T21:15:01.567359+00:00",
   "commits": [
+    {
+      "sha": "9cd0131b",
+      "subject": "fix(agent-finding): ran task_quality_audit.py on agent recommendation",
+      "when": "4 minutes ago",
+      "tag": "autonomous"
+    },
+    {
+      "sha": "fa858a48",
+      "subject": "fix(auto-patch): investigate.py:run_cmd \u2014 Log failing command in run_cmd for better debugging",
+      "when": "4 minutes ago",
+      "tag": "autonomous"
+    },
+    {
+      "sha": "fa0d78de",
+      "subject": "protocol(session-BB2): harden session rules \u2014 mandatory end checklist + proactive gap scan",
+      "when": "27 minutes ago",
+      "tag": "manual-session"
+    },
+    {
+      "sha": "aba15473",
+      "subject": "milestone(session-BB2): Copilot<->OpenClaw MCP bridge fully operational",
+      "when": "70 minutes ago",
+      "tag": "manual-session"
+    },
     {
       "sha": "a388c183",
       "subject": "fix(session-BB2): rewrite MCP server with pure stdlib \u2014 no mcp package needed",
-      "when": "9 minutes ago",
+      "when": "84 minutes ago",
       "tag": "manual-session"
     },
     {
       "sha": "b80a0476",
       "subject": "fix(queue): queue_doctor pruned+refreshed 1 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 3:45 PM",
-      "when": "15 minutes ago",
+      "when": "2 hours ago",
       "tag": "autonomous"
     },
     {
       "sha": "3ed102a5",
       "subject": "fix(queue): queue_doctor pruned+refreshed 1 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 3:35 PM",
-      "when": "25 minutes ago",
+      "when": "2 hours ago",
       "tag": "autonomous"
     },
     {
       "sha": "328a5abb",
       "subject": "feat(session-BB): Copilot<->OpenClaw integration via MCP + model override",
-      "when": "33 minutes ago",
+      "when": "2 hours ago",
       "tag": "manual-session"
     },
     {
       "sha": "8199838b",
       "subject": "fix(queue): queue_doctor pruned+refreshed 1 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 3:20 PM",
-      "when": "40 minutes ago",
+      "when": "2 hours ago",
       "tag": "autonomous"
     },
     {
       "sha": "5d80583e",
       "subject": "fix(queue): queue_doctor pruned+refreshed 1 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 3:20 PM",
-      "when": "40 minutes ago",
+      "when": "2 hours ago",
       "tag": "autonomous"
     },
     {
       "sha": "d55b35de",
       "subject": "fix(queue): queue_doctor pruned+refreshed 1 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 3:10 PM",
-      "when": "50 minutes ago",
+      "when": "2 hours ago",
       "tag": "autonomous"
     },
     {
       "sha": "c46404e8",
       "subject": "feat(session-AA): autonomous code-patching chain + OpenClaw workspace sync",
-      "when": "58 minutes ago",
+      "when": "2 hours ago",
       "tag": "manual-session"
     },
     {
       "sha": "3c9cba7f",
       "subject": "fix(queue): queue_doctor pruned+refreshed 1 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 2:55 PM",
-      "when": "65 minutes ago",
+      "when": "2 hours ago",
       "tag": "autonomous"
     },
     {
       "sha": "3cde0357",
       "subject": "fix(patch-dispatch): queue updated -- +2 -0 task(s)",
-      "when": "65 minutes ago",
+      "when": "2 hours ago",
       "tag": "autonomous"
     },
     {
       "sha": "22c358e6",
       "subject": "fix(agent-finding): ran task_quality_audit.py on agent recommendation",
-      "when": "65 minutes ago",
-      "tag": "autonomous"
-    },
-    {
-      "sha": "c7391a38",
-      "subject": "fix(queue): queue_doctor pruned+refreshed 1 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 2:45 PM",
-      "when": "75 minutes ago",
-      "tag": "autonomous"
-    },
-    {
-      "sha": "93e6567c",
-      "subject": "fix(queue): queue_doctor pruned+refreshed 1 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 2:35 PM",
-      "when": "85 minutes ago",
-      "tag": "autonomous"
-    },
-    {
-      "sha": "73ad3e37",
-      "subject": "fix(patch-dispatch): queue updated -- +1 -0 task(s)",
-      "when": "85 minutes ago",
-      "tag": "autonomous"
-    },
-    {
-      "sha": "f7848df8",
-      "subject": "docs(session-Z): session-AA next prompt; plan updated; openclaw hub/scripts+logs volume mounts",
       "when": "2 hours ago",
-      "tag": "manual-session"
+      "tag": "autonomous"
     }
   ],
   "commits_today": {
-    "total": 76,
-    "autonomous": 52,
-    "manual": 24
+    "total": 80,
+    "autonomous": 54,
+    "manual": 26
   },
   "recent_tasks": [
     {
-      "label": "DB error: disk I/O error",
-      "handler": "error",
-      "q": 0,
+      "label": "\ud83d\udd27 apply_agent_finding.py",
+      "handler": "script",
+      "q": 0.73,
+      "q_class": "high",
+      "when": "2026-04-22 21:10",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 patch_dispatcher.py",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-22 21:10",
+      "finding": null
+    },
+    {
+      "label": "\ud83e\udd16 reality-checker Store top failure finding as structure",
+      "handler": "openclaw",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-22 21:10",
+      "finding": "[agent:reality-checker][q=0.550]Repeated low-quality web_search tasks for research | Ineffective use of web_search skill, resulting in poor quality output for research-oriented queries | hub/scripts/task_quality_audit.py"
+    },
+    {
+      "label": "\ud83d\udd27 backup_state.py",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-22 21:10",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 self_improver.py",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-22 21:10",
+      "finding": null
+    },
+    {
+      "label": "\ud83e\udd16 sre Handler 'openclaw' avg_q=0.0 \u2014 lowest performer. I",
+      "handler": "openclaw",
+      "q": 0.65,
+      "q_class": "high",
+      "when": "2026-04-22 21:10",
+      "finding": "[agent:sre][q=0.650]openclaw | High failure rate in script analysis and web search tasks due to integration issues. | Re-verify and re-configure the `openclaw` handler's interaction with `hub_scripts` for accurate execution."
+    },
+    {
+      "label": "\ud83e\udd16 reality-checker 0 tasks done in 24h \u2014 all above q=0.5.",
+      "handler": "openclaw",
+      "q": 0.08,
       "q_class": "low",
-      "when": "",
+      "when": "2026-04-22 21:10",
+      "finding": "[agent:reality-checker][q=0.650]openclaw agent's web search execution strategy for contextual information | Consistent generation of low-quality search results (q<0.30) for tasks requiring memory retrieval ('fluid-memory') and SEO/affiliate content research, stemming from overly generic and uncontextualized search queries. | Develop a more robust search protocol. Prioritize using memory_search for internal context before resorting to web_search. When performing web searches, dynamically construct specific and goal-oriented queries by incorporating relevant keywords from memory files (MEMORY.md, memory/YYYY-MM-DD.md) and task-specific objectives. For SEO/affiliate tasks, ensure queries are precisely tailored to the project context rather than using vague instructions."
+    },
+    {
+      "label": "Develop script to analyze investigation task failures",
+      "handler": "openclaw",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-22 21:05",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 sync_scripts_to_workspace.py",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-22 21:05",
+      "finding": null
+    },
+    {
+      "label": "\ud83e\udd16 sre code-read-store: Read hub_scripts/orchestrator_qua",
+      "handler": "openclaw",
+      "q": 0.55,
+      "q_class": "mid",
+      "when": "2026-04-22 21:05",
+      "finding": null
+    },
+    {
+      "label": "\ud83e\udd16 sre code-read-store: Read hub_scripts/investigate.py l",
+      "handler": "openclaw",
+      "q": 0.55,
+      "q_class": "mid",
+      "when": "2026-04-22 21:05",
+      "finding": "[agent:sre][q=0.300]hub/scripts/investigate.py | run_cmd | Log failing command in run_cmd for better debugging"
+    },
+    {
+      "label": "\ud83d\udd27 task_quality_audit.py",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-22 21:05",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 audit_trend_tracker.py",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-22 21:05",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 budget_tracker.py",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-22 21:05",
+      "finding": null
+    },
+    {
+      "label": "\ud83e\udde0 Use web_search to find: n8n workflow templates for au",
+      "handler": "openclaw",
+      "q": 0.2,
+      "q_class": "low",
+      "when": "2026-04-21 07:51",
+      "finding": null
+    },
+    {
+      "label": "\ud83e\udde0 Use fluid-memory to retrieve all stored facts about D",
+      "handler": "openclaw",
+      "q": 0.4,
+      "q_class": "low",
+      "when": "2026-04-21 07:51",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd17 Link check",
+      "handler": "browser",
+      "q": 0.4,
+      "q_class": "low",
+      "when": "2026-04-21 07:51",
+      "finding": null
+    },
+    {
+      "label": "\ud83e\udde0 Use web_search to find: affiliate marketing programs ",
+      "handler": "openclaw",
+      "q": 0.2,
+      "q_class": "low",
+      "when": "2026-04-21 07:51",
+      "finding": null
+    },
+    {
+      "label": "\ud83e\udde0 Use web_search to find: best practices for AI agent c",
+      "handler": "openclaw",
+      "q": 0.6,
+      "q_class": "mid",
+      "when": "2026-04-21 07:50",
+      "finding": null
+    },
+    {
+      "label": "\ud83e\udde0 Use web_search to find: how to make Python subprocess",
+      "handler": "openclaw",
+      "q": 0.2,
+      "q_class": "low",
+      "when": "2026-04-21 07:41",
       "finding": null
     }
   ],
-  "handler_stats": [],
-  "loop_events": [],
-  "latest_finding": null
+  "handler_stats": [
+    {
+      "handler": "script",
+      "runs": 8,
+      "avg_q": 0.7
+    },
+    {
+      "handler": "openclaw",
+      "runs": 6,
+      "avg_q": 0.54
+    }
+  ],
+  "loop_events": [
+    {
+      "name": "apply_agent_finding.py",
+      "q": 0.73,
+      "when": "2026-04-22 21:10",
+      "output": "26-04-22 17:10:40,025 [INFO] TASK QUALITY AUDIT - Starting"
+    },
+    {
+      "name": "self_improver.py",
+      "q": 0.7,
+      "when": "2026-04-22 21:10",
+      "output": "[agent:reality-checker][q=0.550]Repeated low-quality web_search tasks for research | Ineffective use"
+    },
+    {
+      "name": "self_improver.py",
+      "q": 0.7,
+      "when": "2026-04-22 21:10",
+      "output": "45 avg_q=0.594"
+    }
+  ],
+  "latest_finding": {
+    "pattern": "[agent:reality-checker][q=0.550]Repeated low-quality web_search tasks for resear",
+    "root_cause": "Ineffective use of web_search skill, resulting in poor quality output for resear",
+    "fix_script": "hub/scripts/task_quality_audit.py",
+    "when": "2026-04-22 21:10"
+  }
 }
