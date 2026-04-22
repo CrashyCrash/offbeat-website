@@ -1,65 +1,83 @@
 {
-  "generated_at": "Apr 22, 2026 at 11:35 AM",
-  "generated_ts": "2026-04-22T15:35:01.999377+00:00",
+  "generated_at": "Apr 22, 2026 at 11:55 AM",
+  "generated_ts": "2026-04-22T15:55:01.765307+00:00",
   "commits": [
+    {
+      "sha": "43e8f4c8",
+      "subject": "docs(session-V): PLAN.md updated with 5-min loop results",
+      "when": "12 minutes ago",
+      "tag": "manual-session"
+    },
+    {
+      "sha": "191e7271",
+      "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 3 agent tasks added \u2014 Apr 22, 2026 at 11:41 AM",
+      "when": "13 minutes ago",
+      "tag": "autonomous"
+    },
+    {
+      "sha": "b95cbe76",
+      "subject": "fix(scripts): 3 root-cause fixes for AVOID-cascade + malformed tasks",
+      "when": "15 minutes ago",
+      "tag": "autonomous"
+    },
     {
       "sha": "95bde818",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 3 agent tasks added \u2014 Apr 22, 2026 at 11:33 AM",
-      "when": "71 seconds ago",
+      "when": "21 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "ca4845f5",
       "subject": "feat(session-V): queue_doctor.py + orchestrator 5min/8tasks + devops fix",
-      "when": "2 minutes ago",
+      "when": "22 minutes ago",
       "tag": "manual-session"
     },
     {
       "sha": "ad388338",
       "subject": "fix(queue): queue_doctor pruned+refreshed 4 removed, 3 agent tasks added \u2014 Apr 22, 2026 at 11:31 AM",
-      "when": "3 minutes ago",
+      "when": "23 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "ff9f70ed",
       "subject": "fix(agent-finding): ran task_quality_audit.py on agent recommendation",
-      "when": "5 minutes ago",
+      "when": "25 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "9e2d613b",
       "subject": "fix(dashboard): commit+push to offbeat-website repo, not datbotty-v2",
-      "when": "52 minutes ago",
+      "when": "72 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "fff079f6",
       "subject": "docs(session-V): dashboard URL live \u2014 update NEXT_SESSION_PROMPT",
-      "when": "61 minutes ago",
+      "when": "81 minutes ago",
       "tag": "manual-session"
     },
     {
       "sha": "511801bd",
       "subject": "data(dashboard): refresh DatBotty live dashboard \u2014 Apr 22, 2026 at 10:33 AM",
-      "when": "62 minutes ago",
+      "when": "82 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "db40c712",
       "subject": "feat(dashboard): DatBotty Live Dashboard \u2014 visual proof of autonomous operation",
-      "when": "62 minutes ago",
+      "when": "82 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "351dff98",
       "subject": "data(dashboard): refresh DatBotty live dashboard \u2014 Apr 22, 2026 at 10:32 AM",
-      "when": "62 minutes ago",
+      "when": "82 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "dfb4dcb8",
       "subject": "docs(session-U): update PLAN.md + NEXT_SESSION_PROMPT for session-V",
-      "when": "88 minutes ago",
+      "when": "2 hours ago",
       "tag": "manual-session"
     },
     {
@@ -73,27 +91,145 @@
       "subject": "feat(session-U): apply_agent_finding.py \u2014 closes agent\u2192fix\u2192commit loop",
       "when": "2 hours ago",
       "tag": "manual-session"
-    },
-    {
-      "sha": "faa6f5ad",
-      "subject": "fix(bugs): 3 silent failures fixed \u2014 all caught by DB evidence",
-      "when": "2 hours ago",
-      "tag": "autonomous"
-    },
-    {
-      "sha": "5888cfbb",
-      "subject": "feat(session-T): self_improver.py + queue pivot toward real autonomous improvements",
-      "when": "2 hours ago",
-      "tag": "manual-session"
-    },
-    {
-      "sha": "2d42e2e0",
-      "subject": "fix(self-improver): remove 1 low-ROI task(s) from queue",
-      "when": "2 hours ago",
-      "tag": "autonomous"
     }
   ],
   "recent_tasks": [
+    {
+      "label": "\ud83d\udd27 export_status.py",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-22 15:55",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 budget_tracker.py",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-22 15:55",
+      "finding": null
+    },
+    {
+      "label": "\ud83e\udde0 Use fluid-memory to check script task reliability and",
+      "handler": "openclaw",
+      "q": 0.69,
+      "q_class": "high",
+      "when": "2026-04-22 15:50",
+      "finding": null
+    },
+    {
+      "label": "\ud83e\udde0 Use fluid-memory to store finding: DISPATCH REDUCTION",
+      "handler": "openclaw",
+      "q": 0.25,
+      "q_class": "low",
+      "when": "2026-04-22 15:50",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 export_status.py [2026-04-22T15:45]",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-22 15:50",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 budget_tracker.py [2026-04-22T15:45]",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-22 15:50",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 backup_state.py",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-22 15:45",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 self_improver.py",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-22 15:45",
+      "finding": null
+    },
+    {
+      "label": "\ud83e\udd16 sre 10 task failures in last 24h. Query DB for most co",
+      "handler": "openclaw",
+      "q": 0.55,
+      "q_class": "mid",
+      "when": "2026-04-22 15:42",
+      "finding": null
+    },
+    {
+      "label": "\ud83e\udd16 reality-checker Specific low-q tasks last 24h: #117(q=",
+      "handler": "openclaw",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-22 15:41",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 queue_doctor.py",
+      "handler": "script",
+      "q": 0.74,
+      "q_class": "high",
+      "when": "2026-04-22 15:41",
+      "finding": null
+    },
+    {
+      "label": "\ud83e\udd16 devops-automator Identify lowest-ROI handler from live",
+      "handler": "openclaw",
+      "q": 0.65,
+      "q_class": "high",
+      "when": "2026-04-22 15:39",
+      "finding": "[agent:devops-automator][q=0.650] | HANDLER | AVG_Q"
+    },
+    {
+      "label": "\ud83e\udd16 sre Identify the #1 failure pattern from live DB stats",
+      "handler": "openclaw",
+      "q": 0.65,
+      "q_class": "high",
+      "when": "2026-04-22 15:35",
+      "finding": null
+    },
+    {
+      "label": "\ud83e\udd16 reality-checker Audit last 48h done tasks for q<0.30",
+      "handler": "openclaw",
+      "q": 0.65,
+      "q_class": "high",
+      "when": "2026-04-22 15:35",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd17 Link check",
+      "handler": "browser",
+      "q": 0.47,
+      "q_class": "mid",
+      "when": "2026-04-22 15:35",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 task_quality_audit.py",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-22 15:35",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 gen_dashboard_data.py",
+      "handler": "script",
+      "q": 0.76,
+      "q_class": "high",
+      "when": "2026-04-22 15:35",
+      "finding": null
+    },
     {
       "label": "\ud83e\udd16 sre 7 task failures in last 24h. Query DB for most com",
       "handler": "openclaw",
@@ -117,158 +253,22 @@
       "q_class": "high",
       "when": "2026-04-22 15:34",
       "finding": null
-    },
-    {
-      "label": "\ud83e\udd16 reality-checker Specific low-q tasks last 24h: #100(q=",
-      "handler": "openclaw",
-      "q": 0.65,
-      "q_class": "high",
-      "when": "2026-04-22 15:34",
-      "finding": null
-    },
-    {
-      "label": "\ud83e\udd16 reality-checker Store top failure finding to fluid-mem",
-      "handler": "openclaw",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-22 15:33",
-      "finding": "[agent:reality-checker][q=0.650] | PATTERN | ROOT_CAUSE"
-    },
-    {
-      "label": "\ud83d\udd27 queue_doctor.py",
-      "handler": "script",
-      "q": 0.74,
-      "q_class": "high",
-      "when": "2026-04-22 15:33",
-      "finding": null
-    },
-    {
-      "label": "\ud83e\udd16 devops-automator Identify lowest-ROI handler from live",
-      "handler": "openclaw",
-      "q": 0.65,
-      "q_class": "high",
-      "when": "2026-04-22 15:33",
-      "finding": "[agent:devops-automator][q=0.650] | HANDLER | AVG_Q"
-    },
-    {
-      "label": "\ud83e\udd16 sre Identify the #1 failure pattern from live DB stats",
-      "handler": "openclaw",
-      "q": 0.65,
-      "q_class": "high",
-      "when": "2026-04-22 15:31",
-      "finding": null
-    },
-    {
-      "label": "\ud83e\udd16 reality-checker Audit last 48h done tasks for q<0.30",
-      "handler": "openclaw",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-22 15:31",
-      "finding": null
-    },
-    {
-      "label": "\ud83e\udde0 Use fluid-memory to retrieve ALL stored facts about D",
-      "handler": "openclaw",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-22 15:31",
-      "finding": "OpenClaw [detailed][q=0.72]: FACT | OLD | CORRECTED"
-    },
-    {
-      "label": "\ud83d\udd17 Link check",
-      "handler": "browser",
-      "q": 0.47,
-      "q_class": "mid",
-      "when": "2026-04-22 15:30",
-      "finding": null
-    },
-    {
-      "label": "\ud83d\udd27 task_quality_audit.py",
-      "handler": "script",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-22 15:30",
-      "finding": null
-    },
-    {
-      "label": "\ud83d\udd27 gen_dashboard_data.py",
-      "handler": "script",
-      "q": 0.76,
-      "q_class": "high",
-      "when": "2026-04-22 15:30",
-      "finding": null
-    },
-    {
-      "label": "\ud83d\udd27 apply_agent_finding.py",
-      "handler": "script",
-      "q": 0.73,
-      "q_class": "high",
-      "when": "2026-04-22 15:30",
-      "finding": null
-    },
-    {
-      "label": "\ud83d\udd27 self_improver.py",
-      "handler": "script",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-22 15:30",
-      "finding": null
-    },
-    {
-      "label": "\ud83e\udde0 Use fluid-memory to retrieve relevant facts about: DI",
-      "handler": "openclaw",
-      "q": 0.35,
-      "q_class": "low",
-      "when": "2026-04-22 15:29",
-      "finding": null
-    },
-    {
-      "label": "\ud83d\udd27 export_status.py",
-      "handler": "script",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-22 15:29",
-      "finding": null
-    },
-    {
-      "label": "\ud83d\udd27 budget_tracker.py",
-      "handler": "script",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-22 15:29",
-      "finding": null
-    },
-    {
-      "label": "\ud83d\udd27 backup_state.py",
-      "handler": "script",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-22 15:29",
-      "finding": null
-    },
-    {
-      "label": "\ud83e\udde0 Use fluid-memory to check script task reliability and",
-      "handler": "openclaw",
-      "q": 0.55,
-      "q_class": "mid",
-      "when": "2026-04-22 15:29",
-      "finding": null
     }
   ],
   "handler_stats": [
     {
       "handler": "openclaw",
-      "runs": 37,
-      "avg_q": 0.56
+      "runs": 44,
+      "avg_q": 0.57
     },
     {
       "handler": "script",
-      "runs": 34,
-      "avg_q": 0.7
+      "runs": 43,
+      "avg_q": 0.71
     },
     {
       "handler": "browser",
-      "runs": 4,
+      "runs": 5,
       "avg_q": 0.47
     },
     {
@@ -278,6 +278,12 @@
     }
   ],
   "loop_events": [
+    {
+      "name": "self_improver.py",
+      "q": 0.7,
+      "when": "2026-04-22 15:45",
+      "output": "avg_q=0.572"
+    },
     {
       "name": "apply_agent_finding.py",
       "q": 0.73,
