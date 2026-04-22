@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DatBotty — Live AI Operations Dashboard</title>
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --surface: #111827;
+    --surface2: #1a2236;
+    --border: #1e293b;
+    --accent: #6366f1;
+    --accent2: #22d3ee;
+    --green: #10b981;
+    --yellow: #f59e0b;
+    --red: #ef4444;
+    --text: #e2e8f0;
+    --text2: #94a3b8;
+    --text3: #475569;
+    --glow: rgba(99,102,241,0.15);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  /* Animated background grid */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(99,102,241,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(99,102,241,0.03) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page { position: relative; z-index: 1; max-width: 1280px; margin: 0 auto; padding: 24px 20px 60px; }
+
+  /* Header */
+  .header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 24px 0 32px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 32px;
+  }
+  .logo-pulse {
+    width: 48px; height: 48px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    box-shadow: 0 0 20px rgba(99,102,241,0.4);
+    animation: pulse 3s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 20px rgba(99,102,241,0.4); }
+    50% { box-shadow: 0 0 40px rgba(99,102,241,0.7), 0 0 60px rgba(34,211,238,0.3); }
+  }
+  .header-text h1 { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.02em; }
+  .header-text h1 span { color: var(--accent2); }
+  .header-text p { color: var(--text2); font-size: 0.9rem; margin-top: 2px; }
+  .header-right { margin-left: auto; text-align: right; }
+  .live-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.3);
+    color: var(--green); padding: 5px 12px; border-radius: 20px;
+    font-size: 0.78rem; font-weight: 600; letter-spacing: 0.04em;
+  }
+  .live-dot {
+    width: 7px; height: 7px; background: var(--green); border-radius: 50%;
+    animation: blink 1.4s ease-in-out infinite;
+  }
+  @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0.2; } }
+  .updated-at { color: var(--text3); font-size: 0.78rem; margin-top: 6px; }
+
+  /* Stats row */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .stat-card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    opacity: 0.6;
+  }
+  .stat-label { color: var(--text2); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; }
+  .stat-value { font-size: 2.2rem; font-weight: 800; letter-spacing: -0.03em; margin-top: 6px; line-height: 1; }
+  .stat-sub { color: var(--text3); font-size: 0.8rem; margin-top: 4px; }
+
+  /* Main grid */
+  .main-grid {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 24px;
+    align-items: start;
+  }
+  @media (max-width: 900px) {
+    .main-grid { grid-template-columns: 1fr; }
+  }
+  .left-col { display: flex; flex-direction: column; gap: 24px; }
+  .right-col { display: flex; flex-direction: column; gap: 24px; }
+
+  /* Cards */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .card-header {
+    display: flex; align-items: center; gap: 10px;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(255,255,255,0.02);
+  }
+  .card-icon { font-size: 1.1rem; }
+  .card-title { font-size: 0.95rem; font-weight: 700; }
+  .card-count {
+    margin-left: auto;
+    background: var(--surface2);
+    color: var(--text2);
+    font-size: 0.72rem; font-weight: 700;
+    padding: 2px 8px; border-radius: 10px;
+  }
+  .card-body { padding: 16px 20px; }
+
+  /* Loop visual */
+  .loop-visual {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 16px 20px;
+    flex-wrap: wrap;
+  }
+  .loop-step {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 6px; flex: 1; min-width: 80px;
+  }
+  .loop-icon {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem;
+    border: 1px solid var(--border);
+  }
+  .loop-icon.active {
+    background: linear-gradient(135deg, rgba(99,102,241,0.25), rgba(34,211,238,0.2));
+    border-color: var(--accent);
+    box-shadow: 0 0 16px rgba(99,102,241,0.3);
+  }
+  .loop-icon.done {
+    background: rgba(16,185,129,0.12);
+    border-color: rgba(16,185,129,0.4);
+  }
+  .loop-label { font-size: 0.7rem; color: var(--text2); text-align: center; font-weight: 500; }
+  .loop-arrow { color: var(--text3); font-size: 1rem; flex-shrink: 0; padding-top: 8px; }
+  .loop-proof {
+    margin: 0 20px 16px;
+    background: rgba(16,185,129,0.06);
+    border: 1px solid rgba(16,185,129,0.2);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 0.82rem;
+    color: var(--green);
+  }
+  .loop-proof strong { display: block; margin-bottom: 4px; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; opacity: 0.8; }
+
+  /* Commit list */
+  .commit-item {
+    display: flex; gap: 12px; align-items: flex-start;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .commit-item:last-child { border-bottom: none; }
+  .commit-sha {
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 0.72rem; color: var(--accent2);
+    background: rgba(34,211,238,0.08);
+    padding: 2px 8px; border-radius: 6px;
+    white-space: nowrap; flex-shrink: 0; margin-top: 1px;
+  }
+  .commit-body { flex: 1; min-width: 0; }
+  .commit-subject {
+    font-size: 0.85rem; font-weight: 500;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .commit-meta { font-size: 0.75rem; color: var(--text3); margin-top: 2px; }
+  .commit-tag {
+    font-size: 0.68rem; font-weight: 700; padding: 1px 7px; border-radius: 6px;
+    flex-shrink: 0; margin-top: 2px; white-space: nowrap;
+  }
+  .commit-tag.autonomous {
+    background: rgba(16,185,129,0.15);
+    color: var(--green);
+    border: 1px solid rgba(16,185,129,0.3);
+  }
+  .commit-tag.manual-session {
+    background: rgba(99,102,241,0.12);
+    color: #818cf8;
+    border: 1px solid rgba(99,102,241,0.25);
+  }
+
+  /* Task list */
+  .task-item {
+    display: flex; gap: 10px; align-items: center;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.83rem;
+  }
+  .task-item:last-child { border-bottom: none; }
+  .task-label { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .task-label .finding { display: block; font-size: 0.72rem; color: var(--accent2); margin-top: 2px; }
+  .q-badge {
+    width: 46px; text-align: center; flex-shrink: 0;
+    font-size: 0.75rem; font-weight: 700; padding: 2px 0; border-radius: 6px;
+  }
+  .q-badge.high { background: rgba(16,185,129,0.15); color: var(--green); }
+  .q-badge.mid  { background: rgba(245,158,11,0.15); color: var(--yellow); }
+  .q-badge.low  { background: rgba(239,68,68,0.15); color: var(--red); }
+  .handler-chip {
+    font-size: 0.68rem; padding: 1px 7px; border-radius: 6px;
+    background: var(--surface2); color: var(--text3); flex-shrink: 0;
+  }
+  .task-when { font-size: 0.72rem; color: var(--text3); flex-shrink: 0; }
+
+  /* Handler bars */
+  .handler-row { padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .handler-row:last-child { border-bottom: none; }
+  .handler-top { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 0.83rem; }
+  .handler-name { font-weight: 600; }
+  .handler-meta { color: var(--text2); font-size: 0.78rem; }
+  .bar-track { background: var(--surface2); border-radius: 4px; height: 6px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 4px; transition: width 1s ease; }
+  .bar-fill.green { background: linear-gradient(90deg, var(--green), #34d399); }
+  .bar-fill.yellow { background: linear-gradient(90deg, var(--yellow), #fbbf24); }
+  .bar-fill.red { background: linear-gradient(90deg, var(--red), #f87171); }
+
+  /* Finding card */
+  .finding-card {
+    background: linear-gradient(135deg, rgba(99,102,241,0.08), rgba(34,211,238,0.05));
+    border: 1px solid rgba(99,102,241,0.25);
+    border-radius: 14px;
+    padding: 20px;
+  }
+  .finding-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); font-weight: 700; margin-bottom: 10px; }
+  .finding-pattern { font-size: 0.92rem; font-weight: 600; margin-bottom: 8px; line-height: 1.4; }
+  .finding-detail { font-size: 0.8rem; color: var(--text2); margin-bottom: 8px; line-height: 1.5; }
+  .finding-fix {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 0.78rem; font-family: monospace;
+    background: rgba(16,185,129,0.08);
+    border: 1px solid rgba(16,185,129,0.2);
+    padding: 6px 10px; border-radius: 8px; color: var(--green);
+  }
+
+  /* Refresh note */
+  .refresh-note {
+    text-align: center; color: var(--text3); font-size: 0.78rem;
+    padding: 24px 0 0;
+    border-top: 1px solid var(--border);
+    margin-top: 32px;
+  }
+
+  /* Loading */
+  .loading { color: var(--text3); font-size: 0.9rem; padding: 20px; text-align: center; }
+
+  /* Shimmer for loading */
+  @keyframes shimmer {
+    0% { background-position: -400px 0; }
+    100% { background-position: 400px 0; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="logo-pulse">🤖</div>
+    <div class="header-text">
+      <h1>DatBotty <span>Live</span></h1>
+      <p>Autonomous AI Operations — Self-improving 24/7</p>
+    </div>
+    <div class="header-right">
+      <div class="live-badge"><span class="live-dot"></span>LIVE</div>
+      <div class="updated-at" id="updated-at">Loading...</div>
+    </div>
+  </div>
+
+  <div class="stats-row" id="stats-row">
+    <div class="stat-card">
+      <div class="stat-label">Autonomous Commits</div>
+      <div class="stat-value" id="stat-auto-commits" style="color: var(--green);">—</div>
+      <div class="stat-sub">last 15 commits</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Tasks Today</div>
+      <div class="stat-value" id="stat-tasks-today" style="color: var(--accent2);">—</div>
+      <div class="stat-sub">completed</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Avg Quality Score</div>
+      <div class="stat-value" id="stat-avg-q" style="color: var(--yellow);">—</div>
+      <div class="stat-sub">all handlers today</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Self-Improvement Loop</div>
+      <div class="stat-value" id="stat-loop" style="color: var(--accent);">—</div>
+      <div class="stat-sub">runs today</div>
+    </div>
+  </div>
+
+  <div class="main-grid">
+    <div class="left-col">
+
+      <!-- Autonomous Loop -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-icon">🔄</span>
+          <span class="card-title">Autonomous Self-Improvement Loop</span>
+        </div>
+        <div class="loop-visual">
+          <div class="loop-step">
+            <div class="loop-icon done">📊</div>
+            <div class="loop-label">Orchestrator runs<br>every hour</div>
+          </div>
+          <div class="loop-arrow">→</div>
+          <div class="loop-step">
+            <div class="loop-icon done">🤖</div>
+            <div class="loop-label">Agent identifies<br>worst problem</div>
+          </div>
+          <div class="loop-arrow">→</div>
+          <div class="loop-step">
+            <div class="loop-icon active">⚡</div>
+            <div class="loop-label">apply_agent_finding<br>runs the fix</div>
+          </div>
+          <div class="loop-arrow">→</div>
+          <div class="loop-step">
+            <div class="loop-icon done">✅</div>
+            <div class="loop-label">Git commit<br>proves it worked</div>
+          </div>
+        </div>
+        <div class="loop-proof" id="loop-proof">
+          <strong>Latest autonomous action</strong>
+          Loading...
+        </div>
+      </div>
+
+      <!-- Recent commits -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-icon">📝</span>
+          <span class="card-title">Recent Git Commits</span>
+          <span class="card-count" id="commit-count">—</span>
+        </div>
+        <div class="card-body">
+          <div id="commit-list"><div class="loading">Loading...</div></div>
+        </div>
+      </div>
+
+      <!-- Recent tasks -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-icon">⚙️</span>
+          <span class="card-title">Task Activity Feed</span>
+          <span class="card-count" id="task-count">—</span>
+        </div>
+        <div class="card-body">
+          <div id="task-list"><div class="loading">Loading...</div></div>
+        </div>
+      </div>
+
+    </div>
+    <div class="right-col">
+
+      <!-- Latest AI Finding -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-icon">🧠</span>
+          <span class="card-title">Latest AI Finding</span>
+        </div>
+        <div class="card-body">
+          <div id="finding-box"><div class="loading">Loading...</div></div>
+        </div>
+      </div>
+
+      <!-- Handler performance -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-icon">📈</span>
+          <span class="card-title">Handler Performance (24h)</span>
+        </div>
+        <div class="card-body">
+          <div id="handler-list"><div class="loading">Loading...</div></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="refresh-note">
+    Dashboard auto-refreshes every 5 minutes. Data is generated by DatBotty's autonomous orchestrator every hour.
+    <br>Each update to this page is a <strong style="color:var(--green)">real autonomous git commit</strong> made by DatBotty without human input.
+  </div>
+
+</div>
+
+<script>
+async function loadData() {
+  const r = await fetch('data.json?t=' + Date.now());
+  return r.json();
+}
+
+function qClass(q) {
+  if (q >= 0.65) return 'high';
+  if (q >= 0.45) return 'mid';
+  return 'low';
+}
+
+function barClass(q) {
+  if (q >= 0.65) return 'green';
+  if (q >= 0.45) return 'yellow';
+  return 'red';
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function render(data) {
+  // Header
+  document.getElementById('updated-at').textContent = 'Updated: ' + data.generated_at;
+
+  // Stats
+  const autoCommits = (data.commits || []).filter(c => c.tag === 'autonomous').length;
+  document.getElementById('stat-auto-commits').textContent = autoCommits;
+
+  const todayTasks = (data.recent_tasks || []).length;
+  document.getElementById('stat-tasks-today').textContent = todayTasks;
+
+  const hs = data.handler_stats || [];
+  let totalRuns = 0, totalQ = 0;
+  hs.forEach(h => { totalRuns += h.runs; totalQ += h.avg_q * h.runs; });
+  const avgQ = totalRuns > 0 ? (totalQ / totalRuns).toFixed(2) : '—';
+  document.getElementById('stat-avg-q').textContent = avgQ;
+
+  const loopRuns = (data.loop_events || []).length;
+  document.getElementById('stat-loop').textContent = loopRuns;
+
+  // Loop proof
+  const loopEl = document.getElementById('loop-proof');
+  const ev = (data.loop_events || [])[0];
+  if (ev) {
+    loopEl.innerHTML = `<strong>Latest autonomous action</strong>
+      <b>${escHtml(ev.name)}</b> ran at ${escHtml(ev.when)} &nbsp;
+      <span style="color:var(--text2)">${escHtml(ev.output || 'queue checked')}</span>`;
+  } else {
+    loopEl.innerHTML = `<strong>Loop status</strong> Waiting for next orchestrator run (every hour)...`;
+  }
+
+  // Commits
+  const commits = data.commits || [];
+  document.getElementById('commit-count').textContent = commits.length + ' commits';
+  document.getElementById('commit-list').innerHTML = commits.map(c => `
+    <div class="commit-item">
+      <code class="commit-sha">${escHtml(c.sha)}</code>
+      <div class="commit-body">
+        <div class="commit-subject">${escHtml(c.subject)}</div>
+        <div class="commit-meta">${escHtml(c.when)}</div>
+      </div>
+      <span class="commit-tag ${escHtml(c.tag)}">${c.tag === 'autonomous' ? '🤖 AUTO' : '👤 MANUAL'}</span>
+    </div>
+  `).join('');
+
+  // Tasks
+  const tasks = data.recent_tasks || [];
+  document.getElementById('task-count').textContent = tasks.length + ' tasks';
+  document.getElementById('task-list').innerHTML = tasks.map(t => `
+    <div class="task-item">
+      <div class="task-label">
+        ${escHtml(t.label)}
+        ${t.finding ? `<span class="finding">${escHtml(t.finding)}</span>` : ''}
+      </div>
+      <span class="handler-chip">${escHtml(t.handler)}</span>
+      <div class="q-badge ${t.q_class}">q=${t.q}</div>
+    </div>
+  `).join('');
+
+  // Finding
+  const findingEl = document.getElementById('finding-box');
+  const f = data.latest_finding;
+  if (f) {
+    findingEl.innerHTML = `
+      <div class="finding-card">
+        <div class="finding-label">🔍 AI-Identified Problem</div>
+        <div class="finding-pattern">${escHtml(f.pattern)}</div>
+        <div class="finding-detail">${escHtml(f.root_cause)}</div>
+        <div class="finding-fix">⚡ Fix: ${escHtml(f.fix_script)}</div>
+      </div>
+      <div style="font-size:0.75rem; color:var(--text3); margin-top:10px;">
+        Identified by Reality Checker agent at ${escHtml(f.when)}<br>
+        DatBotty autonomously ran this fix script.
+      </div>`;
+  } else {
+    findingEl.innerHTML = '<div class="loading">Awaiting next agent analysis cycle...</div>';
+  }
+
+  // Handlers
+  const handlerEl = document.getElementById('handler-list');
+  handlerEl.innerHTML = hs.map(h => `
+    <div class="handler-row">
+      <div class="handler-top">
+        <span class="handler-name">${escHtml(h.handler)}</span>
+        <span class="handler-meta">${h.runs} runs · avg q=${h.avg_q}</span>
+      </div>
+      <div class="bar-track">
+        <div class="bar-fill ${barClass(h.avg_q)}" style="width:${Math.round(h.avg_q * 100)}%"></div>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function refresh() {
+  try {
+    const data = await loadData();
+    render(data);
+  } catch(e) {
+    document.getElementById('updated-at').textContent = 'Error loading data — retrying...';
+  }
+}
+
+refresh();
+setInterval(refresh, 5 * 60 * 1000); // refresh every 5 min
+</script>
+</body>
+</html>

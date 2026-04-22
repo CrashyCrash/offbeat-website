@@ -1,0 +1,306 @@
+{
+  "generated_at": "Apr 22, 2026 at 10:33 AM",
+  "generated_ts": "2026-04-22T14:33:16.071322+00:00",
+  "commits": [
+    {
+      "sha": "db40c712",
+      "subject": "feat(dashboard): DatBotty Live Dashboard \u2014 visual proof of autonomous operation",
+      "when": "9 seconds ago",
+      "tag": "autonomous"
+    },
+    {
+      "sha": "351dff98",
+      "subject": "data(dashboard): refresh DatBotty live dashboard \u2014 Apr 22, 2026 at 10:32 AM",
+      "when": "23 seconds ago",
+      "tag": "autonomous"
+    },
+    {
+      "sha": "dfb4dcb8",
+      "subject": "docs(session-U): update PLAN.md + NEXT_SESSION_PROMPT for session-V",
+      "when": "26 minutes ago",
+      "tag": "manual-session"
+    },
+    {
+      "sha": "6f7c235a",
+      "subject": "fix(agent-finding): ran self_improver.py on agent recommendation",
+      "when": "29 minutes ago",
+      "tag": "autonomous"
+    },
+    {
+      "sha": "6b03a99f",
+      "subject": "feat(session-U): apply_agent_finding.py \u2014 closes agent\u2192fix\u2192commit loop",
+      "when": "31 minutes ago",
+      "tag": "manual-session"
+    },
+    {
+      "sha": "faa6f5ad",
+      "subject": "fix(bugs): 3 silent failures fixed \u2014 all caught by DB evidence",
+      "when": "34 minutes ago",
+      "tag": "autonomous"
+    },
+    {
+      "sha": "5888cfbb",
+      "subject": "feat(session-T): self_improver.py + queue pivot toward real autonomous improvements",
+      "when": "41 minutes ago",
+      "tag": "manual-session"
+    },
+    {
+      "sha": "2d42e2e0",
+      "subject": "fix(self-improver): remove 1 low-ROI task(s) from queue",
+      "when": "44 minutes ago",
+      "tag": "autonomous"
+    },
+    {
+      "sha": "59c28824",
+      "subject": "fix(session-S): DB permanently excluded from git; agency-agent quality scoring fixed",
+      "when": "72 minutes ago",
+      "tag": "manual-session"
+    },
+    {
+      "sha": "5cf088a7",
+      "subject": "fix(session-R): DB reset bug, agent task descriptions, NULL task cleanup",
+      "when": "2 hours ago",
+      "tag": "manual-session"
+    },
+    {
+      "sha": "7ae6db2e",
+      "subject": "fix(session-Q): dedup 25\u219212, heartbeat <2\u2192<3, queue diversified +7 tasks",
+      "when": "2 hours ago",
+      "tag": "manual-session"
+    },
+    {
+      "sha": "99b8e79a",
+      "subject": "docs(session-P): update NEXT_SESSION_PROMPT and PLAN.md with P1+P2+P3 proof + session-Q priorities",
+      "when": "3 hours ago",
+      "tag": "manual-session"
+    },
+    {
+      "sha": "7512fa3c",
+      "subject": "fix(session-P): 5 quality+gate2 fixes \u2014 agency-agent DB injection, dedup fallback, pending task filter",
+      "when": "3 hours ago",
+      "tag": "manual-session"
+    },
+    {
+      "sha": "c004202d",
+      "subject": "feat(session-O): fix agency-agent routing, add 3 agent tasks, wire n8n inbound loop",
+      "when": "3 hours ago",
+      "tag": "manual-session"
+    },
+    {
+      "sha": "8090f234",
+      "subject": "feat(session-N): wire n8n notify to orchestrator, activate health monitor, register SRE+DevOps agents",
+      "when": "4 hours ago",
+      "tag": "manual-session"
+    }
+  ],
+  "recent_tasks": [
+    {
+      "label": "\ud83d\udd27 apply_agent_finding.py",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-22 14:33",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 budget_tracker.py",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-22 14:33",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 backup_state.py",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-22 14:33",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 self_improver.py",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-22 14:33",
+      "finding": null
+    },
+    {
+      "label": "\ud83e\udde0 Use fluid-memory to retrieve relevant facts about: DI",
+      "handler": "openclaw",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-22 14:03",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 export_status.py",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-22 14:03",
+      "finding": null
+    },
+    {
+      "label": "\ud83e\udde0 Use fluid-memory to check script task reliability and",
+      "handler": "openclaw",
+      "q": 0.55,
+      "q_class": "mid",
+      "when": "2026-04-22 14:03",
+      "finding": null
+    },
+    {
+      "label": "\ud83e\udde0 Use fluid-memory to look up 'error' error patterns an",
+      "handler": "openclaw",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-22 14:03",
+      "finding": null
+    },
+    {
+      "label": "\ud83e\udd16 reality-checker Store top failure finding to fluid-mem",
+      "handler": "openclaw",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-22 14:02",
+      "finding": "[agent:reality-checker][q=0.650]PATTERN | ROOT_CAUSE | FIX_SCRIPT"
+    },
+    {
+      "label": "\ud83e\udd16 devops-automator Identify lowest-ROI handler from live",
+      "handler": "openclaw",
+      "q": 0.55,
+      "q_class": "mid",
+      "when": "2026-04-22 14:01",
+      "finding": null
+    },
+    {
+      "label": "\ud83e\udd16 sre Identify the #1 failure pattern from live DB stats",
+      "handler": "openclaw",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-22 14:00",
+      "finding": "[agent:sre][q=0.650] | HANDLER | FAILURE_PCT"
+    },
+    {
+      "label": "\ud83e\udd16 reality-checker Audit last 48h done tasks for q<0.30",
+      "handler": "openclaw",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-22 14:00",
+      "finding": "[agent:reality-checker][q=0.650] | PATTERN | COUNT"
+    },
+    {
+      "label": "\ud83e\udde0 Use fluid-memory to retrieve ALL stored facts about D",
+      "handler": "openclaw",
+      "q": 0.65,
+      "q_class": "high",
+      "when": "2026-04-22 14:00",
+      "finding": "OpenClaw [tool-used][q=0.65]: FACT | OLD | CORRECTED"
+    },
+    {
+      "label": "\ud83d\udd17 Link check",
+      "handler": "browser",
+      "q": 0.47,
+      "q_class": "mid",
+      "when": "2026-04-22 14:00",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 task_quality_audit.py",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-22 13:50",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 export_status.py",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-22 13:50",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 budget_tracker.py",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-22 13:50",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 self_improver.py",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-22 13:50",
+      "finding": null
+    },
+    {
+      "label": "\ud83e\udde0 Use fluid-memory to retrieve relevant facts about: Us",
+      "handler": "openclaw",
+      "q": 0.6,
+      "q_class": "mid",
+      "when": "2026-04-22 13:17",
+      "finding": null
+    },
+    {
+      "label": "\ud83e\udd16 devops-automator Confirm DB health: counts by status l",
+      "handler": "openclaw",
+      "q": 0.55,
+      "q_class": "mid",
+      "when": "2026-04-22 13:16",
+      "finding": null
+    }
+  ],
+  "handler_stats": [
+    {
+      "handler": "script",
+      "runs": 22,
+      "avg_q": 0.7
+    },
+    {
+      "handler": "openclaw",
+      "runs": 22,
+      "avg_q": 0.53
+    },
+    {
+      "handler": "browser",
+      "runs": 2,
+      "avg_q": 0.47
+    },
+    {
+      "handler": "investigation",
+      "runs": 1,
+      "avg_q": 0.08
+    }
+  ],
+  "loop_events": [
+    {
+      "name": "apply_agent_finding.py",
+      "q": 0.7,
+      "when": "2026-04-22 14:33",
+      "output": "[apply_agent_finding] Git commit failed: On branch main"
+    },
+    {
+      "name": "self_improver.py",
+      "q": 0.7,
+      "when": "2026-04-22 14:33",
+      "output": "2 avg_q=0.528"
+    },
+    {
+      "name": "self_improver.py",
+      "q": 0.7,
+      "when": "2026-04-22 13:50",
+      "output": "1 avg_q=0.466"
+    }
+  ],
+  "latest_finding": {
+    "pattern": "Investigation tasks consistently produce low quality (average q=0.08).",
+    "root_cause": "The 'investigation' handler's tasks, such as 'Run gap investigation', are genera",
+    "fix_script": "hub/scripts/self_improver.py",
+    "when": "2026-04-22 14:02"
+  }
+}
