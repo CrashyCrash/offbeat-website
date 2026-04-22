@@ -315,9 +315,9 @@
 
   <div class="stats-row" id="stats-row">
     <div class="stat-card">
-      <div class="stat-label">Autonomous Commits</div>
+      <div class="stat-label">Autonomous Commits Today</div>
       <div class="stat-value" id="stat-auto-commits" style="color: var(--green);">—</div>
-      <div class="stat-sub">last 15 commits</div>
+      <div class="stat-sub" id="stat-auto-commits-sub">of 0 total today</div>
     </div>
     <div class="stat-card">
       <div class="stat-label">Tasks Today</div>
@@ -458,8 +458,11 @@ function render(data) {
   document.getElementById('updated-at').textContent = 'Updated: ' + data.generated_at;
 
   // Stats
-  const autoCommits = (data.commits || []).filter(c => c.tag === 'autonomous').length;
-  document.getElementById('stat-auto-commits').textContent = autoCommits;
+  const todayStats = data.commits_today || {};
+  const autoCommitsToday = todayStats.autonomous || (data.commits || []).filter(c => c.tag === 'autonomous').length;
+  const totalCommitsToday = todayStats.total || autoCommitsToday;
+  document.getElementById('stat-auto-commits').textContent = autoCommitsToday;
+  document.getElementById('stat-auto-commits-sub').textContent = 'of ' + totalCommitsToday + ' total today';
 
   const todayTasks = (data.recent_tasks || []).length;
   document.getElementById('stat-tasks-today').textContent = todayTasks;
