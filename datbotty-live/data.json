@@ -1,134 +1,134 @@
 {
-  "generated_at": "Apr 22, 2026 at 6:30 PM",
-  "generated_ts": "2026-04-22T22:30:34.306869+00:00",
+  "generated_at": "Apr 22, 2026 at 6:45 PM",
+  "generated_ts": "2026-04-22T22:45:01.476364+00:00",
   "commits": [
+    {
+      "sha": "36ee07c8",
+      "subject": "fix(auto-patch): investigate.py:auto_generate_tasks_from_findings \u2014 Add guard for malformed finding tuples to prevent IndexError",
+      "when": "4 minutes ago",
+      "tag": "autonomous"
+    },
+    {
+      "sha": "737501bd",
+      "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 6:30 PM",
+      "when": "14 minutes ago",
+      "tag": "autonomous"
+    },
     {
       "sha": "fcb0c467",
       "subject": "fix(auto-patch): investigate.py:auto_generate_tasks_from_findings \u2014 Add guard for malformed finding tuples to prevent IndexError",
-      "when": "0 seconds ago",
+      "when": "14 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "f056ddcb",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 6:20 PM",
-      "when": "11 minutes ago",
+      "when": "25 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "b6abd70a",
       "subject": "fix(session-FF): tier2 confirmed + watchdog false-positive + conn-leak fix + code-read target rotation",
-      "when": "14 minutes ago",
+      "when": "28 minutes ago",
       "tag": "manual-session"
     },
     {
       "sha": "456592ee",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 6:08 PM",
-      "when": "23 minutes ago",
+      "when": "37 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "f051f789",
       "subject": "fix(auto-patch): watchdog.py:self_heal_db_corruption \u2014 Add retry for git show to improve resilience against transie",
-      "when": "23 minutes ago",
+      "when": "37 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "bda6aa03",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 6:05 PM",
-      "when": "26 minutes ago",
+      "when": "40 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "ddcd9a0b",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 5:55 PM",
-      "when": "35 minutes ago",
+      "when": "49 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "8b834dfa",
       "subject": "docs(session-EE): update COMPLETED.md with P1 proof + IDEAS.md 0.12 lessons",
-      "when": "36 minutes ago",
+      "when": "51 minutes ago",
       "tag": "manual-session"
     },
     {
       "sha": "8f0c960d",
       "subject": "fix(session-EE): 4 more code-patch chain bugs + watchdog TZ false-positive",
-      "when": "38 minutes ago",
+      "when": "52 minutes ago",
       "tag": "manual-session"
     },
     {
       "sha": "702e722d",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 5:50 PM",
-      "when": "40 minutes ago",
+      "when": "55 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "15bd9d4f",
       "subject": "fix(auto-patch): orchestrator_quality.py:_apply_tier_constraints \u2014 Add validation for tier input; raise error for invalid tiers",
-      "when": "40 minutes ago",
+      "when": "55 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "17465d31",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 5:40 PM",
-      "when": "51 minutes ago",
+      "when": "65 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "4181a14f",
       "subject": "feat(session-DD): fix 3 code-patch chain bugs + dashboard push + docs update",
-      "when": "56 minutes ago",
+      "when": "71 minutes ago",
       "tag": "manual-session"
-    },
-    {
-      "sha": "59507f1e",
-      "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 5:25 PM",
-      "when": "66 minutes ago",
-      "tag": "autonomous"
-    },
-    {
-      "sha": "669bf056",
-      "subject": "fix(agent-finding): ran propose_code_patch.py on agent recommendation",
-      "when": "66 minutes ago",
-      "tag": "autonomous"
     }
   ],
   "commits_today": {
-    "total": 97,
-    "autonomous": 66,
+    "total": 99,
+    "autonomous": 68,
     "manual": 31
   },
   "recent_tasks": [
-    {
-      "label": "\ud83d\udd27 apply_agent_finding.py",
-      "handler": "script",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-22 22:30",
-      "finding": null
-    },
     {
       "label": "\ud83d\udd27 patch_dispatcher.py",
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-22 22:30",
+      "when": "2026-04-22 22:45",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 apply_agent_finding.py",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-22 22:40",
       "finding": null
     },
     {
       "label": "\ud83e\udde0 The task 'Generate script-based code improvement repo",
       "handler": "openclaw",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-22 22:30",
-      "finding": null
+      "q": 0.6,
+      "q_class": "mid",
+      "when": "2026-04-22 22:40",
+      "finding": "OpenClaw [detailed][q=0.6]: ROOT_CAUSE | The system attempted to execute a command or script named 'Generate script-based code improvement report', but no such executable was found in the accessible environment. This indicates a misconfiguration in the task's execution command. | FILE"
     },
     {
       "label": "\ud83d\udd27 backup_state.py",
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-22 22:30",
+      "when": "2026-04-22 22:40",
       "finding": null
     },
     {
@@ -136,7 +136,7 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-22 22:30",
+      "when": "2026-04-22 22:40",
       "finding": null
     },
     {
@@ -144,7 +144,7 @@
       "handler": "openclaw",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-22 22:25",
+      "when": "2026-04-22 22:40",
       "finding": null
     },
     {
@@ -152,7 +152,7 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-22 22:25",
+      "when": "2026-04-22 22:40",
       "finding": null
     },
     {
@@ -160,31 +160,23 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-22 22:25",
-      "finding": null
-    },
-    {
-      "label": "\ud83d\udd27 link_checker.py",
-      "handler": "script",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-22 22:25",
+      "when": "2026-04-22 22:40",
       "finding": null
     },
     {
       "label": "\ud83e\udd16 sre 1 task failures in last 24h. Query DB for most com",
       "handler": "openclaw",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-22 22:25",
-      "finding": "[agent:sre][q=0.650] | ERROR_PATTERN | COUNT"
+      "q": 0.2,
+      "q_class": "low",
+      "when": "2026-04-22 22:35",
+      "finding": null
     },
     {
       "label": "\ud83d\udd27 export_status.py",
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-22 22:25",
+      "when": "2026-04-22 22:35",
       "finding": null
     },
     {
@@ -192,15 +184,23 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-22 22:25",
+      "when": "2026-04-22 22:35",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 link_checker.py",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-22 22:35",
       "finding": null
     },
     {
       "label": "\ud83e\udd16 reality-checker Specific low-q tasks last 24h: #1811(q",
       "handler": "openclaw",
-      "q": 0.65,
+      "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-22 22:20",
+      "when": "2026-04-22 22:35",
       "finding": null
     },
     {
@@ -208,7 +208,7 @@
       "handler": "openclaw",
       "q": 0.55,
       "q_class": "mid",
-      "when": "2026-04-22 22:20",
+      "when": "2026-04-22 22:35",
       "finding": null
     },
     {
@@ -216,23 +216,23 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-22 22:20",
+      "when": "2026-04-22 22:35",
       "finding": null
     },
     {
       "label": "\ud83e\udd16 sre code-read-store: Read hub_scripts/investigate.py l",
       "handler": "openclaw",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-22 22:20",
-      "finding": "[agent:sre][q=0.550]hub/scripts/investigate.py | auto_generate_tasks_from_findings | Add guard for malformed finding tuples to prevent IndexError."
+      "q": 0.55,
+      "q_class": "mid",
+      "when": "2026-04-22 22:35",
+      "finding": null
     },
     {
       "label": "\ud83d\udd27 queue_doctor.py",
       "handler": "script",
       "q": 0.74,
       "q_class": "high",
-      "when": "2026-04-22 22:20",
+      "when": "2026-04-22 22:30",
       "finding": null
     },
     {
@@ -240,7 +240,7 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-22 22:20",
+      "when": "2026-04-22 22:30",
       "finding": null
     },
     {
@@ -248,31 +248,43 @@
       "handler": "script",
       "q": 0.76,
       "q_class": "high",
-      "when": "2026-04-22 22:20",
+      "when": "2026-04-22 22:30",
       "finding": null
     },
     {
-      "label": "\ud83d\udd27 patch_dispatcher.py",
+      "label": "\ud83d\udd27 apply_agent_finding.py",
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-22 22:20",
+      "when": "2026-04-22 22:30",
       "finding": null
     }
   ],
   "handler_stats": [
     {
       "handler": "script",
-      "runs": 91,
+      "runs": 104,
       "avg_q": 0.71
     },
     {
       "handler": "openclaw",
-      "runs": 45,
-      "avg_q": 0.62
+      "runs": 51,
+      "avg_q": 0.61
     }
   ],
   "loop_events": [
+    {
+      "name": "apply_agent_finding.py",
+      "q": 0.7,
+      "when": "2026-04-22 22:40",
+      "output": "ipping task #1848 \u2014 unparseable output"
+    },
+    {
+      "name": "self_improver.py",
+      "q": 0.7,
+      "when": "2026-04-22 22:40",
+      "output": ""
+    },
     {
       "name": "apply_agent_finding.py",
       "q": 0.7,
@@ -307,18 +319,6 @@
       "name": "self_improver.py",
       "q": 0.7,
       "when": "2026-04-22 22:07",
-      "output": "avg_q=0.594"
-    },
-    {
-      "name": "apply_agent_finding.py",
-      "q": 0.7,
-      "when": "2026-04-22 21:50",
-      "output": "ipping task #1753 \u2014 unparseable output"
-    },
-    {
-      "name": "self_improver.py",
-      "q": 0.7,
-      "when": "2026-04-22 21:50",
       "output": "avg_q=0.594"
     }
   ],
