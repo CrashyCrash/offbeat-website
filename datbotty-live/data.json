@@ -1,6 +1,6 @@
 {
-  "generated_at": "Apr 23, 2026 at 1:55 AM",
-  "generated_ts": "2026-04-23T05:55:01.778256+00:00",
+  "generated_at": "Apr 23, 2026 at 2:10 AM",
+  "generated_ts": "2026-04-23T06:10:11.529136+00:00",
   "commits": [
     {
       "sha": "7eaf8d1e",
@@ -11,13 +11,13 @@
     {
       "sha": "bb7d773a",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 11:40 PM",
-      "when": "2 hours ago",
+      "when": "3 hours ago",
       "tag": "autonomous"
     },
     {
       "sha": "1d0448e2",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 11:35 PM",
-      "when": "2 hours ago",
+      "when": "3 hours ago",
       "tag": "autonomous"
     },
     {
@@ -53,19 +53,19 @@
     {
       "sha": "2f0f21c8",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 10:40 PM",
-      "when": "3 hours ago",
+      "when": "4 hours ago",
       "tag": "autonomous"
     },
     {
       "sha": "466b664c",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 10:30 PM",
-      "when": "3 hours ago",
+      "when": "4 hours ago",
       "tag": "autonomous"
     },
     {
       "sha": "94fe539b",
       "subject": "fix(auto-patch): watchdog.py:check_queue_health \u2014 Ensure db.close() is called in all paths, including exceptio",
-      "when": "3 hours ago",
+      "when": "4 hours ago",
       "tag": "autonomous"
     },
     {
@@ -100,27 +100,11 @@
   },
   "recent_tasks": [
     {
-      "label": "\ud83d\udd27 backup_state.py",
-      "handler": "script",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-23 05:55",
-      "finding": null
-    },
-    {
-      "label": "\ud83d\udd27 self_improver.py",
-      "handler": "script",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-23 05:55",
-      "finding": null
-    },
-    {
       "label": "\ud83d\udd27 apply_agent_finding.py",
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 05:55",
+      "when": "2026-04-23 06:10",
       "finding": null
     },
     {
@@ -128,23 +112,39 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 05:55",
+      "when": "2026-04-23 06:10",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 backup_state.py",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-23 06:05",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 self_improver.py",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-23 06:05",
       "finding": null
     },
     {
       "label": "\ud83e\udde0 The task 'Generate script-based code improvement repo",
       "handler": "openclaw",
-      "q": 0.7,
+      "q": 0.65,
       "q_class": "high",
-      "when": "2026-04-23 05:50",
-      "finding": "OpenClaw [detailed][q=0.65]: The script 'Generate script-based code improvement report' was not found in the system's executable paths or the specified working directory. | generate_script_based_code_improvement_report.py | ```python"
+      "when": "2026-04-23 06:05",
+      "finding": "OpenClaw [detailed][q=0.65]: ROOT_CAUSE | The system attempted to execute a command or script named \"Generate script-based code improvement report\", which could not be found in the system's PATH or as a direct executable. This indicates an incorrect script name or path was specified in the task configuration. | FILE"
     },
     {
-      "label": "\ud83d\udd27 export_status.py [2026-04-23T05:00]",
+      "label": "\ud83d\udd27 queue_doctor.py",
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 05:50",
+      "when": "2026-04-23 06:05",
       "finding": null
     },
     {
@@ -152,7 +152,7 @@
       "handler": "openclaw",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 05:50",
+      "when": "2026-04-23 06:05",
       "finding": null
     },
     {
@@ -160,7 +160,7 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 05:50",
+      "when": "2026-04-23 06:05",
       "finding": null
     },
     {
@@ -168,23 +168,7 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 05:50",
-      "finding": null
-    },
-    {
-      "label": "\ud83d\udd27 export_status.py",
-      "handler": "script",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-23 05:50",
-      "finding": null
-    },
-    {
-      "label": "\ud83d\udd27 budget_tracker.py",
-      "handler": "script",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-23 05:50",
+      "when": "2026-04-23 06:05",
       "finding": null
     },
     {
@@ -192,7 +176,7 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 05:50",
+      "when": "2026-04-23 06:05",
       "finding": null
     },
     {
@@ -200,39 +184,55 @@
       "handler": "openclaw",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 05:46",
+      "when": "2026-04-23 06:01",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 export_status.py",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-23 06:01",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 budget_tracker.py",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-23 06:01",
       "finding": null
     },
     {
       "label": "\ud83e\udd16 sre code-read-store: Read hub_scripts/briefing.py line",
       "handler": "openclaw",
-      "q": 0.55,
-      "q_class": "mid",
-      "when": "2026-04-23 05:46",
-      "finding": null
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-23 06:01",
+      "finding": "[agent:sre][q=0.550]FILE=hub/scripts/briefing.py FUNCTION=get_task_summary PATCH_DESC=Fix SQL syntax: replace FILTER with SUM(CASE...) for compatibility | hub/scripts/propose_code_patch.py"
     },
     {
       "label": "\ud83d\udd27 audit_trend_tracker.py",
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 05:46",
+      "when": "2026-04-23 06:01",
       "finding": null
     },
     {
       "label": "\ud83e\udd16 sre code-read-store: Read hub_scripts/watchdog.py line",
       "handler": "openclaw",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-23 05:45",
+      "q": 0.55,
+      "q_class": "mid",
+      "when": "2026-04-23 06:00",
       "finding": null
     },
     {
       "label": "\ud83e\udd16 sre code-read-store: Read hub_scripts/apply_agent_find",
       "handler": "openclaw",
-      "q": 0.55,
-      "q_class": "mid",
-      "when": "2026-04-23 05:45",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-23 06:00",
       "finding": null
     },
     {
@@ -240,39 +240,57 @@
       "handler": "openclaw",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 05:45",
-      "finding": "[agent:sre][q=0.550]hub/scripts/orchestrator_quality.py | score_task_output | Ensure empty task titles result in an invalid score, not 0.10."
+      "when": "2026-04-23 06:00",
+      "finding": "[agent:sre][q=0.300]hub/scripts/propose_code_patch.py | score_task_output | Penalize score for unknown handlers, default to lower baseline."
     },
     {
       "label": "\ud83e\udd16 sre code-read-store: Read hub_scripts/investigate.py l",
       "handler": "openclaw",
-      "q": 0.55,
-      "q_class": "mid",
-      "when": "2026-04-23 05:45",
-      "finding": null
-    },
-    {
-      "label": "\ud83d\udd27 sync_scripts_to_workspace.py",
-      "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 05:45",
+      "when": "2026-04-23 05:55",
+      "finding": "[agent:sre][q=0.300]hub/scripts/investigate.py | detect_cascading_failures | Add try/finally to ensure db.close() is called, preventing resource leaks."
+    },
+    {
+      "label": "\ud83d\udd27 gen_dashboard_data.py",
+      "handler": "script",
+      "q": 0.76,
+      "q_class": "high",
+      "when": "2026-04-23 05:55",
       "finding": null
     }
   ],
   "handler_stats": [
     {
       "handler": "script",
-      "runs": 125,
+      "runs": 139,
       "avg_q": 0.7
     },
     {
       "handler": "openclaw",
-      "runs": 71,
+      "runs": 79,
       "avg_q": 0.63
     }
   ],
   "loop_events": [
+    {
+      "name": "apply_agent_finding.py",
+      "q": 0.7,
+      "when": "2026-04-23 06:10",
+      "output": "ipping task #1910 \u2014 unparseable output"
+    },
+    {
+      "name": "self_improver.py",
+      "q": 0.7,
+      "when": "2026-04-23 06:05",
+      "output": ""
+    },
+    {
+      "name": "apply_agent_finding.py",
+      "q": 0.7,
+      "when": "2026-04-23 06:00",
+      "output": "[agent:sre][q=0.650]Okay, I have reviewed the `hub_scripts/apply_agent_finding.py` file."
+    },
     {
       "name": "self_improver.py",
       "q": 0.7,
@@ -302,30 +320,12 @@
       "q": 0.7,
       "when": "2026-04-23 05:40",
       "output": "ipping task #1860 \u2014 unparseable output"
-    },
-    {
-      "name": "apply_agent_finding.py",
-      "q": 0.55,
-      "when": "2026-04-23 05:30",
-      "output": "[agent:sre][q=0.300]An unknown error occurred"
-    },
-    {
-      "name": "self_improver.py",
-      "q": 0.7,
-      "when": "2026-04-23 05:25",
-      "output": "avg_q=0.594"
-    },
-    {
-      "name": "apply_agent_finding.py",
-      "q": 0.7,
-      "when": "2026-04-23 05:25",
-      "output": "ipping task #1838 \u2014 unparseable output"
     }
   ],
   "latest_finding": {
-    "pattern": "[agent:sre][q=0.550]hub/scripts/orchestrator_quality.py",
-    "root_cause": "score_task_output",
-    "fix_script": "Ensure empty task titles result in an invalid score, not 0.10.",
-    "when": "2026-04-23 05:45"
+    "pattern": "FILE",
+    "root_cause": "FUNCTION",
+    "fix_script": "PATCH_DESC",
+    "when": "2026-04-23 06:00"
   }
 }
