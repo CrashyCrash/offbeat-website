@@ -1,65 +1,71 @@
 {
-  "generated_at": "Apr 22, 2026 at 11:55 PM",
-  "generated_ts": "2026-04-23T03:55:01.148609+00:00",
+  "generated_at": "Apr 23, 2026 at 12:05 AM",
+  "generated_ts": "2026-04-23T04:05:01.644647+00:00",
   "commits": [
+    {
+      "sha": "7eaf8d1e",
+      "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 11:55 PM",
+      "when": "10 minutes ago",
+      "tag": "autonomous"
+    },
     {
       "sha": "bb7d773a",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 11:40 PM",
-      "when": "15 minutes ago",
+      "when": "25 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "1d0448e2",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 11:35 PM",
-      "when": "20 minutes ago",
+      "when": "30 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "5c653923",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 11:25 PM",
-      "when": "30 minutes ago",
+      "when": "40 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "1f774755",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 11:10 PM",
-      "when": "45 minutes ago",
+      "when": "55 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "4eca98f7",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 11:00 PM",
-      "when": "55 minutes ago",
+      "when": "65 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "8e0a28d7",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 10:45 PM",
-      "when": "70 minutes ago",
+      "when": "80 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "cab05d17",
       "subject": "fix(auto-patch): orchestrator_quality.py:_categorize_task_tier \u2014 Expand infrastructure_topics to include 'performance', 'stab",
-      "when": "70 minutes ago",
+      "when": "80 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "2f0f21c8",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 10:40 PM",
-      "when": "75 minutes ago",
+      "when": "85 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "466b664c",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 10:30 PM",
-      "when": "85 minutes ago",
+      "when": "2 hours ago",
       "tag": "autonomous"
     },
     {
       "sha": "94fe539b",
       "subject": "fix(auto-patch): watchdog.py:check_queue_health \u2014 Ensure db.close() is called in all paths, including exceptio",
-      "when": "85 minutes ago",
+      "when": "2 hours ago",
       "tag": "autonomous"
     },
     {
@@ -85,42 +91,20 @@
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 9:45 PM",
       "when": "2 hours ago",
       "tag": "autonomous"
-    },
-    {
-      "sha": "3f7d2b47",
-      "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 9:35 PM",
-      "when": "2 hours ago",
-      "tag": "autonomous"
     }
   ],
   "commits_today": {
-    "total": 144,
-    "autonomous": 108,
-    "manual": 36
+    "total": 0,
+    "autonomous": 0,
+    "manual": 0
   },
   "recent_tasks": [
-    {
-      "label": "\ud83d\udd27 patch_dispatcher.py",
-      "handler": "script",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-23 03:50",
-      "finding": null
-    },
-    {
-      "label": "\ud83e\udde0 The task 'Generate script-based code improvement repo",
-      "handler": "openclaw",
-      "q": 0.2,
-      "q_class": "low",
-      "when": "2026-04-23 03:50",
-      "finding": "OpenClaw [detailed][q=0.5]: The script 'Generate script-based code improvement report' was not found when the task attempted to execute it, indicating the script file is missing or inaccessible. | Generate script-based code improvement report"
-    },
     {
       "label": "\ud83d\udd27 backup_state.py",
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 03:50",
+      "when": "2026-04-23 04:05",
       "finding": null
     },
     {
@@ -128,7 +112,7 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 03:50",
+      "when": "2026-04-23 04:05",
       "finding": null
     },
     {
@@ -136,15 +120,23 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 03:50",
+      "when": "2026-04-23 04:05",
       "finding": null
     },
     {
-      "label": "\ud83d\udd27 export_status.py [2026-04-23T02:45]",
+      "label": "\ud83d\udd27 patch_dispatcher.py",
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 03:50",
+      "when": "2026-04-23 04:05",
+      "finding": null
+    },
+    {
+      "label": "\ud83e\udde0 The task 'Generate script-based code improvement repo",
+      "handler": "openclaw",
+      "q": 0.2,
+      "q_class": "low",
+      "when": "2026-04-23 04:01",
       "finding": null
     },
     {
@@ -152,7 +144,7 @@
       "handler": "openclaw",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 03:50",
+      "when": "2026-04-23 04:00",
       "finding": null
     },
     {
@@ -160,7 +152,7 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 03:50",
+      "when": "2026-04-23 04:00",
       "finding": null
     },
     {
@@ -168,7 +160,7 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 03:45",
+      "when": "2026-04-23 04:00",
       "finding": null
     },
     {
@@ -176,23 +168,7 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 03:45",
-      "finding": null
-    },
-    {
-      "label": "\ud83e\udd16 reality-checker Specific low-q tasks last 24h: #2070(q",
-      "handler": "openclaw",
-      "q": 0.2,
-      "q_class": "low",
-      "when": "2026-04-23 03:45",
-      "finding": null
-    },
-    {
-      "label": "\ud83d\udd27 export_status.py",
-      "handler": "script",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-23 03:45",
+      "when": "2026-04-23 04:00",
       "finding": null
     },
     {
@@ -200,7 +176,7 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 03:45",
+      "when": "2026-04-23 04:00",
       "finding": null
     },
     {
@@ -208,15 +184,7 @@
       "handler": "openclaw",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 03:45",
-      "finding": "[agent:sre][q=0.300]hub/scripts/briefing.py | get_task_summary | Replace COUNT(*) FILTER with SUM(CASE WHEN) for SQLite compatibility"
-    },
-    {
-      "label": "\ud83d\udd27 audit_trend_tracker.py",
-      "handler": "script",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-23 03:45",
+      "when": "2026-04-23 00:21",
       "finding": null
     },
     {
@@ -224,7 +192,7 @@
       "handler": "openclaw",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 03:45",
+      "when": "2026-04-23 00:21",
       "finding": null
     },
     {
@@ -232,15 +200,15 @@
       "handler": "openclaw",
       "q": 0.55,
       "q_class": "mid",
-      "when": "2026-04-23 03:40",
+      "when": "2026-04-23 00:20",
       "finding": null
     },
     {
       "label": "\ud83e\udd16 sre code-read-store: Read hub_scripts/orchestrator_qua",
       "handler": "openclaw",
-      "q": 0.73,
-      "q_class": "high",
-      "when": "2026-04-23 03:40",
+      "q": 0.55,
+      "q_class": "mid",
+      "when": "2026-04-23 00:20",
       "finding": null
     },
     {
@@ -248,84 +216,111 @@
       "handler": "openclaw",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 03:40",
+      "when": "2026-04-23 00:20",
       "finding": null
     },
     {
-      "label": "\ud83d\udd27 apply_agent_finding.py",
+      "label": "\ud83d\udd27 gen_dashboard_data.py",
+      "handler": "script",
+      "q": 0.76,
+      "q_class": "high",
+      "when": "2026-04-23 00:20",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 queue_doctor.py",
+      "handler": "script",
+      "q": 0.74,
+      "q_class": "high",
+      "when": "2026-04-23 00:20",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 sync_scripts_to_workspace.py",
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 03:40",
+      "when": "2026-04-23 00:20",
+      "finding": null
+    },
+    {
+      "label": "\ud83e\udde0 The task 'Generate script-based code improvement repo",
+      "handler": "openclaw",
+      "q": 0.65,
+      "q_class": "high",
+      "when": "2026-04-23 00:15",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 backup_state.py",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-23 00:15",
       "finding": null
     }
   ],
   "handler_stats": [
     {
       "handler": "script",
-      "runs": 239,
-      "avg_q": 0.71
+      "runs": 32,
+      "avg_q": 0.7
     },
     {
       "handler": "openclaw",
-      "runs": 136,
-      "avg_q": 0.64
+      "runs": 15,
+      "avg_q": 0.6
     }
   ],
   "loop_events": [
     {
       "name": "self_improver.py",
       "q": 0.7,
-      "when": "2026-04-23 03:50",
-      "output": ""
+      "when": "2026-04-23 04:05",
+      "output": "avg_q=0.594"
     },
     {
       "name": "apply_agent_finding.py",
       "q": 0.7,
-      "when": "2026-04-23 03:50",
-      "output": "und finding from task #2082 (2026-04-23 03:45:27)"
+      "when": "2026-04-23 04:05",
+      "output": "ipping task #1728 \u2014 unparseable output"
     },
     {
       "name": "apply_agent_finding.py",
       "q": 0.55,
-      "when": "2026-04-23 03:40",
-      "output": "[agent:sre][q=0.300]completed"
-    },
-    {
-      "name": "apply_agent_finding.py",
-      "q": 0.7,
-      "when": "2026-04-23 03:40",
-      "output": "ipping task #2060 \u2014 unparseable output"
-    },
-    {
-      "name": "self_improver.py",
-      "q": 0.7,
-      "when": "2026-04-23 03:35",
-      "output": ""
-    },
-    {
-      "name": "apply_agent_finding.py",
-      "q": 0.55,
-      "when": "2026-04-23 03:30",
+      "when": "2026-04-23 00:20",
       "output": "[agent:sre][q=0.300]completed"
     },
     {
       "name": "self_improver.py",
       "q": 0.7,
-      "when": "2026-04-23 03:25",
-      "output": ""
+      "when": "2026-04-23 00:15",
+      "output": "avg_q=0.594"
     },
     {
       "name": "apply_agent_finding.py",
       "q": 0.7,
-      "when": "2026-04-23 03:25",
-      "output": "ipping task #2038 \u2014 unparseable output"
+      "when": "2026-04-23 00:15",
+      "output": "ipping task #1707 \u2014 unparseable output"
+    },
+    {
+      "name": "apply_agent_finding.py",
+      "q": 0.55,
+      "when": "2026-04-23 00:10",
+      "output": "[agent:sre][q=0.300]An unknown error occurred"
+    },
+    {
+      "name": "self_improver.py",
+      "q": 0.7,
+      "when": "2026-04-23 00:05",
+      "output": "45 avg_q=0.594"
+    },
+    {
+      "name": "apply_agent_finding.py",
+      "q": 0.7,
+      "when": "2026-04-23 00:05",
+      "output": "[apply_agent_finding] Starting (dry_run=False, auto_commit=True)"
     }
   ],
-  "latest_finding": {
-    "pattern": "[agent:sre][q=0.300]hub/scripts/briefing.py",
-    "root_cause": "get_task_summary",
-    "fix_script": "Replace COUNT(*) FILTER with SUM(CASE WHEN) for SQLite compatibility",
-    "when": "2026-04-23 03:45"
-  }
+  "latest_finding": null
 }
