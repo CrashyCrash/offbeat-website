@@ -1,59 +1,83 @@
 {
-  "generated_at": "Apr 23, 2026 at 3:55 PM",
-  "generated_ts": "2026-04-23T19:55:01.502667+00:00",
+  "generated_at": "Apr 23, 2026 at 4:25 PM",
+  "generated_ts": "2026-04-23T20:25:01.451692+00:00",
   "commits": [
+    {
+      "sha": "8a24e882",
+      "subject": "docs: update PLAN.md + NEXT_SESSION_PROMPT.md for Session-WW",
+      "when": "27 minutes ago",
+      "tag": "autonomous"
+    },
+    {
+      "sha": "715c286e",
+      "subject": "fix(queue): remove duplicate task_quality_audit.py entry",
+      "when": "29 minutes ago",
+      "tag": "autonomous"
+    },
+    {
+      "sha": "f8395658",
+      "subject": "fix(reliability): prevent 32-hour DB corruption outage (April 22-23 root cause)",
+      "when": "29 minutes ago",
+      "tag": "autonomous"
+    },
+    {
+      "sha": "02bdae66",
+      "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 23, 2026 at 3:55 PM",
+      "when": "30 minutes ago",
+      "tag": "autonomous"
+    },
     {
       "sha": "605f82dd",
       "subject": "fix(queue): remove broken tier3-failfix-0422-2200 task",
-      "when": "8 minutes ago",
+      "when": "38 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "24964350",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 23, 2026 at 3:40 PM",
-      "when": "15 minutes ago",
+      "when": "45 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "d3673534",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 23, 2026 at 3:20 PM",
-      "when": "35 minutes ago",
+      "when": "65 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "b3e2bc39",
       "subject": "docs(session-WW): update NEXT_SESSION_PROMPT with proven fixes and next priorities",
-      "when": "52 minutes ago",
+      "when": "82 minutes ago",
       "tag": "manual-session"
     },
     {
       "sha": "824e131c",
       "subject": "fix(briefing): eliminate false-positive error/failure reporting",
-      "when": "52 minutes ago",
+      "when": "82 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "a0fb0654",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 23, 2026 at 3:00 PM",
-      "when": "55 minutes ago",
+      "when": "85 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "8a2bd64e",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 23, 2026 at 2:45 PM",
-      "when": "70 minutes ago",
+      "when": "2 hours ago",
       "tag": "autonomous"
     },
     {
       "sha": "41268b91",
       "subject": "docs(session-VV): update NEXT_SESSION_PROMPT with proven results and next priorities",
-      "when": "73 minutes ago",
+      "when": "2 hours ago",
       "tag": "manual-session"
     },
     {
       "sha": "e4be2268",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 23, 2026 at 2:35 PM",
-      "when": "80 minutes ago",
+      "when": "2 hours ago",
       "tag": "autonomous"
     },
     {
@@ -67,35 +91,11 @@
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 23, 2026 at 2:22 PM",
       "when": "2 hours ago",
       "tag": "autonomous"
-    },
-    {
-      "sha": "181c13c1",
-      "subject": "fix(auto-patch): briefing.py:get_recent_tasks \u2014 Add error handling for database connection failures",
-      "when": "2 hours ago",
-      "tag": "autonomous"
-    },
-    {
-      "sha": "0fd9e8db",
-      "subject": "fix(n8n): fix execSync(, bug in all 9 briefing SQLite save nodes (Session-UU)",
-      "when": "2 hours ago",
-      "tag": "autonomous"
-    },
-    {
-      "sha": "72f63d52",
-      "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 23, 2026 at 2:10 PM",
-      "when": "2 hours ago",
-      "tag": "autonomous"
-    },
-    {
-      "sha": "2d7fd770",
-      "subject": "feat(n8n): audit-to-task loop LIVE \u2014 self-improvement loop closed",
-      "when": "2 hours ago",
-      "tag": "autonomous"
     }
   ],
   "commits_today": {
-    "total": 62,
-    "autonomous": 58,
+    "total": 66,
+    "autonomous": 62,
     "manual": 4
   },
   "recent_tasks": [
@@ -104,7 +104,7 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 19:55",
+      "when": "2026-04-23 20:25",
       "finding": null
     },
     {
@@ -112,23 +112,7 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 19:55",
-      "finding": null
-    },
-    {
-      "label": "\ud83d\udd27 export_status.py [2026-04-23T19:45]",
-      "handler": "script",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-23 19:50",
-      "finding": null
-    },
-    {
-      "label": "\ud83d\udd27 budget_tracker.py [2026-04-23T19:45]",
-      "handler": "script",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-23 19:50",
+      "when": "2026-04-23 20:25",
       "finding": null
     },
     {
@@ -136,7 +120,7 @@
       "handler": "openclaw",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 19:50",
+      "when": "2026-04-23 20:20",
       "finding": null
     },
     {
@@ -144,15 +128,7 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 19:50",
-      "finding": null
-    },
-    {
-      "label": "\ud83d\udd27 backup_state.py",
-      "handler": "script",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-23 19:50",
+      "when": "2026-04-23 20:20",
       "finding": null
     },
     {
@@ -160,39 +136,7 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 19:50",
-      "finding": null
-    },
-    {
-      "label": "\ud83d\udd27 task_quality_audit.py",
-      "handler": "script",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-23 19:50",
-      "finding": null
-    },
-    {
-      "label": "\ud83e\udd16 reality-checker Specific low-q tasks last 24h: #2021(q",
-      "handler": "openclaw",
-      "q": 0.65,
-      "q_class": "high",
-      "when": "2026-04-23 19:45",
-      "finding": null
-    },
-    {
-      "label": "\ud83d\udd27 export_status.py",
-      "handler": "script",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-23 19:45",
-      "finding": null
-    },
-    {
-      "label": "\ud83d\udd27 budget_tracker.py",
-      "handler": "script",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-23 19:45",
+      "when": "2026-04-23 20:20",
       "finding": null
     },
     {
@@ -200,15 +144,47 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 19:45",
+      "when": "2026-04-23 20:20",
+      "finding": null
+    },
+    {
+      "label": "\ud83e\udd16 sre Handler 'openclaw' avg_q=0.627 \u2014 lowest performer.",
+      "handler": "openclaw",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-23 20:15",
+      "finding": "[agent:sre][q=0.650]openclaw | Intermittent I/O failures, specifically an inability to read critical log files (e.g., hub/logs/orchestrator.log), leading to task failures and timeouts. | Implement robust error handling and retry mechanisms for file read operations within the 'openclaw' handler, ensuring necessary permissions and file availability."
+    },
+    {
+      "label": "\ud83d\udd27 export_status.py",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-23 20:15",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 budget_tracker.py",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-23 20:15",
+      "finding": null
+    },
+    {
+      "label": "\ud83e\udd16 reality-checker Specific low-q tasks last 24h: #2021(q",
+      "handler": "openclaw",
+      "q": 0.65,
+      "q_class": "high",
+      "when": "2026-04-23 20:15",
       "finding": null
     },
     {
       "label": "\ud83e\udd16 sre code-read-store: Read hub_scripts/briefing.py line",
       "handler": "openclaw",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-23 19:45",
+      "q": 0.55,
+      "q_class": "mid",
+      "when": "2026-04-23 20:15",
       "finding": null
     },
     {
@@ -216,7 +192,23 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 19:45",
+      "when": "2026-04-23 20:15",
+      "finding": null
+    },
+    {
+      "label": "\ud83e\udd16 sre code-read-store: Read hub_scripts/briefing.py line",
+      "handler": "openclaw",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-23 20:05",
+      "finding": "[agent:sre][q=0.550]FILE=hub/scripts/briefing.py FUNCTION=get_investigation_findings PATCH_DESC=Handle SQLite datetime TZ edge cases for consistent time comparisons. | hub/scripts/propose_code_patch.py"
+    },
+    {
+      "label": "\ud83d\udd27 task_quality_audit.py",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-23 20:05",
       "finding": null
     },
     {
@@ -258,17 +250,25 @@
       "q_class": "high",
       "when": "2026-04-23 19:40",
       "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 sync_scripts_to_workspace.py",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-23 19:40",
+      "finding": null
     }
   ],
   "handler_stats": [
     {
       "handler": "script",
-      "runs": 218,
+      "runs": 215,
       "avg_q": 0.71
     },
     {
       "handler": "openclaw",
-      "runs": 123,
+      "runs": 125,
       "avg_q": 0.63
     }
   ],
@@ -276,13 +276,13 @@
     {
       "name": "apply_agent_finding.py",
       "q": 0.7,
-      "when": "2026-04-23 19:55",
-      "output": "ipping task #2033 \u2014 unparseable output"
+      "when": "2026-04-23 20:25",
+      "output": "ipping task #2046 \u2014 unparseable output"
     },
     {
       "name": "self_improver.py",
       "q": 0.7,
-      "when": "2026-04-23 19:50",
+      "when": "2026-04-23 20:20",
       "output": ""
     },
     {
