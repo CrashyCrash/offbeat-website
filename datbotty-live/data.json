@@ -1,118 +1,126 @@
 {
-  "generated_at": "Apr 23, 2026 at 2:22 PM",
-  "generated_ts": "2026-04-23T18:22:52.769914+00:00",
+  "generated_at": "Apr 23, 2026 at 2:35 PM",
+  "generated_ts": "2026-04-23T18:35:02.012835+00:00",
   "commits": [
+    {
+      "sha": "fe6c4ab6",
+      "subject": "fix(orchestrator): reserve 2 DB slots per run to prevent audit-loop task starvation",
+      "when": "11 minutes ago",
+      "tag": "autonomous"
+    },
+    {
+      "sha": "b7423b4e",
+      "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 23, 2026 at 2:22 PM",
+      "when": "12 minutes ago",
+      "tag": "autonomous"
+    },
     {
       "sha": "181c13c1",
       "subject": "fix(auto-patch): briefing.py:get_recent_tasks \u2014 Add error handling for database connection failures",
-      "when": "0 seconds ago",
+      "when": "12 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "0fd9e8db",
       "subject": "fix(n8n): fix execSync(, bug in all 9 briefing SQLite save nodes (Session-UU)",
-      "when": "8 minutes ago",
+      "when": "20 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "72f63d52",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 23, 2026 at 2:10 PM",
-      "when": "13 minutes ago",
+      "when": "25 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "2d7fd770",
       "subject": "feat(n8n): audit-to-task loop LIVE \u2014 self-improvement loop closed",
-      "when": "19 minutes ago",
+      "when": "31 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "1f8a8aa2",
       "subject": "feat(n8n): audit-to-task loop LIVE \u2014 self-improvement loop closed",
-      "when": "19 minutes ago",
+      "when": "31 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "c7f65af0",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 23, 2026 at 2:00 PM",
-      "when": "23 minutes ago",
+      "when": "35 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "78dc132f",
       "subject": "fix(auto-patch): watchdog.py:check_orchestrator_task_completion \u2014 Add guard for empty DB result sets from fetchone() calls.",
-      "when": "28 minutes ago",
+      "when": "40 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "b317d3e6",
       "subject": "feat(n8n): complete daily rhythm \u2014 evening debrief + SQLite tracking all 3 briefings",
-      "when": "31 minutes ago",
+      "when": "44 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "90515c89",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 23, 2026 at 1:45 PM",
-      "when": "38 minutes ago",
+      "when": "50 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "c69c8da0",
       "subject": "feat(n8n): self-audit loop live (aHihrWyOhFnSpELz) + container cleanup",
-      "when": "45 minutes ago",
+      "when": "57 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "73cfcc6f",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 23, 2026 at 1:30 PM",
-      "when": "53 minutes ago",
+      "when": "65 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "ae602f0d",
       "subject": "fix(auto-patch): apply_agent_finding.py:_run_fix \u2014 Limit returned script output to 500 chars for clarity.",
-      "when": "53 minutes ago",
+      "when": "65 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "c7336d72",
       "subject": "feat(n8n): daily research briefing workflow live (LJWAv6eMYpDIjKmu)",
-      "when": "57 minutes ago",
-      "tag": "autonomous"
-    },
-    {
-      "sha": "69955aa0",
-      "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 23, 2026 at 1:15 PM",
-      "when": "68 minutes ago",
-      "tag": "autonomous"
-    },
-    {
-      "sha": "7e299f94",
-      "subject": "feat(n8n+openclaw): OpenClaw\u2192n8n\u2192Telegram pipeline LIVE \u2014 Telegram msg_id 1334",
-      "when": "70 minutes ago",
+      "when": "69 minutes ago",
       "tag": "autonomous"
     }
   ],
   "commits_today": {
-    "total": 51,
-    "autonomous": 49,
+    "total": 53,
+    "autonomous": 51,
     "manual": 2
   },
   "recent_tasks": [
-    {
-      "label": "\ud83d\udd27 apply_agent_finding.py",
-      "handler": "script",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-23 18:22",
-      "finding": null
-    },
     {
       "label": "\ud83d\udd27 patch_dispatcher.py",
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 18:22",
+      "when": "2026-04-23 18:35",
+      "finding": null
+    },
+    {
+      "label": "\ud83e\udde0 The task 'Generate script-based code improvement repo",
+      "handler": "openclaw",
+      "q": 0.2,
+      "q_class": "low",
+      "when": "2026-04-23 18:32",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 backup_state.py",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-23 18:32",
       "finding": null
     },
     {
@@ -120,39 +128,23 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 18:22",
+      "when": "2026-04-23 18:32",
       "finding": null
     },
     {
-      "label": "\ud83e\udde0 The task 'Generate script-based code improvement repo",
-      "handler": "openclaw",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-23 18:20",
-      "finding": "OpenClaw [detailed][q=0.65]: ROOT_CAUSE | The task execution mechanism is attempting to run a script named \\\"Generate script-based code improvement report\\\" as a command or executable. However, no such script file or executable exists in the system's search paths or at the expected location, leading to a `FileNotFoundError`."
-    },
-    {
-      "label": "\ud83d\udd27 backup_state.py",
+      "label": "\ud83d\udd27 apply_agent_finding.py",
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 18:20",
+      "when": "2026-04-23 18:32",
       "finding": null
     },
     {
-      "label": "\ud83d\udd27 export_status.py [2026-04-23T17:45]",
+      "label": "\ud83d\udd27 export_status.py [2026-04-23T18:00]",
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 18:20",
-      "finding": null
-    },
-    {
-      "label": "\ud83e\udde0 Read hub/logs/orchestrator.log last 30 lines. Identif",
-      "handler": "openclaw",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-23 18:20",
+      "when": "2026-04-23 18:32",
       "finding": null
     },
     {
@@ -160,7 +152,31 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 18:20",
+      "when": "2026-04-23 18:32",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 task_quality_audit.py [2026-04-23T18:00]",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-23 18:30",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 budget_tracker.py [2026-04-23T18:00]",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-23 18:30",
+      "finding": null
+    },
+    {
+      "label": "\ud83e\udde0 Read hub/logs/orchestrator.log last 30 lines. Identif",
+      "handler": "openclaw",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-23 18:30",
       "finding": null
     },
     {
@@ -168,31 +184,15 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 18:20",
+      "when": "2026-04-23 18:30",
       "finding": null
     },
     {
-      "label": "\ud83d\udd27 budget_tracker.py",
-      "handler": "script",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-23 18:20",
-      "finding": null
-    },
-    {
-      "label": "\ud83d\udd27 link_checker.py",
-      "handler": "script",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-23 18:20",
-      "finding": null
-    },
-    {
-      "label": "\ud83e\udd16 reality-checker Specific low-q tasks last 24h: #1852(q",
+      "label": "\ud83e\udd16 reality-checker Specific low-q tasks last 24h: #1895(q",
       "handler": "openclaw",
-      "q": 0.2,
-      "q_class": "low",
-      "when": "2026-04-23 18:15",
+      "q": 0.65,
+      "q_class": "high",
+      "when": "2026-04-23 18:30",
       "finding": null
     },
     {
@@ -200,7 +200,39 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 18:15",
+      "when": "2026-04-23 18:30",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 budget_tracker.py",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-23 18:30",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 link_checker.py",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-23 18:30",
+      "finding": null
+    },
+    {
+      "label": "Increase gate2_cycles to meet Tier 2 requirements",
+      "handler": "openclaw",
+      "q": 0.2,
+      "q_class": "low",
+      "when": "2026-04-23 18:25",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 export_status.py [2026-04-23T18:00]",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-23 18:25",
       "finding": null
     },
     {
@@ -208,71 +240,57 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 18:15",
+      "when": "2026-04-23 18:25",
       "finding": null
     },
     {
       "label": "\ud83e\udd16 sre code-read-store: Read hub_scripts/briefing.py line",
       "handler": "openclaw",
-      "q": 0.55,
-      "q_class": "mid",
-      "when": "2026-04-23 18:15",
-      "finding": "[agent:sre][q=0.300]hub/scripts/briefing.py | get_recent_tasks | Add error handling for database connection failures"
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-23 18:25",
+      "finding": "[agent:sre][q=0.650]FILE | FUNCTION | PATCH_DESC"
     },
     {
       "label": "\ud83e\udd16 sre code-read-store: Read hub_scripts/watchdog.py line",
       "handler": "openclaw",
-      "q": 0.55,
-      "q_class": "mid",
-      "when": "2026-04-23 18:15",
-      "finding": null
-    },
-    {
-      "label": "\ud83e\udd16 sre code-read-store: Read hub_scripts/apply_agent_find",
-      "handler": "openclaw",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 18:15",
-      "finding": null
-    },
-    {
-      "label": "\ud83e\udd16 sre code-read-store: Read hub_scripts/orchestrator_qua",
-      "handler": "openclaw",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-23 18:15",
-      "finding": "[agent:sre][q=0.550]FILE=hub/scripts/orchestrator_quality.py FUNCTION=score_task_output PATCH_DESC=Add handler-specific scoring gaps for investigation/healthcheck. | hub/scripts/propose_code_patch.py"
-    },
-    {
-      "label": "\ud83e\udd16 sre code-read-store: Read hub_scripts/investigate.py l",
-      "handler": "openclaw",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-23 18:15",
-      "finding": "[agent:sre][q=0.300]FILE=hub/scripts/investigate.py | FUNCTION=detect_cascading_failures | PATCH_DESC=Add busy_timeout and ensure db.close in try/finally"
-    },
-    {
-      "label": "\ud83d\udd27 gen_dashboard_data.py",
-      "handler": "script",
-      "q": 0.76,
-      "q_class": "high",
-      "when": "2026-04-23 18:10",
-      "finding": null
+      "when": "2026-04-23 18:25",
+      "finding": "[agent:sre][q=0.550]FILE=hub_scripts/watchdog.py FUNCTION=check_orchestrator_health PATCH_DESC=Add specific check for missing DB state in status file | hub/scripts/propose_code_patch.py"
     }
   ],
   "handler_stats": [
     {
       "handler": "script",
-      "runs": 127,
+      "runs": 146,
       "avg_q": 0.71
     },
     {
       "handler": "openclaw",
-      "runs": 73,
-      "avg_q": 0.63
+      "runs": 82,
+      "avg_q": 0.62
     }
   ],
   "loop_events": [
+    {
+      "name": "self_improver.py",
+      "q": 0.7,
+      "when": "2026-04-23 18:32",
+      "output": ""
+    },
+    {
+      "name": "apply_agent_finding.py",
+      "q": 0.7,
+      "when": "2026-04-23 18:32",
+      "output": "und finding from task #1915 (2026-04-23 18:25:35)"
+    },
+    {
+      "name": "apply_agent_finding.py",
+      "q": 0.7,
+      "when": "2026-04-23 18:25",
+      "output": "[agent:sre][q=0.650]The `_commit` function uses `git add` with a hardcoded list of paths: `[\"hub/scr"
+    },
     {
       "name": "apply_agent_finding.py",
       "q": 0.7,
@@ -302,30 +320,12 @@
       "q": 0.7,
       "when": "2026-04-23 18:10",
       "output": "und finding from task #1865 (2026-04-23 18:00:50)"
-    },
-    {
-      "name": "apply_agent_finding.py",
-      "q": 0.7,
-      "when": "2026-04-23 18:00",
-      "output": "[agent:sre][q=0.650]The user wants me to find one improvement to the `_commit` function in `hub_scri"
-    },
-    {
-      "name": "apply_agent_finding.py",
-      "q": 0.7,
-      "when": "2026-04-23 17:55",
-      "output": "ipping task #1842 \u2014 unparseable output"
-    },
-    {
-      "name": "self_improver.py",
-      "q": 0.7,
-      "when": "2026-04-23 17:55",
-      "output": "avg_q=0.594"
     }
   ],
   "latest_finding": {
-    "pattern": "[agent:sre][q=0.300]hub/scripts/briefing.py",
-    "root_cause": "get_recent_tasks",
-    "fix_script": "Add error handling for database connection failures",
-    "when": "2026-04-23 18:15"
+    "pattern": "[agent:sre][q=0.650]FILE",
+    "root_cause": "FUNCTION",
+    "fix_script": "PATCH_DESC",
+    "when": "2026-04-23 18:25"
   }
 }
