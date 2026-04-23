@@ -1,47 +1,53 @@
 {
-  "generated_at": "Apr 23, 2026 at 11:30 AM",
-  "generated_ts": "2026-04-23T15:30:08.339417+00:00",
+  "generated_at": "Apr 23, 2026 at 11:45 AM",
+  "generated_ts": "2026-04-23T15:45:01.800380+00:00",
   "commits": [
+    {
+      "sha": "13211eeb",
+      "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 23, 2026 at 11:30 AM",
+      "when": "15 minutes ago",
+      "tag": "autonomous"
+    },
     {
       "sha": "f9fb19fa",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 23, 2026 at 11:20 AM",
-      "when": "10 minutes ago",
+      "when": "25 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "23b83b30",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 23, 2026 at 11:05 AM",
-      "when": "25 minutes ago",
+      "when": "40 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "a64a4004",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 23, 2026 at 10:50 AM",
-      "when": "40 minutes ago",
+      "when": "55 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "381139ce",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 23, 2026 at 10:35 AM",
-      "when": "55 minutes ago",
+      "when": "70 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "6aea335a",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 23, 2026 at 10:25 AM",
-      "when": "65 minutes ago",
+      "when": "80 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "f0ccd9f9",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 23, 2026 at 10:10 AM",
-      "when": "80 minutes ago",
+      "when": "2 hours ago",
       "tag": "autonomous"
     },
     {
       "sha": "a5c62e72",
       "subject": "fix(auto-patch): briefing.py:get_task_summary \u2014 Add guard for empty DB or 0 tasks before accessing tuple ele",
-      "when": "80 minutes ago",
+      "when": "2 hours ago",
       "tag": "autonomous"
     },
     {
@@ -83,36 +89,22 @@
     {
       "sha": "a3ff5bd0",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 11:10 PM",
-      "when": "12 hours ago",
-      "tag": "autonomous"
-    },
-    {
-      "sha": "76e672f7",
-      "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 11:00 PM",
       "when": "13 hours ago",
       "tag": "autonomous"
     }
   ],
   "commits_today": {
-    "total": 29,
-    "autonomous": 28,
+    "total": 30,
+    "autonomous": 29,
     "manual": 1
   },
   "recent_tasks": [
-    {
-      "label": "\ud83e\udde0 The task 'Generate script-based code improvement repo",
-      "handler": "openclaw",
-      "q": 0.6,
-      "q_class": "mid",
-      "when": "2026-04-23 15:30",
-      "finding": "OpenClaw [detailed][q=0.6]: ROOT_CAUSE | The system attempted to execute a command or script named 'Generate script-based code improvement report', but no such executable was found in the accessible environment. This indicates a misconfiguration in the task's execution command, likely by trying to run a script directly without specifying an interpreter or a correct path. | FILE"
-    },
     {
       "label": "\ud83d\udd27 backup_state.py",
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 15:30",
+      "when": "2026-04-23 15:45",
       "finding": null
     },
     {
@@ -120,7 +112,7 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 15:30",
+      "when": "2026-04-23 15:45",
       "finding": null
     },
     {
@@ -128,7 +120,7 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 15:30",
+      "when": "2026-04-23 15:45",
       "finding": null
     },
     {
@@ -136,15 +128,23 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 15:30",
+      "when": "2026-04-23 15:45",
       "finding": null
     },
     {
-      "label": "\ud83d\udd27 export_status.py [2026-04-23T15:00]",
+      "label": "\ud83e\udde0 The task 'Generate script-based code improvement repo",
+      "handler": "openclaw",
+      "q": 0.65,
+      "q_class": "high",
+      "when": "2026-04-23 15:40",
+      "finding": "OpenClaw [detailed][q=0.65]: The script execution environment failed because it could not locate a file named 'Generate script-based code improvement report'. This indicates the script was either never created or is not accessible in the system's executable path. | Generate script-based code improvement report | print(default_api.write(path='generate_script_based_code_improvement_report.py', content='#!/usr/bin/env python\\n\\nprint(\\'Placeholder script for code improvement report.\\')\\n'))"
+    },
+    {
+      "label": "\ud83d\udd27 budget_tracker.py [2026-04-23T15:00]",
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 15:30",
+      "when": "2026-04-23 15:40",
       "finding": null
     },
     {
@@ -152,15 +152,15 @@
       "handler": "openclaw",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 15:25",
-      "finding": null
+      "when": "2026-04-23 15:40",
+      "finding": "OpenClaw[q=0.5]: FILE | FUNCTION | PATCH"
     },
     {
       "label": "\ud83d\udd27 orchestrator_quality.py",
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 15:25",
+      "when": "2026-04-23 15:40",
       "finding": null
     },
     {
@@ -168,31 +168,7 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 15:25",
-      "finding": null
-    },
-    {
-      "label": "\ud83e\udd16 reality-checker Specific low-q tasks last 24h: #1765(q",
-      "handler": "openclaw",
-      "q": 0.65,
-      "q_class": "high",
-      "when": "2026-04-23 15:25",
-      "finding": null
-    },
-    {
-      "label": "\ud83d\udd27 export_status.py",
-      "handler": "script",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-23 15:25",
-      "finding": null
-    },
-    {
-      "label": "\ud83d\udd27 budget_tracker.py",
-      "handler": "script",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-23 15:25",
+      "when": "2026-04-23 15:40",
       "finding": null
     },
     {
@@ -200,15 +176,31 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 15:25",
+      "when": "2026-04-23 15:40",
       "finding": null
     },
     {
-      "label": "\ud83d\udd27 audit_trend_tracker.py",
+      "label": "\ud83d\udd27 export_status.py",
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 15:25",
+      "when": "2026-04-23 15:40",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 budget_tracker.py",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-23 15:40",
+      "finding": null
+    },
+    {
+      "label": "\ud83e\udd16 reality-checker Specific low-q tasks last 24h: #1765(q",
+      "handler": "openclaw",
+      "q": 0.65,
+      "q_class": "high",
+      "when": "2026-04-23 15:36",
       "finding": null
     },
     {
@@ -216,15 +208,23 @@
       "handler": "openclaw",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 15:20",
-      "finding": "[agent:sre][q=0.550]hub/scripts/briefing.py | get_recent_tasks | Add validation for 'hours' parameter to prevent unexpected date ranges"
+      "when": "2026-04-23 15:35",
+      "finding": "[agent:sre][q=0.300]hub/scripts/briefing.py | get_recent_tasks | Add try-except block for DB operations and validate hours parameter"
+    },
+    {
+      "label": "\ud83d\udd27 audit_trend_tracker.py",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-23 15:35",
+      "finding": null
     },
     {
       "label": "\ud83e\udd16 sre code-read-store: Read hub_scripts/watchdog.py line",
       "handler": "openclaw",
-      "q": 0.55,
-      "q_class": "mid",
-      "when": "2026-04-23 15:20",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-23 15:35",
       "finding": null
     },
     {
@@ -232,7 +232,7 @@
       "handler": "openclaw",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 15:20",
+      "when": "2026-04-23 15:35",
       "finding": null
     },
     {
@@ -240,39 +240,57 @@
       "handler": "openclaw",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 15:20",
+      "when": "2026-04-23 15:35",
       "finding": null
     },
     {
       "label": "\ud83e\udd16 sre code-read-store: Read hub_scripts/investigate.py l",
       "handler": "openclaw",
-      "q": 0.55,
-      "q_class": "mid",
-      "when": "2026-04-23 15:20",
-      "finding": null
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-23 15:35",
+      "finding": "[agent:sre][q=0.300]hub/scripts/investigate.py | detect_cascading_failures | Ensure db.close() is called even if errors occur by using a try...finally block."
     },
     {
-      "label": "\ud83d\udd27 gen_dashboard_data.py",
+      "label": "\ud83d\udd27 sync_scripts_to_workspace.py",
       "handler": "script",
-      "q": 0.76,
+      "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 15:20",
+      "when": "2026-04-23 15:35",
       "finding": null
     }
   ],
   "handler_stats": [
     {
       "handler": "script",
-      "runs": 106,
+      "runs": 120,
       "avg_q": 0.71
     },
     {
       "handler": "openclaw",
-      "runs": 58,
-      "avg_q": 0.64
+      "runs": 66,
+      "avg_q": 0.65
     }
   ],
   "loop_events": [
+    {
+      "name": "self_improver.py",
+      "q": 0.7,
+      "when": "2026-04-23 15:45",
+      "output": ""
+    },
+    {
+      "name": "apply_agent_finding.py",
+      "q": 0.7,
+      "when": "2026-04-23 15:45",
+      "output": "und finding from task #1871 (2026-04-23 15:35:57)"
+    },
+    {
+      "name": "apply_agent_finding.py",
+      "q": 0.7,
+      "when": "2026-04-23 15:35",
+      "output": "[agent:sre][q=0.300]FILE=hub/scripts/apply_agent_finding.py FUNCTION=_run_fix PATCH_DESC=Remove comm"
+    },
     {
       "name": "self_improver.py",
       "q": 0.7,
@@ -302,30 +320,12 @@
       "q": 0.7,
       "when": "2026-04-23 15:15",
       "output": "und finding from task #1827 (2026-04-23 15:10:17)"
-    },
-    {
-      "name": "apply_agent_finding.py",
-      "q": 0.55,
-      "when": "2026-04-23 15:05",
-      "output": "[agent:sre][q=0.300]completed"
-    },
-    {
-      "name": "apply_agent_finding.py",
-      "q": 0.7,
-      "when": "2026-04-23 15:05",
-      "output": "ipping task #1802 \u2014 unparseable output"
-    },
-    {
-      "name": "self_improver.py",
-      "q": 0.7,
-      "when": "2026-04-23 15:00",
-      "output": "avg_q=0.594"
     }
   ],
   "latest_finding": {
-    "pattern": "[agent:sre][q=0.550]hub/scripts/briefing.py",
+    "pattern": "[agent:sre][q=0.300]hub/scripts/briefing.py",
     "root_cause": "get_recent_tasks",
-    "fix_script": "Add validation for 'hours' parameter to prevent unexpected date ranges",
-    "when": "2026-04-23 15:20"
+    "fix_script": "Add try-except block for DB operations and validate hours parameter",
+    "when": "2026-04-23 15:35"
   }
 }
