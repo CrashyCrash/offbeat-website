@@ -1,6 +1,6 @@
 {
-  "generated_at": "Apr 23, 2026 at 1:40 AM",
-  "generated_ts": "2026-04-23T05:40:12.877437+00:00",
+  "generated_at": "Apr 23, 2026 at 1:55 AM",
+  "generated_ts": "2026-04-23T05:55:01.778256+00:00",
   "commits": [
     {
       "sha": "7eaf8d1e",
@@ -23,7 +23,7 @@
     {
       "sha": "5c653923",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 11:25 PM",
-      "when": "2 hours ago",
+      "when": "3 hours ago",
       "tag": "autonomous"
     },
     {
@@ -71,7 +71,7 @@
     {
       "sha": "cc5a820c",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 10:15 PM",
-      "when": "3 hours ago",
+      "when": "4 hours ago",
       "tag": "autonomous"
     },
     {
@@ -100,19 +100,11 @@
   },
   "recent_tasks": [
     {
-      "label": "\ud83e\udde0 The task 'Generate script-based code improvement repo",
-      "handler": "openclaw",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-23 05:40",
-      "finding": "OpenClaw [detailed][q=0.6]: ROOT_CAUSE | The script file 'Generate script-based code improvement report' was not found in the system's executable path. | FILE"
-    },
-    {
       "label": "\ud83d\udd27 backup_state.py",
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 05:40",
+      "when": "2026-04-23 05:55",
       "finding": null
     },
     {
@@ -120,7 +112,7 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 05:40",
+      "when": "2026-04-23 05:55",
       "finding": null
     },
     {
@@ -128,7 +120,7 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 05:40",
+      "when": "2026-04-23 05:55",
       "finding": null
     },
     {
@@ -136,15 +128,23 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 05:40",
+      "when": "2026-04-23 05:55",
       "finding": null
     },
     {
-      "label": "\ud83d\udd27 queue_doctor.py",
+      "label": "\ud83e\udde0 The task 'Generate script-based code improvement repo",
+      "handler": "openclaw",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-23 05:50",
+      "finding": "OpenClaw [detailed][q=0.65]: The script 'Generate script-based code improvement report' was not found in the system's executable paths or the specified working directory. | generate_script_based_code_improvement_report.py | ```python"
+    },
+    {
+      "label": "\ud83d\udd27 export_status.py [2026-04-23T05:00]",
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 05:40",
+      "when": "2026-04-23 05:50",
       "finding": null
     },
     {
@@ -152,7 +152,7 @@
       "handler": "openclaw",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 05:35",
+      "when": "2026-04-23 05:50",
       "finding": null
     },
     {
@@ -160,7 +160,7 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 05:35",
+      "when": "2026-04-23 05:50",
       "finding": null
     },
     {
@@ -168,15 +168,7 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 05:35",
-      "finding": null
-    },
-    {
-      "label": "\ud83e\udd16 reality-checker Specific low-q tasks last 24h: #1840(q",
-      "handler": "openclaw",
-      "q": 0.65,
-      "q_class": "high",
-      "when": "2026-04-23 05:35",
+      "when": "2026-04-23 05:50",
       "finding": null
     },
     {
@@ -184,7 +176,7 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 05:35",
+      "when": "2026-04-23 05:50",
       "finding": null
     },
     {
@@ -192,7 +184,7 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 05:35",
+      "when": "2026-04-23 05:50",
       "finding": null
     },
     {
@@ -200,15 +192,15 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 05:35",
+      "when": "2026-04-23 05:50",
       "finding": null
     },
     {
-      "label": "\ud83d\udd27 audit_trend_tracker.py",
-      "handler": "script",
+      "label": "\ud83e\udd16 reality-checker Specific low-q tasks last 24h: #1840(q",
+      "handler": "openclaw",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 05:35",
+      "when": "2026-04-23 05:46",
       "finding": null
     },
     {
@@ -216,7 +208,15 @@
       "handler": "openclaw",
       "q": 0.55,
       "q_class": "mid",
-      "when": "2026-04-23 05:31",
+      "when": "2026-04-23 05:46",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 audit_trend_tracker.py",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-23 05:46",
       "finding": null
     },
     {
@@ -224,7 +224,7 @@
       "handler": "openclaw",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 05:30",
+      "when": "2026-04-23 05:45",
       "finding": null
     },
     {
@@ -232,47 +232,65 @@
       "handler": "openclaw",
       "q": 0.55,
       "q_class": "mid",
-      "when": "2026-04-23 05:30",
+      "when": "2026-04-23 05:45",
       "finding": null
     },
     {
       "label": "\ud83e\udd16 sre code-read-store: Read hub_scripts/orchestrator_qua",
       "handler": "openclaw",
-      "q": 0.55,
-      "q_class": "mid",
-      "when": "2026-04-23 05:30",
-      "finding": null
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-23 05:45",
+      "finding": "[agent:sre][q=0.550]hub/scripts/orchestrator_quality.py | score_task_output | Ensure empty task titles result in an invalid score, not 0.10."
     },
     {
       "label": "\ud83e\udd16 sre code-read-store: Read hub_scripts/investigate.py l",
       "handler": "openclaw",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-23 05:30",
+      "q": 0.55,
+      "q_class": "mid",
+      "when": "2026-04-23 05:45",
       "finding": null
     },
     {
-      "label": "\ud83d\udd27 gen_dashboard_data.py",
+      "label": "\ud83d\udd27 sync_scripts_to_workspace.py",
       "handler": "script",
-      "q": 0.76,
+      "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 05:30",
+      "when": "2026-04-23 05:45",
       "finding": null
     }
   ],
   "handler_stats": [
     {
       "handler": "script",
-      "runs": 111,
+      "runs": 125,
       "avg_q": 0.7
     },
     {
       "handler": "openclaw",
-      "runs": 63,
-      "avg_q": 0.62
+      "runs": 71,
+      "avg_q": 0.63
     }
   ],
   "loop_events": [
+    {
+      "name": "self_improver.py",
+      "q": 0.7,
+      "when": "2026-04-23 05:55",
+      "output": ""
+    },
+    {
+      "name": "apply_agent_finding.py",
+      "q": 0.7,
+      "when": "2026-04-23 05:55",
+      "output": "ipping task #1885 \u2014 unparseable output"
+    },
+    {
+      "name": "apply_agent_finding.py",
+      "q": 0.55,
+      "when": "2026-04-23 05:45",
+      "output": "[agent:sre][q=0.300]An unknown error occurred"
+    },
     {
       "name": "self_improver.py",
       "q": 0.7,
@@ -302,25 +320,12 @@
       "q": 0.7,
       "when": "2026-04-23 05:25",
       "output": "ipping task #1838 \u2014 unparseable output"
-    },
-    {
-      "name": "apply_agent_finding.py",
-      "q": 0.55,
-      "when": "2026-04-23 05:16",
-      "output": "[agent:sre][q=0.300]hub/scripts/apply_agent_finding.py | _run_fix | Return partial output on script "
-    },
-    {
-      "name": "apply_agent_finding.py",
-      "q": 0.7,
-      "when": "2026-04-23 05:15",
-      "output": "und finding from task #1816 (2026-04-23 05:05:40)"
-    },
-    {
-      "name": "self_improver.py",
-      "q": 0.7,
-      "when": "2026-04-23 05:10",
-      "output": "avg_q=0.594"
     }
   ],
-  "latest_finding": null
+  "latest_finding": {
+    "pattern": "[agent:sre][q=0.550]hub/scripts/orchestrator_quality.py",
+    "root_cause": "score_task_output",
+    "fix_script": "Ensure empty task titles result in an invalid score, not 0.10.",
+    "when": "2026-04-23 05:45"
+  }
 }
