@@ -1,110 +1,110 @@
 {
-  "generated_at": "Apr 23, 2026 at 3:20 PM",
-  "generated_ts": "2026-04-23T19:20:01.356425+00:00",
+  "generated_at": "Apr 23, 2026 at 3:35 PM",
+  "generated_ts": "2026-04-23T19:35:22.651787+00:00",
   "commits": [
+    {
+      "sha": "d3673534",
+      "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 23, 2026 at 3:20 PM",
+      "when": "15 minutes ago",
+      "tag": "autonomous"
+    },
     {
       "sha": "b3e2bc39",
       "subject": "docs(session-WW): update NEXT_SESSION_PROMPT with proven fixes and next priorities",
-      "when": "17 minutes ago",
+      "when": "32 minutes ago",
       "tag": "manual-session"
     },
     {
       "sha": "824e131c",
       "subject": "fix(briefing): eliminate false-positive error/failure reporting",
-      "when": "17 minutes ago",
+      "when": "33 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "a0fb0654",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 23, 2026 at 3:00 PM",
-      "when": "20 minutes ago",
+      "when": "35 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "8a2bd64e",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 23, 2026 at 2:45 PM",
-      "when": "35 minutes ago",
+      "when": "50 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "41268b91",
       "subject": "docs(session-VV): update NEXT_SESSION_PROMPT with proven results and next priorities",
-      "when": "38 minutes ago",
+      "when": "53 minutes ago",
       "tag": "manual-session"
     },
     {
       "sha": "e4be2268",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 23, 2026 at 2:35 PM",
-      "when": "45 minutes ago",
+      "when": "60 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "fe6c4ab6",
       "subject": "fix(orchestrator): reserve 2 DB slots per run to prevent audit-loop task starvation",
-      "when": "56 minutes ago",
+      "when": "72 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "b7423b4e",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 23, 2026 at 2:22 PM",
-      "when": "57 minutes ago",
+      "when": "72 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "181c13c1",
       "subject": "fix(auto-patch): briefing.py:get_recent_tasks \u2014 Add error handling for database connection failures",
-      "when": "57 minutes ago",
+      "when": "73 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "0fd9e8db",
       "subject": "fix(n8n): fix execSync(, bug in all 9 briefing SQLite save nodes (Session-UU)",
-      "when": "65 minutes ago",
+      "when": "81 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "72f63d52",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 23, 2026 at 2:10 PM",
-      "when": "70 minutes ago",
+      "when": "85 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "2d7fd770",
       "subject": "feat(n8n): audit-to-task loop LIVE \u2014 self-improvement loop closed",
-      "when": "76 minutes ago",
+      "when": "2 hours ago",
       "tag": "autonomous"
     },
     {
       "sha": "1f8a8aa2",
       "subject": "feat(n8n): audit-to-task loop LIVE \u2014 self-improvement loop closed",
-      "when": "76 minutes ago",
+      "when": "2 hours ago",
       "tag": "autonomous"
     },
     {
       "sha": "c7f65af0",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 23, 2026 at 2:00 PM",
-      "when": "80 minutes ago",
-      "tag": "autonomous"
-    },
-    {
-      "sha": "78dc132f",
-      "subject": "fix(auto-patch): watchdog.py:check_orchestrator_task_completion \u2014 Add guard for empty DB result sets from fetchone() calls.",
-      "when": "85 minutes ago",
+      "when": "2 hours ago",
       "tag": "autonomous"
     }
   ],
   "commits_today": {
-    "total": 59,
-    "autonomous": 55,
+    "total": 60,
+    "autonomous": 56,
     "manual": 4
   },
   "recent_tasks": [
     {
-      "label": "\ud83d\udd27 patch_dispatcher.py",
-      "handler": "script",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-23 19:20",
+      "label": "\ud83e\udde0 The task 'Generate script-based code improvement repo",
+      "handler": "openclaw",
+      "q": 0.2,
+      "q_class": "low",
+      "when": "2026-04-23 19:35",
       "finding": null
     },
     {
@@ -112,7 +112,7 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 19:15",
+      "when": "2026-04-23 19:35",
       "finding": null
     },
     {
@@ -120,7 +120,7 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 19:15",
+      "when": "2026-04-23 19:35",
       "finding": null
     },
     {
@@ -128,23 +128,15 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 19:15",
+      "when": "2026-04-23 19:35",
       "finding": null
     },
     {
-      "label": "\ud83e\udde0 The task 'Generate script-based code improvement repo",
-      "handler": "openclaw",
-      "q": 0.75,
-      "q_class": "high",
-      "when": "2026-04-23 19:15",
-      "finding": "OpenClaw [detailed][q=0.75]: ROOT_CAUSE: The script `Generate script-based code improvement report` was not found, likely due to a misnaming or incorrect path. | FILE: Generate script-based code improvement report | FIX:"
-    },
-    {
-      "label": "\ud83d\udd27 orchestrator_quality.py",
+      "label": "\ud83d\udd27 patch_dispatcher.py",
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 19:15",
+      "when": "2026-04-23 19:35",
       "finding": null
     },
     {
@@ -152,7 +144,15 @@
       "handler": "openclaw",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 19:10",
+      "when": "2026-04-23 19:30",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 orchestrator_quality.py",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-23 19:30",
       "finding": null
     },
     {
@@ -160,15 +160,7 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 19:10",
-      "finding": null
-    },
-    {
-      "label": "\ud83d\udd27 export_status.py",
-      "handler": "script",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-23 19:10",
+      "when": "2026-04-23 19:30",
       "finding": null
     },
     {
@@ -176,7 +168,7 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 19:10",
+      "when": "2026-04-23 19:30",
       "finding": null
     },
     {
@@ -184,95 +176,121 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 19:10",
+      "when": "2026-04-23 19:30",
       "finding": null
     },
     {
       "label": "\ud83e\udd16 reality-checker Specific low-q tasks last 24h: #1949(q",
       "handler": "openclaw",
-      "q": 0.65,
-      "q_class": "high",
-      "when": "2026-04-23 19:10",
+      "q": 0.2,
+      "q_class": "low",
+      "when": "2026-04-23 19:26",
       "finding": null
     },
     {
-      "label": "\ud83d\udd27 export_status.py [2026-04-23T19:00]",
+      "label": "\ud83d\udd27 export_status.py",
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 19:06",
-      "finding": null
-    },
-    {
-      "label": "\ud83d\udd27 budget_tracker.py [2026-04-23T19:00]",
-      "handler": "script",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-23 19:06",
+      "when": "2026-04-23 19:26",
       "finding": null
     },
     {
       "label": "\ud83e\udd16 sre code-read-store: Read hub_scripts/briefing.py line",
       "handler": "openclaw",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-23 19:06",
-      "finding": "[agent:sre][q=0.550]FILE=hub/scripts/briefing.py FUNCTION=get_investigation_findings PATCH_DESC=Add busy_timeout to prevent DB locking issues. | hub/scripts/propose_code_patch.py"
+      "q": 0.55,
+      "q_class": "mid",
+      "when": "2026-04-23 19:25",
+      "finding": null
     },
     {
       "label": "\ud83d\udd27 audit_trend_tracker.py",
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 19:06",
+      "when": "2026-04-23 19:25",
       "finding": null
     },
     {
       "label": "\ud83e\udd16 sre code-read-store: Read hub_scripts/watchdog.py line",
       "handler": "openclaw",
-      "q": 0.55,
-      "q_class": "mid",
-      "when": "2026-04-23 19:06",
-      "finding": null
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-23 19:25",
+      "finding": "[agent:sre][q=0.300]hub/scripts/watchdog.py | check_orchestrator_health | Add explicit handling for invalid ISO timestamps and improve recent crash detection logic."
     },
     {
       "label": "\ud83e\udd16 sre code-read-store: Read hub_scripts/apply_agent_find",
       "handler": "openclaw",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 19:05",
-      "finding": null
+      "when": "2026-04-23 19:25",
+      "finding": "[agent:sre][q=0.550]hub/scripts/apply_agent_finding.py | _commit | Use `git add --update` instead of a broad `git add` to prevent staging unintended files"
     },
     {
       "label": "\ud83e\udd16 sre code-read-store: Read hub_scripts/orchestrator_qua",
       "handler": "openclaw",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 19:05",
-      "finding": "[agent:sre][q=0.550]FILE=hub/scripts/orchestrator_quality.py FUNCTION=score_task_output PATCH_DESC=Incorporate handler_name into scoring logic for context-specific adjustments | hub/scripts/propose_code_patch.py"
+      "when": "2026-04-23 19:20",
+      "finding": "[agent:sre][q=0.300]FILE | FUNCTION | PATCH_DESC"
     },
     {
       "label": "\ud83e\udd16 sre code-read-store: Read hub_scripts/investigate.py l",
       "handler": "openclaw",
-      "q": 0.55,
-      "q_class": "mid",
-      "when": "2026-04-23 19:05",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-23 19:20",
+      "finding": "[agent:sre][q=0.300]FILE | FUNCTION | PATCH_DESC"
+    },
+    {
+      "label": "\ud83d\udd27 gen_dashboard_data.py",
+      "handler": "script",
+      "q": 0.76,
+      "q_class": "high",
+      "when": "2026-04-23 19:20",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 queue_doctor.py",
+      "handler": "script",
+      "q": 0.74,
+      "q_class": "high",
+      "when": "2026-04-23 19:20",
       "finding": null
     }
   ],
   "handler_stats": [
     {
       "handler": "script",
-      "runs": 190,
+      "runs": 203,
       "avg_q": 0.71
     },
     {
       "handler": "openclaw",
-      "runs": 108,
-      "avg_q": 0.63
+      "runs": 116,
+      "avg_q": 0.62
     }
   ],
   "loop_events": [
+    {
+      "name": "self_improver.py",
+      "q": 0.7,
+      "when": "2026-04-23 19:35",
+      "output": ""
+    },
+    {
+      "name": "apply_agent_finding.py",
+      "q": 0.7,
+      "when": "2026-04-23 19:35",
+      "output": "ipping task #2011 \u2014 unparseable output"
+    },
+    {
+      "name": "apply_agent_finding.py",
+      "q": 0.7,
+      "when": "2026-04-23 19:25",
+      "output": "[agent:sre][q=0.550]hub/scripts/apply_agent_finding.py | _commit | Use `git add --update` instead of"
+    },
     {
       "name": "self_improver.py",
       "q": 0.7,
@@ -302,25 +320,12 @@
       "q": 0.7,
       "when": "2026-04-23 19:00",
       "output": "ipping task #1964 \u2014 unparseable output"
-    },
-    {
-      "name": "apply_agent_finding.py",
-      "q": 0.7,
-      "when": "2026-04-23 18:45",
-      "output": "[agent:sre][q=0.650]FILE | FUNCTION | PATCH_DESC | hub/scripts/propose_code_patch.py"
-    },
-    {
-      "name": "self_improver.py",
-      "q": 0.7,
-      "when": "2026-04-23 18:40",
-      "output": ""
-    },
-    {
-      "name": "apply_agent_finding.py",
-      "q": 0.7,
-      "when": "2026-04-23 18:40",
-      "output": "und finding from task #1938 (2026-04-23 18:38:14)"
     }
   ],
-  "latest_finding": null
+  "latest_finding": {
+    "pattern": "[agent:sre][q=0.300]hub/scripts/watchdog.py",
+    "root_cause": "check_orchestrator_health",
+    "fix_script": "Add explicit handling for invalid ISO timestamps and improve recent crash detection logic.",
+    "when": "2026-04-23 19:25"
+  }
 }
