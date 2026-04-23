@@ -1,59 +1,77 @@
 {
-  "generated_at": "Apr 22, 2026 at 10:30 PM",
-  "generated_ts": "2026-04-23T02:30:11.408574+00:00",
+  "generated_at": "Apr 22, 2026 at 10:45 PM",
+  "generated_ts": "2026-04-23T02:45:09.906031+00:00",
   "commits": [
+    {
+      "sha": "cab05d17",
+      "subject": "fix(auto-patch): orchestrator_quality.py:_categorize_task_tier \u2014 Expand infrastructure_topics to include 'performance', 'stab",
+      "when": "0 seconds ago",
+      "tag": "autonomous"
+    },
+    {
+      "sha": "2f0f21c8",
+      "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 10:40 PM",
+      "when": "5 minutes ago",
+      "tag": "autonomous"
+    },
+    {
+      "sha": "466b664c",
+      "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 10:30 PM",
+      "when": "15 minutes ago",
+      "tag": "autonomous"
+    },
     {
       "sha": "94fe539b",
       "subject": "fix(auto-patch): watchdog.py:check_queue_health \u2014 Ensure db.close() is called in all paths, including exceptio",
-      "when": "0 seconds ago",
+      "when": "15 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "cc5a820c",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 10:15 PM",
-      "when": "15 minutes ago",
+      "when": "30 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "f19f01b2",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 10:05 PM",
-      "when": "25 minutes ago",
+      "when": "40 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "c3f41464",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 9:50 PM",
-      "when": "40 minutes ago",
+      "when": "55 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "2e286284",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 9:45 PM",
-      "when": "45 minutes ago",
+      "when": "60 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "3f7d2b47",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 9:35 PM",
-      "when": "55 minutes ago",
+      "when": "70 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "6b3d1670",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 9:20 PM",
-      "when": "70 minutes ago",
+      "when": "85 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "f789148a",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 9:10 PM",
-      "when": "80 minutes ago",
+      "when": "2 hours ago",
       "tag": "autonomous"
     },
     {
       "sha": "634087bb",
       "subject": "docs(session-LL): reprioritize tomorrow \u2014 autonomous improvements (AlphaClaw/memU/n8n) before audio/Telegram",
-      "when": "87 minutes ago",
+      "when": "2 hours ago",
       "tag": "manual-session"
     },
     {
@@ -73,29 +91,11 @@
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 8:42 PM",
       "when": "2 hours ago",
       "tag": "autonomous"
-    },
-    {
-      "sha": "2ed0c9e5",
-      "subject": "fix(auto-patch): briefing.py:get_investigation_findings \u2014 Add busy_timeout to db connection",
-      "when": "2 hours ago",
-      "tag": "autonomous"
-    },
-    {
-      "sha": "c46c13f8",
-      "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 8:30 PM",
-      "when": "2 hours ago",
-      "tag": "autonomous"
-    },
-    {
-      "sha": "ab7ec3b9",
-      "subject": "fix(session-KK): DB corruption recovered + watchdog crashes fixed + 5th code-read chain (briefing.py)",
-      "when": "2 hours ago",
-      "tag": "manual-session"
     }
   ],
   "commits_today": {
-    "total": 135,
-    "autonomous": 99,
+    "total": 138,
+    "autonomous": 102,
     "manual": 36
   },
   "recent_tasks": [
@@ -104,7 +104,7 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 02:30",
+      "when": "2026-04-23 02:45",
       "finding": null
     },
     {
@@ -112,15 +112,23 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 02:30",
+      "when": "2026-04-23 02:45",
       "finding": null
+    },
+    {
+      "label": "\ud83e\udde0 The task 'Generate script-based code improvement repo",
+      "handler": "openclaw",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-23 02:40",
+      "finding": "OpenClaw [detailed][q=0.7]: ROOT_CAUSE | The task 'Generate script-based code improvement report' failed because the corresponding script could not be found by the system. This indicates either the script was never created, was moved/renamed without updating the task configuration, or the task configuration points to an incorrect path. | FILE"
     },
     {
       "label": "\ud83d\udd27 backup_state.py",
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 02:30",
+      "when": "2026-04-23 02:40",
       "finding": null
     },
     {
@@ -128,23 +136,15 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 02:30",
+      "when": "2026-04-23 02:40",
       "finding": null
     },
     {
-      "label": "\ud83e\udde0 The task 'Generate script-based code improvement repo",
-      "handler": "openclaw",
-      "q": 0.2,
-      "q_class": "low",
-      "when": "2026-04-23 02:25",
-      "finding": null
-    },
-    {
-      "label": "\ud83d\udd27 export_status.py [2026-04-23T01:00]",
+      "label": "\ud83d\udd27 queue_doctor.py",
       "handler": "script",
-      "q": 0.7,
+      "q": 0.74,
       "q_class": "high",
-      "when": "2026-04-23 02:25",
+      "when": "2026-04-23 02:40",
       "finding": null
     },
     {
@@ -152,7 +152,7 @@
       "handler": "openclaw",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 02:25",
+      "when": "2026-04-23 02:40",
       "finding": null
     },
     {
@@ -160,7 +160,7 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 02:25",
+      "when": "2026-04-23 02:40",
       "finding": null
     },
     {
@@ -168,7 +168,7 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 02:25",
+      "when": "2026-04-23 02:40",
       "finding": null
     },
     {
@@ -176,7 +176,15 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 02:25",
+      "when": "2026-04-23 02:40",
+      "finding": null
+    },
+    {
+      "label": "\ud83e\udd16 reality-checker Specific low-q tasks last 24h: #1954(q",
+      "handler": "openclaw",
+      "q": 0.65,
+      "q_class": "high",
+      "when": "2026-04-23 02:36",
       "finding": null
     },
     {
@@ -184,7 +192,7 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 02:25",
+      "when": "2026-04-23 02:36",
       "finding": null
     },
     {
@@ -192,23 +200,15 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 02:25",
-      "finding": null
-    },
-    {
-      "label": "\ud83e\udd16 reality-checker Specific low-q tasks last 24h: #1882(q",
-      "handler": "openclaw",
-      "q": 0.73,
-      "q_class": "high",
-      "when": "2026-04-23 02:21",
+      "when": "2026-04-23 02:36",
       "finding": null
     },
     {
       "label": "\ud83e\udd16 sre code-read-store: Read hub_scripts/briefing.py line",
       "handler": "openclaw",
-      "q": 0.55,
-      "q_class": "mid",
-      "when": "2026-04-23 02:20",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-23 02:36",
       "finding": null
     },
     {
@@ -216,63 +216,81 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 02:20",
+      "when": "2026-04-23 02:36",
       "finding": null
     },
     {
       "label": "\ud83e\udd16 sre code-read-store: Read hub_scripts/watchdog.py line",
       "handler": "openclaw",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-23 02:20",
-      "finding": "hub/scripts/watchdog.py | check_queue_health | Ensure db.close() is called in all paths, including exceptions."
+      "q": 0.55,
+      "q_class": "mid",
+      "when": "2026-04-23 02:35",
+      "finding": null
     },
     {
       "label": "\ud83e\udd16 sre code-read-store: Read hub_scripts/apply_agent_find",
       "handler": "openclaw",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 02:20",
-      "finding": "[agent:sre][q=0.300]hub/scripts/apply_agent_finding.py | _run_fix | Add retry mechanism to _run_fix for robustness"
+      "when": "2026-04-23 02:35",
+      "finding": null
     },
     {
       "label": "\ud83e\udd16 sre code-read-store: Read hub_scripts/orchestrator_qua",
       "handler": "openclaw",
-      "q": 0.55,
-      "q_class": "mid",
-      "when": "2026-04-23 02:20",
-      "finding": null
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-23 02:35",
+      "finding": "[agent:sre][q=0.300]hub/scripts/orchestrator_quality.py | _categorize_task_tier | Expand infrastructure_topics to include 'performance', 'stability'."
     },
     {
       "label": "\ud83e\udd16 sre code-read-store: Read hub_scripts/investigate.py l",
       "handler": "openclaw",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-23 02:20",
+      "q": 0.55,
+      "q_class": "mid",
+      "when": "2026-04-23 02:30",
       "finding": null
     },
     {
-      "label": "\ud83d\udd27 sync_scripts_to_workspace.py",
+      "label": "\ud83d\udd27 gen_dashboard_data.py",
       "handler": "script",
-      "q": 0.7,
+      "q": 0.76,
       "q_class": "high",
-      "when": "2026-04-23 02:20",
+      "when": "2026-04-23 02:30",
       "finding": null
     }
   ],
   "handler_stats": [
     {
       "handler": "script",
-      "runs": 155,
+      "runs": 169,
       "avg_q": 0.71
     },
     {
       "handler": "openclaw",
-      "runs": 88,
+      "runs": 96,
       "avg_q": 0.64
     }
   ],
   "loop_events": [
+    {
+      "name": "apply_agent_finding.py",
+      "q": 0.7,
+      "when": "2026-04-23 02:45",
+      "output": "ipping task #1966 \u2014 unparseable output"
+    },
+    {
+      "name": "self_improver.py",
+      "q": 0.7,
+      "when": "2026-04-23 02:40",
+      "output": ""
+    },
+    {
+      "name": "apply_agent_finding.py",
+      "q": 0.7,
+      "when": "2026-04-23 02:35",
+      "output": "[agent:sre][q=0.300]FILE=hub/scripts/apply_agent_finding.py FUNCTION=_run_fix PATCH_DESC=Preserve ra"
+    },
     {
       "name": "apply_agent_finding.py",
       "q": 0.7,
@@ -302,30 +320,12 @@
       "q": 0.7,
       "when": "2026-04-23 02:15",
       "output": "ipping task #1922 \u2014 unparseable output"
-    },
-    {
-      "name": "apply_agent_finding.py",
-      "q": 0.7,
-      "when": "2026-04-23 02:05",
-      "output": "[agent:sre][q=0.300]hub/scripts/propose_code_patch.py | _run_fix | Capture and return partial script"
-    },
-    {
-      "name": "self_improver.py",
-      "q": 0.7,
-      "when": "2026-04-23 02:00",
-      "output": ""
-    },
-    {
-      "name": "apply_agent_finding.py",
-      "q": 0.7,
-      "when": "2026-04-23 02:00",
-      "output": "ipping task #1897 \u2014 unparseable output"
     }
   ],
   "latest_finding": {
-    "pattern": "hub/scripts/watchdog.py",
-    "root_cause": "check_queue_health",
-    "fix_script": "Ensure db.close() is called in all paths, including exceptions.",
-    "when": "2026-04-23 02:20"
+    "pattern": "[agent:sre][q=0.300]hub/scripts/orchestrator_quality.py",
+    "root_cause": "_categorize_task_tier",
+    "fix_script": "Expand infrastructure_topics to include 'performance', 'stability'.",
+    "when": "2026-04-23 02:35"
   }
 }
