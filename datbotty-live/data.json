@@ -1,6 +1,6 @@
 {
-  "generated_at": "Apr 23, 2026 at 2:35 AM",
-  "generated_ts": "2026-04-23T06:35:20.421838+00:00",
+  "generated_at": "Apr 23, 2026 at 2:50 AM",
+  "generated_ts": "2026-04-23T06:50:10.359652+00:00",
   "commits": [
     {
       "sha": "7eaf8d1e",
@@ -29,7 +29,7 @@
     {
       "sha": "1f774755",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 11:10 PM",
-      "when": "3 hours ago",
+      "when": "4 hours ago",
       "tag": "autonomous"
     },
     {
@@ -71,7 +71,7 @@
     {
       "sha": "cc5a820c",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 10:15 PM",
-      "when": "4 hours ago",
+      "when": "5 hours ago",
       "tag": "autonomous"
     },
     {
@@ -100,35 +100,11 @@
   },
   "recent_tasks": [
     {
-      "label": "\ud83e\udde0 The task 'Generate script-based code improvement repo",
-      "handler": "openclaw",
-      "q": 0.2,
-      "q_class": "low",
-      "when": "2026-04-23 06:35",
-      "finding": null
-    },
-    {
-      "label": "\ud83d\udd27 backup_state.py",
-      "handler": "script",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-23 06:35",
-      "finding": null
-    },
-    {
-      "label": "\ud83d\udd27 self_improver.py",
-      "handler": "script",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-23 06:35",
-      "finding": null
-    },
-    {
       "label": "\ud83d\udd27 apply_agent_finding.py",
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 06:35",
+      "when": "2026-04-23 06:50",
       "finding": null
     },
     {
@@ -136,15 +112,39 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 06:35",
+      "when": "2026-04-23 06:50",
       "finding": null
     },
     {
-      "label": "\ud83d\udd27 budget_tracker.py [2026-04-23T05:45]",
+      "label": "\ud83d\udd27 backup_state.py",
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 06:35",
+      "when": "2026-04-23 06:50",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 self_improver.py",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-23 06:50",
+      "finding": null
+    },
+    {
+      "label": "\ud83e\udde0 The task 'Generate script-based code improvement repo",
+      "handler": "openclaw",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-23 06:45",
+      "finding": "OpenClaw [detailed][q=0.55]: The script 'Generate script-based code improvement report' was not found in the system's execution environment. | N/A | # Placeholder script for 'Generate script-based code improvement report'\\n# Save this code as 'Generate script-based code improvement report'\\nprint(\"ERROR: The script 'Generate script-based code improvement report' is not implemented. Please create it.\")"
+    },
+    {
+      "label": "\ud83d\udd27 export_status.py [2026-04-23T06:00]",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-23 06:45",
       "finding": null
     },
     {
@@ -152,7 +152,7 @@
       "handler": "openclaw",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 06:30",
+      "when": "2026-04-23 06:45",
       "finding": null
     },
     {
@@ -160,7 +160,7 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 06:30",
+      "when": "2026-04-23 06:45",
       "finding": null
     },
     {
@@ -168,7 +168,7 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 06:30",
+      "when": "2026-04-23 06:45",
       "finding": null
     },
     {
@@ -176,23 +176,15 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 06:30",
+      "when": "2026-04-23 06:45",
       "finding": null
-    },
-    {
-      "label": "\ud83e\udd16 reality-checker Specific low-q tasks last 24h: #1942(q",
-      "handler": "openclaw",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-23 06:30",
-      "finding": "[agent:reality-checker][q=0.650] | TASK_ID | ROOT_CAUSE"
     },
     {
       "label": "\ud83d\udd27 export_status.py",
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 06:30",
+      "when": "2026-04-23 06:45",
       "finding": null
     },
     {
@@ -200,7 +192,15 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 06:30",
+      "when": "2026-04-23 06:45",
+      "finding": null
+    },
+    {
+      "label": "\ud83e\udd16 reality-checker Specific low-q tasks last 24h: #1964(q",
+      "handler": "openclaw",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-23 06:40",
       "finding": null
     },
     {
@@ -208,31 +208,31 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 06:30",
+      "when": "2026-04-23 06:40",
       "finding": null
     },
     {
       "label": "\ud83e\udd16 sre code-read-store: Read hub_scripts/briefing.py line",
       "handler": "openclaw",
-      "q": 0.55,
-      "q_class": "mid",
-      "when": "2026-04-23 06:25",
-      "finding": null
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-23 06:40",
+      "finding": "[agent:sre][q=0.300]FILE | FUNCTION | PATCH_DESC"
     },
     {
       "label": "\ud83e\udd16 sre code-read-store: Read hub_scripts/watchdog.py line",
       "handler": "openclaw",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 06:25",
-      "finding": "[agent:sre][q=0.550]FILE=hub/scripts/watchdog.py FUNCTION=check_orchestrator_task_completion PATCH_DESC=Add guard for empty result set from fetchone() | hub/scripts/propose_code_patch.py"
+      "when": "2026-04-23 06:40",
+      "finding": null
     },
     {
       "label": "\ud83e\udd16 sre code-read-store: Read hub_scripts/apply_agent_find",
       "handler": "openclaw",
       "q": 0.55,
       "q_class": "mid",
-      "when": "2026-04-23 06:25",
+      "when": "2026-04-23 06:40",
       "finding": null
     },
     {
@@ -240,39 +240,57 @@
       "handler": "openclaw",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 06:25",
+      "when": "2026-04-23 06:40",
       "finding": null
     },
     {
       "label": "\ud83e\udd16 sre code-read-store: Read hub_scripts/investigate.py l",
       "handler": "openclaw",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-23 06:25",
+      "q": 0.55,
+      "q_class": "mid",
+      "when": "2026-04-23 06:40",
       "finding": null
     },
     {
-      "label": "\ud83d\udd27 gen_dashboard_data.py",
+      "label": "\ud83d\udd27 sync_scripts_to_workspace.py",
       "handler": "script",
-      "q": 0.76,
+      "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 06:25",
+      "when": "2026-04-23 06:40",
       "finding": null
     }
   ],
   "handler_stats": [
     {
       "handler": "script",
-      "runs": 167,
+      "runs": 181,
       "avg_q": 0.7
     },
     {
       "handler": "openclaw",
-      "runs": 95,
+      "runs": 103,
       "avg_q": 0.63
     }
   ],
   "loop_events": [
+    {
+      "name": "apply_agent_finding.py",
+      "q": 0.7,
+      "when": "2026-04-23 06:50",
+      "output": "und finding from task #1976 (2026-04-23 06:40:42)"
+    },
+    {
+      "name": "self_improver.py",
+      "q": 0.7,
+      "when": "2026-04-23 06:50",
+      "output": ""
+    },
+    {
+      "name": "apply_agent_finding.py",
+      "q": 0.55,
+      "when": "2026-04-23 06:40",
+      "output": "[agent:sre][q=0.300]completed"
+    },
     {
       "name": "self_improver.py",
       "q": 0.7,
@@ -302,25 +320,12 @@
       "q": 0.7,
       "when": "2026-04-23 06:20",
       "output": ""
-    },
-    {
-      "name": "apply_agent_finding.py",
-      "q": 0.7,
-      "when": "2026-04-23 06:10",
-      "output": "[agent:sre][q=0.650]hub/scripts/apply_agent_finding.py | _run_fix | Remove retry logic for _run_fix "
-    },
-    {
-      "name": "apply_agent_finding.py",
-      "q": 0.7,
-      "when": "2026-04-23 06:10",
-      "output": "ipping task #1910 \u2014 unparseable output"
-    },
-    {
-      "name": "self_improver.py",
-      "q": 0.7,
-      "when": "2026-04-23 06:05",
-      "output": ""
     }
   ],
-  "latest_finding": null
+  "latest_finding": {
+    "pattern": "[agent:sre][q=0.300]FILE",
+    "root_cause": "FUNCTION",
+    "fix_script": "PATCH_DESC",
+    "when": "2026-04-23 06:40"
+  }
 }
