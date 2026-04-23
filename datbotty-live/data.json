@@ -1,29 +1,29 @@
 {
-  "generated_at": "Apr 23, 2026 at 12:45 AM",
-  "generated_ts": "2026-04-23T04:45:17.588142+00:00",
+  "generated_at": "Apr 23, 2026 at 1:00 AM",
+  "generated_ts": "2026-04-23T05:00:09.362513+00:00",
   "commits": [
     {
       "sha": "7eaf8d1e",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 11:55 PM",
-      "when": "50 minutes ago",
+      "when": "65 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "bb7d773a",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 11:40 PM",
-      "when": "65 minutes ago",
+      "when": "80 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "1d0448e2",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 11:35 PM",
-      "when": "70 minutes ago",
+      "when": "85 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "5c653923",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 11:25 PM",
-      "when": "80 minutes ago",
+      "when": "2 hours ago",
       "tag": "autonomous"
     },
     {
@@ -59,13 +59,13 @@
     {
       "sha": "466b664c",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 10:30 PM",
-      "when": "2 hours ago",
+      "when": "3 hours ago",
       "tag": "autonomous"
     },
     {
       "sha": "94fe539b",
       "subject": "fix(auto-patch): watchdog.py:check_queue_health \u2014 Ensure db.close() is called in all paths, including exceptio",
-      "when": "2 hours ago",
+      "when": "3 hours ago",
       "tag": "autonomous"
     },
     {
@@ -100,35 +100,11 @@
   },
   "recent_tasks": [
     {
-      "label": "\ud83e\udde0 The task 'Generate script-based code improvement repo",
-      "handler": "openclaw",
-      "q": 0.12,
-      "q_class": "low",
-      "when": "2026-04-23 04:45",
-      "finding": "OpenClaw [low-quality][q=0.1]: ROOT_CAUSE | The command executed was `Generate script-based code improvement report`, which is a descriptive task name and not a valid executable script or command. The system could not locate an executable with this name. | FILE"
-    },
-    {
-      "label": "\ud83d\udd27 backup_state.py",
-      "handler": "script",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-23 04:45",
-      "finding": null
-    },
-    {
-      "label": "\ud83d\udd27 self_improver.py",
-      "handler": "script",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-23 04:45",
-      "finding": null
-    },
-    {
       "label": "\ud83d\udd27 apply_agent_finding.py",
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 04:45",
+      "when": "2026-04-23 05:00",
       "finding": null
     },
     {
@@ -136,7 +112,39 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 04:45",
+      "when": "2026-04-23 05:00",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 backup_state.py",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-23 05:00",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 self_improver.py",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-23 05:00",
+      "finding": null
+    },
+    {
+      "label": "\ud83e\udde0 The task 'Generate script-based code improvement repo",
+      "handler": "openclaw",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-23 04:55",
+      "finding": "OpenClaw [detailed][q=0.7]: ROOT_CAUSE | The script 'Generate script-based code improvement report' was not found in the system's executable paths or working directory. | FILE: generate_script_based_code_improvement_report.py"
+    },
+    {
+      "label": "\ud83d\udd27 queue_doctor.py",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-23 04:55",
       "finding": null
     },
     {
@@ -144,7 +152,7 @@
       "handler": "openclaw",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 04:40",
+      "when": "2026-04-23 04:55",
       "finding": null
     },
     {
@@ -152,7 +160,7 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 04:40",
+      "when": "2026-04-23 04:55",
       "finding": null
     },
     {
@@ -160,23 +168,15 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 04:40",
+      "when": "2026-04-23 04:55",
       "finding": null
-    },
-    {
-      "label": "\ud83e\udd16 reality-checker 66 tasks done in 24h \u2014 all above q=0.5",
-      "handler": "openclaw",
-      "q": 0.55,
-      "q_class": "mid",
-      "when": "2026-04-23 04:40",
-      "finding": "[agent:reality-checker][q=0.650]openclaw handler | Multiple low-quality web_search tasks (q<0.30), particularly concerning memory retrieval (\"fluid-memory\"), and a lower average handler quality (0.634) | Enhance web_search prompt engineering and result validation for the openclaw handler to improve output quality and address performance gaps."
     },
     {
       "label": "\ud83d\udd27 export_status.py",
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 04:40",
+      "when": "2026-04-23 04:55",
       "finding": null
     },
     {
@@ -184,7 +184,7 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 04:40",
+      "when": "2026-04-23 04:55",
       "finding": null
     },
     {
@@ -192,7 +192,23 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 04:40",
+      "when": "2026-04-23 04:55",
+      "finding": null
+    },
+    {
+      "label": "\ud83e\udd16 reality-checker Specific low-q tasks last 24h: #1776(q",
+      "handler": "openclaw",
+      "q": 0.65,
+      "q_class": "high",
+      "when": "2026-04-23 04:51",
+      "finding": null
+    },
+    {
+      "label": "\ud83e\udd16 sre code-read-store: Read hub_scripts/briefing.py line",
+      "handler": "openclaw",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-23 04:50",
       "finding": null
     },
     {
@@ -200,15 +216,7 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 04:40",
-      "finding": null
-    },
-    {
-      "label": "\ud83e\udd16 sre code-read-store: Read hub_scripts/briefing.py line",
-      "handler": "openclaw",
-      "q": 0.55,
-      "q_class": "mid",
-      "when": "2026-04-23 04:36",
+      "when": "2026-04-23 04:50",
       "finding": null
     },
     {
@@ -216,15 +224,15 @@
       "handler": "openclaw",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 04:35",
-      "finding": "[agent:sre][q=0.300]hub/scripts/watchdog.py | check_orchestrator_task_completion | Ensure db.close() is called in a finally block to prevent resource leaks."
+      "when": "2026-04-23 04:50",
+      "finding": null
     },
     {
       "label": "\ud83e\udd16 sre code-read-store: Read hub_scripts/apply_agent_find",
       "handler": "openclaw",
-      "q": 0.55,
-      "q_class": "mid",
-      "when": "2026-04-23 04:35",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-23 04:50",
       "finding": null
     },
     {
@@ -232,47 +240,57 @@
       "handler": "openclaw",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 04:35",
-      "finding": "[agent:sre][q=0.550]hub/scripts/orchestrator_quality.py | score_task_output | Add specific handling for empty/malformed 'openclaw' outputs"
+      "when": "2026-04-23 04:50",
+      "finding": "[agent:sre][q=0.300]hub/scripts/orchestrator_quality.py | score_task_output | Add handler-specific scoring for code generation tasks by 'openclaw' handler."
     },
     {
       "label": "\ud83e\udd16 sre code-read-store: Read hub_scripts/investigate.py l",
       "handler": "openclaw",
-      "q": 0.55,
-      "q_class": "mid",
-      "when": "2026-04-23 04:35",
-      "finding": null
-    },
-    {
-      "label": "\ud83d\udd27 gen_dashboard_data.py",
-      "handler": "script",
-      "q": 0.76,
+      "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 04:35",
+      "when": "2026-04-23 04:50",
       "finding": null
     },
     {
-      "label": "\ud83d\udd27 queue_doctor.py",
+      "label": "\ud83d\udd27 sync_scripts_to_workspace.py",
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 04:35",
+      "when": "2026-04-23 04:50",
       "finding": null
     }
   ],
   "handler_stats": [
     {
       "handler": "script",
-      "runs": 55,
-      "avg_q": 0.71
+      "runs": 69,
+      "avg_q": 0.7
     },
     {
       "handler": "openclaw",
-      "runs": 31,
-      "avg_q": 0.62
+      "runs": 39,
+      "avg_q": 0.63
     }
   ],
   "loop_events": [
+    {
+      "name": "apply_agent_finding.py",
+      "q": 0.7,
+      "when": "2026-04-23 05:00",
+      "output": "und finding from task #1791 (2026-04-23 04:50:57)"
+    },
+    {
+      "name": "self_improver.py",
+      "q": 0.7,
+      "when": "2026-04-23 05:00",
+      "output": "avg_q=0.594"
+    },
+    {
+      "name": "apply_agent_finding.py",
+      "q": 0.7,
+      "when": "2026-04-23 04:50",
+      "output": "[agent:sre][q=0.300]FILE=hub/scripts/apply_agent_finding.py FUNCTION=_run_fix PATCH_DESC=Capture std"
+    },
     {
       "name": "self_improver.py",
       "q": 0.7,
@@ -302,30 +320,12 @@
       "q": 0.7,
       "when": "2026-04-23 04:30",
       "output": "ipping task #1744 \u2014 unparseable output"
-    },
-    {
-      "name": "apply_agent_finding.py",
-      "q": 0.55,
-      "when": "2026-04-23 04:20",
-      "output": "[agent:sre][q=0.300]An unknown error occurred"
-    },
-    {
-      "name": "apply_agent_finding.py",
-      "q": 0.7,
-      "when": "2026-04-23 04:20",
-      "output": "ipping task #1728 \u2014 unparseable output"
-    },
-    {
-      "name": "self_improver.py",
-      "q": 0.7,
-      "when": "2026-04-23 04:15",
-      "output": "avg_q=0.594"
     }
   ],
   "latest_finding": {
-    "pattern": "[agent:sre][q=0.300]hub/scripts/watchdog.py",
-    "root_cause": "check_orchestrator_task_completion",
-    "fix_script": "Ensure db.close() is called in a finally block to prevent resource leaks.",
-    "when": "2026-04-23 04:35"
+    "pattern": "FILE",
+    "root_cause": "FUNCTION",
+    "fix_script": "PATCH_DESC",
+    "when": "2026-04-23 04:50"
   }
 }
