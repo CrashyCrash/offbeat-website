@@ -1,6 +1,6 @@
 {
-  "generated_at": "Apr 23, 2026 at 1:30 AM",
-  "generated_ts": "2026-04-23T05:30:01.708691+00:00",
+  "generated_at": "Apr 23, 2026 at 1:40 AM",
+  "generated_ts": "2026-04-23T05:40:12.877437+00:00",
   "commits": [
     {
       "sha": "7eaf8d1e",
@@ -29,7 +29,7 @@
     {
       "sha": "1f774755",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 11:10 PM",
-      "when": "2 hours ago",
+      "when": "3 hours ago",
       "tag": "autonomous"
     },
     {
@@ -77,7 +77,7 @@
     {
       "sha": "f19f01b2",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 10:05 PM",
-      "when": "3 hours ago",
+      "when": "4 hours ago",
       "tag": "autonomous"
     },
     {
@@ -104,15 +104,15 @@
       "handler": "openclaw",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 05:25",
-      "finding": "OpenClaw [detailed][q=0.6]: Script file 'Generate script-based code improvement report' is missing or inaccessible. | Generate script-based code improvement report.py | print(default_api.write(path='Generate script-based code improvement report.py', content='#!/usr/bin/env python3\\nprint(\\'This is a placeholder script for \\'Generate script-based code improvement report\\'.\\')\\n# This script is a placeholder to resolve a \\'script not found\\' error.\\n# In a real implementation, actual code improvement reporting logic would reside here.\\n'))"
+      "when": "2026-04-23 05:40",
+      "finding": "OpenClaw [detailed][q=0.6]: ROOT_CAUSE | The script file 'Generate script-based code improvement report' was not found in the system's executable path. | FILE"
     },
     {
       "label": "\ud83d\udd27 backup_state.py",
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 05:25",
+      "when": "2026-04-23 05:40",
       "finding": null
     },
     {
@@ -120,7 +120,7 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 05:25",
+      "when": "2026-04-23 05:40",
       "finding": null
     },
     {
@@ -128,7 +128,7 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 05:25",
+      "when": "2026-04-23 05:40",
       "finding": null
     },
     {
@@ -136,15 +136,15 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 05:25",
+      "when": "2026-04-23 05:40",
       "finding": null
     },
     {
-      "label": "\ud83d\udd27 budget_tracker.py [2026-04-23T04:45]",
+      "label": "\ud83d\udd27 queue_doctor.py",
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 05:25",
+      "when": "2026-04-23 05:40",
       "finding": null
     },
     {
@@ -152,7 +152,7 @@
       "handler": "openclaw",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 05:25",
+      "when": "2026-04-23 05:35",
       "finding": null
     },
     {
@@ -160,7 +160,7 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 05:25",
+      "when": "2026-04-23 05:35",
       "finding": null
     },
     {
@@ -168,23 +168,15 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 05:20",
+      "when": "2026-04-23 05:35",
       "finding": null
     },
     {
-      "label": "\ud83d\udd27 link_checker.py",
-      "handler": "script",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-23 05:20",
-      "finding": null
-    },
-    {
-      "label": "\ud83e\udd16 reality-checker Specific low-q tasks last 24h: #1826(q",
+      "label": "\ud83e\udd16 reality-checker Specific low-q tasks last 24h: #1840(q",
       "handler": "openclaw",
-      "q": 0.2,
-      "q_class": "low",
-      "when": "2026-04-23 05:20",
+      "q": 0.65,
+      "q_class": "high",
+      "when": "2026-04-23 05:35",
       "finding": null
     },
     {
@@ -192,7 +184,7 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 05:20",
+      "when": "2026-04-23 05:35",
       "finding": null
     },
     {
@@ -200,15 +192,15 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 05:20",
+      "when": "2026-04-23 05:35",
       "finding": null
     },
     {
-      "label": "\ud83e\udd16 sre code-read-store: Read hub_scripts/briefing.py line",
-      "handler": "openclaw",
-      "q": 0.55,
-      "q_class": "mid",
-      "when": "2026-04-23 05:20",
+      "label": "\ud83d\udd27 link_checker.py",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-23 05:35",
       "finding": null
     },
     {
@@ -216,7 +208,15 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 05:20",
+      "when": "2026-04-23 05:35",
+      "finding": null
+    },
+    {
+      "label": "\ud83e\udd16 sre code-read-store: Read hub_scripts/briefing.py line",
+      "handler": "openclaw",
+      "q": 0.55,
+      "q_class": "mid",
+      "when": "2026-04-23 05:31",
       "finding": null
     },
     {
@@ -224,23 +224,23 @@
       "handler": "openclaw",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 05:20",
-      "finding": "[agent:sre][q=0.550]hub/scripts/watchdog.py | check_orchestrator_task_completion | Add guard for empty query results in completed/attempted counts"
+      "when": "2026-04-23 05:30",
+      "finding": null
     },
     {
       "label": "\ud83e\udd16 sre code-read-store: Read hub_scripts/apply_agent_find",
       "handler": "openclaw",
       "q": 0.55,
       "q_class": "mid",
-      "when": "2026-04-23 05:16",
-      "finding": "[agent:sre][q=0.300]hub/scripts/apply_agent_finding.py | _run_fix | Return partial output on script timeout"
+      "when": "2026-04-23 05:30",
+      "finding": null
     },
     {
       "label": "\ud83e\udd16 sre code-read-store: Read hub_scripts/orchestrator_qua",
       "handler": "openclaw",
       "q": 0.55,
       "q_class": "mid",
-      "when": "2026-04-23 05:16",
+      "when": "2026-04-23 05:30",
       "finding": null
     },
     {
@@ -248,31 +248,49 @@
       "handler": "openclaw",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 05:15",
-      "finding": "[agent:sre][q=0.300]hub/scripts/investigate.py | detect_cascading_failures | Add try/finally to ensure db.close() is called"
+      "when": "2026-04-23 05:30",
+      "finding": null
     },
     {
       "label": "\ud83d\udd27 gen_dashboard_data.py",
       "handler": "script",
       "q": 0.76,
       "q_class": "high",
-      "when": "2026-04-23 05:15",
+      "when": "2026-04-23 05:30",
       "finding": null
     }
   ],
   "handler_stats": [
     {
       "handler": "script",
-      "runs": 97,
+      "runs": 111,
       "avg_q": 0.7
     },
     {
       "handler": "openclaw",
-      "runs": 55,
+      "runs": 63,
       "avg_q": 0.62
     }
   ],
   "loop_events": [
+    {
+      "name": "self_improver.py",
+      "q": 0.7,
+      "when": "2026-04-23 05:40",
+      "output": ""
+    },
+    {
+      "name": "apply_agent_finding.py",
+      "q": 0.7,
+      "when": "2026-04-23 05:40",
+      "output": "ipping task #1860 \u2014 unparseable output"
+    },
+    {
+      "name": "apply_agent_finding.py",
+      "q": 0.55,
+      "when": "2026-04-23 05:30",
+      "output": "[agent:sre][q=0.300]An unknown error occurred"
+    },
     {
       "name": "self_improver.py",
       "q": 0.7,
@@ -302,30 +320,7 @@
       "q": 0.7,
       "when": "2026-04-23 05:10",
       "output": "avg_q=0.594"
-    },
-    {
-      "name": "apply_agent_finding.py",
-      "q": 0.55,
-      "when": "2026-04-23 05:05",
-      "output": "[agent:sre][q=0.300]completed"
-    },
-    {
-      "name": "apply_agent_finding.py",
-      "q": 0.7,
-      "when": "2026-04-23 05:00",
-      "output": "und finding from task #1791 (2026-04-23 04:50:57)"
-    },
-    {
-      "name": "self_improver.py",
-      "q": 0.7,
-      "when": "2026-04-23 05:00",
-      "output": "avg_q=0.594"
     }
   ],
-  "latest_finding": {
-    "pattern": "[agent:sre][q=0.550]hub/scripts/watchdog.py",
-    "root_cause": "check_orchestrator_task_completion",
-    "fix_script": "Add guard for empty query results in completed/attempted counts",
-    "when": "2026-04-23 05:20"
-  }
+  "latest_finding": null
 }
