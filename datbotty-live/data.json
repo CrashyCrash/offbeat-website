@@ -1,6 +1,6 @@
 {
-  "generated_at": "Apr 23, 2026 at 8:05 AM",
-  "generated_ts": "2026-04-23T12:05:01.295058+00:00",
+  "generated_at": "Apr 23, 2026 at 8:20 AM",
+  "generated_ts": "2026-04-23T12:20:01.875655+00:00",
   "commits": [
     {
       "sha": "7eaf8d1e",
@@ -11,7 +11,7 @@
     {
       "sha": "bb7d773a",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 11:40 PM",
-      "when": "8 hours ago",
+      "when": "9 hours ago",
       "tag": "autonomous"
     },
     {
@@ -41,19 +41,19 @@
     {
       "sha": "8e0a28d7",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 10:45 PM",
-      "when": "9 hours ago",
+      "when": "10 hours ago",
       "tag": "autonomous"
     },
     {
       "sha": "cab05d17",
       "subject": "fix(auto-patch): orchestrator_quality.py:_categorize_task_tier \u2014 Expand infrastructure_topics to include 'performance', 'stab",
-      "when": "9 hours ago",
+      "when": "10 hours ago",
       "tag": "autonomous"
     },
     {
       "sha": "2f0f21c8",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 10:40 PM",
-      "when": "9 hours ago",
+      "when": "10 hours ago",
       "tag": "autonomous"
     },
     {
@@ -83,13 +83,13 @@
     {
       "sha": "c3f41464",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 9:50 PM",
-      "when": "10 hours ago",
+      "when": "11 hours ago",
       "tag": "autonomous"
     },
     {
       "sha": "2e286284",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 9:45 PM",
-      "when": "10 hours ago",
+      "when": "11 hours ago",
       "tag": "autonomous"
     }
   ],
@@ -100,27 +100,11 @@
   },
   "recent_tasks": [
     {
-      "label": "\ud83d\udd27 backup_state.py",
-      "handler": "script",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-23 12:05",
-      "finding": null
-    },
-    {
-      "label": "\ud83d\udd27 self_improver.py",
-      "handler": "script",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-23 12:05",
-      "finding": null
-    },
-    {
       "label": "\ud83d\udd27 apply_agent_finding.py",
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 12:05",
+      "when": "2026-04-23 12:20",
       "finding": null
     },
     {
@@ -128,23 +112,39 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 12:05",
+      "when": "2026-04-23 12:20",
       "finding": null
     },
     {
       "label": "\ud83e\udde0 The task 'Generate script-based code improvement repo",
       "handler": "openclaw",
+      "q": 0.55,
+      "q_class": "mid",
+      "when": "2026-04-23 12:15",
+      "finding": "OpenClaw[q=0.55]: ROOT_CAUSE | generate_script_based_code_improvement_report.py | print(default_api.write(path='generate_script_based_code_improvement_report.py', content='import sys\\\\nsys.exit(0)'))"
+    },
+    {
+      "label": "\ud83d\udd27 backup_state.py",
+      "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 12:00",
-      "finding": "OpenClaw [detailed][q=0.7]: ROOT_CAUSE | The script 'Generate script-based code improvement report' was not found at the expected execution path. This indicates that the script file is either missing from the system's directories or its path is not correctly configured in the environment's PATH variable, preventing its execution. | FILE"
+      "when": "2026-04-23 12:15",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 self_improver.py",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-23 12:15",
+      "finding": null
     },
     {
       "label": "\ud83e\udde0 Read hub/logs/orchestrator.log last 30 lines. Identif",
       "handler": "openclaw",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 12:00",
+      "when": "2026-04-23 12:15",
       "finding": null
     },
     {
@@ -152,39 +152,7 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 12:00",
-      "finding": null
-    },
-    {
-      "label": "\ud83d\udd27 task_quality_audit.py",
-      "handler": "script",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-23 12:00",
-      "finding": null
-    },
-    {
-      "label": "\ud83d\udd27 link_checker.py",
-      "handler": "script",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-23 12:00",
-      "finding": null
-    },
-    {
-      "label": "\ud83d\udd27 export_status.py",
-      "handler": "script",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-23 12:00",
-      "finding": null
-    },
-    {
-      "label": "\ud83d\udd27 budget_tracker.py",
-      "handler": "script",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-23 12:00",
+      "when": "2026-04-23 12:15",
       "finding": null
     },
     {
@@ -258,32 +226,64 @@
       "q_class": "high",
       "when": "2026-04-23 00:15",
       "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 backup_state.py",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-23 00:15",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 self_improver.py",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-23 00:15",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 apply_agent_finding.py",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-23 00:15",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 patch_dispatcher.py",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-23 00:15",
+      "finding": null
     }
   ],
   "handler_stats": [
     {
       "handler": "script",
-      "runs": 33,
-      "avg_q": 0.7
+      "runs": 29,
+      "avg_q": 0.71
     },
     {
       "handler": "openclaw",
       "runs": 15,
-      "avg_q": 0.64
+      "avg_q": 0.63
     }
   ],
   "loop_events": [
     {
-      "name": "self_improver.py",
-      "q": 0.7,
-      "when": "2026-04-23 12:05",
-      "output": "avg_q=0.594"
-    },
-    {
       "name": "apply_agent_finding.py",
       "q": 0.7,
-      "when": "2026-04-23 12:05",
+      "when": "2026-04-23 12:20",
       "output": "e-reading findings in DB"
+    },
+    {
+      "name": "self_improver.py",
+      "q": 0.7,
+      "when": "2026-04-23 12:15",
+      "output": "avg_q=0.594"
     },
     {
       "name": "apply_agent_finding.py",
