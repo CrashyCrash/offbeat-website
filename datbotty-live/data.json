@@ -1,59 +1,71 @@
 {
-  "generated_at": "Apr 22, 2026 at 11:25 PM",
-  "generated_ts": "2026-04-23T03:25:01.747723+00:00",
+  "generated_at": "Apr 22, 2026 at 11:40 PM",
+  "generated_ts": "2026-04-23T03:40:02.085833+00:00",
   "commits": [
+    {
+      "sha": "1d0448e2",
+      "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 11:35 PM",
+      "when": "5 minutes ago",
+      "tag": "autonomous"
+    },
+    {
+      "sha": "5c653923",
+      "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 11:25 PM",
+      "when": "15 minutes ago",
+      "tag": "autonomous"
+    },
     {
       "sha": "1f774755",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 11:10 PM",
-      "when": "15 minutes ago",
+      "when": "30 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "4eca98f7",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 11:00 PM",
-      "when": "25 minutes ago",
+      "when": "40 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "8e0a28d7",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 10:45 PM",
-      "when": "40 minutes ago",
+      "when": "55 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "cab05d17",
       "subject": "fix(auto-patch): orchestrator_quality.py:_categorize_task_tier \u2014 Expand infrastructure_topics to include 'performance', 'stab",
-      "when": "40 minutes ago",
+      "when": "55 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "2f0f21c8",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 10:40 PM",
-      "when": "45 minutes ago",
+      "when": "60 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "466b664c",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 10:30 PM",
-      "when": "55 minutes ago",
+      "when": "70 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "94fe539b",
       "subject": "fix(auto-patch): watchdog.py:check_queue_health \u2014 Ensure db.close() is called in all paths, including exceptio",
-      "when": "55 minutes ago",
+      "when": "70 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "cc5a820c",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 10:15 PM",
-      "when": "70 minutes ago",
+      "when": "85 minutes ago",
       "tag": "autonomous"
     },
     {
       "sha": "f19f01b2",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 10:05 PM",
-      "when": "80 minutes ago",
+      "when": "2 hours ago",
       "tag": "autonomous"
     },
     {
@@ -79,48 +91,20 @@
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 9:20 PM",
       "when": "2 hours ago",
       "tag": "autonomous"
-    },
-    {
-      "sha": "f789148a",
-      "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 22, 2026 at 9:10 PM",
-      "when": "2 hours ago",
-      "tag": "autonomous"
-    },
-    {
-      "sha": "634087bb",
-      "subject": "docs(session-LL): reprioritize tomorrow \u2014 autonomous improvements (AlphaClaw/memU/n8n) before audio/Telegram",
-      "when": "2 hours ago",
-      "tag": "manual-session"
     }
   ],
   "commits_today": {
-    "total": 141,
-    "autonomous": 105,
+    "total": 143,
+    "autonomous": 107,
     "manual": 36
   },
   "recent_tasks": [
-    {
-      "label": "\ud83d\udd27 backup_state.py",
-      "handler": "script",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-23 03:25",
-      "finding": null
-    },
-    {
-      "label": "\ud83d\udd27 self_improver.py",
-      "handler": "script",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-23 03:25",
-      "finding": null
-    },
     {
       "label": "\ud83d\udd27 apply_agent_finding.py",
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 03:25",
+      "when": "2026-04-23 03:40",
       "finding": null
     },
     {
@@ -128,23 +112,39 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 03:25",
+      "when": "2026-04-23 03:40",
       "finding": null
     },
     {
       "label": "\ud83e\udde0 The task 'Generate script-based code improvement repo",
       "handler": "openclaw",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-23 03:20",
-      "finding": "OpenClaw [detailed][q=0.7]: ROOT_CAUSE | The task execution mechanism attempted to run a script using the literal task name \"Generate script-based code improvement report\" as the command. This name, containing spaces, is not a valid executable command or script path, leading to a \"script not found\" error. | FILE"
+      "q": 0.2,
+      "q_class": "low",
+      "when": "2026-04-23 03:35",
+      "finding": null
     },
     {
-      "label": "\ud83d\udd27 export_status.py [2026-04-23T02:00]",
+      "label": "\ud83d\udd27 backup_state.py",
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 03:20",
+      "when": "2026-04-23 03:35",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 self_improver.py",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-23 03:35",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 queue_doctor.py",
+      "handler": "script",
+      "q": 0.74,
+      "q_class": "high",
+      "when": "2026-04-23 03:35",
       "finding": null
     },
     {
@@ -152,7 +152,7 @@
       "handler": "openclaw",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 03:20",
+      "when": "2026-04-23 03:35",
       "finding": null
     },
     {
@@ -160,7 +160,7 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 03:20",
+      "when": "2026-04-23 03:35",
       "finding": null
     },
     {
@@ -168,7 +168,7 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 03:20",
+      "when": "2026-04-23 03:35",
       "finding": null
     },
     {
@@ -176,7 +176,15 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 03:20",
+      "when": "2026-04-23 03:35",
+      "finding": null
+    },
+    {
+      "label": "\ud83e\udd16 reality-checker Specific low-q tasks last 24h: #1954(q",
+      "handler": "openclaw",
+      "q": 0.55,
+      "q_class": "mid",
+      "when": "2026-04-23 03:30",
       "finding": null
     },
     {
@@ -184,7 +192,7 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 03:20",
+      "when": "2026-04-23 03:30",
       "finding": null
     },
     {
@@ -192,23 +200,15 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 03:20",
-      "finding": null
-    },
-    {
-      "label": "\ud83e\udd16 reality-checker Specific low-q tasks last 24h: #1954(q",
-      "handler": "openclaw",
-      "q": 0.65,
-      "q_class": "high",
-      "when": "2026-04-23 03:15",
+      "when": "2026-04-23 03:30",
       "finding": null
     },
     {
       "label": "\ud83e\udd16 sre code-read-store: Read hub_scripts/briefing.py line",
       "handler": "openclaw",
-      "q": 0.55,
-      "q_class": "mid",
-      "when": "2026-04-23 03:15",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-23 03:30",
       "finding": null
     },
     {
@@ -216,7 +216,7 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 03:15",
+      "when": "2026-04-23 03:30",
       "finding": null
     },
     {
@@ -224,55 +224,73 @@
       "handler": "openclaw",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 03:15",
-      "finding": null
+      "when": "2026-04-23 03:30",
+      "finding": "3.  **Datetime edge case:** The query uses `datetime('now', ? | ' hours')` with `f'-{hours}'`. This looks like standard SQLite date manipulation and might be okay, but it's worth considering if `hours` could be zero or negative, or if timezones are handled implicitly by the system's locale rather than being explicit. However, without more context on how `hours` is determined or the ex"
     },
     {
       "label": "\ud83e\udd16 sre code-read-store: Read hub_scripts/apply_agent_find",
       "handler": "openclaw",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-23 03:15",
-      "finding": "[agent:sre][q=0.300]hub/scripts/apply_agent_finding.py | _run_fix | Complete filtering of command logs in _run_fix to prevent logging executed commands."
+      "q": 0.55,
+      "q_class": "mid",
+      "when": "2026-04-23 03:30",
+      "finding": null
     },
     {
       "label": "\ud83e\udd16 sre code-read-store: Read hub_scripts/orchestrator_qua",
       "handler": "openclaw",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 03:15",
-      "finding": null
+      "when": "2026-04-23 03:30",
+      "finding": "[agent:sre][q=0.300]hub/scripts/orchestrator_quality.py | _validate_task_before_scoring | Validate empty result in _validate_task_before_scoring for score_task_output."
     },
     {
       "label": "\ud83e\udd16 sre code-read-store: Read hub_scripts/investigate.py l",
       "handler": "openclaw",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-23 03:15",
-      "finding": "[agent:sre][q=0.300]FILE | FUNCTION | PATCH_DESC"
+      "when": "2026-04-23 03:25",
+      "finding": null
     },
     {
-      "label": "\ud83d\udd27 sync_scripts_to_workspace.py",
+      "label": "\ud83d\udd27 gen_dashboard_data.py",
       "handler": "script",
-      "q": 0.7,
+      "q": 0.76,
       "q_class": "high",
-      "when": "2026-04-23 03:15",
+      "when": "2026-04-23 03:25",
       "finding": null
     }
   ],
   "handler_stats": [
     {
       "handler": "script",
-      "runs": 211,
+      "runs": 225,
       "avg_q": 0.71
     },
     {
       "handler": "openclaw",
-      "runs": 120,
+      "runs": 128,
       "avg_q": 0.64
     }
   ],
   "loop_events": [
+    {
+      "name": "apply_agent_finding.py",
+      "q": 0.7,
+      "when": "2026-04-23 03:40",
+      "output": "ipping task #2060 \u2014 unparseable output"
+    },
+    {
+      "name": "self_improver.py",
+      "q": 0.7,
+      "when": "2026-04-23 03:35",
+      "output": ""
+    },
+    {
+      "name": "apply_agent_finding.py",
+      "q": 0.55,
+      "when": "2026-04-23 03:30",
+      "output": "[agent:sre][q=0.300]completed"
+    },
     {
       "name": "self_improver.py",
       "q": 0.7,
@@ -302,30 +320,12 @@
       "q": 0.7,
       "when": "2026-04-23 03:10",
       "output": "ipping task #2016 \u2014 unparseable output"
-    },
-    {
-      "name": "apply_agent_finding.py",
-      "q": 0.7,
-      "when": "2026-04-23 03:00",
-      "output": "[agent:sre][q=0.650]The modification ensures that any output lines from the executed script that app"
-    },
-    {
-      "name": "self_improver.py",
-      "q": 0.7,
-      "when": "2026-04-23 02:55",
-      "output": ""
-    },
-    {
-      "name": "apply_agent_finding.py",
-      "q": 0.7,
-      "when": "2026-04-23 02:55",
-      "output": "und finding from task #1991 (2026-04-23 02:50:26)"
     }
   ],
   "latest_finding": {
-    "pattern": "[agent:sre][q=0.300]hub/scripts/apply_agent_finding.py",
-    "root_cause": "_run_fix",
-    "fix_script": "Complete filtering of command logs in _run_fix to prevent logging executed commands.",
-    "when": "2026-04-23 03:15"
+    "pattern": "[agent:sre][q=0.300]hub/scripts/orchestrator_quality.py",
+    "root_cause": "_validate_task_before_scoring",
+    "fix_script": "Validate empty result in _validate_task_before_scoring for score_task_output.",
+    "when": "2026-04-23 03:30"
   }
 }
