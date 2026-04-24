@@ -1,110 +1,150 @@
 {
-  "generated_at": "Apr 24, 2026 at 12:30 AM",
-  "generated_ts": "2026-04-24T04:30:02.037029+00:00",
+  "generated_at": "Apr 24, 2026 at 2:00 AM",
+  "generated_ts": "2026-04-24T06:00:12.450983+00:00",
   "commits": [
+    {
+      "sha": "e42697df",
+      "subject": "fix(auto-patch): apply_agent_finding.py:_commit \u2014 Limit `git add` to specific paths instead of a broad add to",
+      "when": "0 seconds ago",
+      "tag": "autonomous"
+    },
+    {
+      "sha": "428b7006",
+      "subject": "fix(queue): queue_doctor pruned+refreshed 1 removed, 4 agent tasks added \u2014 Apr 24, 2026 at 1:00 AM",
+      "when": "59 minutes ago",
+      "tag": "autonomous"
+    },
+    {
+      "sha": "7ad1544e",
+      "subject": "fix(queue): queue_doctor pruned+refreshed 1 removed, 4 agent tasks added \u2014 Apr 24, 2026 at 12:30 AM",
+      "when": "2 hours ago",
+      "tag": "autonomous"
+    },
     {
       "sha": "b88ffbfc",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 23, 2026 at 10:30 PM",
-      "when": "2 hours ago",
+      "when": "4 hours ago",
       "tag": "autonomous"
     },
     {
       "sha": "9323fbbe",
       "subject": "fix(auto-patch): watchdog.py:check_orchestrator_health \u2014 Use timezone-aware datetime comparisons for timestamp analys",
-      "when": "2 hours ago",
+      "when": "4 hours ago",
       "tag": "autonomous"
     },
     {
       "sha": "00bd0784",
       "subject": "docs: post-reboot doc sweep \u2014 freeze not DatBotty-caused, all services recovered",
-      "when": "4 hours ago",
+      "when": "5 hours ago",
       "tag": "autonomous"
     },
     {
       "sha": "3113b6a7",
       "subject": "fix(queue): queue_doctor pruned+refreshed 0 removed, 4 agent tasks added \u2014 Apr 23, 2026 at 8:30 PM",
-      "when": "4 hours ago",
+      "when": "6 hours ago",
       "tag": "autonomous"
     },
     {
       "sha": "e59bad1b",
       "subject": "docs: make prove-it-now, 24/7 mandate, and gap-hunting non-negotiable",
-      "when": "4 hours ago",
+      "when": "6 hours ago",
       "tag": "autonomous"
     },
     {
       "sha": "53c1e19a",
       "subject": "Session-HHH: Fix MEMORY.md stale IDs, deactivate test wf, first AlphaClaw Doctor run, add NODE_FUNCTION_ALLOW_BUILTIN=fs",
-      "when": "5 hours ago",
+      "when": "6 hours ago",
       "tag": "autonomous"
     },
     {
       "sha": "3fd5145b",
       "subject": "session-GGG: create Evening Debrief (8KOdzJT9F1Q03w9T) for real \u2014 prior ID was empty test wf; fix Audit-to-Task Insert Task no-op; fix Daily Status Report workflow ID tracking",
-      "when": "5 hours ago",
+      "when": "7 hours ago",
       "tag": "manual-session"
     },
     {
       "sha": "bd08af58",
       "subject": "feat(session-FFF): Add Daily Status Report workflow + pre-fire verification complete",
-      "when": "5 hours ago",
+      "when": "7 hours ago",
       "tag": "manual-session"
     },
     {
       "sha": "83b11e91",
       "subject": "fix(session-EEE): Audit-to-Task stale context fixed + Telegram delivery verified",
-      "when": "6 hours ago",
+      "when": "7 hours ago",
       "tag": "manual-session"
     },
     {
       "sha": "7a74f6c4",
       "subject": "fix(session-DDD): Evening Debrief prompt rewritten + dedup Code node added",
-      "when": "6 hours ago",
+      "when": "7 hours ago",
       "tag": "manual-session"
     },
     {
       "sha": "7d303a0c",
       "subject": "fix(session-CCC): verify+close all remaining gaps; update MEMORY.md with n8n state",
-      "when": "6 hours ago",
+      "when": "8 hours ago",
       "tag": "manual-session"
     },
     {
       "sha": "9c5e14ec",
       "subject": "fix(session-CCC): daily briefing freshness param error removed from prompt",
-      "when": "6 hours ago",
-      "tag": "manual-session"
-    },
-    {
-      "sha": "9deaaacd",
-      "subject": "fix(session-CCC): self-audit prompt context-fixed, exec 62 verified, all 4 schedules restored to daily",
-      "when": "7 hours ago",
-      "tag": "manual-session"
-    },
-    {
-      "sha": "8bbbab4d",
-      "subject": "fix(session-BBB): tavily fallback all prompts + Audit-to-Task data flow fixed",
-      "when": "7 hours ago",
-      "tag": "manual-session"
-    },
-    {
-      "sha": "b7a71d67",
-      "subject": "fix(session-AAA): tavily fallback + exec data persistence",
-      "when": "7 hours ago",
+      "when": "8 hours ago",
       "tag": "manual-session"
     }
   ],
   "commits_today": {
-    "total": 0,
-    "autonomous": 0,
+    "total": 3,
+    "autonomous": 3,
     "manual": 0
   },
   "recent_tasks": [
+    {
+      "label": "\ud83d\udd27 apply_agent_finding.py",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-24 06:00",
+      "finding": null
+    },
     {
       "label": "\ud83d\udd27 patch_dispatcher.py",
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-24 04:30",
+      "when": "2026-04-24 06:00",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 export_status.py [2026-04-24T02:00]",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-24 06:00",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 self_improver.py",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-24 06:00",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 task_quality_audit.py [2026-04-24T01:45]",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-24 05:30",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 export_status.py [2026-04-24T04:45]",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-24 05:30",
       "finding": null
     },
     {
@@ -112,15 +152,15 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-24 03:30",
+      "when": "2026-04-24 05:30",
       "finding": null
     },
     {
       "label": "\ud83e\udde0 Read hub/logs/orchestrator.log last 30 lines. Identif",
       "handler": "openclaw",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-24 03:30",
+      "q": 0.55,
+      "q_class": "mid",
+      "when": "2026-04-24 05:30",
       "finding": null
     },
     {
@@ -128,7 +168,7 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-24 03:30",
+      "when": "2026-04-24 05:30",
       "finding": null
     },
     {
@@ -136,7 +176,15 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-24 03:30",
+      "when": "2026-04-24 05:30",
+      "finding": null
+    },
+    {
+      "label": "\ud83d\udd27 export_status.py",
+      "handler": "script",
+      "q": 0.7,
+      "q_class": "high",
+      "when": "2026-04-24 05:30",
       "finding": null
     },
     {
@@ -144,55 +192,47 @@
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-24 03:30",
+      "when": "2026-04-24 05:30",
       "finding": null
     },
     {
-      "label": "\ud83d\udd27 export_status.py [2026-04-24T01:45]",
+      "label": "\ud83d\udd27 backup_state.py",
       "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-24 03:00",
+      "when": "2026-04-24 05:00",
       "finding": null
     },
     {
-      "label": "\ud83d\udd27 budget_tracker.py [2026-04-24T01:45]",
+      "label": "\ud83d\udd27 queue_doctor.py",
       "handler": "script",
-      "q": 0.7,
+      "q": 0.74,
       "q_class": "high",
-      "when": "2026-04-24 03:00",
+      "when": "2026-04-24 05:00",
       "finding": null
     },
     {
       "label": "\ud83e\udd16 reality-checker Store top failure finding as structure",
       "handler": "openclaw",
-      "q": 0.73,
-      "q_class": "high",
-      "when": "2026-04-24 03:00",
-      "finding": "[agent:reality-checker][q=0.650]PATTERN | ROOT_CAUSE | FIX_SCRIPT"
-    },
-    {
-      "label": "\ud83d\udd27 export_status.py",
-      "handler": "script",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-24 03:00",
-      "finding": null
+      "when": "2026-04-24 05:00",
+      "finding": "[agent:reality-checker][q=0.550]PATTERN | ROOT_CAUSE | FIX_SCRIPT"
     },
     {
-      "label": "\ud83e\udd16 sre 1 task failures in last 24h. Query DB for most com",
+      "label": "\ud83e\udd16 sre 7 task failures in last 24h. Query DB for most com",
       "handler": "openclaw",
       "q": 0.55,
       "q_class": "mid",
-      "when": "2026-04-24 03:00",
+      "when": "2026-04-24 05:00",
       "finding": null
     },
     {
-      "label": "\ud83e\udd16 reality-checker 38 tasks done in 24h \u2014 all above q=0.5",
+      "label": "\ud83e\udd16 reality-checker 61 tasks done in 24h \u2014 all above q=0.5",
       "handler": "openclaw",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-24 03:00",
+      "when": "2026-04-24 05:00",
       "finding": "[agent:reality-checker][q=0.650]AREA | PROBLEM | FIX"
     },
     {
@@ -200,31 +240,7 @@
       "handler": "openclaw",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-24 03:00",
-      "finding": "[agent:sre][q=0.300]hub/scripts/briefing.py | get_investigation_findings | Add PRAGMA busy_timeout to SQLite connection and ensure db.close() is called via try/finally"
-    },
-    {
-      "label": "\ud83d\udd27 audit_trend_tracker.py",
-      "handler": "script",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-24 03:00",
-      "finding": null
-    },
-    {
-      "label": "\ud83d\udd27 export_status.py [2026-04-24T01:00]",
-      "handler": "script",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-24 02:30",
-      "finding": null
-    },
-    {
-      "label": "\ud83d\udd27 budget_tracker.py [2026-04-24T01:00]",
-      "handler": "script",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-24 02:30",
+      "when": "2026-04-24 05:00",
       "finding": null
     },
     {
@@ -232,7 +248,7 @@
       "handler": "openclaw",
       "q": 0.55,
       "q_class": "mid",
-      "when": "2026-04-24 02:30",
+      "when": "2026-04-24 05:00",
       "finding": null
     },
     {
@@ -240,39 +256,47 @@
       "handler": "openclaw",
       "q": 0.7,
       "q_class": "high",
-      "when": "2026-04-24 02:30",
-      "finding": null
-    },
-    {
-      "label": "\ud83e\udd16 sre code-read-store: Read hub_scripts/orchestrator_qua",
-      "handler": "openclaw",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-24 02:30",
-      "finding": null
-    },
-    {
-      "label": "\ud83e\udd16 sre code-read-store: Read hub_scripts/investigate.py l",
-      "handler": "openclaw",
-      "q": 0.7,
-      "q_class": "high",
-      "when": "2026-04-24 02:30",
-      "finding": "[agent:sre][q=0.550]hub/scripts/investigate.py | detect_cascading_failures | Ensure database connection is closed using try/finally, even if errors occur."
+      "when": "2026-04-24 05:00",
+      "finding": "[agent:sre][q=0.550]hub/scripts/apply_agent_finding.py | _commit | Limit `git add` to specific paths instead of a broad add to prevent staging unintended files."
     }
   ],
   "handler_stats": [
     {
       "handler": "script",
-      "runs": 39,
+      "runs": 57,
       "avg_q": 0.71
     },
     {
       "handler": "openclaw",
-      "runs": 21,
+      "runs": 30,
       "avg_q": 0.65
     }
   ],
   "loop_events": [
+    {
+      "name": "apply_agent_finding.py",
+      "q": 0.7,
+      "when": "2026-04-24 06:00",
+      "output": "ipping task #1775 \u2014 unparseable output"
+    },
+    {
+      "name": "self_improver.py",
+      "q": 0.7,
+      "when": "2026-04-24 06:00",
+      "output": "avg_q=0.594"
+    },
+    {
+      "name": "self_improver.py",
+      "q": 0.7,
+      "when": "2026-04-24 05:00",
+      "output": "[agent:reality-checker][q=0.550]PATTERN | ROOT_CAUSE | FIX_SCRIPT | stored"
+    },
+    {
+      "name": "apply_agent_finding.py",
+      "q": 0.7,
+      "when": "2026-04-24 05:00",
+      "output": "[agent:sre][q=0.550]hub/scripts/apply_agent_finding.py | _commit | Limit `git add` to specific paths"
+    },
     {
       "name": "self_improver.py",
       "q": 0.73,
@@ -296,30 +320,12 @@
       "q": 0.7,
       "when": "2026-04-24 02:00",
       "output": "avg_q=0.594"
-    },
-    {
-      "name": "self_improver.py",
-      "q": 0.7,
-      "when": "2026-04-24 01:30",
-      "output": "[agent:reality-checker][q=0.300]openclaw | openclaw handler exhibits lower avg quality (0.625) vs sc"
-    },
-    {
-      "name": "apply_agent_finding.py",
-      "q": 0.55,
-      "when": "2026-04-24 01:00",
-      "output": "[agent:sre][q=0.300]completed"
-    },
-    {
-      "name": "self_improver.py",
-      "q": 0.7,
-      "when": "2026-04-23 21:00",
-      "output": "[agent:reality-checker][q=0.300]Handler quality for 'openclaw' | Suboptimal handler performance | hu"
     }
   ],
   "latest_finding": {
-    "pattern": "`openclaw` handler consistently achieves lower average task quality (0.645) than",
-    "root_cause": "Unidentified factors contributing to suboptimal performance for `openclaw` tasks",
-    "fix_script": "hub/scripts/self_improver.py",
-    "when": "2026-04-24 03:00"
+    "pattern": "No critical failures",
+    "root_cause": "Live DB reports no tasks with quality < 0.30 in the last 48 hours.",
+    "fix_script": "hub/scripts/task_quality_audit.py",
+    "when": "2026-04-24 05:00"
   }
 }
