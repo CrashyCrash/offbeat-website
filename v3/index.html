@@ -504,8 +504,29 @@
             .showcase-item.featured { grid-column: span 1; grid-template-columns: 1fr; }
         }
 
+        @media (max-width: 768px) {
+            header {
+                padding: 1rem 1.25rem;
+                flex-wrap: wrap;
+                gap: 0.65rem 1rem;
+                align-items: flex-start;
+            }
+            .header-nav {
+                gap: 0.75rem 1rem;
+                flex-wrap: wrap;
+            }
+            .hero {
+                flex-direction: column;
+                padding: 7rem 1.25rem 4rem;
+            }
+            .hero > img {
+                max-width: 100%;
+                height: auto;
+            }
+            footer { flex-direction: column; gap: 0.5rem; text-align: center; padding: 1.5rem; }
+        }
+
         @media (max-width: 640px) {
-            header { padding: 1rem 1.5rem; }
             .header-nav { display: none; }
             .hero-box { padding: 3rem 1.5rem; }
             footer { flex-direction: column; gap: 0.5rem; text-align: center; padding: 1.5rem; }
