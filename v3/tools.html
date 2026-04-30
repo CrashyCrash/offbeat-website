@@ -154,6 +154,17 @@
             text-align: center;
         }
 
+        .affiliate-badge {
+            display: inline-block;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.72rem;
+            color: var(--glow);
+            border: 1px solid rgba(0, 204, 255, 0.35);
+            border-radius: 999px;
+            padding: 0.4rem 0.9rem;
+            margin-bottom: 2rem;
+        }
+
         .category-block {
             margin-bottom: 4rem;
         }
@@ -211,6 +222,13 @@
             font-size: 1.15rem;
             font-weight: 700;
             margin-bottom: 0.6rem;
+        }
+
+        .product-intro {
+            color: var(--text-2);
+            font-size: 0.92rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
         }
 
         .product-link {
@@ -278,21 +296,25 @@
                 <div class="tag-line">Battle-tested gear & tools</div>
                 <h1>Recommended <span style="background: linear-gradient(135deg, var(--glow), var(--glow-2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Tools</span></h1>
                 <div class="sub">Hand-picked hardware and essentials for DJs, music producers, and software engineers. All links are affiliate (Amazon) and help support Offbeat, Inc.</div>
+                <div class="affiliate-badge">We may earn from qualifying purchases</div>
                 <!-- DJ & Live Performance -->
                 <div class="category-block">
                     <div class="category-title">DJ & Live Performance</div>
                     <div class="product-grid">
                         <div class="product-card">
                             <div class="product-name">Audio-Technica ATH-M50x</div>
-                            <a href="https://www.amazon.com/s?k=Audio-Technica+ATH-M50x+Headphones&tag=offbeat0f-20" class="product-link" target="_blank" rel="noopener">View on Amazon →</a>
+                            <div class="product-intro">Trusted closed-back headphones with clear low-end for cueing live sets.</div>
+                            <a href="https://www.amazon.com/s?k=Audio-Technica+ATH-M50x+Headphones&tag=offbeat0f-20" class="product-link" target="_blank" rel="noopener">View on Amazon</a>
                         </div>
                         <div class="product-card">
                             <div class="product-name">Pioneer DDJ-FLX10</div>
-                            <a href="https://www.amazon.com/s?k=Pioneer+DDJ-FLX10+DJ+Controller&tag=offbeat0f-20" class="product-link" target="_blank" rel="noopener">View on Amazon →</a>
+                            <div class="product-intro">Flagship controller layout that mirrors club gear for confident transitions.</div>
+                            <a href="https://www.amazon.com/s?k=Pioneer+DDJ-FLX10+DJ+Controller&tag=offbeat0f-20" class="product-link" target="_blank" rel="noopener">View on Amazon</a>
                         </div>
                         <div class="product-card">
                             <div class="product-name">Samsung T7 Shield (2TB)</div>
-                            <a href="https://www.amazon.com/s?k=Samsung+T7+Shield+2TB+Portable+SSD&tag=offbeat0f-20" class="product-link" target="_blank" rel="noopener">View on Amazon →</a>
+                            <div class="product-intro">Rugged portable SSD that keeps DJ libraries fast and reliable on the road.</div>
+                            <a href="https://www.amazon.com/s?k=Samsung+T7+Shield+2TB+Portable+SSD&tag=offbeat0f-20" class="product-link" target="_blank" rel="noopener">View on Amazon</a>
                         </div>
                     </div>
                 </div>
@@ -302,15 +324,18 @@
                     <div class="product-grid">
                         <div class="product-card">
                             <div class="product-name">Focusrite Scarlett 2i2 (4th Gen)</div>
-                            <a href="https://www.amazon.com/s?k=Focusrite+Scarlett+2i2+4th+Gen+Audio+Interface&tag=offbeat0f-20" class="product-link" target="_blank" rel="noopener">View on Amazon →</a>
+                            <div class="product-intro">Clean preamps and low-latency monitoring ideal for quick vocal and instrument sessions.</div>
+                            <a href="https://www.amazon.com/s?k=Focusrite+Scarlett+2i2+4th+Gen+Audio+Interface&tag=offbeat0f-20" class="product-link" target="_blank" rel="noopener">View on Amazon</a>
                         </div>
                         <div class="product-card">
                             <div class="product-name">KRK Rokit 5 G4</div>
-                            <a href="https://www.amazon.com/s?k=KRK+Rokit+5+G4+Studio+Monitor&tag=offbeat0f-20" class="product-link" target="_blank" rel="noopener">View on Amazon →</a>
+                            <div class="product-intro">Balanced nearfields that make mix decisions easier in compact home studios.</div>
+                            <a href="https://www.amazon.com/s?k=KRK+Rokit+5+G4+Studio+Monitor&tag=offbeat0f-20" class="product-link" target="_blank" rel="noopener">View on Amazon</a>
                         </div>
                         <div class="product-card">
                             <div class="product-name">Akai Professional MPK Mini MK3</div>
-                            <a href="https://www.amazon.com/s?k=Akai+Professional+MPK+Mini+MK3+MIDI+Controller&tag=offbeat0f-20" class="product-link" target="_blank" rel="noopener">View on Amazon →</a>
+                            <div class="product-intro">Compact MIDI controller for sketching melodies and drums anywhere.</div>
+                            <a href="https://www.amazon.com/s?k=Akai+Professional+MPK+Mini+MK3+MIDI+Controller&tag=offbeat0f-20" class="product-link" target="_blank" rel="noopener">View on Amazon</a>
                         </div>
                     </div>
                 </div>
@@ -320,15 +345,18 @@
                     <div class="product-grid">
                         <div class="product-card">
                             <div class="product-name">Corsair Vengeance DDR5 96GB</div>
-                            <a href="https://www.amazon.com/s?k=Corsair+Vengeance+DDR5+96GB+5600&tag=offbeat0f-20" class="product-link" target="_blank" rel="noopener">View on Amazon →</a>
+                            <div class="product-intro">High-capacity RAM for multitasking DAWs, AI tools, and production workflows.</div>
+                            <a href="https://www.amazon.com/s?k=Corsair+Vengeance+DDR5+96GB+5600&tag=offbeat0f-20" class="product-link" target="_blank" rel="noopener">View on Amazon</a>
                         </div>
                         <div class="product-card">
                             <div class="product-name">Samsung 990 Pro 2TB NVMe</div>
-                            <a href="https://www.amazon.com/s?k=Samsung+990+Pro+2TB+NVMe+SSD&tag=offbeat0f-20" class="product-link" target="_blank" rel="noopener">View on Amazon →</a>
+                            <div class="product-intro">Fast NVMe speeds that reduce sample load times and project bottlenecks.</div>
+                            <a href="https://www.amazon.com/s?k=Samsung+990+Pro+2TB+NVMe+SSD&tag=offbeat0f-20" class="product-link" target="_blank" rel="noopener">View on Amazon</a>
                         </div>
                         <div class="product-card">
                             <div class="product-name">CyberPower CP1500PFCLCD</div>
-                            <a href="https://www.amazon.com/s?k=CyberPower+CP1500PFCLCD+UPS+1500VA&tag=offbeat0f-20" class="product-link" target="_blank" rel="noopener">View on Amazon →</a>
+                            <div class="product-intro">Line-interactive UPS protection that prevents session loss during power dips.</div>
+                            <a href="https://www.amazon.com/s?k=CyberPower+CP1500PFCLCD+UPS+1500VA&tag=offbeat0f-20" class="product-link" target="_blank" rel="noopener">View on Amazon</a>
                         </div>
                     </div>
                 </div>
@@ -338,15 +366,18 @@
                     <div class="product-grid">
                         <div class="product-card">
                             <div class="product-name">Keychron Q1 Pro</div>
-                            <a href="https://www.amazon.com/s?k=Keychron+Q1+Pro+Mechanical+Keyboard&tag=offbeat0f-20" class="product-link" target="_blank" rel="noopener">View on Amazon →</a>
+                            <div class="product-intro">Wireless mechanical keyboard with hot-swap flexibility for long coding sessions.</div>
+                            <a href="https://www.amazon.com/s?k=Keychron+Q1+Pro+Mechanical+Keyboard&tag=offbeat0f-20" class="product-link" target="_blank" rel="noopener">View on Amazon</a>
                         </div>
                         <div class="product-card">
                             <div class="product-name">LG 27UK850-W 4K</div>
-                            <a href="https://www.amazon.com/s?k=LG+27+4K+UHD+IPS+Monitor+USB-C+HDR&tag=offbeat0f-20" class="product-link" target="_blank" rel="noopener">View on Amazon →</a>
+                            <div class="product-intro">Crisp 4K USB-C display that improves detail work for code and content creation.</div>
+                            <a href="https://www.amazon.com/s?k=LG+27+4K+UHD+IPS+Monitor+USB-C+HDR&tag=offbeat0f-20" class="product-link" target="_blank" rel="noopener">View on Amazon</a>
                         </div>
                         <div class="product-card">
                             <div class="product-name">Logitech C920x HD Pro</div>
-                            <a href="https://www.amazon.com/s?k=Logitech+C920x+HD+Pro+Webcam+1080p&tag=offbeat0f-20" class="product-link" target="_blank" rel="noopener">View on Amazon →</a>
+                            <div class="product-intro">Dependable 1080p webcam for remote client calls, live streams, and tutorials.</div>
+                            <a href="https://www.amazon.com/s?k=Logitech+C920x+HD+Pro+Webcam+1080p&tag=offbeat0f-20" class="product-link" target="_blank" rel="noopener">View on Amazon</a>
                         </div>
                     </div>
                 </div>
