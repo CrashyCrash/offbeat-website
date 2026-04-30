@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DJ Key Finder & Camelot Wheel — Offbeat</title>
+    <meta name="description" content="Find harmonically compatible DJ keys with a Camelot Wheel visual and quick reference chart for EDM and Dubstep sets.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="canonical" href="https://crashycrash.github.io/offbeat-website/v3/tools/key-finder.html">
+    <meta property="og:title" content="DJ Key Finder & Camelot Wheel — Offbeat">
+    <meta property="og:description" content="A key compatibility lookup and 24-position Camelot Wheel reference for harmonic mixing.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://crashycrash.github.io/offbeat-website/v3/tools/key-finder.html">
+    <meta property="og:image" content="https://crashycrash.github.io/offbeat-website/v3/og-image.png">
+    <style>
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap');
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #020206;
+            --bg-card: #08090f;
+            --border: #141828;
+            --glow: #00ccff;
+            --glow-2: #00fff2;
+            --violet: #7c3aed;
+            --hot: #ff3d71;
+            --green: #00e676;
+            --text: #e6eaf4;
+            --text-2: #6e7599;
+            --text-3: #2d3150;
+        }
+
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        .mesh-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse 800px 600px at 20% 20%, rgba(0, 204, 255, 0.04) 0%, transparent 50%),
+                radial-gradient(ellipse 600px 800px at 80% 70%, rgba(124, 58, 237, 0.04) 0%, transparent 50%);
+        }
+
+        .scanlines {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 204, 255, 0.008) 2px,
+                rgba(0, 204, 255, 0.008) 4px
+            );
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(2, 2, 6, 0.75);
+            backdrop-filter: blur(20px);
+        }
+
+        .brand {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            position: relative;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .brand::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--glow), var(--violet));
+            animation: brand-line 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes brand-line {
+            0% { transform: scaleX(0.3); transform-origin: left; }
+            100% { transform: scaleX(1); transform-origin: left; }
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .header-nav a {
+            color: var(--text-2);
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .header-nav a:hover { color: var(--glow); }
+        .header-nav .active { color: var(--glow); }
+
+        .section {
+            position: relative;
+            z-index: 1;
+            padding: 7rem 2rem 2rem;
+        }
+
+        .wrap { max-width: 1100px; margin: 0 auto; }
+
+        .tag-line {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.72rem;
+            color: var(--glow);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            margin-bottom: 0.75rem;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: clamp(2.2rem, 5vw, 3.6rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.15;
+            margin-bottom: 0.75rem;
+            text-align: center;
+        }
+
+        .sub {
+            color: var(--text-2);
+            font-size: 1.02rem;
+            line-height: 1.65;
+            max-width: 780px;
+            margin: 0 auto 2rem;
+            text-align: center;
+        }
+
+        .note {
+            max-width: 780px;
+            margin: 0 auto 2.25rem;
+            border: 1px solid rgba(0, 204, 255, 0.25);
+            background: rgba(0, 204, 255, 0.06);
+            border-radius: 12px;
+            padding: 0.9rem 1rem;
+            color: var(--text);
+            text-align: center;
+            font-size: 0.95rem;
+        }
+
+        .tool-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 1.25rem;
+            align-items: start;
+            margin-bottom: 1.5rem;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.2rem;
+        }
+
+        .card-title {
+            font-family: 'Fira Code', monospace;
+            color: var(--glow);
+            text-transform: uppercase;
+            letter-spacing: 0.11em;
+            font-size: 0.75rem;
+            margin-bottom: 0.85rem;
+        }
+
+        .wheel {
+            position: relative;
+            width: min(620px, 100%);
+            aspect-ratio: 1 / 1;
+            margin: 0 auto;
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            background:
+                radial-gradient(circle at center, rgba(0, 204, 255, 0.03), transparent 65%),
+                radial-gradient(circle at center, rgba(124, 58, 237, 0.04), transparent 80%);
+            overflow: hidden;
+        }
+
+        .wheel::before,
+        .wheel::after {
+            content: '';
+            position: absolute;
+            border: 1px solid rgba(0, 204, 255, 0.12);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .wheel::before { width: 72%; height: 72%; }
+        .wheel::after { width: 50%; height: 50%; }
+
+        .wheel-node {
+            position: absolute;
+            transform: translate(-50%, -50%);
+            width: 92px;
+            border: 1px solid var(--border);
+            border-radius: 11px;
+            background: rgba(8, 9, 15, 0.92);
+            padding: 0.32rem 0.35rem;
+            text-align: center;
+            font-size: 0.67rem;
+            line-height: 1.25;
+            color: var(--text-2);
+        }
+
+        .wheel-node .code {
+            color: #d5f8ff;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.68rem;
+            display: block;
+        }
+
+        .wheel-node.is-selected {
+            border-color: var(--glow);
+            box-shadow: 0 0 0 1px rgba(0, 204, 255, 0.45), 0 0 24px rgba(0, 204, 255, 0.2);
+            color: #fff;
+            background: rgba(0, 204, 255, 0.13);
+        }
+
+        .wheel-node.is-compatible {
+            border-color: rgba(124, 58, 237, 0.65);
+            color: #d7ccff;
+            background: rgba(124, 58, 237, 0.15);
+        }
+
+        label {
+            font-size: 0.82rem;
+            color: var(--text-2);
+            display: block;
+            margin-bottom: 0.45rem;
+        }
+
+        select {
+            width: 100%;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: rgba(2, 2, 6, 0.85);
+            color: var(--text);
+            padding: 0.75rem 0.8rem;
+            font-family: inherit;
+            font-size: 0.92rem;
+            outline: none;
+        }
+
+        select:focus {
+            border-color: rgba(0, 204, 255, 0.55);
+            box-shadow: 0 0 0 1px rgba(0, 204, 255, 0.25);
+        }
+
+        .compatibility-list {
+            list-style: none;
+            margin-top: 0.9rem;
+            display: grid;
+            gap: 0.5rem;
+        }
+
+        .compatibility-list li {
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 0.55rem 0.65rem;
+            font-size: 0.86rem;
+            background: rgba(2, 2, 6, 0.75);
+        }
+
+        .compatibility-list .focus {
+            border-color: rgba(0, 204, 255, 0.5);
+            color: #d8f7ff;
+        }
+
+        .compatibility-list .rel {
+            color: var(--text-2);
+            font-size: 0.75rem;
+            margin-top: 0.18rem;
+        }
+
+        .table-wrap {
+            margin-top: 1.2rem;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 720px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        th, td {
+            border-bottom: 1px solid var(--border);
+            padding: 0.7rem 0.75rem;
+            text-align: left;
+            font-size: 0.86rem;
+        }
+
+        th {
+            font-family: 'Fira Code', monospace;
+            color: var(--glow);
+            font-size: 0.73rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            background: rgba(0, 204, 255, 0.05);
+        }
+
+        tr:last-child td { border-bottom: none; }
+
+        .pill {
+            display: inline-block;
+            border: 1px solid rgba(0, 204, 255, 0.35);
+            color: #d3f7ff;
+            border-radius: 999px;
+            padding: 0.18rem 0.5rem;
+            font-size: 0.7rem;
+            font-family: 'Fira Code', monospace;
+        }
+
+        footer {
+            position: relative;
+            z-index: 1;
+            padding: 1.5rem 3rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.78rem;
+            color: var(--text-3);
+            margin-top: 2rem;
+        }
+
+        footer a { color: var(--text-2); text-decoration: none; }
+        footer a:hover { color: var(--glow); }
+
+        button:hover,
+        .btn:hover { transform: none; }
+
+        @media (max-width: 1024px) {
+            .tool-grid { grid-template-columns: 1fr; }
+            .wheel-node { width: 84px; font-size: 0.64rem; }
+        }
+
+        @media (max-width: 768px) {
+            header { padding: 1rem 1.5rem; }
+            .header-nav { gap: 1rem; }
+            .wrap { padding: 0 0.4rem; }
+            .section { padding: 6.6rem 1.1rem 2rem; }
+            .wheel-node { width: 74px; font-size: 0.59rem; }
+            footer { flex-direction: column; gap: 0.5rem; text-align: center; padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="mesh-bg"></div>
+    <div class="scanlines"></div>
+    <header>
+        <a href="../index.html" class="brand">OFFBEAT</a>
+        <nav>
+            <ul class="header-nav">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../services.html">Services</a></li>
+                <li><a href="../tools.html" class="active">Tools</a></li>
+                <li><a href="../faq.html">FAQ</a></li>
+                <li><a href="../privacy.html">Privacy</a></li>
+                <li><a href="../status.html">Status</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="section">
+            <div class="wrap">
+                <div class="tag-line">Free DJ Tool</div>
+                <h1>Key Finder & <span style="background: linear-gradient(135deg, var(--glow), var(--glow-2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Camelot Wheel</span></h1>
+                <div class="sub">Check harmonic key compatibility instantly. Use this chart to keep transitions musical while mixing.</div>
+                <div class="note">Useful for harmonic mixing in EDM and Dubstep sets.</div>
+
+                <div class="tool-grid">
+                    <div class="card">
+                        <div class="card-title">Camelot Wheel Visual</div>
+                        <div id="camelotWheel" class="wheel" aria-label="24-position Camelot wheel visual"></div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Key Lookup</div>
+                        <label for="keySelect">Select a key</label>
+                        <select id="keySelect" aria-label="Select key for harmonic compatibility"></select>
+                        <ul id="compatibilityList" class="compatibility-list"></ul>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Quick Reference Table</div>
+                    <div class="table-wrap">
+                        <table aria-label="Camelot quick reference table">
+                            <thead>
+                                <tr>
+                                    <th>Camelot</th>
+                                    <th>Mode</th>
+                                    <th>Sharp Key</th>
+                                    <th>Flat Key</th>
+                                </tr>
+                            </thead>
+                            <tbody id="referenceBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <div>© 2024 Offbeat, Inc.</div>
+        <div>
+            <a href="../index.html">Home</a> &nbsp;|&nbsp; 
+            <a href="../services.html">Services</a> &nbsp;|&nbsp; 
+            <a href="../tools.html" style="color: var(--glow);">Tools</a> &nbsp;|&nbsp; 
+            <a href="../faq.html">FAQ</a> &nbsp;|&nbsp; 
+            <a href="../privacy.html">Privacy</a>
+        </div>
+    </footer>
+    <script>
+        const camelotMap = [
+            { camelot: '1A', mode: 'Minor', sharp: 'G# minor', flat: 'A♭ minor' },
+            { camelot: '2A', mode: 'Minor', sharp: 'D# minor', flat: 'E♭ minor' },
+            { camelot: '3A', mode: 'Minor', sharp: 'A# minor', flat: 'B♭ minor' },
+            { camelot: '4A', mode: 'Minor', sharp: 'F minor', flat: 'F minor' },
+            { camelot: '5A', mode: 'Minor', sharp: 'C minor', flat: 'C minor' },
+            { camelot: '6A', mode: 'Minor', sharp: 'G minor', flat: 'G minor' },
+            { camelot: '7A', mode: 'Minor', sharp: 'D minor', flat: 'D minor' },
+            { camelot: '8A', mode: 'Minor', sharp: 'A minor', flat: 'A minor' },
+            { camelot: '9A', mode: 'Minor', sharp: 'E minor', flat: 'E minor' },
+            { camelot: '10A', mode: 'Minor', sharp: 'B minor', flat: 'B minor' },
+            { camelot: '11A', mode: 'Minor', sharp: 'F# minor', flat: 'G♭ minor' },
+            { camelot: '12A', mode: 'Minor', sharp: 'C# minor', flat: 'D♭ minor' },
+            { camelot: '1B', mode: 'Major', sharp: 'B major', flat: 'B major' },
+            { camelot: '2B', mode: 'Major', sharp: 'F# major', flat: 'G♭ major' },
+            { camelot: '3B', mode: 'Major', sharp: 'C# major', flat: 'D♭ major' },
+            { camelot: '4B', mode: 'Major', sharp: 'G# major', flat: 'A♭ major' },
+            { camelot: '5B', mode: 'Major', sharp: 'D# major', flat: 'E♭ major' },
+            { camelot: '6B', mode: 'Major', sharp: 'A# major', flat: 'B♭ major' },
+            { camelot: '7B', mode: 'Major', sharp: 'F major', flat: 'F major' },
+            { camelot: '8B', mode: 'Major', sharp: 'C major', flat: 'C major' },
+            { camelot: '9B', mode: 'Major', sharp: 'G major', flat: 'G major' },
+            { camelot: '10B', mode: 'Major', sharp: 'D major', flat: 'D major' },
+            { camelot: '11B', mode: 'Major', sharp: 'A major', flat: 'A major' },
+            { camelot: '12B', mode: 'Major', sharp: 'E major', flat: 'E major' }
+        ];
+
+        const byCode = Object.fromEntries(camelotMap.map((item) => [item.camelot, item]));
+        const wheel = document.getElementById('camelotWheel');
+        const keySelect = document.getElementById('keySelect');
+        const compatibilityList = document.getElementById('compatibilityList');
+        const referenceBody = document.getElementById('referenceBody');
+
+        function getCompatibleCodes(code) {
+            const number = Number.parseInt(code, 10);
+            const letter = code.slice(-1);
+            const previous = number === 1 ? 12 : number - 1;
+            const next = number === 12 ? 1 : number + 1;
+            const parallel = `${number}${letter === 'A' ? 'B' : 'A'}`;
+            return [code, `${previous}${letter}`, `${next}${letter}`, parallel];
+        }
+
+        function formatKey(item) {
+            if (item.sharp === item.flat) return item.sharp;
+            return `${item.sharp} / ${item.flat}`;
+        }
+
+        function renderWheel() {
+            wheel.innerHTML = '';
+            const center = 50;
+            const outerRadius = 42;
+            const innerRadius = 29;
+            for (let i = 1; i <= 12; i += 1) {
+                const angle = ((i - 1) / 12) * (Math.PI * 2) - (Math.PI / 2);
+                const major = byCode[`${i}B`];
+                const minor = byCode[`${i}A`];
+
+                const majorNode = document.createElement('div');
+                majorNode.className = 'wheel-node';
+                majorNode.dataset.code = major.camelot;
+                majorNode.style.left = `${center + outerRadius * Math.cos(angle)}%`;
+                majorNode.style.top = `${center + outerRadius * Math.sin(angle)}%`;
+                majorNode.innerHTML = `<span class="code">${major.camelot}</span>${major.sharp.replace(' major', '')}`;
+                wheel.appendChild(majorNode);
+
+                const minorNode = document.createElement('div');
+                minorNode.className = 'wheel-node';
+                minorNode.dataset.code = minor.camelot;
+                minorNode.style.left = `${center + innerRadius * Math.cos(angle)}%`;
+                minorNode.style.top = `${center + innerRadius * Math.sin(angle)}%`;
+                minorNode.innerHTML = `<span class="code">${minor.camelot}</span>${minor.sharp.replace(' minor', '')}m`;
+                wheel.appendChild(minorNode);
+            }
+        }
+
+        function renderDropdown() {
+            keySelect.innerHTML = camelotMap
+                .map((item) => `<option value="${item.camelot}">${item.camelot} — ${formatKey(item)}</option>`)
+                .join('');
+            keySelect.value = '8A';
+        }
+
+        function renderTable() {
+            referenceBody.innerHTML = camelotMap
+                .map((item) => `
+                    <tr>
+                        <td><span class="pill">${item.camelot}</span></td>
+                        <td>${item.mode}</td>
+                        <td>${item.sharp}</td>
+                        <td>${item.flat}</td>
+                    </tr>
+                `)
+                .join('');
+        }
+
+        function updateSelection() {
+            const selectedCode = keySelect.value;
+            const compatibleCodes = getCompatibleCodes(selectedCode);
+            const compatibleSet = new Set(compatibleCodes);
+
+            document.querySelectorAll('.wheel-node').forEach((node) => {
+                const code = node.dataset.code;
+                node.classList.remove('is-selected', 'is-compatible');
+                if (code === selectedCode) {
+                    node.classList.add('is-selected');
+                } else if (compatibleSet.has(code)) {
+                    node.classList.add('is-compatible');
+                }
+            });
+
+            const compatibilityLabels = ['Selected key', 'Energy -1 step', 'Energy +1 step', 'Relative major/minor'];
+            compatibilityList.innerHTML = compatibleCodes
+                .map((code, index) => {
+                    const item = byCode[code];
+                    return `
+                        <li class="${index === 0 ? 'focus' : ''}">
+                            <strong>${code}</strong> — ${formatKey(item)}
+                            <div class="rel">${compatibilityLabels[index]}</div>
+                        </li>
+                    `;
+                })
+                .join('');
+        }
+
+        renderWheel();
+        renderDropdown();
+        renderTable();
+        updateSelection();
+        keySelect.addEventListener('change', updateSelection);
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Offbeat DJ Key Finder",
+      "applicationCategory": "MusicApplication",
+      "operatingSystem": "Any",
+      "url": "https://crashycrash.github.io/offbeat-website/v3/tools/key-finder.html",
+      "description": "A Camelot wheel and key compatibility lookup tool for harmonic DJ mixing in EDM and Dubstep sets.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+    </script>
+</body>
+</html>
