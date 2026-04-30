@@ -415,6 +415,7 @@
         }
 
         footer a:hover { color: var(--glow); }
+        .footer-last-updated { font-size: 0.72rem; opacity: 0.85; margin-top: 0.2rem; }
 
         @media (max-width: 640px) {
             header { padding: 1rem 1.25rem; }
@@ -602,7 +603,10 @@
     </main>
 
     <footer>
-        <div>&copy; 2026 Offbeat, Inc. — All rights reserved.</div>
+        <div>
+            &copy; 2026 Offbeat, Inc. — All rights reserved.
+            <div class="footer-last-updated" id="footerLastUpdated">Last updated: April 16, 2026</div>
+        </div>
         <div>
             <a href="https://muthaeffincrash.com">mutha effin CRASH</a>
         </div>
@@ -614,6 +618,7 @@
             .then(r => r.ok ? r.json() : null)
             .then(data => {
                 if (!data) return;
+                const footerLastUpdatedEl = document.getElementById('footerLastUpdated');
 
                 // Update metric values
                 const set = (id, val) => {
@@ -628,20 +633,21 @@
                 // Update last updated timestamp
                 if (data.generated_at) {
                     const d = new Date(data.generated_at);
+                    const formattedDate = d.toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'});
                     const ago = Math.round((Date.now() - d.getTime()) / 60000);
                     const agoStr = ago < 60 ? `${ago}m ago`
                         : ago < 1440 ? `${Math.round(ago/60)}h ago`
                         : `${Math.round(ago/1440)}d ago`;
                     document.getElementById('lastUpdated').textContent =
-                        `Last updated: ${d.toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'})} — ${agoStr}`;
+                        `Last updated: ${formattedDate} — ${agoStr}`;
+                    if (footerLastUpdatedEl) footerLastUpdatedEl.textContent = `Last updated: ${formattedDate}`;
                 }
             })
             .catch(() => {
                 // Fallback: show static date
-                document.getElementById('lastUpdated').textContent =
-                    'Last updated: ' + new Date().toLocaleDateString('en-US', {
-                        year: 'numeric', month: 'long', day: 'numeric'
-                    });
+                document.getElementById('lastUpdated').textContent = 'Last updated: April 16, 2026';
+                const footerLastUpdatedEl = document.getElementById('footerLastUpdated');
+                if (footerLastUpdatedEl) footerLastUpdatedEl.textContent = 'Last updated: April 16, 2026';
             });
 
         // Scroll reveal
