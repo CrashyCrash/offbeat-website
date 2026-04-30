@@ -43,6 +43,7 @@
             --text: #e6eaf4;
             --text-2: #6e7599;
             --text-3: #2d3150;
+            --announcement-offset: 40px;
         }
 
         html { scroll-behavior: smooth; }
@@ -80,9 +81,74 @@
         }
 
         /* Nav */
-        header {
+        .announcement-banner {
             position: fixed;
             top: 0;
+            left: 0;
+            width: 100%;
+            height: 40px;
+            z-index: 150;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 0 1rem 0 1.25rem;
+            border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+            background: linear-gradient(
+                90deg,
+                rgba(0, 212, 255, 0.15) 0%,
+                rgba(0, 212, 255, 0.06) 45%,
+                rgba(0, 212, 255, 0.15) 100%
+            );
+            backdrop-filter: blur(14px);
+        }
+
+        .announcement-text {
+            font-size: 0.83rem;
+            color: #d9f7ff;
+            letter-spacing: 0.01em;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .announcement-text span { color: var(--glow-2); }
+
+        .announcement-dismiss {
+            appearance: none;
+            border: 1px solid rgba(0, 212, 255, 0.35);
+            background: rgba(0, 212, 255, 0.08);
+            color: #d9f7ff;
+            border-radius: 7px;
+            width: 26px;
+            height: 26px;
+            font-size: 0.9rem;
+            line-height: 1;
+            cursor: pointer;
+            transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+            transform: none;
+            flex: 0 0 auto;
+        }
+
+        .announcement-dismiss:hover,
+        .announcement-dismiss:focus-visible {
+            border-color: rgba(0, 212, 255, 0.55);
+            background: rgba(0, 212, 255, 0.16);
+            color: #ffffff;
+            transform: none;
+        }
+
+        body.announcement-dismissed {
+            --announcement-offset: 0px;
+        }
+
+        body.announcement-dismissed .announcement-banner {
+            display: none;
+        }
+
+        header {
+            position: fixed;
+            top: var(--announcement-offset);
             width: 100%;
             z-index: 100;
             padding: 1.5rem 3rem;
@@ -523,6 +589,10 @@
 <body>
     <div class="mesh-bg"></div>
     <div class="scanlines"></div>
+    <div class="announcement-banner" id="announcement-banner" role="region" aria-label="Site announcement">
+        <p class="announcement-text">DatBotty is live — <span>AI automation building this site autonomously, 24/7.</span></p>
+        <button class="announcement-dismiss" id="dismiss-announcement" type="button" aria-label="Dismiss announcement">✕</button>
+    </div>
 
     <header>
         <div class="brand">OFFBEAT</div>
@@ -657,6 +727,20 @@
     </footer>
 
     <script>
+        const announcementStorageKey = 'offbeat-v3-index-announcement-dismissed';
+        const dismissAnnouncementButton = document.getElementById('dismiss-announcement');
+
+        if (localStorage.getItem(announcementStorageKey) === '1') {
+            document.body.classList.add('announcement-dismissed');
+        }
+
+        if (dismissAnnouncementButton) {
+            dismissAnnouncementButton.addEventListener('click', () => {
+                localStorage.setItem(announcementStorageKey, '1');
+                document.body.classList.add('announcement-dismissed');
+            });
+        }
+
         // Scroll reveal
         const observer = new IntersectionObserver((entries) => {
             entries.forEach((e, i) => {
