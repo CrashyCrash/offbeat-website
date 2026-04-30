@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Affiliate Disclosure — Offbeat, Inc.</title>
+    <meta name="description" content="Simple, transparent affiliate disclosure for Offbeat, Inc., including Amazon Associates participation and affiliate tag details.">
+    <link rel="canonical" href="https://crashycrash.github.io/offbeat-website/v3/affiliate-disclosure.html">
+    <meta property="og:title" content="Affiliate Disclosure — Offbeat, Inc.">
+    <meta property="og:description" content="How Offbeat, Inc. uses affiliate links, including Amazon Associates and future partner programs.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://crashycrash.github.io/offbeat-website/v3/affiliate-disclosure.html">
+    <meta property="og:image" content="https://crashycrash.github.io/offbeat-website/v3/og-image.png">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap');
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #020206;
+            --bg-card: #08090f;
+            --border: #141828;
+            --glow: #00ccff;
+            --glow-2: #00fff2;
+            --violet: #7c3aed;
+            --text: #e6eaf4;
+            --text-2: #6e7599;
+            --text-3: #2d3150;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .mesh-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse 800px 600px at 20% 20%, rgba(0, 204, 255, 0.04) 0%, transparent 50%),
+                radial-gradient(ellipse 600px 800px at 80% 70%, rgba(124, 58, 237, 0.04) 0%, transparent 50%);
+        }
+
+        .scanlines {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 204, 255, 0.008) 2px,
+                rgba(0, 204, 255, 0.008) 4px
+            );
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(2, 2, 6, 0.75);
+            backdrop-filter: blur(20px);
+        }
+
+        .brand {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            position: relative;
+        }
+
+        .brand::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--glow), var(--violet));
+            animation: brand-line 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes brand-line {
+            0% { transform: scaleX(0.3); transform-origin: left; }
+            100% { transform: scaleX(1); transform-origin: left; }
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .header-nav a {
+            color: var(--text-2);
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .header-nav a:hover,
+        .header-nav .active { color: var(--glow); }
+
+        main {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 9rem 2rem 4rem;
+        }
+
+        .tag-line {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.74rem;
+            color: var(--glow);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 0.9rem;
+        }
+
+        h1 {
+            font-size: clamp(2rem, 5vw, 3.4rem);
+            letter-spacing: -0.03em;
+            margin-bottom: 0.9rem;
+        }
+
+        .sub {
+            color: var(--text-2);
+            font-size: 1.04rem;
+            line-height: 1.7;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 1.4rem 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .card h2 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            color: var(--glow);
+            letter-spacing: 0.02em;
+        }
+
+        .card p, .card li {
+            color: var(--text-2);
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+
+        .card ul {
+            margin-left: 1.1rem;
+        }
+
+        .tag {
+            color: var(--text);
+            font-family: 'Fira Code', monospace;
+        }
+
+        .cta-row {
+            margin-top: 1.5rem;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--glow), var(--glow-2));
+            color: #020206;
+            text-decoration: none;
+            font-weight: 700;
+            padding: 0.8rem 1.1rem;
+            border-radius: 9px;
+            box-shadow: 0 0 16px rgba(0, 204, 255, 0.22);
+            transition: box-shadow 0.25s, opacity 0.25s;
+        }
+
+        .cta-btn:hover {
+            opacity: 0.95;
+            box-shadow: 0 0 24px rgba(0, 204, 255, 0.34);
+            transform: none;
+        }
+
+        footer {
+            position: relative;
+            z-index: 1;
+            padding: 1.5rem 3rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.78rem;
+            color: var(--text-3);
+            margin-top: 2rem;
+        }
+
+        footer a { color: var(--text-2); text-decoration: none; }
+        footer a:hover { color: var(--glow); }
+
+        @media (max-width: 760px) {
+            header { padding: 1rem 1.25rem; }
+            .header-nav { gap: 1rem; }
+            main { padding: 8rem 1.25rem 3rem; }
+            footer { flex-direction: column; gap: 0.5rem; text-align: center; padding: 1.3rem 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="mesh-bg"></div>
+    <div class="scanlines"></div>
+
+    <header>
+        <div class="brand">OFFBEAT</div>
+        <ul class="header-nav">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="tools.html">Tools</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="privacy.html">Privacy</a></li>
+            <li><a href="status.html">Status</a></li>
+        </ul>
+    </header>
+
+    <main>
+        <div class="tag-line">Transparency</div>
+        <h1>Affiliate Disclosure</h1>
+        <p class="sub">Some links on this site are affiliate links. If you click one and buy, Offbeat, Inc. may earn a commission at no extra cost to you.</p>
+
+        <section class="card">
+            <h2>Amazon Associates</h2>
+            <p>Offbeat, Inc. is a participant in the Amazon Services LLC Associates Program, an affiliate advertising program designed to provide a way for sites to earn fees by linking to Amazon.com and related sites.</p>
+            <p>Our Amazon affiliate tag is <span class="tag">offbeat0f-20</span>.</p>
+        </section>
+
+        <section class="card">
+            <h2>How we approach recommendations</h2>
+            <p>We only recommend tools and products we believe are genuinely useful. Affiliate commissions help support the work we do, but they do not change our core recommendations.</p>
+        </section>
+
+        <section class="card">
+            <h2>Other affiliate programs (placeholder)</h2>
+            <ul>
+                <li>Program name: <span class="tag">TBD</span></li>
+                <li>Program disclosure summary: <span class="tag">TBD</span></li>
+                <li>Last updated: <span class="tag">TBD</span></li>
+            </ul>
+        </section>
+
+        <div class="cta-row">
+            <a class="cta-btn" href="tools.html">View Recommended Tools</a>
+        </div>
+    </main>
+
+    <footer>
+        <div>&copy; 2026 Offbeat, Inc. — All rights reserved.</div>
+        <div>
+            <a href="affiliate-disclosure.html" style="color: var(--glow);">Affiliate Disclosure</a> &nbsp;|&nbsp;
+            <a href="https://muthaeffincrash.com">mutha effin CRASH</a>
+        </div>
+    </footer>
+</body>
+</html>
