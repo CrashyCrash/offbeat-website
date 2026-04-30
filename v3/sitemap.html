@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sitemap — OFFBEAT</title>
+    <meta name="description" content="Human-readable HTML sitemap for Offbeat v3 with all core pages, tools, resources, legal links, and XML sitemap access.">
+    <meta property="og:title" content="Sitemap — OFFBEAT">
+    <meta property="og:description" content="Browse all Offbeat v3 pages in one place.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://crashycrash.github.io/offbeat-website/v3/sitemap.html">
+    <link rel="canonical" href="https://crashycrash.github.io/offbeat-website/v3/sitemap.html">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Offbeat v3 Sitemap",
+      "description": "Human-readable sitemap for Offbeat v3 pages.",
+      "url": "https://crashycrash.github.io/offbeat-website/v3/sitemap.html",
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "Offbeat, Inc.",
+        "url": "https://crashycrash.github.io/offbeat-website/v3/"
+      }
+    }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap');
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #020206;
+            --bg-card: #08090f;
+            --border: #141828;
+            --glow: #00ccff;
+            --glow-2: #00fff2;
+            --violet: #7c3aed;
+            --text: #e6eaf4;
+            --text-2: #6e7599;
+            --text-3: #2d3150;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        .mesh-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse 800px 600px at 20% 20%, rgba(0, 204, 255, 0.04) 0%, transparent 50%),
+                radial-gradient(ellipse 600px 800px at 80% 70%, rgba(124, 58, 237, 0.04) 0%, transparent 50%);
+        }
+
+        .scanlines {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 204, 255, 0.008) 2px,
+                rgba(0, 204, 255, 0.008) 4px
+            );
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(2, 2, 6, 0.75);
+            backdrop-filter: blur(20px);
+        }
+
+        .brand {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            position: relative;
+        }
+
+        .brand::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--glow), var(--violet));
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .header-nav a {
+            color: var(--text-2);
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .header-nav a:hover { color: var(--glow); }
+
+        .page {
+            position: relative;
+            z-index: 1;
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 8.5rem 1.5rem 4rem;
+        }
+
+        .tag-line {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.74rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--glow);
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-size: clamp(2rem, 4.6vw, 3.3rem);
+            letter-spacing: -0.03em;
+            margin-bottom: 0.9rem;
+        }
+
+        .sub {
+            color: var(--text-2);
+            line-height: 1.75;
+            margin-bottom: 2.25rem;
+        }
+
+        .group {
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: rgba(8, 9, 15, 0.85);
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+
+        .group h2 {
+            font-size: 0.95rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 1rem 1.2rem;
+            border-bottom: 1px solid var(--border);
+            color: var(--glow);
+        }
+
+        .group ul {
+            list-style: none;
+        }
+
+        .group li {
+            padding: 1rem 1.2rem;
+            border-bottom: 1px solid rgba(20, 24, 40, 0.7);
+        }
+
+        .group li:last-child {
+            border-bottom: none;
+        }
+
+        .page-title-link {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .page-title-link:hover {
+            color: var(--glow);
+        }
+
+        .page-desc {
+            color: var(--text-2);
+            margin-top: 0.35rem;
+            font-size: 0.94rem;
+            line-height: 1.65;
+        }
+
+        .page-url {
+            display: inline-block;
+            margin-top: 0.55rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.74rem;
+            color: var(--text-3);
+            text-decoration: none;
+            border: 1px solid var(--border);
+            padding: 0.25rem 0.55rem;
+            border-radius: 999px;
+            transition: border-color 0.2s, color 0.2s, background 0.2s;
+        }
+
+        .page-url:hover {
+            color: var(--glow);
+            border-color: rgba(0, 204, 255, 0.5);
+            background: rgba(0, 204, 255, 0.05);
+        }
+
+        footer {
+            position: relative;
+            z-index: 1;
+            padding: 1.5rem 3rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.83rem;
+            color: var(--text-2);
+        }
+
+        footer a {
+            color: var(--text-2);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        footer a:hover {
+            color: var(--glow);
+        }
+
+        @media (max-width: 760px) {
+            header { padding: 1rem 1.25rem; }
+            .header-nav { display: none; }
+            footer { flex-direction: column; gap: 0.5rem; text-align: center; padding: 1.5rem; }
+            .page { padding-top: 7.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="mesh-bg"></div>
+    <div class="scanlines"></div>
+
+    <header>
+        <div class="brand">OFFBEAT</div>
+        <ul class="header-nav">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="tools.html">Tools</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="privacy.html">Privacy</a></li>
+            <li><a href="status.html">Status</a></li>
+        </ul>
+    </header>
+
+    <main class="page">
+        <div class="tag-line">Site Structure</div>
+        <h1>Offbeat v3 sitemap.</h1>
+        <p class="sub">A human-readable map of all current v3 pages, grouped by purpose.</p>
+
+        <section class="group" aria-labelledby="main-pages">
+            <h2 id="main-pages">Main Pages</h2>
+            <ul>
+                <li>
+                    <a class="page-title-link" href="index.html">OFFBEAT — Original Technology</a>
+                    <p class="page-desc">Landing page for Offbeat’s mission, capabilities, and featured products.</p>
+                    <a class="page-url" href="index.html">/v3/index.html</a>
+                </li>
+                <li>
+                    <a class="page-title-link" href="services.html">DatBotty v2 — Services</a>
+                    <p class="page-desc">Overview of AI automation, SEO, affiliate, and autonomous operations services.</p>
+                    <a class="page-url" href="services.html">/v3/services.html</a>
+                </li>
+                <li>
+                    <a class="page-title-link" href="contact.html">Contact Offbeat</a>
+                    <p class="page-desc">Contact form and channels for project, consulting, and support inquiries.</p>
+                    <a class="page-url" href="contact.html">/v3/contact.html</a>
+                </li>
+            </ul>
+        </section>
+
+        <section class="group" aria-labelledby="tools-pages">
+            <h2 id="tools-pages">Tools</h2>
+            <ul>
+                <li>
+                    <a class="page-title-link" href="tools.html">Offbeat Recommended Tools</a>
+                    <p class="page-desc">Curated gear and software recommendations for DJs, creators, and developers.</p>
+                    <a class="page-url" href="tools.html">/v3/tools.html</a>
+                </li>
+                <li>
+                    <a class="page-title-link" href="status.html">DatBotty Status</a>
+                    <p class="page-desc">Live status dashboard for autonomous systems, workflows, and key metrics.</p>
+                    <a class="page-url" href="status.html">/v3/status.html</a>
+                </li>
+                <li>
+                    <a class="page-title-link" href="changelog.html">DatBotty Changelog</a>
+                    <p class="page-desc">Chronological updates covering improvements, reliability work, and releases.</p>
+                    <a class="page-url" href="changelog.html">/v3/changelog.html</a>
+                </li>
+            </ul>
+        </section>
+
+        <section class="group" aria-labelledby="resource-pages">
+            <h2 id="resource-pages">Resources</h2>
+            <ul>
+                <li>
+                    <a class="page-title-link" href="faq.html">FAQ — Offbeat, Inc.</a>
+                    <p class="page-desc">Frequently asked questions about Offbeat’s automation platform and offerings.</p>
+                    <a class="page-url" href="faq.html">/v3/faq.html</a>
+                </li>
+                <li>
+                    <a class="page-title-link" href="sitemap.xml">XML Sitemap</a>
+                    <p class="page-desc">Machine-readable sitemap for search engines and crawler indexing.</p>
+                    <a class="page-url" href="sitemap.xml">/v3/sitemap.xml</a>
+                </li>
+            </ul>
+        </section>
+
+        <section class="group" aria-labelledby="legal-pages">
+            <h2 id="legal-pages">Legal</h2>
+            <ul>
+                <li>
+                    <a class="page-title-link" href="privacy.html">Privacy Policy — Offbeat, Inc.</a>
+                    <p class="page-desc">Privacy practices for contact data, cookies, analytics, and user rights.</p>
+                    <a class="page-url" href="privacy.html">/v3/privacy.html</a>
+                </li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <div>&copy; 2026 Offbeat, Inc. — All rights reserved.</div>
+        <div>
+            <a href="https://muthaeffincrash.com">mutha effin CRASH</a> &nbsp;|&nbsp;
+            <a href="sitemap.html" style="color: var(--glow);">Sitemap</a>
+        </div>
+    </footer>
+</body>
+</html>
