@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DatBotty Brainstorm — Glassmorphism</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+  :root {
+    --bg1: #0d0621;
+    --bg2: #160932;
+    --glass: rgba(255,255,255,0.05);
+    --glass-strong: rgba(255,255,255,0.09);
+    --glass-border: rgba(255,255,255,0.12);
+    --blur: blur(18px);
+    --violet: #8b5cf6;
+    --violet-glow: rgba(139,92,246,0.35);
+    --cyan: #22d3ee;
+    --rose: #f472b6;
+    --emerald: #34d399;
+    --amber: #fbbf24;
+    --text: rgba(255,255,255,0.88);
+    --text-muted: rgba(255,255,255,0.45);
+    --text-sub: rgba(255,255,255,0.28);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: radial-gradient(ellipse 80% 80% at 20% 0%, #1e0940 0%, #0d0621 50%),
+                radial-gradient(ellipse 60% 60% at 80% 100%, #091f38 0%, transparent 70%);
+    background-color: var(--bg1);
+    min-height: 100vh;
+    font-family: 'Inter', -apple-system, sans-serif;
+    color: var(--text);
+    position: relative;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0;
+    background:
+      radial-gradient(circle 600px at 15% 25%, rgba(139,92,246,0.12) 0%, transparent 70%),
+      radial-gradient(circle 500px at 85% 65%, rgba(34,211,238,0.08) 0%, transparent 70%),
+      radial-gradient(circle 400px at 50% 90%, rgba(244,114,182,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; }
+
+  header {
+    position: sticky; top: 0; z-index: 100;
+    backdrop-filter: var(--blur);
+    -webkit-backdrop-filter: var(--blur);
+    background: rgba(13,6,33,0.5);
+    border-bottom: 1px solid var(--glass-border);
+    padding: 14px 24px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .logo { font-size: 18px; font-weight: 600; letter-spacing: -0.3px; }
+  .logo span { color: var(--violet); }
+  .tagline { font-size: 12px; color: var(--text-sub); letter-spacing: 0.3px; }
+  .spacer { flex: 1; }
+
+  .main { position: relative; z-index: 1; max-width: 1120px; margin: 0 auto; padding: 28px 20px; }
+
+  .projects-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(200px,1fr)); gap: 10px; margin-bottom: 32px; }
+  .proj-card {
+    backdrop-filter: var(--blur);
+    -webkit-backdrop-filter: var(--blur);
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 14px;
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: all .25s cubic-bezier(.4,0,.2,1);
+  }
+  .proj-card:hover {
+    background: var(--glass-strong);
+    border-color: rgba(139,92,246,0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(139,92,246,0.12);
+  }
+  .proj-card.selected {
+    border-color: var(--violet);
+    background: rgba(139,92,246,0.12);
+    box-shadow: 0 0 20px rgba(139,92,246,0.2);
+  }
+  .proj-card .icon { font-size: 20px; margin-bottom: 8px; }
+  .proj-card .name { font-size: 12px; font-weight: 500; margin-bottom: 4px; }
+  .proj-card .sub { font-size: 11px; color: var(--text-sub); }
+  .proj-pill {
+    display: inline-block; margin-top: 8px;
+    font-size: 10px; font-weight: 600;
+    background: rgba(139,92,246,0.2); color: var(--violet);
+    border: 1px solid rgba(139,92,246,0.3);
+    border-radius: 20px; padding: 2px 8px;
+  }
+
+  .ideas-pane {
+    display: none;
+  }
+  .ideas-pane.active { display: block; }
+
+  .pane-header {
+    backdrop-filter: var(--blur);
+    -webkit-backdrop-filter: var(--blur);
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 14px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .back-btn {
+    background: transparent; border: 1px solid var(--glass-border);
+    color: var(--text-muted); font-family: inherit; font-size: 12px;
+    padding: 6px 12px; border-radius: 8px; cursor: pointer;
+    transition: all .2s;
+  }
+  .back-btn:hover { border-color: var(--violet); color: var(--violet); }
+  .pane-title { font-size: 16px; font-weight: 600; }
+  .filter-row { display: flex; gap: 6px; margin: 0 0 16px; flex-wrap: wrap; }
+  .filter-btn {
+    background: var(--glass); border: 1px solid var(--glass-border);
+    color: var(--text-muted); font-family: inherit; font-size: 11px;
+    padding: 5px 12px; border-radius: 20px; cursor: pointer;
+    backdrop-filter: var(--blur); transition: all .2s;
+  }
+  .filter-btn:hover { border-color: var(--violet); color: var(--violet); }
+  .filter-btn.active {
+    background: rgba(139,92,246,0.18); border-color: rgba(139,92,246,0.5);
+    color: var(--violet);
+  }
+
+  .ideas-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(280px,1fr)); gap: 10px; }
+  .idea-card {
+    backdrop-filter: var(--blur);
+    -webkit-backdrop-filter: var(--blur);
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: all .25s;
+  }
+  .idea-card:hover {
+    background: var(--glass-strong);
+    border-color: rgba(255,255,255,0.2);
+    transform: translateY(-1px);
+  }
+  .idea-title { font-size: 13px; font-weight: 500; margin-bottom: 10px; line-height: 1.4; }
+  .idea-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+  .action-btn {
+    font-family: inherit; font-size: 11px; font-weight: 500;
+    padding: 4px 10px; border-radius: 6px; cursor: pointer;
+    border: 1px solid transparent; transition: all .2s; letter-spacing: 0.2px;
+  }
+  .btn-now { background: rgba(52,211,153,0.12); color: var(--emerald); border-color: rgba(52,211,153,0.25); }
+  .btn-now.set, .btn-now:hover { background: rgba(52,211,153,0.2); border-color: rgba(52,211,153,0.5); }
+  .btn-later { background: rgba(251,191,36,0.1); color: var(--amber); border-color: rgba(251,191,36,0.25); }
+  .btn-later.set, .btn-later:hover { background: rgba(251,191,36,0.18); border-color: rgba(251,191,36,0.5); }
+  .btn-pass { background: rgba(244,114,182,0.08); color: var(--rose); border-color: rgba(244,114,182,0.2); }
+  .btn-pass.set, .btn-pass:hover { background: rgba(244,114,182,0.15); border-color: rgba(244,114,182,0.4); }
+  .btn-done { background: rgba(255,255,255,0.05); color: var(--text-sub); border-color: transparent; }
+  .btn-done.set, .btn-done:hover { background: rgba(255,255,255,0.1); color: var(--text-muted); }
+
+  .ai-fab {
+    position: fixed; bottom: 28px; right: 28px;
+    width: 56px; height: 56px; border-radius: 50%;
+    backdrop-filter: var(--blur);
+    background: rgba(139,92,246,0.2);
+    border: 1px solid rgba(139,92,246,0.4);
+    color: var(--violet); font-size: 22px;
+    cursor: pointer; box-shadow: 0 4px 25px var(--violet-glow);
+    display: flex; align-items: center; justify-content: center;
+    transition: all .25s;
+  }
+  .ai-fab:hover {
+    background: rgba(139,92,246,0.35);
+    box-shadow: 0 8px 35px rgba(139,92,246,0.5);
+    transform: scale(1.08);
+  }
+
+  .status-chip {
+    display: inline-block; font-size: 10px; font-weight: 600;
+    padding: 2px 8px; border-radius: 20px; margin-bottom: 8px;
+  }
+  .chip-now { background: rgba(52,211,153,0.15); color: var(--emerald); }
+  .chip-later { background: rgba(251,191,36,0.12); color: var(--amber); }
+  .chip-done { background: rgba(255,255,255,0.07); color: var(--text-sub); }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <div class="logo"><span>Dat</span>Botty<span>&nbsp;✦</span></div>
+    <div class="tagline">Brainstorm Studio</div>
+  </div>
+  <div class="spacer"></div>
+  <div style="font-size:11px;color:var(--text-sub)">Click a project to explore ideas</div>
+</header>
+
+<div class="main">
+  <div id="projectsView">
+    <h2 style="font-size:14px;font-weight:500;color:var(--text-sub);letter-spacing:1px;text-transform:uppercase;margin-bottom:16px">Projects</h2>
+    <div class="projects-grid" id="projectGrid"></div>
+  </div>
+
+  <div class="ideas-pane" id="ideasPane">
+    <div class="pane-header">
+      <button class="back-btn" onclick="backToProjects()">← Projects</button>
+      <span class="pane-title" id="paneTitle"></span>
+    </div>
+    <div class="filter-row">
+      <button class="filter-btn active" onclick="setFilter(this,'all')">All</button>
+      <button class="filter-btn" onclick="setFilter(this,'now')">Active</button>
+      <button class="filter-btn" onclick="setFilter(this,'later')">Queued</button>
+      <button class="filter-btn" onclick="setFilter(this,'done')">Done</button>
+      <button class="filter-btn" onclick="setFilter(this,'open')">Open</button>
+    </div>
+    <div class="ideas-grid" id="ideasGrid"></div>
+  </div>
+</div>
+
+<button class="ai-fab" title="Ask AI" onclick="alert('AI panel — configure endpoint in settings')">✦</button>
+
+<script>
+const PROJECTS = [
+  {id:'autonomy',name:'Autonomy Acceleration',icon:'🤖',ideas:[
+    {title:'Self-generated session prompts',status:'done'},{title:'Session uniqueness enforcement',status:'done'},
+    {title:'Self-retrospective',status:'later'},{title:'Regression detection',status:'later'},
+    {title:'Design Arena integration',status:'now'},{title:'Wire supervisor active flag',status:'now'},
+  ]},
+  {id:'experience',name:'Daily Experience',icon:'📱',ideas:[
+    {title:'Telegram partial re-enable',status:null},{title:'Morning briefing real findings',status:'later'},
+    {title:'Status page',status:'done'},{title:'Fewer, better notifications',status:'now'},
+  ]},
+  {id:'business',name:'Business Intelligence',icon:'💼',ideas:[
+    {title:'Affiliate opportunity scanner',status:'done'},{title:'Content calendar',status:null},
+    {title:'SEO keyword tracker',status:'done'},{title:'Revenue dashboard',status:'later'},
+  ]},
+  {id:'capabilities',name:'New Capabilities',icon:'⚡',ideas:[
+    {title:'Image & screenshot analysis',status:'now'},{title:'External model consultation',status:'now'},
+    {title:'Automatic skill discovery',status:'done'},{title:'n8n health scoring',status:'done'},
+  ]},
+  {id:'home',name:'Home Automation',icon:'🏠',ideas:[
+    {title:'Home Assistant connection',status:'later'},{title:'Morning activation routine',status:null},
+    {title:'Server health to HA dashboard',status:'later'},
+  ]},
+  {id:'dj',name:'DJ Intelligence',icon:'🎧',ideas:[
+    {title:'New release tracker',status:null},{title:'Trending tracks radar',status:'later'},
+    {title:'DJ set generator v2',status:'later'},
+  ]},
+  {id:'infra',name:'Infrastructure',icon:'🔧',ideas:[
+    {title:'Automated daily backup',status:'later'},{title:'Docker health watchdog',status:'later'},
+    {title:'Pop-out window targeting',status:'now'},
+  ]},
+  {id:'intel',name:'Intelligence Research',icon:'🔬',ideas:[
+    {title:'Curated news digest',status:null},{title:'AI capability tracking',status:'done'},
+  ]},
+  {id:'experimental',name:'Experimental',icon:'🚀',ideas:[
+    {title:'Voice-activated queries',status:'now'},{title:'Crash digital twin',status:'now'},
+    {title:'North Star document',status:'done'},{title:'Brainstorm app',status:'done'},
+  ]},
+];
+
+let filter = 'all', currentId = null;
+
+function renderProjects() {
+  const g = document.getElementById('projectGrid');
+  g.innerHTML = PROJECTS.map(p => {
+    const active = p.ideas.filter(i=>i.status==='now').length;
+    return `<div class="proj-card ${p.id===currentId?'selected':''}" onclick="showProject('${p.id}')">
+      <div class="icon">${p.icon}</div>
+      <div class="name">${p.name}</div>
+      <div class="sub">${p.ideas.length} ideas</div>
+      ${active ? `<div class="proj-pill">${active} active</div>` : ''}
+    </div>`;
+  }).join('');
+}
+
+function showProject(id) {
+  currentId = id; filter = 'all';
+  const p = PROJECTS.find(x=>x.id===id);
+  document.getElementById('paneTitle').textContent = p.name;
+  document.getElementById('projectsView').style.display = 'none';
+  document.getElementById('ideasPane').classList.add('active');
+  document.querySelectorAll('.filter-btn').forEach((b,i)=>{b.classList.toggle('active',i===0);});
+  renderIdeas();
+}
+function backToProjects() {
+  currentId = null;
+  document.getElementById('projectsView').style.display = 'block';
+  document.getElementById('ideasPane').classList.remove('active');
+}
+function setFilter(btn, f) {
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active'); filter = f; renderIdeas();
+}
+function setStatus(projId, ideaTitle, status, card) {
+  const proj = PROJECTS.find(p=>p.id===projId);
+  const idea = proj.ideas.find(i=>i.title===ideaTitle);
+  idea.status = idea.status === status ? null : status;
+  rerenderCard(card, idea, projId);
+}
+
+function cardHtml(idea, projId) {
+  const chips = {now:'<span class="status-chip chip-now">Active</span>',later:'<span class="status-chip chip-later">Queued</span>',done:'<span class="status-chip chip-done">Done</span>'};
+  return `${idea.status && chips[idea.status] ? chips[idea.status] : ''}
+    <div class="idea-title">${idea.title}</div>
+    <div class="idea-actions">
+      <button class="action-btn btn-now ${idea.status==='now'?'set':''}" onclick="setStatus('${projId}','${idea.title.replace(/'/g,"\\'")}','now',this.closest('.idea-card'))">Start</button>
+      <button class="action-btn btn-later ${idea.status==='later'?'set':''}" onclick="setStatus('${projId}','${idea.title.replace(/'/g,"\\'")}','later',this.closest('.idea-card'))">Queue</button>
+      <button class="action-btn btn-pass" onclick="this.closest('.idea-card').style.opacity='0.3'">Pass</button>
+      <button class="action-btn btn-done ${idea.status==='done'?'set':''}" onclick="setStatus('${projId}','${idea.title.replace(/'/g,"\\'")}','done',this.closest('.idea-card'))">Done</button>
+    </div>`;
+}
+function rerenderCard(card, idea, projId) {
+  card.innerHTML = cardHtml(idea, projId);
+}
+
+function renderIdeas() {
+  const proj = PROJECTS.find(p=>p.id===currentId);
+  let ideas = proj.ideas;
+  if(filter==='now') ideas = ideas.filter(i=>i.status==='now');
+  else if(filter==='later') ideas = ideas.filter(i=>i.status==='later');
+  else if(filter==='done') ideas = ideas.filter(i=>i.status==='done');
+  else if(filter==='open') ideas = ideas.filter(i=>!i.status);
+  const g = document.getElementById('ideasGrid');
+  g.innerHTML = ideas.map(idea => `<div class="idea-card">${cardHtml(idea, currentId)}</div>`).join('')
+    || '<div style="color:var(--text-sub);font-size:13px;padding:20px">No ideas in this filter.</div>';
+}
+
+renderProjects();
+</script>
+</body>
+</html>
