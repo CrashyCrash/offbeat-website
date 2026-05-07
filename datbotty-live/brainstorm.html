@@ -995,6 +995,10 @@ function loadState() {
 
 function saveState() {
   localStorage.setItem('datbotty_brainstorm_v2', JSON.stringify(state));
+  // Sync to server so DatBotty can see ideas without browser inspection
+  try {
+    fetch('/api/ideas', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(state)});
+  } catch(e) {} // fire-and-forget
 }
 
 function genId() {
