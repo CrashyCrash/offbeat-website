@@ -2,86 +2,63 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>404 — Page Not Found | Offbeat</title>
+  <title>404 — Page Not Found | Offbeat Inc.</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Google Fonts: Outfit -->
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/shared.css">
   <style>
-    html, body {
-      height: 100%;
-      margin: 0;
-      padding: 0;
-      background: #020206;
-      color: #fff;
-      font-family: 'Outfit', Arial, sans-serif;
-      min-height: 100vh;
-      width: 100vw;
-      overflow: hidden;
-    }
-    body {
+    .error-container {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: 100vh;
+      min-height: 60vh;
       text-align: center;
-    }
-    .glow {
-      color: #00ccff;
-      text-shadow: 0 0 8px #00ccff88, 0 0 16px #00ccff44;
+      padding: 3rem 1rem;
     }
     .big404 {
-      font-size: 7rem;
-      font-weight: 700;
-      margin-bottom: 0.2em;
-      letter-spacing: 0.05em;
+      font-size: clamp(5rem, 15vw, 9rem);
+      font-weight: 800;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+      margin-bottom: 1rem;
     }
-    .message {
-      font-size: 1.5rem;
-      margin-bottom: 1.5em;
-      color: #e0e0e0;
-    }
-    .redirect {
-      font-size: 1.1rem;
-      color: #00ccff;
-      opacity: 0.8;
-    }
-    @media (max-width: 600px) {
-      .big404 {
-        font-size: 3.5rem;
-      }
-      .message {
-        font-size: 1.1rem;
-      }
-    }
+    .error-msg { font-size: 1.25rem; color: var(--text); margin-bottom: 0.5rem; }
+    .redirect-msg { color: var(--muted); font-size: 0.95rem; margin-bottom: 2rem; }
+    @media (max-width: 600px) { .big404 { font-size: 5rem; } }
   </style>
   <script>
-    setTimeout(function() {
-      window.location.href = "https://crashycrash.github.io/offbeat-website/v3/";
-    }, 5000);
+    setTimeout(function() { window.location.href = "/"; }, 5000);
   </script>
 </head>
 <body>
-  <div>
-    <div class="big404 glow">404</div>
-    <div class="message">
-      Oops! This page wandered off the <span class="glow">offbeat</span> path.<br>
-      Let's get you back on track.
-    </div>
-    <div class="redirect">
-      Redirecting to the <span class="glow">homepage</span> in <span id="countdown">5</span> seconds...
-    </div>
+<nav>
+  <a class="nav-brand" href="/">Offbeat Inc.</a>
+  <div class="nav-links">
+    <a href="best-dj-software-beginners-2026.html">DJ Software</a>
+    <a href="dj-affiliate-programs.html">Affiliate Programs</a>
+    <a href="music-distribution-affiliates.html">Distribution</a>
+    <a href="dj-set-generator.html">Set Generator</a>
+    <a href="datbotty-status.html">DatBotty</a>
+    <a href="about.html">About</a>
   </div>
-  <script>
-    // Countdown timer
-    let seconds = 5;
-    const countdownEl = document.getElementById('countdown');
-    setInterval(function() {
-      seconds--;
-      if (seconds >= 0) {
-        countdownEl.textContent = seconds;
-      }
-    }, 1000);
-  </script>
+</nav>
+<div class="error-container">
+  <div class="big404">404</div>
+  <div class="error-msg">This page doesn't exist (yet).</div>
+  <div class="redirect-msg">Redirecting to home in <span id="countdown">5</span> seconds...</div>
+  <a class="btn-primary" href="/">Go Home Now</a>
+</div>
+<footer>
+  <p>&copy; 2026 Offbeat Inc. &mdash; <a href="privacy.html">Privacy</a></p>
+</footer>
+<script>
+  let s = 5;
+  const el = document.getElementById('countdown');
+  setInterval(() => { if (--s >= 0) el.textContent = s; }, 1000);
+</script>
 </body>
+</html>
 </html>

@@ -3,128 +3,414 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Offbeat, Inc. — Website Preview</title>
+    <title>Offbeat Inc. — DJ &amp; Music Production Tools, Reviews &amp; Affiliate Programs</title>
+    <meta name="description" content="Offbeat Inc. helps DJs and music producers find the best software, gear, and production tools. Honest comparisons, verified affiliate programs, and free AI tools.">
+    <link rel="canonical" href="https://offbeatinc.com/">
+    <meta property="og:title" content="Offbeat Inc. — DJ &amp; Music Production Tools">
+    <meta property="og:description" content="Honest comparisons of DJ software, music production tools, and affiliate programs for producers and DJs.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://offbeatinc.com/">
+    <meta name="twitter:card" content="summary">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Offbeat Inc.",
+      "url": "https://offbeatinc.com",
+      "description": "DJ and music production software reviews, affiliate programs, and AI-powered tools for creators.",
+      "foundingDate": "2015",
+      "knowsAbout": ["DJ Software", "Music Production", "Affiliate Marketing", "AI Automation"]
+    }
+    </script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
-            --bg: #07080c;
-            --card: #0d1017;
-            --border: #1a1e2e;
-            --cyan: #00d4ff;
-            --text: #e4e8f0;
-            --dim: #6b7394;
+            --bg: #0a0a0f;
+            --surface: #13131a;
+            --border: #1e1e2e;
+            --accent: #7c3aed;
+            --accent2: #06b6d4;
+            --text: #e2e8f0;
+            --muted: #94a3b8;
         }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             background: var(--bg);
             color: var(--text);
-            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Nav */
+        nav {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 0.85rem 2rem;
             display: flex;
-            flex-direction: column;
             align-items: center;
-            justify-content: center;
-            padding: 2rem;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
-        .grid-bg {
-            position: fixed;
-            inset: 0;
-            background-image:
-                linear-gradient(rgba(0, 212, 255, 0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 212, 255, 0.02) 1px, transparent 1px);
-            background-size: 60px 60px;
-            pointer-events: none;
-        }
-        .content { position: relative; z-index: 1; text-align: center; max-width: 800px; }
-        h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            background: linear-gradient(135deg, var(--cyan), #8b5cf6);
+        .nav-brand {
+            font-weight: 800;
+            font-size: 1.1rem;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-        }
-        .subtitle { color: var(--dim); font-size: 1.1rem; margin-bottom: 3rem; }
-        .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; width: 100%; }
-        .card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 2rem 1.5rem;
+            background-clip: text;
             text-decoration: none;
-            color: var(--text);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
         }
-        .card::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 16px;
-            border: 1px solid transparent;
-            transition: border-color 0.3s ease;
+        .nav-links { display: flex; gap: 1.25rem; flex-wrap: wrap; }
+        .nav-links a {
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
         }
-        .card:hover::before { border-color: var(--cyan); }
-        .card:hover { transform: translateY(-4px); box-shadow: 0 8px 32px rgba(0, 212, 255, 0.1); }
-        .card h2 { font-size: 1.3rem; margin-bottom: 0.5rem; }
-        .card p { color: var(--dim); font-size: 0.9rem; line-height: 1.5; }
-        .badge {
+        .nav-links a:hover { color: var(--accent2); }
+
+        /* Hero */
+        .hero {
+            background: linear-gradient(135deg, #0f0f1a 0%, #1a0a2e 60%, #0a1520 100%);
+            border-bottom: 1px solid var(--border);
+            padding: 5rem 2rem 4rem;
+            text-align: center;
+        }
+        .hero-eyebrow {
             display: inline-block;
-            background: rgba(0, 212, 255, 0.1);
-            color: var(--cyan);
-            font-size: 0.75rem;
-            font-weight: 600;
-            padding: 0.25rem 0.75rem;
-            border-radius: 999px;
-            margin-bottom: 1rem;
-        }
-        .footer { margin-top: 3rem; color: var(--dim); font-size: 0.8rem; }
-        .footer span { color: var(--cyan); }
-        .dj-link {
-            display: inline-flex; align-items: center; gap: 0.5rem;
-            margin-top: 1.5rem;
-            background: rgba(0,212,255,0.05);
-            border: 1px solid rgba(0,212,255,0.2);
-            border-radius: 8px;
-            padding: 0.6rem 1.2rem;
-            text-decoration: none;
-            color: var(--cyan);
+            background: rgba(124,58,237,0.15);
+            border: 1px solid rgba(124,58,237,0.3);
+            color: #a78bfa;
             font-size: 0.8rem;
             font-weight: 600;
-            letter-spacing: 0.08em;
-            transition: background 0.2s ease, box-shadow 0.2s ease;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 0.35rem 1rem;
+            border-radius: 999px;
+            margin-bottom: 1.5rem;
         }
-        .dj-link:hover {
-            background: rgba(0,212,255,0.1);
-            box-shadow: 0 0 16px rgba(0,212,255,0.2);
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            line-height: 1.15;
+            max-width: 750px;
+            margin: 0 auto 1.25rem;
+        }
+        .hero h1 .gradient {
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero p {
+            color: var(--muted);
+            font-size: 1.15rem;
+            max-width: 580px;
+            margin: 0 auto 2.5rem;
+        }
+        .hero-ctas {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+            text-decoration: none;
+            padding: 0.75rem 1.75rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: background 0.2s, transform 0.15s;
+        }
+        .btn-primary:hover { background: #6d28d9; transform: translateY(-1px); }
+        .btn-secondary {
+            background: transparent;
+            color: var(--accent2);
+            text-decoration: none;
+            padding: 0.75rem 1.75rem;
+            border-radius: 8px;
+            border: 1px solid var(--accent2);
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: background 0.2s, transform 0.15s;
+        }
+        .btn-secondary:hover { background: rgba(6,182,212,0.08); transform: translateY(-1px); }
+
+        /* Sections */
+        main { max-width: 1100px; margin: 0 auto; padding: 4rem 2rem; }
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent2);
+            margin-bottom: 0.5rem;
+        }
+        .section-sub {
+            color: var(--muted);
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+        }
+        section { margin-bottom: 4rem; }
+
+        /* Card grid */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.25rem;
+        }
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-decoration: none;
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            transition: border-color 0.2s, transform 0.15s;
+        }
+        .card:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+        .card-icon { font-size: 1.75rem; }
+        .card h3 { font-size: 1rem; font-weight: 600; }
+        .card p { color: var(--muted); font-size: 0.88rem; flex: 1; }
+        .badge {
+            display: inline-block;
+            background: rgba(124,58,237,0.15);
+            color: #a78bfa;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            padding: 0.2rem 0.6rem;
+            border-radius: 999px;
+            align-self: flex-start;
+        }
+        .badge-cyan {
+            background: rgba(6,182,212,0.12);
+            color: var(--accent2);
+        }
+        .badge-green {
+            background: rgba(34,197,94,0.12);
+            color: #4ade80;
+        }
+
+        /* Stats bar */
+        .stats-bar {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            margin-bottom: 4rem;
+        }
+        .stat { text-align: center; }
+        .stat-num {
+            font-size: 1.75rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .stat-label { color: var(--muted); font-size: 0.82rem; margin-top: 0.25rem; }
+
+        /* About strip */
+        .about-strip {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        @media (max-width: 640px) {
+            .about-strip { grid-template-columns: 1fr; }
+        }
+        .about-strip h2 { font-size: 1.3rem; font-weight: 700; margin-bottom: 0.75rem; }
+        .about-strip p { color: var(--muted); font-size: 0.9rem; }
+        .about-strip ul { color: var(--muted); font-size: 0.9rem; list-style: none; }
+        .about-strip ul li { padding: 0.2rem 0; }
+        .about-strip ul li::before { content: "→ "; color: var(--accent2); }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2.5rem 2rem;
+            color: var(--muted);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border);
+        }
+        footer a { color: var(--accent2); text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+        .footer-links {
+            display: flex;
+            gap: 1.25rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 480px) {
+            .hero { padding: 3rem 1.25rem; }
+            main { padding: 2.5rem 1.25rem; }
         }
     </style>
 </head>
 <body>
-    <div class="grid-bg"></div>
-    <div class="content">
-        <h1>Offbeat, Inc.</h1>
-        <p class="subtitle">Website redesign — 3 versions for review</p>
-        <div class="cards">
-            <a href="v1/" class="card">
-                <span class="badge">V1</span>
-                <h2>Grid Minimal</h2>
-                <p>Clean grid background, animated glowing outlines, tech-forward corporate feel. Inter font.</p>
+
+<nav>
+    <a class="nav-brand" href="/">Offbeat Inc.</a>
+    <div class="nav-links">
+        <a href="best-dj-software-beginners-2026.html">DJ Software</a>
+        <a href="dj-affiliate-programs.html">Affiliate Programs</a>
+        <a href="music-distribution-affiliates.html">Distribution</a>
+        <a href="dj-set-generator.html">Set Generator</a>
+        <a href="datbotty-status.html">DatBotty</a>
+        <a href="about.html">About</a>
+    </div>
+</nav>
+
+<div class="hero">
+    <span class="hero-eyebrow">DJ &amp; Music Production</span>
+    <h1>Find exactly the right <span class="gradient">tools for your sound</span></h1>
+    <p>Honest, research-backed comparisons of DJ software, production tools, and music platforms — built by producers for producers.</p>
+    <div class="hero-ctas">
+        <a class="btn-primary" href="best-dj-software-beginners-2026.html">Compare DJ Software →</a>
+        <a class="btn-secondary" href="dj-affiliate-programs.html">Browse Affiliate Programs</a>
+    </div>
+</div>
+
+<main>
+
+    <div class="stats-bar">
+        <div class="stat">
+            <div class="stat-num">6+</div>
+            <div class="stat-label">DJ Software Compared</div>
+        </div>
+        <div class="stat">
+            <div class="stat-num">50%</div>
+            <div class="stat-label">Top Affiliate Commission (Unison Audio)</div>
+        </div>
+        <div class="stat">
+            <div class="stat-num">Free</div>
+            <div class="stat-label">DJ Set Generator</div>
+        </div>
+        <div class="stat">
+            <div class="stat-num">AI</div>
+            <div class="stat-label">Powered by DatBotty</div>
+        </div>
+    </div>
+
+    <section>
+        <h2 class="section-title">DJ Software Comparisons</h2>
+        <p class="section-sub">Side-by-side breakdowns so you can pick the right tool without the guesswork.</p>
+        <div class="card-grid">
+            <a class="card" href="best-dj-software-beginners-2026.html">
+                <span class="card-icon">🎧</span>
+                <h3>Best DJ Software for Beginners 2026</h3>
+                <p>Serato Lite, DJ.Studio, Virtual DJ, rekordbox, Traktor Pro 3, and Mixxx — compared head-to-head for price, learning curve, and features.</p>
+                <span class="badge">Comparison Table</span>
             </a>
-            <a href="v2/" class="card">
-                <span class="badge">V2 ✦</span>
-                <h2>Refined Edge</h2>
-                <p>Mesh gradients, animated borders, bento layout with scanline effects. Best of V2+V3 merged. Outfit font.</p>
-            </a>
-            <a href="v3/" class="card">
-                <span class="badge">V3</span>
-                <h2>Neon Edge</h2>
-                <p>Mesh gradients, scanline effects, boldest visual identity. Maximum futuristic vibe. Outfit font.</p>
+            <a class="card" href="dj-tools-and-sampling-platforms-affiliates.html">
+                <span class="card-icon">🎹</span>
+                <h3>DJ &amp; Sampling Platforms</h3>
+                <p>Best platforms for loops, samples, and DJ production tools — with affiliate programs worth joining.</p>
+                <span class="badge badge-cyan">Affiliate</span>
             </a>
         </div>
-        <a href="dj-set-generator.html" class="dj-link">⚡ DJ Set Generator</a>
-        <p class="footer" style="margin-top:1rem;">Built by <span>DatBotty v2</span> — First autonomous project delivery</p>
+    </section>
+
+    <section>
+        <h2 class="section-title">Affiliate Programs</h2>
+        <p class="section-sub">Verified commission rates for DJs, producers, and music content creators.</p>
+        <div class="card-grid">
+            <a class="card" href="dj-affiliate-programs.html">
+                <span class="card-icon">💰</span>
+                <h3>DJ Affiliate Programs 2026</h3>
+                <p>Top-commission programs: Unison Audio (50%), Loopmasters (20%), Splice, Plugin Boutique, Waves, and more. Tavily-verified rates.</p>
+                <span class="badge badge-cyan">Up to 50% Commission</span>
+            </a>
+            <a class="card" href="music-distribution-affiliates.html">
+                <span class="card-icon">💿</span>
+                <h3>Music Distribution Affiliates</h3>
+                <p>DistroKid, TuneCore, CD Baby, and other distribution platforms — compare deals and find affiliate opportunities for music creators.</p>
+                <span class="badge badge-cyan">Affiliate</span>
+            </a>
+            <a class="card" href="affiliate-tools.html">
+                <span class="card-icon">🛠️</span>
+                <h3>Affiliate Tools Hub</h3>
+                <p>Resources and tools for content creators building income in the music and DJ space.</p>
+                <span class="badge">Tools</span>
+            </a>
+        </div>
+    </section>
+
+    <section>
+        <h2 class="section-title">Free Tools</h2>
+        <p class="section-sub">AI-powered utilities built by DatBotty for the music community.</p>
+        <div class="card-grid">
+            <a class="card" href="dj-set-generator.html">
+                <span class="card-icon">🎵</span>
+                <h3>DJ Set Generator</h3>
+                <p>Generate a professional DJ set list for any genre, BPM range, or event type in seconds. Completely free.</p>
+                <span class="badge badge-green">Free</span>
+            </a>
+            <a class="card" href="datbotty-status.html">
+                <span class="card-icon">🤖</span>
+                <h3>DatBotty — Live AI System</h3>
+                <p>Real-time status dashboard for the autonomous AI system that researches, writes, and deploys this content.</p>
+                <span class="badge">Live Status</span>
+            </a>
+        </div>
+    </section>
+
+    <section class="about-strip">
+        <div>
+            <h2>About Offbeat Inc.</h2>
+            <p>We're a small tech outfit that builds software and AI tools for DJs, producers, and music industry people. Based in South Carolina. Since 2015.</p>
+            <p style="margin-top: 0.75rem;">This site's content is researched and built autonomously by <a href="datbotty-status.html" style="color: var(--accent2);">DatBotty</a> — our in-house AI agent — then reviewed and published by a human.</p>
+        </div>
+        <div>
+            <h2>What We Cover</h2>
+            <ul>
+                <li>DJ software comparisons and buying guides</li>
+                <li>Music production tool reviews</li>
+                <li>Affiliate programs with verified commission rates</li>
+                <li>Music distribution platform comparisons</li>
+                <li>Free tools for DJs and producers</li>
+                <li>Custom software and AI automation</li>
+            </ul>
+        </div>
+    </section>
+
+</main>
+
+<footer>
+    <div class="footer-links">
+        <a href="/">Home</a>
+        <a href="best-dj-software-beginners-2026.html">DJ Software</a>
+        <a href="dj-affiliate-programs.html">Affiliate Programs</a>
+        <a href="music-distribution-affiliates.html">Distribution</a>
+        <a href="dj-set-generator.html">Set Generator</a>
+        <a href="datbotty-status.html">DatBotty</a>
+        <a href="privacy.html">Privacy Policy</a>
     </div>
+    <p>Offbeat Inc. &copy; 2026 &mdash; South Carolina &mdash; Built with <a href="datbotty-status.html">DatBotty AI</a></p>
+    <p style="margin-top: 0.5rem; font-size: 0.8rem;">Affiliate disclosure: Some links on this site are affiliate links. We may earn a commission at no cost to you. Rates are verified via Tavily research and updated regularly.</p>
+</footer>
+
 </body>
 </html>

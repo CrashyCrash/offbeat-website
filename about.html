@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Offbeat Inc. — Custom Software, AI Automation &amp; Music Tech</title>
+    <meta name="description" content="Offbeat Inc. builds custom software, AI automation systems, and music production tools from South Carolina. Founded 2015. Powered by DatBotty autonomous AI.">
+    <link rel="canonical" href="https://offbeatinc.com/about.html">
+    <meta property="og:title" content="About Offbeat Inc.">
+    <meta property="og:description" content="Custom software, AI automation, and music tech tools built in South Carolina since 2015.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://offbeatinc.com/about.html">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Offbeat Inc.",
+      "url": "https://offbeatinc.com",
+      "description": "Custom software, AI automation, and music technology tools.",
+      "foundingDate": "2015",
+      "areaServed": "US",
+      "knowsAbout": [
+        "Custom Software Development",
+        "AI Automation",
+        "DJ Software",
+        "Music Production Tools",
+        "Affiliate Marketing"
+      ]
+    }
+    </script>
+    <style>
+        :root {
+            --bg: #0a0a0f;
+            --surface: #13131a;
+            --border: #1e1e2e;
+            --accent: #7c3aed;
+            --accent2: #06b6d4;
+            --text: #e2e8f0;
+            --muted: #94a3b8;
+        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+        }
+
+        nav {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 0.85rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-brand {
+            font-weight: 800;
+            font-size: 1.1rem;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+        .nav-links { display: flex; gap: 1.25rem; flex-wrap: wrap; }
+        .nav-links a {
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover { color: var(--accent2); }
+        .nav-links a.active { color: var(--text); font-weight: 600; }
+
+        .hero {
+            background: linear-gradient(135deg, #0f0f1a 0%, #1a0a2e 60%, #0a1520 100%);
+            border-bottom: 1px solid var(--border);
+            padding: 4rem 2rem 3rem;
+            text-align: center;
+        }
+        .hero h1 {
+            font-size: clamp(1.75rem, 4vw, 2.75rem);
+            font-weight: 800;
+            margin-bottom: 0.75rem;
+        }
+        .hero h1 .gradient {
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero p {
+            color: var(--muted);
+            font-size: 1.05rem;
+            max-width: 560px;
+            margin: 0 auto;
+        }
+
+        main { max-width: 900px; margin: 0 auto; padding: 4rem 2rem; }
+
+        section { margin-bottom: 3.5rem; }
+
+        h2 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--accent2);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        p { color: var(--muted); margin-bottom: 1rem; font-size: 0.95rem; }
+        p strong { color: var(--text); }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1.25rem;
+            margin-top: 1.25rem;
+        }
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+        .card-icon { font-size: 1.75rem; margin-bottom: 0.75rem; }
+        .card h3 { font-size: 1rem; font-weight: 600; color: var(--text); margin-bottom: 0.5rem; }
+        .card p { font-size: 0.88rem; margin: 0; }
+
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        @media (max-width: 600px) {
+            .two-col { grid-template-columns: 1fr; }
+        }
+
+        .fact-list { list-style: none; padding: 0; margin-top: 0.5rem; }
+        .fact-list li {
+            color: var(--muted);
+            font-size: 0.93rem;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            gap: 0.75rem;
+        }
+        .fact-list li:last-child { border-bottom: none; }
+        .fact-list .label { color: var(--text); font-weight: 600; min-width: 120px; }
+
+        .datbotty-explainer {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--accent);
+            border-radius: 12px;
+            padding: 1.75rem;
+            margin-top: 1.25rem;
+        }
+        .datbotty-explainer h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 0.75rem;
+        }
+        .datbotty-explainer p { font-size: 0.9rem; margin-bottom: 0.5rem; }
+        .datbotty-explainer p:last-child { margin-bottom: 0; }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+        }
+        .tech-tag {
+            background: rgba(6,182,212,0.1);
+            border: 1px solid rgba(6,182,212,0.2);
+            color: var(--accent2);
+            font-size: 0.78rem;
+            font-weight: 600;
+            padding: 0.25rem 0.65rem;
+            border-radius: 999px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2.5rem 2rem;
+            color: var(--muted);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border);
+        }
+        footer a { color: var(--accent2); text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+        .footer-links {
+            display: flex;
+            gap: 1.25rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 480px) {
+            .hero { padding: 2.5rem 1.25rem; }
+            main { padding: 2.5rem 1.25rem; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a class="nav-brand" href="/">Offbeat Inc.</a>
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="best-dj-software-beginners-2026.html">DJ Software</a>
+        <a href="dj-affiliate-programs.html">Affiliates</a>
+        <a href="dj-set-generator.html">Set Generator</a>
+        <a href="datbotty-status.html">DatBotty</a>
+        <a href="about.html" class="active">About</a>
+    </div>
+</nav>
+
+<div class="hero">
+    <h1>We build <span class="gradient">unusual things</span></h1>
+    <p>Custom software and AI automation for people who don't fit the standard mold. Based in South Carolina since 2015.</p>
+</div>
+
+<main>
+
+    <section>
+        <h2>What We Do</h2>
+        <p>Offbeat Inc. is a small independent software company. We build custom software, AI automation systems, and digital tools — primarily for the music industry, but also for clients who need something built that doesn't already exist.</p>
+        <p>This website is focused on <strong>DJ and music production tool research</strong>: honest comparisons of software, gear, and services, backed by AI-assisted research through our DatBotty system.</p>
+
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-icon">🔬</div>
+                <h3>DJ &amp; Music Tool Research</h3>
+                <p>Comparison tables, buying guides, and affiliate program reviews for DJs and producers. Researched by DatBotty, reviewed by humans.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🤖</div>
+                <h3>AI Automation Systems</h3>
+                <p>Custom autonomous AI agents for content production, research, and business workflows. DatBotty is the in-house proof of concept.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">⚙️</div>
+                <h3>Custom Software Development</h3>
+                <p>Bespoke tools when off-the-shelf doesn't cut it. We've been building unusual software since 2015.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🎵</div>
+                <h3>Music Technology Tools</h3>
+                <p>Free utilities for DJs and producers — set generators, research tools, and productivity aids for the creative workflow.</p>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>About the Company</h2>
+        <div class="two-col">
+            <div>
+                <ul class="fact-list">
+                    <li><span class="label">Founded</span> 2015</li>
+                    <li><span class="label">Location</span> South Carolina, USA</li>
+                    <li><span class="label">Focus</span> Music tech, AI automation, custom software</li>
+                    <li><span class="label">This site</span> DJ &amp; music production tool hub</li>
+                    <li><span class="label">Content</span> AI-researched, human-reviewed</li>
+                </ul>
+            </div>
+            <div>
+                <p>We're a small team — more accurately, one person backed by an increasingly capable AI system. The content and tools on this site are built autonomously by <a href="datbotty-status.html">DatBotty</a> and reviewed before publishing.</p>
+                <p>We don't do sponsored posts or pay-to-play reviews. Affiliate commissions are disclosed on every page. Research comes from real program documentation and search-verified sources.</p>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>DatBotty — The AI Behind This Site</h2>
+        <div class="datbotty-explainer">
+            <h3>What is DatBotty?</h3>
+            <p>DatBotty is an autonomous AI agent system we built and run locally. It uses a combination of LLM APIs (GitHub Models / GPT-4.1, OpenClaw/Gemini), a SQLite task queue, and n8n workflows to research topics, write content, generate code, and deploy updates — without human involvement for each step.</p>
+            <p>The DJ software comparisons, affiliate program research, and some of the free tools on this site were produced autonomously by DatBotty using Tavily web search for verification. We review the output before it goes live.</p>
+            <p>DatBotty is not a product we sell — it's our internal infrastructure. The <a href="datbotty-status.html">DatBotty status page</a> shows live metrics from the system.</p>
+        </div>
+
+        <p style="margin-top: 1.25rem;">Tech stack DatBotty currently uses:</p>
+        <div class="tech-stack">
+            <span class="tech-tag">Python</span>
+            <span class="tech-tag">SQLite</span>
+            <span class="tech-tag">n8n</span>
+            <span class="tech-tag">GPT-4.1 via GitHub Models</span>
+            <span class="tech-tag">Gemini Flash (OpenClaw)</span>
+            <span class="tech-tag">Tavily Search API</span>
+            <span class="tech-tag">Flask / FastAPI</span>
+            <span class="tech-tag">GitHub Pages</span>
+        </div>
+    </section>
+
+    <section>
+        <h2>Affiliate Disclosure</h2>
+        <p>Some links on this site are affiliate links. If you click through and make a purchase, we may earn a commission at no additional cost to you. All commissions are disclosed on the relevant pages. We only link to products we've actually researched — we don't take payment for placement or editorial.</p>
+        <p>See our full <a href="privacy.html">Privacy Policy</a> for details on data collection, cookies, and your rights.</p>
+    </section>
+
+</main>
+
+<footer>
+    <div class="footer-links">
+        <a href="/">Home</a>
+        <a href="best-dj-software-beginners-2026.html">DJ Software</a>
+        <a href="dj-affiliate-programs.html">Affiliate Programs</a>
+        <a href="dj-set-generator.html">Set Generator</a>
+        <a href="datbotty-status.html">DatBotty</a>
+        <a href="about.html">About</a>
+        <a href="privacy.html">Privacy Policy</a>
+    </div>
+    <p>Offbeat Inc. &copy; 2026 &mdash; South Carolina &mdash; Built with <a href="datbotty-status.html">DatBotty AI</a></p>
+</footer>
+
+</body>
+</html>
