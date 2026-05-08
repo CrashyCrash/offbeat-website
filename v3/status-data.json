@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-08T07:43:01Z",
+  "generated_at": "2026-05-08T13:49:29Z",
   "live_pages": 27,
   "prs_merged": 7,
   "issues_dispatched": 8,
@@ -8,7 +8,7 @@
   "open_prs": 22,
   "pages_up": 10,
   "pages_checked": 10,
-  "last_commit_offbeat": "2026-05-08T02:56:17Z",
+  "last_commit_offbeat": "2026-05-08T07:43:01Z",
   "last_commit_msg": "chore: update status dashboard data [skip ci]",
-  "last_commit_sha": "046b3bc"
+  "last_commit_sha": "289846f"
 }
