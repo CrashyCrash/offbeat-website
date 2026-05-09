@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-05-09T13:18:42Z",
-  "live_pages": 30,
+  "generated_at": "2026-05-09T19:02:43Z",
+  "live_pages": 26,
   "prs_merged": 7,
   "issues_dispatched": 8,
   "open_issues": 88,
@@ -8,7 +8,7 @@
   "open_prs": 22,
   "pages_up": 10,
   "pages_checked": 10,
-  "last_commit_offbeat": "2026-05-09T13:01:34Z",
-  "last_commit_msg": "Revert CNAME \u2014 offbeatinc.com custom domain not ready for GitHub Pages deploym",
-  "last_commit_sha": "5d18448"
+  "last_commit_offbeat": "2026-05-09T17:20:01Z",
+  "last_commit_msg": "chore: auto-publish AI content [2026-05-09 13:20] (2 files, 2fileschanged,221ins",
+  "last_commit_sha": "7f5eaec"
 }
