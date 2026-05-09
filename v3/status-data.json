@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-09T07:57:35Z",
+  "generated_at": "2026-05-09T13:18:42Z",
   "live_pages": 30,
   "prs_merged": 7,
   "issues_dispatched": 8,
@@ -8,7 +8,7 @@
   "open_prs": 22,
   "pages_up": 10,
   "pages_checked": 10,
-  "last_commit_offbeat": "2026-05-09T02:51:58Z",
-  "last_commit_msg": "chore: update status dashboard data [skip ci]",
-  "last_commit_sha": "547fde6"
+  "last_commit_offbeat": "2026-05-09T13:01:34Z",
+  "last_commit_msg": "Revert CNAME \u2014 offbeatinc.com custom domain not ready for GitHub Pages deploym",
+  "last_commit_sha": "5d18448"
 }
