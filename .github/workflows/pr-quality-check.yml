@@ -11,9 +11,7 @@ on:
 
 jobs:
   score-pr:
-    if: >
-      github.event.pull_request.merged == true &&
-      startsWith(github.event.pull_request.head.ref, 'copilot/')
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:

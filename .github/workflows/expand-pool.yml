@@ -13,8 +13,8 @@ on:
         description: 'Number of new tasks to add'
         required: false
         default: '8'
-        type: choice
-        options: ['4', '6', '8', '10', '12']
+        type: string
+        # options (for reference): 4, 6, 8, 10, 12
 
 jobs:
   expand-pool:

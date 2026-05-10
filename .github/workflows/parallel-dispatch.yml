@@ -27,8 +27,8 @@ on:
         description: 'Number of parallel tasks to dispatch (1–6)'
         required: false
         default: '1'
-        type: choice
-        options: ['1', '2', '3', '4', '5', '6']
+        type: string
+        # options (for reference): ['1', '2', '3', '4', '5', '6']
 
 jobs:
   parallel-dispatch:
