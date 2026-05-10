@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-10T13:19:30Z",
+  "generated_at": "2026-05-10T19:05:23Z",
   "live_pages": 42,
   "prs_merged": 7,
   "issues_dispatched": 8,
@@ -8,7 +8,7 @@
   "open_prs": 22,
   "pages_up": 10,
   "pages_checked": 10,
-  "last_commit_offbeat": "2026-05-10T11:23:32Z",
-  "last_commit_msg": "Add 3 sections to how-to-start-djing.html (was completely empty)",
-  "last_commit_sha": "efa30f1"
+  "last_commit_offbeat": "2026-05-10T18:20:01Z",
+  "last_commit_msg": "chore: auto-publish AI content [2026-05-10 14:20] (3 files, 3fileschanged,406ins",
+  "last_commit_sha": "f78991c"
 }
