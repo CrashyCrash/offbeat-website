@@ -1,891 +1,384 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Offbeat Inc. — DJ &amp; Music Production Tools, Reviews &amp; Affiliate Programs</title>
-    <meta name="description" content="Offbeat Inc. helps DJs and music producers find the best software, gear, and production tools. Honest comparisons, verified affiliate programs, and free AI tools.">
-    <link rel="canonical" href="https://offbeatinc.com/">
-    <meta property="og:title" content="Offbeat Inc. — DJ &amp; Music Production Tools">
-    <meta property="og:description" content="Honest comparisons of DJ software, music production tools, and affiliate programs for producers and DJs.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://offbeatinc.com/">
-    <meta name="twitter:card" content="summary">
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "Offbeat Inc.",
-      "url": "https://offbeatinc.com",
-      "description": "DJ and music production software reviews, affiliate programs, and AI-powered tools for creators.",
-      "foundingDate": "2015",
-      "knowsAbout": ["DJ Software", "Music Production", "Affiliate Marketing", "AI Automation"]
-    }
-    </script>
-    <style>
-        :root {
-            --bg: #0a0a0f;
-            --surface: #13131a;
-            --border: #1e1e2e;
-            --accent: #7c3aed;
-            --accent2: #06b6d4;
-            --text: #e2e8f0;
-            --muted: #94a3b8;
-        }
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        html { scroll-behavior: smooth; }
-        body {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.6;
-        }
-
-        /* Nav */
-        nav {
-            background: var(--surface);
-            border-bottom: 1px solid var(--border);
-            padding: 0.85rem 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 0.75rem;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        .nav-brand {
-            font-weight: 800;
-            font-size: 1.1rem;
-            background: linear-gradient(90deg, var(--accent), var(--accent2));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-decoration: none;
-        }
-        .nav-links { display: flex; gap: 1.25rem; flex-wrap: wrap; }
-        .nav-links a {
-            color: var(--muted);
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: color 0.2s;
-        }
-        .nav-links a:hover { color: var(--accent2); }
-
-        /* Hero */
-        .hero {
-            background: linear-gradient(135deg, #0f0f1a 0%, #1a0a2e 60%, #0a1520 100%);
-            border-bottom: 1px solid var(--border);
-            padding: 5rem 2rem 4rem;
-            text-align: center;
-        }
-        .hero-eyebrow {
-            display: inline-block;
-            background: rgba(124,58,237,0.15);
-            border: 1px solid rgba(124,58,237,0.3);
-            color: #a78bfa;
-            font-size: 0.8rem;
-            font-weight: 600;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            padding: 0.35rem 1rem;
-            border-radius: 999px;
-            margin-bottom: 1.5rem;
-        }
-        .hero h1 {
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            font-weight: 800;
-            line-height: 1.15;
-            max-width: 750px;
-            margin: 0 auto 1.25rem;
-        }
-        .hero h1 .gradient {
-            background: linear-gradient(90deg, var(--accent), var(--accent2));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        .hero p {
-            color: var(--muted);
-            font-size: 1.15rem;
-            max-width: 580px;
-            margin: 0 auto 2.5rem;
-        }
-        .hero-ctas {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        .btn-primary {
-            background: var(--accent);
-            color: white;
-            text-decoration: none;
-            padding: 0.75rem 1.75rem;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 0.95rem;
-            transition: background 0.2s, transform 0.15s;
-        }
-        .btn-primary:hover { background: #6d28d9; transform: translateY(-1px); }
-        .btn-secondary {
-            background: transparent;
-            color: var(--accent2);
-            text-decoration: none;
-            padding: 0.75rem 1.75rem;
-            border-radius: 8px;
-            border: 1px solid var(--accent2);
-            font-weight: 600;
-            font-size: 0.95rem;
-            transition: background 0.2s, transform 0.15s;
-        }
-        .btn-secondary:hover { background: rgba(6,182,212,0.08); transform: translateY(-1px); }
-
-        /* Sections */
-        main { max-width: 1100px; margin: 0 auto; padding: 4rem 2rem; }
-        .section-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--accent2);
-            margin-bottom: 0.5rem;
-        }
-        .section-sub {
-            color: var(--muted);
-            font-size: 0.95rem;
-            margin-bottom: 2rem;
-        }
-        section { margin-bottom: 4rem; }
-
-        /* Card grid */
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.25rem;
-        }
-        .card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.5rem;
-            text-decoration: none;
-            color: var(--text);
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            transition: border-color 0.2s, transform 0.15s;
-        }
-        .card:hover {
-            border-color: var(--accent);
-            transform: translateY(-2px);
-        }
-        .card-icon { font-size: 1.75rem; }
-        .card h3 { font-size: 1rem; font-weight: 600; }
-        .card p { color: var(--muted); font-size: 0.88rem; flex: 1; }
-        .badge {
-            display: inline-block;
-            background: rgba(124,58,237,0.15);
-            color: #a78bfa;
-            font-size: 0.7rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            padding: 0.2rem 0.6rem;
-            border-radius: 999px;
-            align-self: flex-start;
-        }
-        .badge-cyan {
-            background: rgba(6,182,212,0.12);
-            color: var(--accent2);
-        }
-        .badge-green {
-            background: rgba(34,197,94,0.12);
-            color: #4ade80;
-        }
-
-        /* Stats bar */
-        .stats-bar {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.5rem 2rem;
-            display: flex;
-            gap: 2rem;
-            flex-wrap: wrap;
-            justify-content: space-around;
-            margin-bottom: 4rem;
-        }
-        .stat { text-align: center; }
-        .stat-num {
-            font-size: 1.75rem;
-            font-weight: 800;
-            background: linear-gradient(90deg, var(--accent), var(--accent2));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        .stat-label { color: var(--muted); font-size: 0.82rem; margin-top: 0.25rem; }
-
-        /* About strip */
-        .about-strip {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 2rem;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-        }
-        @media (max-width: 640px) {
-            .about-strip { grid-template-columns: 1fr; }
-        }
-        .about-strip h2 { font-size: 1.3rem; font-weight: 700; margin-bottom: 0.75rem; }
-        .about-strip p { color: var(--muted); font-size: 0.9rem; }
-        .about-strip ul { color: var(--muted); font-size: 0.9rem; list-style: none; }
-        .about-strip ul li { padding: 0.2rem 0; }
-        .about-strip ul li::before { content: "→ "; color: var(--accent2); }
-
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 2.5rem 2rem;
-            color: var(--muted);
-            font-size: 0.85rem;
-            border-top: 1px solid var(--border);
-        }
-        footer a { color: var(--accent2); text-decoration: none; }
-        footer a:hover { text-decoration: underline; }
-        .footer-links {
-            display: flex;
-            gap: 1.25rem;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-bottom: 1rem;
-        }
-
-        @media (max-width: 480px) {
-            .hero { padding: 3rem 1.25rem; }
-            main { padding: 2.5rem 1.25rem; }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Offbeat Inc. — DJ &amp; Music Production Reviews, Guides &amp; Affiliate Programs</title>
+  <meta name="description" content="Offbeat Inc. helps DJs and music producers find the best software, gear, and tools. Honest comparisons, verified affiliate programs, and a free AI DJ Set Generator.">
+  <link rel="canonical" href="https://offbeatinc.com/">
+  <meta property="og:title" content="Offbeat Inc. — DJ &amp; Music Production Guides">
+  <meta property="og:description" content="Honest comparisons of DJ software, music production tools, and affiliate programs for producers and DJs.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://offbeatinc.com/">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Offbeat Inc.",
+    "url": "https://offbeatinc.com",
+    "description": "DJ and music production software reviews, affiliate programs, and AI tools for creators.",
+    "foundingDate": "2015",
+    "knowsAbout": ["DJ Software", "Music Production", "Affiliate Marketing"]
+  }
+  </script>
   <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
 
 <nav>
-    <a class="nav-brand" href="/">Offbeat Inc.</a>
-    <div class="nav-links">
-        <a href="best-dj-software-beginners-2026.html">DJ Software</a>
-        <a href="best-dj-controllers-2026.html">Controllers</a>
-        <a href="serato-vs-rekordbox-vs-traktor.html">Serato vs Traktor</a>
-        <a href="how-to-start-djing.html">Start DJing</a>
-        <a href="dj-set-generator.html">Set Generator</a>
-        <a href="about.html">About</a>
-    </div>
+  <a class="nav-brand" href="index.html">Offbeat Inc.</a>
+  <div class="nav-links">
+    <a href="best-dj-controllers-2026.html">Controllers</a>
+    <a href="best-dj-software-beginners-2026.html">Software</a>
+    <a href="best-dj-headphones-2026.html">Headphones</a>
+    <a href="best-dj-mixers-2026.html">Mixers</a>
+    <a href="how-to-start-djing.html">Learn DJing</a>
+    <a href="dj-affiliate-programs-guide.html">Affiliates</a>
+    <a href="about.html">About</a>
+  </div>
 </nav>
 
 <div class="hero">
-    <span class="hero-eyebrow">DJ &amp; Music Production</span>
-    <h1>Find exactly the right <span class="gradient">tools for your sound</span></h1>
-    <p>Honest, research-backed comparisons of DJ software, production tools, and music platforms — built by producers for producers.</p>
-    <div class="hero-ctas">
-        <a class="btn-primary" href="best-dj-software-beginners-2026.html">Compare DJ Software →</a>
-    </div>
+  <div class="hero-eyebrow">DJ &amp; Music Production</div>
+  <h1><span class="gradient-text">Expert guides</span> for DJs and producers</h1>
+  <p>73 in-depth reviews, buying guides, and comparisons — independently researched by Jake Morrison, 12 years behind the decks.</p>
+  <div class="hero-ctas">
+    <a class="btn-primary" href="best-dj-software-beginners-2026.html">Compare DJ Software</a>
+    <a class="btn-secondary" href="dj-set-generator.html">Free DJ Set Generator</a>
+  </div>
 </div>
 
 <main>
 
-    <div class="stats-bar">
-        <div class="stat">
-            <div class="stat-num">6+</div>
-            <div class="stat-label">DJ Software Compared</div>
-        </div>
-        <div class="stat">
-            <div class="stat-num">50%</div>
-            <div class="stat-label">Top Affiliate Commission (Unison Audio)</div>
-        </div>
-        <div class="stat">
-            <div class="stat-num">Free</div>
-            <div class="stat-label">DJ Set Generator</div>
-        </div>
-        <div class="stat">
-            <div class="stat-num">AI</div>
-            <div class="stat-label">Powered by DatBotty</div>
-        </div>
+  <div class="stats-bar">
+    <div class="stat">
+      <div class="stat-num">73</div>
+      <div class="stat-label">In-Depth Guides</div>
     </div>
-
-    <section>
-        <h2 class="section-title">DJ Software Comparisons</h2>
-        <p class="section-sub">Side-by-side breakdowns so you can pick the right tool without the guesswork.</p>
-        <div class="card-grid">
-            <a class="card" href="best-dj-software-beginners-2026.html">
-                <span class="card-icon">🎧</span>
-                <h3>Best DJ Software for Beginners 2026</h3>
-                <p>Serato Lite, DJ.Studio, Virtual DJ, rekordbox, Traktor Pro 3, and Mixxx — compared head-to-head for price, learning curve, and features.</p>
-                <span class="badge">Comparison Table</span>
-            </a>
-            <a class="card" href="serato-dj-pro-review.html">
-                <span class="card-icon">🎧</span>
-                <h3>Serato DJ Pro Review 2026</h3>
-                <p>Is Serato DJ Pro worth $14.99/mo in 2026? Full review: features, hardware support, and how it compares to Rekordbox and Traktor.</p>
-                <span class="badge">Review</span>
-            </a>
-            <a class="card" href="rekordbox-review.html">
-                <span class="card-icon">💿</span>
-                <h3>Rekordbox DJ Review 2026</h3>
-                <p>Is Rekordbox still the best choice for Pioneer CDJ users in 2026? Features, pricing, and CDJ integration compared.</p>
-                <span class="badge">Review</span>
-            </a>
-            <a class="card" href="traktor-pro-review.html">
-                <span class="card-icon">🎶</span>
-                <h3>Traktor Pro 3 Review 2026</h3>
-                <p>Native Instruments' pro DJ platform reviewed — Stems, effects, hardware bundles, and whether it's worth it in 2026.</p>
-                <span class="badge">Review</span>
-            </a>
-            <a class="card" href="virtual-dj-vs-serato.html">
-                <span class="card-icon">⚡</span>
-                <h3>Virtual DJ vs Serato DJ Pro</h3>
-                <p>Detailed 2026 comparison: features, hardware support, pricing, and which is better for beginners vs experienced DJs.</p>
-                <span class="badge">Showdown</span>
-            </a>
-            <a class="card" href="best-free-dj-software-2026.html">
-                <span class="card-icon">🆓</span>
-                <h3>Best Free DJ Software 2026</h3>
-                <p>Mixxx, Serato DJ Lite, VirtualDJ free tier, and more — the best free DJ apps tested and ranked for 2026.</p>
-                <span class="badge badge-green">Free</span>
-            </a>
-            <a class="card" href="dj-tools-and-sampling-platforms-affiliates.html">
-                <span class="card-icon">🎹</span>
-                <h3>DJ &amp; Sampling Platforms</h3>
-                <p>Best platforms for loops, samples, and DJ production tools — with affiliate programs worth joining.</p>
-                <span class="badge badge-cyan">Affiliate</span>
-            </a>
-            <a class="card" href="best-music-production-software-2026.html">
-                <span class="card-icon">🎛️</span>
-                <h3>Best Music Production Software 2026</h3>
-                <p>Ableton, FL Studio, Logic Pro, and Pro Tools ranked — find the right DAW for your workflow and budget.</p>
-                <span class="badge">Buying Guide</span>
-            </a>
-            <a class="card" href="best-daw-for-music-production.html">
-                <span class="card-icon">🎼</span>
-                <h3>Best DAW for Music Production 2026</h3>
-                <p>Beginner to pro: which digital audio workstation wins for beat-making, mixing, and live performance?</p>
-                <span class="badge">Comparison</span>
-            </a>
-            <a class="card" href="midi-controllers-for-music-production.html">
-                <span class="card-icon">🎹</span>
-                <h3>Best MIDI Controllers for Producers</h3>
-                <p>Ableton Push vs Akai MPC vs Native Instruments Maschine — the best MIDI controllers for every budget.</p>
-                <span class="badge">Buying Guide</span>
-            </a>
-        </div>
-    </section>
-
-    <section>
-        <h2 class="section-title">DJ Gear Reviews &amp; Buying Guides</h2>
-        <p class="section-sub">Find the right hardware for your budget and setup.</p>
-        <div class="card-grid">
-            <a class="card" href="best-dj-controllers-2026.html">
-                <span class="card-icon">🎛️</span>
-                <h3>Best DJ Controllers 2026</h3>
-                <p>Pioneer DDJ, Numark, Denon, and budget options — reviewed for beginners and pros alike.</p>
-                <span class="badge">Buying Guide</span>
-            </a>
-            <a class="card" href="best-dj-headphones-2026.html">
-                <span class="card-icon">🎧</span>
-                <h3>Best DJ Headphones Under $200</h3>
-                <p>Closed-back monitoring headphones for DJs — tested for build quality, isolation, and sound.</p>
-                <span class="badge">Review</span>
-            </a>
-            <a class="card" href="best-dj-headphones-professional.html">
-                <span class="card-icon">🎧</span>
-                <h3>Best Professional DJ Headphones 2026</h3>
-                <p>Pioneer HDJ-X10, Sennheiser HD 25, and Audio-Technica ATH-M60x — the best studio and club headphones money can buy.</p>
-                <span class="badge">Buying Guide</span>
-            </a>
-            <a class="card" href="best-dj-headphones-under-100-2026.html">
-                <span class="card-icon">💰</span>
-                <h3>Best DJ Headphones Under $100</h3>
-                <p>Sony MDR-7506, Pioneer HDJ-CUE1, and Sennheiser HD 206 compared — best budget DJ headphones in 2026.</p>
-                <span class="badge badge-green">Budget Pick</span>
-            </a>
-            <a class="card" href="best-dj-mixers-2026.html">
-                <span class="card-icon">🎚️</span>
-                <h3>Best DJ Mixers 2026</h3>
-                <p>Home practice and club-ready mixers at every budget — Pioneer, Rane, Allen &amp; Heath compared.</p>
-                <span class="badge">Comparison</span>
-            </a>
-            <a class="card" href="best-dj-turntables-2026.html">
-                <span class="card-icon">🎵</span>
-                <h3>Best DJ Turntables 2026</h3>
-                <p>Technics SL-1200MK7, Pioneer PLX-500, and Audio-Technica AT-LP120XBT — top DJ turntables ranked for 2026.</p>
-                <span class="badge">Buying Guide</span>
-            </a>
-            <a class="card" href="best-dj-laptop-2026.html">
-                <span class="card-icon">💻</span>
-                <h3>Best Laptop for DJing 2026</h3>
-                <p>MacBook vs Windows for DJs — performance, latency, and battery life tested for live sets.</p>
-                <span class="badge">Buying Guide</span>
-            </a>
-            <a class="card" href="dj-equipment-beginners.html">
-                <span class="card-icon">🎶</span>
-                <h3>DJ Equipment for Beginners</h3>
-                <p>Everything you need to start DJing — starter kits, budget gear, and what to skip.</p>
-                <span class="badge badge-green">Starter Guide</span>
-            </a>
-            <a class="card" href="pioneer-ddj-flx4-review.html">
-                <span class="card-icon">⭐</span>
-                <h3>Pioneer DDJ-FLX4 Review</h3>
-                <p>Hands-on review of Pioneer's popular beginner controller — is it worth the price in 2026?</p>
-                <span class="badge">Review</span>
-            </a>
-            <a class="card" href="beginner-dj-setup-guide-2026.html">
-                <span class="card-icon">🚀</span>
-                <h3>Complete Beginner DJ Setup Guide 2026</h3>
-                <p>Controller, mixer, headphones, laptop — everything you need and what to spend on your first DJ rig.</p>
-                <span class="badge badge-green">Starter Guide</span>
-            </a>
-            <a class="card" href="pioneer-ddj-flx10-review.html">
-                <span class="card-icon">⭐</span>
-                <h3>Pioneer DDJ-FLX10 Review</h3>
-                <p>Pioneer's flagship 4-deck controller reviewed — jog wheels, effects, and value for money in 2026.</p>
-                <span class="badge">Review</span>
-            </a>
-            <a class="card" href="best-budget-dj-equipment.html">
-                <span class="card-icon">💰</span>
-                <h3>Best Budget DJ Equipment Under $500</h3>
-                <p>The best starter DJ setups at every tight budget — controllers, mixers, and headphones that won't break the bank.</p>
-                <span class="badge badge-green">Budget Pick</span>
-            </a>
-            <a class="card" href="best-dj-controllers-under-300.html">
-                <span class="card-icon">🎮</span>
-                <h3>Best DJ Controllers Under $300</h3>
-                <p>Pioneer DDJ-FLX4, Numark Mixtrack Pro FX, and Hercules DJ compared — the top budget controllers in 2026.</p>
-                <span class="badge badge-green">Budget Pick</span>
-            </a>
-            <a class="card" href="djay-pro-review.html">
-                <span class="card-icon">🍎</span>
-                <h3>djay Pro Review 2026</h3>
-                <p>Algoriddim's djay Pro for Mac, iPad, and iPhone — is it a real Serato/rekordbox rival or just mobile-first?</p>
-                <span class="badge">Review</span>
-            </a>
-            <a class="card" href="best-dj-stands-accessories.html">
-                <span class="card-icon">🗄️</span>
-                <h3>Best DJ Stands &amp; Accessories 2026</h3>
-                <p>Controller stands, laptop mounts, flight cases, and cable management — the gear that holds your setup together.</p>
-                <span class="badge">Buying Guide</span>
-            </a>
-            <a class="card" href="best-dj-mixer-under-500.html">
-                <span class="card-icon">🎚️</span>
-                <h3>Best DJ Mixer Under $500</h3>
-                <p>Pioneer DJM-250MK2, Rane Seventy-TWO, and Allen &amp; Heath Xone:23 — pro sound without the pro price tag.</p>
-                <span class="badge badge-green">Budget Pick</span>
-            </a>
-            <a class="card" href="best-turntable-cartridges.html">
-                <span class="card-icon">💿</span>
-                <h3>Best DJ Turntable Cartridges 2026</h3>
-                <p>Ortofon Concorde, Shure M44-7, and Stanton 500 compared — the best needles for scratching and mixing.</p>
-                <span class="badge">Buying Guide</span>
-            </a>
-            <a class="card" href="numark-scratch-review.html">
-                <span class="card-icon">⭐</span>
-                <h3>Numark Scratch Review 2026</h3>
-                <p>Numark's professional 2-deck DVS controller reviewed — scratch performance, build quality, and value for turntablists.</p>
-                <span class="badge">Review</span>
-            </a>
-            <a class="card" href="best-studio-monitors.html">
-                <span class="card-icon">🔊</span>
-                <h3>Best Studio Monitors for Producers 2026</h3>
-                <p>Yamaha HS5, Adam Audio T5V, and KRK Rokit compared — the best studio monitors at every budget.</p>
-                <span class="badge">Buying Guide</span>
-            </a>
-            <a class="card" href="best-dj-apps-ipad.html">
-                <span class="card-icon">📱</span>
-                <h3>Best DJ Apps for iPad 2026</h3>
-                <p>djay Pro, edjing Mix, Serato DJ, and GarageBand compared — can you really DJ professionally on an iPad?</p>
-                <span class="badge">Comparison</span>
-            </a>
-            <a class="card" href="dj-equipment-checklist.html">
-                <span class="card-icon">📋</span>
-                <h3>DJ Equipment Checklist 2026</h3>
-                <p>Complete gear list for gigging DJs — controller, mixer, cables, headphones, bags, and backup items you shouldn't skip.</p>
-                <span class="badge badge-green">Checklist</span>
-            </a>
-        </div>
-    </section>
-
-    <section>
-        <h2 class="section-title">Advanced DJ Gear</h2>
-        <p class="section-sub">Club-standard and professional DJ equipment for serious performers.</p>
-        <div class="card-grid">
-            <a class="card" href="denon-sc6000-review.html">
-                <span class="card-icon">⭐</span>
-                <h3>Denon DJ SC6000 Prime Review 2026</h3>
-                <p>Is the Denon SC6000 the CDJ killer? Standalone media player vs Pioneer CDJ-3000 — full 2026 review.</p>
-                <span class="badge">Review</span>
-            </a>
-            <a class="card" href="pioneer-cdj-3000-review.html">
-                <span class="card-icon">💿</span>
-                <h3>Pioneer CDJ-3000 Review 2026</h3>
-                <p>The industry standard media player reviewed — is it worth the $2,400 price tag for club DJs in 2026?</p>
-                <span class="badge">Review</span>
-            </a>
-            <a class="card" href="rane-one-review.html">
-                <span class="card-icon">🎶</span>
-                <h3>Rane One Review 2026</h3>
-                <p>The motorized DVS controller built for scratch DJs — Serato integration, build quality, and Rane's pro ecosystem reviewed.</p>
-                <span class="badge">Review</span>
-            </a>
-            <a class="card" href="best-wireless-dj-headphones.html">
-                <span class="card-icon">🎧</span>
-                <h3>Best Wireless DJ Headphones 2026</h3>
-                <p>Bluetooth DJ headphones for booth monitoring and travel — latency, battery life, and sound quality compared.</p>
-                <span class="badge">Buying Guide</span>
-            </a>
-            <a class="card" href="rekordbox-vs-serato-deep-dive.html">
-                <span class="card-icon">⚔️</span>
-                <h3>Rekordbox vs Serato Deep Dive 2026</h3>
-                <p>Exhaustive comparison of Pioneer's rekordbox and Serato DJ Pro — hardware compatibility, DVS, cloud sync, and workflow.</p>
-                <span class="badge">Deep Dive</span>
-            </a>
-            <a class="card" href="rekordbox-pro-review.html">
-                <span class="card-icon">💿</span>
-                <h3>Rekordbox Pro Review 2026</h3>
-                <p>rekordbox Performance and Creative Plans reviewed — what do you actually get for the subscription price in 2026?</p>
-                <span class="badge">Review</span>
-            </a>
-        </div>
-    </section>
-
-    <section>
-        <h2 class="section-title">DJ &amp; Music Affiliate Programs</h2>
-        <p class="section-sub">Verified commission rates and program details for DJ content creators and music bloggers.</p>
-        <div class="card-grid">
-            <a class="card" href="dj-affiliate-programs-guide.html">
-                <span class="card-icon">💸</span>
-                <h3>Best DJ Affiliate Programs 2026</h3>
-                <p>Serato, Pioneer, Splice, DistroKid, and more — commission rates, cookie windows, and which programs actually pay.</p>
-                <span class="badge badge-cyan">Affiliate</span>
-            </a>
-            <a class="card" href="serato-affiliate-program.html">
-                <span class="card-icon">💰</span>
-                <h3>Serato Affiliate Program Review</h3>
-                <p>Commission rates, cookie duration, product range, and how to maximize earnings from Serato's affiliate program.</p>
-                <span class="badge badge-cyan">Affiliate</span>
-            </a>
-            <a class="card" href="pioneer-dj-affiliate.html">
-                <span class="card-icon">🏆</span>
-                <h3>Pioneer DJ Affiliate Program</h3>
-                <p>Pioneer DJ's affiliate program reviewed — high AOV products, commission structure, and approval requirements.</p>
-                <span class="badge badge-cyan">Affiliate</span>
-            </a>
-            <a class="card" href="music-distribution-affiliate-programs.html">
-                <span class="card-icon">📦</span>
-                <h3>Music Distribution Affiliate Programs 2026</h3>
-                <p>DistroKid, TuneCore, CD Baby, and Amuse affiliate programs compared — which pays best for music creator audiences?</p>
-                <span class="badge badge-cyan">Affiliate</span>
-            </a>
-            <a class="card" href="native-instruments-komplete-review.html">
-                <span class="card-icon">🎹</span>
-                <h3>Native Instruments Komplete Review 2026</h3>
-                <p>Is NI Komplete 15 worth it? Full plugin suite reviewed — Kontakt, Massive, Guitar Rig, and value for DJ producers.</p>
-                <span class="badge">Review</span>
-            </a>
-            <a class="card" href="best-dj-software-vinyl-scratch.html">
-                <span class="card-icon">🎵</span>
-                <h3>Best DJ Software for Vinyl Scratching</h3>
-                <p>Serato DJ Pro, Traktor Scratch, Virtual DJ DVS — the best DVS software for scratch DJs ranked in 2026.</p>
-                <span class="badge">Comparison</span>
-            </a>
-            <a class="card" href="fl-studio-vs-logic-pro.html">
-                <span class="card-icon">🎵</span>
-                <h3>FL Studio vs Logic Pro 2026</h3>
-                <p>Mac-only Logic Pro vs cross-platform FL Studio — which DAW wins for hip-hop, EDM, and professional production?</p>
-                <span class="badge">Comparison</span>
-            </a>
-
-    <section>
-        <h2 class="section-title">Sample Packs &amp; Beat Production</h2>
-        <p class="section-sub">Royalty-free samples, loops, and production tools for DJs and beatmakers.</p>
-        <div class="card-grid">
-            <a class="card" href="best-dj-sample-packs-2026.html">
-                <span class="card-icon">🎵</span>
-                <h3>Best DJ Sample Packs 2026</h3>
-                <p>Top Splice, Loopmasters, and Beatport Sound packs for house, techno, hip-hop, and more — ranked by quality and value.</p>
-                <span class="badge">Buying Guide</span>
-            </a>
-            <a class="card" href="splice-vs-loopmasters.html">
-                <span class="card-icon">⚔️</span>
-                <h3>Splice vs Loopmasters 2026</h3>
-                <p>Which sample platform has better sounds? Credit model vs subscription, library depth, and exclusives compared.</p>
-                <span class="badge">Showdown</span>
-            </a>
-            <a class="card" href="landr-vs-splice.html">
-                <span class="card-icon">🔬</span>
-                <h3>LANDR vs Splice — Music Production Tools</h3>
-                <p>Mastering, samples, and distribution — how LANDR and Splice stack up for independent producers in 2026.</p>
-                <span class="badge">Comparison</span>
-            </a>
-        </div>
-    </section>
-
-    <section>
-        <h2 class="section-title">Software Showdowns</h2>
-        <p class="section-sub">Head-to-head comparisons of the most popular DJ and production software.</p>
-        <div class="card-grid">
-            <a class="card" href="serato-vs-rekordbox-vs-traktor.html">
-                <span class="card-icon">⚡</span>
-                <h3>Serato vs rekordbox vs Traktor</h3>
-                <p>The three pro DJ platforms compared on features, hardware support, price, and club compatibility.</p>
-                <span class="badge">Showdown</span>
-            </a>
-            <a class="card" href="pioneer-ddj-400-vs-flx4.html">
-                <span class="card-icon">🎮</span>
-                <h3>Pioneer DDJ-400 vs DDJ-FLX4</h3>
-                <p>The DDJ-400 is discontinued. Is the FLX4 the right upgrade? Features, jog platters, software bundles and value compared.</p>
-                <span class="badge">Showdown</span>
-            </a>
-            <a class="card" href="fl-studio-vs-ableton.html">
-                <span class="card-icon">🎼</span>
-                <h3>FL Studio vs Ableton Live</h3>
-                <p>Which DAW wins for DJs, beatmakers, and live performers? Full 2026 comparison.</p>
-                <span class="badge">Comparison</span>
-            </a>
-            <a class="card" href="ableton-live-review.html">
-                <span class="card-icon">🎚️</span>
-                <h3>Ableton Live Review 2026</h3>
-                <p>Is Ableton Live the best DAW for electronic music and live DJ performance? Features, pricing, and alternatives reviewed.</p>
-                <span class="badge">Review</span>
-            </a>
-            <a class="card" href="fl-studio-review.html">
-                <span class="card-icon">🥁</span>
-                <h3>FL Studio Review 2026</h3>
-                <p>FL Studio for beatmakers and producers — free lifetime updates, VST support, and who it's really made for in 2026.</p>
-                <span class="badge">Review</span>
-            </a>
-            <a class="card" href="music-production-software-free.html">
-                <span class="card-icon">🆓</span>
-                <h3>Free Music Production Software</h3>
-                <p>Best free DAWs and DJ tools in 2026 — GarageBand, Audacity, Mixxx, and more compared.</p>
-                <span class="badge badge-green">Free</span>
-            </a>
-        </div>
-    </section>
-
-    <section>
-        <h2 class="section-title">Music Distribution</h2>
-        <p class="section-sub">Get your music on Spotify, Apple Music, and everywhere else — without overpaying.</p>
-        <div class="card-grid">
-            <a class="card" href="distrokid-vs-tunecore.html">
-                <span class="card-icon">📊</span>
-                <h3>DistroKid vs TuneCore vs CD Baby 2026</h3>
-                <p>Which music distributor keeps the most of your royalties? Pricing, speed, and split breakdowns for independent DJs and artists.</p>
-                <span class="badge">Comparison</span>
-            </a>
-            <a class="card" href="amuse-vs-distrokid.html">
-                <span class="card-icon">🎤</span>
-                <h3>Amuse vs DistroKid vs CD Baby 2026</h3>
-                <p>Free-tier vs paid distribution — which platform is right for independent artists releasing music online?</p>
-                <span class="badge">Comparison</span>
-            </a>
-            <a class="card" href="soundcloud-vs-bandcamp.html">
-                <span class="card-icon">🎧</span>
-                <h3>SoundCloud vs Bandcamp for Indie Artists</h3>
-                <p>Where should DJs and producers host their music? Fan monetization, algorithm reach, and direct sales compared.</p>
-                <span class="badge">Showdown</span>
-            </a>
-            <a class="card" href="beatport-vs-traxsource.html">
-                <span class="card-icon">🛒</span>
-                <h3>Beatport vs Traxsource 2026</h3>
-                <p>The two biggest DJ download stores compared — genres, pricing, chart cred, and which to buy from.</p>
-                <span class="badge">Showdown</span>
-            </a>
-            <a class="card" href="dj-affiliate-programs-guide.html">
-                <span class="card-icon">💸</span>
-                <h3>Best DJ Affiliate Programs 2026</h3>
-                <p>Serato, Pioneer, Splice, DistroKid, and more — commission rates, cookie windows, and which programs actually pay.</p>
-                <span class="badge badge-cyan">Affiliate</span>
-            </a>
-        </div>
-    </section>
-
-    <section>
-        <h2 class="section-title">Music Production</h2>
-        <p class="section-sub">Plugins, tools, and home studio gear for DJs who produce.</p>
-        <div class="card-grid">
-            <a class="card" href="audio-interface-guide-djs.html">
-                <span class="card-icon">🔊</span>
-                <h3>Best Audio Interface for DJs 2026</h3>
-                <p>Do DJs actually need an audio interface? Focusrite Scarlett, Native Instruments, and budget picks compared for home studio use.</p>
-                <span class="badge">Buying Guide</span>
-            </a>
-            <a class="card" href="best-music-production-plugins.html">
-                <span class="card-icon">🔌</span>
-                <h3>Best Music Production Plugins 2026</h3>
-                <p>Top VST effects, EQ, compressor, reverb, and synth plugins for producers — the best paid and free options ranked.</p>
-                <span class="badge">Buying Guide</span>
-            </a>
-        </div>
-    </section>
-
-    <section>
-        <h2 class="section-title">DJ Career &amp; Learning</h2>
-        <p class="section-sub">Start your DJ journey — courses, career tips, and everything you need to go pro.</p>
-        <div class="card-grid">
-            <a class="card" href="how-to-become-a-dj.html">
-                <span class="card-icon">🎓</span>
-                <h3>How to Become a DJ in 2026</h3>
-                <p>Step-by-step career guide — equipment, practice methods, getting gigs, and building a following from scratch.</p>
-                <span class="badge badge-green">Career Guide</span>
-            </a>
-            <a class="card" href="how-to-get-dj-gigs.html">
-                <span class="card-icon">🎙️</span>
-                <h3>How to Get DJ Gigs in 2026</h3>
-                <p>From open decks to residencies — how to book your first gig, build a reputation, and charge what you're worth.</p>
-                <span class="badge badge-green">Career Guide</span>
-            </a>
-            <a class="card" href="how-to-mix-music-beginners.html">
-                <span class="card-icon">🎛️</span>
-                <h3>How to Mix Music for Beginners</h3>
-                <p>Beatmatching, EQ, transitions, and mixing techniques explained for complete beginners — no experience needed.</p>
-                <span class="badge badge-green">Tutorial</span>
-            </a>
-            <a class="card" href="best-online-dj-courses.html">
-                <span class="card-icon">📚</span>
-                <h3>Best Online DJ Courses 2026</h3>
-                <p>Udemy, Skillshare, YouTube, and paid platforms compared — the best courses for beginner and intermediate DJs.</p>
-                <span class="badge">Comparison</span>
-            </a>
-            <a class="card" href="how-to-start-djing.html">
-                <span class="card-icon">▶️</span>
-                <h3>How to Start DJing</h3>
-                <p>Complete beginner's guide to starting your DJ journey — gear, software, practice tips, and first gig advice.</p>
-                <span class="badge badge-green">Starter Guide</span>
-            </a>
-            <a class="card" href="how-to-record-dj-mix.html">
-                <span class="card-icon">⏺️</span>
-                <h3>How to Record a DJ Mix</h3>
-                <p>Record your mixes with zero latency — best software, audio interface settings, and upload-ready export formats.</p>
-                <span class="badge badge-green">Tutorial</span>
-            </a>
-            <a class="card" href="how-to-promote-dj-mixes.html">
-                <span class="card-icon">📣</span>
-                <h3>How to Promote Your DJ Mixes</h3>
-                <p>SoundCloud, Mixcloud, YouTube, and social media strategies to grow your DJ audience and get more bookings.</p>
-                <span class="badge badge-green">Career Guide</span>
-            </a>
-            <a class="card" href="how-to-start-a-dj-blog.html">
-                <span class="card-icon">✍️</span>
-                <h3>How to Start a DJ Blog</h3>
-                <p>Build a DJ brand online — content strategy, monetization, affiliate programs, and SEO for music blogs.</p>
-                <span class="badge badge-green">Guide</span>
-            </a>
-        </div>
-    </section>
-
-    <section>
-        <h2 class="section-title">Free Tools</h2>
-        <p class="section-sub">AI-powered utilities for DJs and producers.</p>
-        <div class="card-grid">
-            <a class="card" href="dj-set-generator.html">
-                <span class="card-icon">🎵</span>
-                <h3>DJ Set Generator</h3>
-                <p>Generate a professional DJ set list for any genre, BPM range, or event type in seconds. Completely free.</p>
-                <span class="badge badge-green">Free</span>
-            </a>
-        </div>
-    </section>
-
-    <section class="about-strip">
-        <div>
-            <h2>About Offbeat Inc.</h2>
-            <p>We're a small tech outfit that builds software and AI tools for DJs, producers, and music industry people. Based in South Carolina. Since 2015.</p>
-            <p style="margin-top: 0.75rem;">This site's content is researched and reviewed by humans using AI tools.</p>
-        </div>
-        <div>
-            <h2>What We Cover</h2>
-            <ul>
-                <li>DJ software comparisons and buying guides</li>
-                <li>Music production tool reviews</li>
-                <li>Affiliate programs with verified commission rates</li>
-                <li>Music distribution platform comparisons</li>
-                <li>Free tools for DJs and producers</li>
-                <li>Custom software and AI automation</li>
-            </ul>
-        </div>
-    </section>
-
-<div class="author-box">
-  <div class="author-avatar">🎧</div>
-  <div class="author-info">
-    <h4>Jake Morrison</h4>
-    <div class="author-title">DJ Instructor &amp; Gear Reviewer • 12 years behind the decks</div>
-    <p>Jake has tested 200+ pieces of DJ gear in real club and home studio conditions.
-       He performs regularly and tracks every spec claim against manufacturer data sheets.
-       <a href="about.html">Full bio →</a></p>
+    <div class="stat">
+      <div class="stat-num">12+</div>
+      <div class="stat-label">Years DJ Experience</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">50%</div>
+      <div class="stat-label">Top Affiliate Commission</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">Free</div>
+      <div class="stat-label">AI DJ Set Generator</div>
+    </div>
   </div>
-</div>
+
+  <section>
+    <div style="display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.5rem;">
+      <h2 class="section-title">DJ Software &amp; Comparisons</h2>
+      <a href="best-dj-software-beginners-2026.html" style="font-size:0.85rem;color:var(--accent2);text-decoration:none;white-space:nowrap;">See all 10 software guides &rarr;</a>
+    </div>
+    <p class="section-sub">Side-by-side breakdowns so you can pick the right platform without guesswork.</p>
+    <div class="card-grid">
+      <a class="card" href="best-dj-software-beginners-2026.html">
+        <span class="card-icon">&#127911;</span>
+        <h3>Best DJ Software for Beginners 2026</h3>
+        <p>Serato Lite, Virtual DJ, rekordbox, Traktor Pro 3, and Mixxx compared head-to-head for price, learning curve, and features.</p>
+        <span class="badge">Comparison Table</span>
+      </a>
+      <a class="card" href="serato-vs-rekordbox-vs-traktor.html">
+        <span class="card-icon">&#9889;</span>
+        <h3>Serato vs rekordbox vs Traktor 2026</h3>
+        <p>The three pro DJ platforms compared on features, hardware support, club compatibility, and price — one definitive guide.</p>
+        <span class="badge">Showdown</span>
+      </a>
+      <a class="card" href="best-free-dj-software-2026.html">
+        <span class="card-icon">&#127379;</span>
+        <h3>Best Free DJ Software 2026</h3>
+        <p>Mixxx, Serato DJ Lite, VirtualDJ home edition, and more — the best free DJ apps tested and ranked for 2026.</p>
+        <span class="badge badge-green">Free</span>
+      </a>
+    </div>
+  </section>
+
+  <section>
+    <div style="display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.5rem;">
+      <h2 class="section-title">DJ Controllers &amp; Gear</h2>
+      <a href="best-dj-controllers-2026.html" style="font-size:0.85rem;color:var(--accent2);text-decoration:none;white-space:nowrap;">See all 13 gear guides &rarr;</a>
+    </div>
+    <p class="section-sub">Find the right hardware for your budget — from first-timer kits to club-standard CDJs.</p>
+    <div class="card-grid">
+      <a class="card" href="best-dj-controllers-2026.html">
+        <span class="card-icon">&#127925;</span>
+        <h3>Best DJ Controllers 2026</h3>
+        <p>Pioneer DDJ, Numark, Denon, and budget options reviewed — tested picks for beginners, intermediates, and pros.</p>
+        <span class="badge">Buying Guide</span>
+      </a>
+      <a class="card" href="beginner-dj-setup-guide-2026.html">
+        <span class="card-icon">&#128640;</span>
+        <h3>Complete Beginner DJ Setup Guide 2026</h3>
+        <p>Controller, mixer, headphones, laptop — everything you need and what to spend on your first DJ rig.</p>
+        <span class="badge badge-green">Starter Guide</span>
+      </a>
+      <a class="card" href="pioneer-ddj-flx4-review.html">
+        <span class="card-icon">&#11088;</span>
+        <h3>Pioneer DDJ-FLX4 Review 2026</h3>
+        <p>Hands-on review of Pioneer's most popular beginner controller — jog wheel feel, software bundle, and long-term value.</p>
+        <span class="badge">Review</span>
+      </a>
+      <a class="card" href="best-budget-dj-equipment.html">
+        <span class="card-icon">&#128176;</span>
+        <h3>Best Budget DJ Equipment Under $500</h3>
+        <p>Complete starter DJ setups at tight budgets — controllers, mixers, and headphones that won't break the bank.</p>
+        <span class="badge badge-green">Budget Pick</span>
+      </a>
+    </div>
+  </section>
+
+  <section>
+    <div style="display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.5rem;">
+      <h2 class="section-title">Headphones, Mixers &amp; Turntables</h2>
+      <a href="best-dj-headphones-2026.html" style="font-size:0.85rem;color:var(--accent2);text-decoration:none;white-space:nowrap;">See all headphone &amp; mixer guides &rarr;</a>
+    </div>
+    <p class="section-sub">Focused buying guides for DJ audio hardware at every price point.</p>
+    <div class="card-grid">
+      <a class="card" href="best-dj-headphones-2026.html">
+        <span class="card-icon">&#127911;</span>
+        <h3>Best DJ Headphones Under $200</h3>
+        <p>Closed-back monitoring headphones for DJs — tested for build quality, isolation, swivel range, and sound accuracy.</p>
+        <span class="badge">Buying Guide</span>
+      </a>
+      <a class="card" href="best-dj-mixers-2026.html">
+        <span class="card-icon">&#127930;</span>
+        <h3>Best DJ Mixers 2026</h3>
+        <p>Home practice and club-ready mixers at every budget — Pioneer DJM, Rane, and Allen &amp; Heath compared.</p>
+        <span class="badge">Comparison</span>
+      </a>
+      <a class="card" href="best-dj-turntables-2026.html">
+        <span class="card-icon">&#128191;</span>
+        <h3>Best DJ Turntables 2026</h3>
+        <p>Technics SL-1200MK7, Pioneer PLX-500, and Audio-Technica AT-LP120XBT — top turntables ranked for real DJ use.</p>
+        <span class="badge">Buying Guide</span>
+      </a>
+    </div>
+  </section>
+
+  <section>
+    <div style="display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.5rem;">
+      <h2 class="section-title">Learn to DJ</h2>
+      <a href="how-to-start-djing.html" style="font-size:0.85rem;color:var(--accent2);text-decoration:none;white-space:nowrap;">See all 9 learning guides &rarr;</a>
+    </div>
+    <p class="section-sub">Step-by-step guides from first track to first gig — no fluff, just what works.</p>
+    <div class="card-grid">
+      <a class="card" href="how-to-start-djing.html">
+        <span class="card-icon">&#9654;</span>
+        <h3>How to Start DJing</h3>
+        <p>Complete beginner's guide to starting your DJ journey — gear, software, practice tips, and what to do first.</p>
+        <span class="badge badge-green">Starter Guide</span>
+      </a>
+      <a class="card" href="how-to-become-a-dj.html">
+        <span class="card-icon">&#127891;</span>
+        <h3>How to Become a DJ in 2026</h3>
+        <p>Step-by-step career guide — equipment, practice methods, getting gigs, and building a real following from scratch.</p>
+        <span class="badge badge-green">Career Guide</span>
+      </a>
+      <a class="card" href="how-to-mix-music-beginners.html">
+        <span class="card-icon">&#127925;</span>
+        <h3>How to Mix Music for Beginners</h3>
+        <p>Beatmatching, EQ, transitions, and mixing techniques explained for complete beginners — no experience needed.</p>
+        <span class="badge badge-green">Tutorial</span>
+      </a>
+    </div>
+  </section>
+
+  <section>
+    <div style="display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.5rem;">
+      <h2 class="section-title">DJ &amp; Music Affiliate Programs</h2>
+      <a href="dj-affiliate-programs-guide.html" style="font-size:0.85rem;color:var(--accent2);text-decoration:none;white-space:nowrap;">See all affiliate guides &rarr;</a>
+    </div>
+    <p class="section-sub">Verified commission rates and program details for DJ content creators and music bloggers.</p>
+    <div class="card-grid">
+      <a class="card" href="dj-affiliate-programs-guide.html">
+        <span class="card-icon">&#128176;</span>
+        <h3>Best DJ Affiliate Programs 2026</h3>
+        <p>Serato, Pioneer, Splice, DistroKid, and more — commission rates, cookie windows, and which programs actually pay consistently.</p>
+        <span class="badge badge-cyan">Affiliate</span>
+      </a>
+      <a class="card" href="serato-affiliate-program.html">
+        <span class="card-icon">&#128176;</span>
+        <h3>Serato Affiliate Program Review</h3>
+        <p>Commission rates, cookie duration, product range, and how to maximize earnings from Serato's affiliate program.</p>
+        <span class="badge badge-cyan">Affiliate</span>
+      </a>
+      <a class="card" href="music-distribution-affiliate-programs.html">
+        <span class="card-icon">&#128230;</span>
+        <h3>Music Distribution Affiliate Programs 2026</h3>
+        <p>DistroKid, TuneCore, CD Baby, and Amuse affiliate programs compared — which pays best for music creator audiences?</p>
+        <span class="badge badge-cyan">Affiliate</span>
+      </a>
+    </div>
+  </section>
+
+  <section>
+    <div style="display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.5rem;">
+      <h2 class="section-title">Music Production &amp; DAWs</h2>
+      <a href="best-music-production-software-2026.html" style="font-size:0.85rem;color:var(--accent2);text-decoration:none;white-space:nowrap;">See all 12 production guides &rarr;</a>
+    </div>
+    <p class="section-sub">DAW comparisons, plugin guides, and studio gear for DJs who produce.</p>
+    <div class="card-grid">
+      <a class="card" href="best-music-production-software-2026.html">
+        <span class="card-icon">&#127925;</span>
+        <h3>Best Music Production Software 2026</h3>
+        <p>Ableton, FL Studio, Logic Pro, and Pro Tools ranked — find the right DAW for your workflow and budget.</p>
+        <span class="badge">Buying Guide</span>
+      </a>
+      <a class="card" href="fl-studio-vs-ableton.html">
+        <span class="card-icon">&#127900;</span>
+        <h3>FL Studio vs Ableton Live 2026</h3>
+        <p>Which DAW wins for DJs, beatmakers, and live performers? Full feature, workflow, and price comparison.</p>
+        <span class="badge">Comparison</span>
+      </a>
+      <a class="card" href="best-dj-sample-packs-2026.html">
+        <span class="card-icon">&#127925;</span>
+        <h3>Best DJ Sample Packs 2026</h3>
+        <p>Top Splice, Loopmasters, and Beatport Sound packs for house, techno, and hip-hop — ranked by quality and value.</p>
+        <span class="badge">Buying Guide</span>
+      </a>
+    </div>
+  </section>
+
+  <section style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:2rem 2.5rem;display:flex;align-items:center;gap:2rem;flex-wrap:wrap;">
+    <div style="font-size:3rem;flex-shrink:0;">&#127925;</div>
+    <div style="flex:1;min-width:250px;">
+      <h3 style="font-size:1.2rem;font-weight:700;margin-bottom:0.4rem;">Free DJ Set Generator</h3>
+      <p style="color:var(--muted);font-size:0.9rem;margin:0 0 1rem;">Generate a professional set list for any genre, BPM range, or event type in seconds. No sign-up required.</p>
+      <a class="btn-primary" href="dj-set-generator.html">Try It Free &rarr;</a>
+    </div>
+  </section>
+
+  <section class="about-strip" style="margin-top:3rem;">
+    <div>
+      <h2>Why Trust Offbeat Inc.?</h2>
+      <p>Every guide on this site is written by Jake Morrison — a working DJ with 12 years of live performance experience. No spec-sheet copy-paste. No affiliate bias.</p>
+    </div>
+    <div>
+      <ul>
+        <li>200+ pieces of gear tested in real club and home studio conditions</li>
+        <li>Every spec claim is verified against manufacturer data sheets</li>
+        <li>Affiliate links flagged &mdash; commission never influences our verdict</li>
+        <li>Guides updated when products are discontinued or prices change</li>
+      </ul>
+    </div>
+  </section>
+
 </main>
 
 <footer>
-    <div class="footer-links">
-        <a href="/">Home</a>
-        <a href="best-dj-software-beginners-2026.html">DJ Software</a>
-        <a href="best-dj-controllers-2026.html">Controllers</a>
-        <a href="best-dj-headphones-2026.html">Headphones</a>
-        <a href="best-dj-headphones-under-100-2026.html">Headphones Under $100</a>
-        <a href="best-dj-turntables-2026.html">Turntables</a>
-        <a href="best-dj-mixers-2026.html">Mixers</a>
-        <a href="best-dj-laptop-2026.html">Laptops</a>
-        <a href="serato-dj-pro-review.html">Serato Review</a>
-        <a href="rekordbox-review.html">Rekordbox Review</a>
-        <a href="virtual-dj-vs-serato.html">Virtual DJ vs Serato</a>
-        <a href="best-free-dj-software-2026.html">Free DJ Software</a>
-        <a href="pioneer-ddj-400-vs-flx4.html">DDJ-400 vs FLX4</a>
-        <a href="serato-vs-rekordbox-vs-traktor.html">Serato vs Traktor</a>
-        <a href="fl-studio-vs-ableton.html">FL Studio vs Ableton</a>
-        <a href="music-production-software-free.html">Free Software</a>
-        <a href="distrokid-vs-tunecore.html">DistroKid vs TuneCore</a>
-        <a href="audio-interface-guide-djs.html">Audio Interfaces</a>
-        <a href="dj-equipment-beginners.html">Beginner Gear</a>
-        <a href="beginner-dj-setup-guide-2026.html">Beginner DJ Setup 2026</a>
-        <a href="best-budget-dj-equipment.html">Budget DJ Equipment</a>
-        <a href="pioneer-ddj-flx10-review.html">DDJ-FLX10 Review</a>
-        <a href="how-to-start-djing.html">Start DJing</a>
-        <a href="dj-tools-and-sampling-platforms-affiliates.html">Sampling Platforms</a>
-        <a href="best-music-production-software-2026.html">Music Production Software</a>
-        <a href="best-daw-for-music-production.html">Best DAW 2026</a>
-        <a href="midi-controllers-for-music-production.html">MIDI Controllers</a>
-        <a href="best-dj-sample-packs-2026.html">DJ Sample Packs</a>
-        <a href="splice-vs-loopmasters.html">Splice vs Loopmasters</a>
-        <a href="landr-vs-splice.html">LANDR vs Splice</a>
-        <a href="amuse-vs-distrokid.html">Amuse vs DistroKid</a>
-        <a href="soundcloud-vs-bandcamp.html">SoundCloud vs Bandcamp</a>
-        <a href="beatport-vs-traxsource.html">Beatport vs Traxsource</a>
-        <a href="dj-affiliate-programs-guide.html">DJ Affiliate Programs</a>
-        <a href="serato-affiliate-program.html">Serato Affiliate</a>
-        <a href="pioneer-dj-affiliate.html">Pioneer DJ Affiliate</a>
-        <a href="music-distribution-affiliate-programs.html">Distribution Affiliates</a>
-        <a href="best-music-production-plugins.html">VST Plugins</a>
-        <a href="best-online-dj-courses.html">Online DJ Courses</a>
-        <a href="how-to-become-a-dj.html">How to Become a DJ</a>
-        <a href="how-to-mix-music-beginners.html">How to Mix Music</a>
-        <a href="how-to-get-dj-gigs.html">Get DJ Gigs</a>
-        <a href="traktor-pro-review.html">Traktor Pro Review</a>
-        <a href="ableton-live-review.html">Ableton Review</a>
-        <a href="fl-studio-review.html">FL Studio Review</a>
-        <a href="djay-pro-review.html">djay Pro Review</a>
-        <a href="best-dj-controllers-under-300.html">Controllers Under $300</a>
-        <a href="best-dj-stands-accessories.html">DJ Stands</a>
-        <a href="denon-sc6000-review.html">Denon SC6000 Review</a>
-        <a href="pioneer-cdj-3000-review.html">CDJ-3000 Review</a>
-        <a href="rane-one-review.html">Rane One Review</a>
-        <a href="dj-set-generator.html">Set Generator</a>
-        <a href="privacy.html">Privacy Policy</a>
-        <a href="disclosure.html">Affiliate Disclosure</a>
+  <div class="footer-nav-grid">
+    <div class="footer-col">
+      <h4>DJ Software</h4>
+      <ul>
+        <li><a href="best-dj-software-beginners-2026.html">Best DJ Software 2026</a></li>
+        <li><a href="best-free-dj-software-2026.html">Best Free DJ Software</a></li>
+        <li><a href="serato-vs-rekordbox-vs-traktor.html">Serato vs rekordbox vs Traktor</a></li>
+        <li><a href="serato-dj-pro-review.html">Serato DJ Pro Review</a></li>
+        <li><a href="rekordbox-review.html">rekordbox Review</a></li>
+        <li><a href="traktor-pro-review.html">Traktor Pro 3 Review</a></li>
+        <li><a href="virtual-dj-vs-serato.html">Virtual DJ vs Serato</a></li>
+        <li><a href="best-dj-software-vinyl-scratch.html">Vinyl Scratching Software</a></li>
+        <li><a href="djay-pro-review.html">djay Pro Review</a></li>
+        <li><a href="rekordbox-vs-serato-deep-dive.html">rekordbox vs Serato Deep Dive</a></li>
+      </ul>
     </div>
-    <p>Offbeat Inc. &copy; 2026 &mdash; South Carolina &mdash; Built with AI</p>
-    <p style="margin-top: 0.5rem; font-size: 0.8rem;">Affiliate disclosure: Some links on this site are affiliate links. We may earn a commission at no cost to you. Rates are verified via Tavily research and updated regularly.</p>
+    <div class="footer-col">
+      <h4>DJ Controllers &amp; Gear</h4>
+      <ul>
+        <li><a href="best-dj-controllers-2026.html">Best DJ Controllers 2026</a></li>
+        <li><a href="best-dj-controllers-under-300.html">Controllers Under $300</a></li>
+        <li><a href="beginner-dj-setup-guide-2026.html">Beginner DJ Setup Guide</a></li>
+        <li><a href="best-budget-dj-equipment.html">Budget DJ Equipment</a></li>
+        <li><a href="dj-equipment-beginners.html">DJ Equipment for Beginners</a></li>
+        <li><a href="dj-equipment-checklist.html">DJ Equipment Checklist</a></li>
+        <li><a href="pioneer-ddj-flx4-review.html">Pioneer DDJ-FLX4 Review</a></li>
+        <li><a href="pioneer-ddj-flx10-review.html">Pioneer DDJ-FLX10 Review</a></li>
+        <li><a href="pioneer-ddj-400-vs-flx4.html">Pioneer DDJ-400 vs FLX4</a></li>
+        <li><a href="denon-sc6000-review.html">Denon SC6000 Review</a></li>
+        <li><a href="pioneer-cdj-3000-review.html">Pioneer CDJ-3000 Review</a></li>
+        <li><a href="rane-one-review.html">Rane One Review</a></li>
+        <li><a href="numark-scratch-review.html">Numark Scratch Review</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Headphones, Mixers &amp; Turntables</h4>
+      <ul>
+        <li><a href="best-dj-headphones-2026.html">Best DJ Headphones</a></li>
+        <li><a href="best-dj-headphones-professional.html">Pro DJ Headphones</a></li>
+        <li><a href="best-dj-headphones-under-100-2026.html">Headphones Under $100</a></li>
+        <li><a href="best-wireless-dj-headphones.html">Wireless DJ Headphones</a></li>
+        <li><a href="best-dj-mixers-2026.html">Best DJ Mixers 2026</a></li>
+        <li><a href="best-dj-mixer-under-500.html">DJ Mixer Under $500</a></li>
+        <li><a href="best-dj-turntables-2026.html">Best DJ Turntables 2026</a></li>
+        <li><a href="best-turntable-cartridges.html">Turntable Cartridges</a></li>
+        <li><a href="best-dj-stands-accessories.html">DJ Stands &amp; Accessories</a></li>
+        <li><a href="best-dj-apps-ipad.html">Best DJ Apps for iPad</a></li>
+        <li><a href="best-dj-laptop-2026.html">Best Laptop for DJing</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Learn DJing</h4>
+      <ul>
+        <li><a href="how-to-start-djing.html">How to Start DJing</a></li>
+        <li><a href="how-to-become-a-dj.html">How to Become a DJ</a></li>
+        <li><a href="how-to-mix-music-beginners.html">How to Mix Music</a></li>
+        <li><a href="how-to-record-dj-mix.html">How to Record a DJ Mix</a></li>
+        <li><a href="how-to-get-dj-gigs.html">How to Get DJ Gigs</a></li>
+        <li><a href="how-to-promote-dj-mixes.html">Promote Your Mixes</a></li>
+        <li><a href="best-online-dj-courses.html">Best Online DJ Courses</a></li>
+        <li><a href="how-to-start-a-dj-blog.html">Start a DJ Blog</a></li>
+        <li><a href="dj-set-generator.html">Free DJ Set Generator</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Affiliate Programs</h4>
+      <ul>
+        <li><a href="dj-affiliate-programs-guide.html">Best DJ Affiliate Programs</a></li>
+        <li><a href="serato-affiliate-program.html">Serato Affiliate</a></li>
+        <li><a href="pioneer-dj-affiliate.html">Pioneer DJ Affiliate</a></li>
+        <li><a href="music-distribution-affiliate-programs.html">Distribution Affiliates</a></li>
+        <li><a href="dj-tools-and-sampling-platforms-affiliates.html">Sampling Platforms</a></li>
+        <li><a href="best-dj-sample-packs-2026.html">Best Sample Packs</a></li>
+        <li><a href="splice-vs-loopmasters.html">Splice vs Loopmasters</a></li>
+        <li><a href="landr-vs-splice.html">LANDR vs Splice</a></li>
+        <li><a href="distrokid-vs-tunecore.html">DistroKid vs TuneCore</a></li>
+        <li><a href="amuse-vs-distrokid.html">Amuse vs DistroKid</a></li>
+        <li><a href="soundcloud-vs-bandcamp.html">SoundCloud vs Bandcamp</a></li>
+        <li><a href="beatport-vs-traxsource.html">Beatport vs Traxsource</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Music Production</h4>
+      <ul>
+        <li><a href="best-music-production-software-2026.html">Best Production Software</a></li>
+        <li><a href="best-daw-for-music-production.html">Best DAW for Producers</a></li>
+        <li><a href="fl-studio-vs-ableton.html">FL Studio vs Ableton</a></li>
+        <li><a href="fl-studio-review.html">FL Studio Review</a></li>
+        <li><a href="ableton-live-review.html">Ableton Live Review</a></li>
+        <li><a href="fl-studio-vs-logic-pro.html">FL Studio vs Logic Pro</a></li>
+        <li><a href="best-music-production-plugins.html">Best Plugins 2026</a></li>
+        <li><a href="audio-interface-guide-djs.html">Best Audio Interface</a></li>
+        <li><a href="best-studio-monitors.html">Best Studio Monitors</a></li>
+        <li><a href="midi-controllers-for-music-production.html">Best MIDI Controllers</a></li>
+        <li><a href="music-production-software-free.html">Free Production Software</a></li>
+        <li><a href="native-instruments-komplete-review.html">NI Komplete Review</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="about.html">About Jake Morrison</a>
+      <a href="dj-set-generator.html">Free DJ Tool</a>
+      <a href="disclosure.html">Affiliate Disclosure</a>
+    </div>
+    <p>&#169; 2026 Offbeat Inc. &mdash; DJ &amp; Music Production Guides. All product claims are independently verified.<br>Affiliate links help support this site at no extra cost to you. <a href="disclosure.html">Learn more</a></p>
+  </div>
 </footer>
 
 </body>

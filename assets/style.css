@@ -537,16 +537,59 @@ details[open] summary { color: var(--accent2); }
 
 /* --- Footer --------------------------------------------------------------- */
 footer {
-  text-align: center;
-  padding: 2.5rem 2rem;
   color: var(--muted);
   font-size: 0.85rem;
   border-top: 1px solid var(--border);
   background: var(--surface);
 }
-footer a { color: var(--accent2); text-decoration: none; }
-footer a:hover { text-decoration: underline; }
-.footer-links { display: flex; gap: 1.25rem; justify-content: center; flex-wrap: wrap; margin-bottom: 1rem; }
+footer a { color: var(--muted); text-decoration: none; }
+footer a:hover { color: var(--accent2); }
+
+/* Footer nav grid (comprehensive site navigation) */
+.footer-nav-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 2rem;
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 2.5rem 2rem 1.5rem;
+}
+.footer-col h4 {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--muted-2);
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+.footer-col ul { list-style: none; padding: 0; }
+.footer-col ul li { margin-bottom: 0.35rem; }
+.footer-col ul a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.82rem;
+  line-height: 1.4;
+  transition: color 0.15s;
+  display: block;
+}
+.footer-col ul a:hover { color: var(--accent2); }
+.footer-bottom {
+  text-align: center;
+  padding: 1.5rem 2rem 2rem;
+  border-top: 1px solid var(--border);
+  margin-top: 0.5rem;
+}
+.footer-bottom p { font-size: 0.8rem; color: var(--muted-2); margin-top: 0.5rem; }
+.footer-links { display: flex; gap: 1.25rem; justify-content: center; flex-wrap: wrap; margin-bottom: 0.75rem; }
+.footer-links a { color: var(--muted); font-size: 0.85rem; }
+.footer-links a:hover { color: var(--accent2); }
+
+@media (max-width: 640px) {
+  .footer-nav-grid { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; padding: 2rem 1.25rem 1rem; }
+}
+@media (max-width: 360px) {
+  .footer-nav-grid { grid-template-columns: 1fr; }
+}
 
 /* --- Utilities ------------------------------------------------------------- */
 .text-center { text-align: center; }
