@@ -31,7 +31,7 @@ jobs:
         run: |
           # Get files changed
           FILES=$(gh pr view "$PR_NUMBER" --repo "${{ github.repository }}" --json files --jq '.files[].path' 2>/dev/null || echo "unknown")
-          FILE_COUNT=$(echo "$FILES" | grep -c . || echo 0)
+          FILE_COUNT=$(echo "$FILES" | grep -c .) || FILE_COUNT=0
 
           # Check quality signals
           SCORE=0
@@ -118,12 +118,9 @@ jobs:
             LABEL="Needs improvement"
           fi
 
-          COMMENT="## PR Quality Score: ${SCORE}/100 (${LABEL})
-
-$(printf '%b' "$NOTES")
-
-_Files changed: ${FILE_COUNT}_
-_Score computed automatically by pr-quality-check.yml_"
+          NOTES_RENDERED=$(printf '%b\n' "$NOTES")
+          COMMENT=$(printf '## PR Quality Score: %s/100 (%s)\n\n%s\n_Files changed: %s_\n_Score computed automatically by pr-quality-check.yml_' \
+            "$SCORE" "$LABEL" "$NOTES_RENDERED" "$FILE_COUNT")
 
           gh pr comment "$PR_NUMBER" --repo "${{ github.repository }}" --body "$COMMENT"
           echo "PR #${PR_NUMBER} scored ${SCORE}/100 (${LABEL})" >> "$GITHUB_STEP_SUMMARY"
