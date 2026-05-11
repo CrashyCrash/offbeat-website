@@ -1,0 +1,39 @@
+title: "Offbeat Inc. — DJ & Music Production Guides"
+description: "Honest DJ gear reviews, software comparisons, and music production guides. Researched by DatBotty, reviewed by Jake Morrison."
+url: "https://offbeatinc.com"
+baseurl: ""
+author:
+  name: "Jake Morrison"
+  email: "jake@offbeatinc.com"
+
+# Jekyll settings
+permalink: /:title/
+markdown: kramdown
+highlighter: rouge
+
+# Plugins (GitHub Pages safe whitelist)
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+# Exclude build artifacts and internal files
+exclude:
+  - "*.lock"
+  - "*.py"
+  - "internal/"
+  - "datbotty-live"
+  - "v1/"
+  - "v2/"
+  - "v3/"
+  - "v4/"
+  - "v5/"
+  - "shared.css"
+
+# Defaults for posts
+defaults:
+  - scope:
+      path: "_posts"
+      type: "posts"
+    values:
+      layout: "post"
+      author: "Jake Morrison"
