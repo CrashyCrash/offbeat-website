@@ -1,0 +1,64 @@
+name: Cleanup Old Artifacts & Workflow Runs
+
+# Runs weekly to delete expired artifacts and audit workflow run counts.
+# Helps keep Actions storage under the 500 MB org/personal included limit.
+
+on:
+  schedule:
+    - cron: '0 4 * * 0'   # Every Sunday at 4:00 AM UTC (offset from datbotty-v2)
+  workflow_dispatch:
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      actions: write
+      contents: read
+
+    steps:
+      - name: Delete expired artifacts
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          echo "## Artifact Cleanup Report" >> $GITHUB_STEP_SUMMARY
+          echo "**Repo**: $REPO | **Date**: $(date -u '+%Y-%m-%d %H:%M UTC')" >> $GITHUB_STEP_SUMMARY
+
+          BEFORE=$(gh api "repos/$REPO/actions/artifacts" --jq '.total_count' 2>/dev/null || echo 0)
+
+          PAGE=1
+          while true; do
+            ARTS=$(gh api "repos/$REPO/actions/artifacts?per_page=100&page=$PAGE" 2>/dev/null || echo '{"artifacts":[]}')
+            COUNT=$(echo "$ARTS" | jq '.artifacts | length')
+            [ "$COUNT" -eq 0 ] && break
+            echo "$ARTS" | jq -c '.artifacts[] | select(.expired == true) | .id' | while read -r AID; do
+              gh api --method DELETE "repos/$REPO/actions/artifacts/$AID" 2>/dev/null && echo "Deleted $AID"
+            done
+            PAGE=$((PAGE + 1))
+            [ "$COUNT" -lt 100 ] && break
+          done
+
+          AFTER=$(gh api "repos/$REPO/actions/artifacts" --jq '.total_count' 2>/dev/null || echo 0)
+          echo "- Before: $BEFORE  After: $AFTER  Cleaned: $((BEFORE - AFTER))" >> $GITHUB_STEP_SUMMARY
+
+      - name: Workflow run count audit
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          TOTAL=$(gh api "repos/$REPO/actions/runs?per_page=1" --jq '.total_count' 2>/dev/null || echo 0)
+          echo "Total workflow runs: $TOTAL" >> $GITHUB_STEP_SUMMARY
+          if [ "$TOTAL" -gt 3000 ]; then
+            echo "::warning::$REPO has $TOTAL workflow runs. Consider further reducing automation frequency."
+            echo "⚠ **WARNING**: $TOTAL runs may be contributing to Offbeat-Inc org storage if this repo ever lived there." >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Storage tips reminder
+        run: |
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Required: Fix Offbeat-Inc Org Storage" >> $GITHUB_STEP_SUMMARY
+          echo "1. Go to: https://github.com/organizations/Offbeat-Inc/settings/actions" >> $GITHUB_STEP_SUMMARY
+          echo "2. Set **Artifact and log retention** from 90 days → **7 days**" >> $GITHUB_STEP_SUMMARY
+          echo "3. Check: https://github.com/organizations/Offbeat-Inc/settings/billing for storage breakdown" >> $GITHUB_STEP_SUMMARY
+          echo "4. Delete any GitHub Packages at: https://github.com/orgs/Offbeat-Inc/packages" >> $GITHUB_STEP_SUMMARY

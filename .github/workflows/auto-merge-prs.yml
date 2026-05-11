@@ -4,7 +4,7 @@ on:
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
   schedule:
-    - cron: '0 * * * *'   # Every hour (was every 15 min — reduced to save Actions storage)
+    - cron: '0 */2 * * *'   # Every 2 hours (was every hour — reduced to save Actions storage)
   workflow_dispatch:
 
 jobs:
