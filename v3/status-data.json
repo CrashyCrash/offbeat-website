@@ -1,14 +1,14 @@
 {
-  "generated_at": "2026-05-12T19:53:16Z",
-  "live_pages": 100,
+  "generated_at": "2026-05-13T03:29:41Z",
+  "live_pages": 102,
   "prs_merged": 7,
   "issues_dispatched": 8,
-  "open_issues": 93,
+  "open_issues": 94,
   "active_workflows": 9,
   "open_prs": 22,
   "pages_up": 2,
   "pages_checked": 10,
-  "last_commit_offbeat": "2026-05-12T14:26:43Z",
-  "last_commit_msg": "chore: update status dashboard data [skip ci]",
-  "last_commit_sha": "45968df"
+  "last_commit_offbeat": "2026-05-13T03:20:01Z",
+  "last_commit_msg": "chore: auto-publish AI content [2026-05-12 23:20] (3 files, 3fileschanged,332ins",
+  "last_commit_sha": "22bd145"
 }
