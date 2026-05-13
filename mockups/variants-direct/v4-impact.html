@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pioneer DJ DDJ-FLX10 Review | OffbeatDJ — v4-impact</title>
+<style>
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg:      #0a0a0f;
+  --surface: #13131a;
+  --s2:      #1a1a26;
+  --border:  rgba(124,58,237,.28);
+  --purple:  #7c3aed;
+  --cyan:    #06b6d4;
+  --text:    #e2e8f0;
+  --muted:   #94a3b8;
+  --green:   #22c55e;
+  --red:     #ef4444;
+}
+body { background: var(--bg); color: var(--text); font-family: system-ui,-apple-system,sans-serif;
+  line-height: 1.6; }
+
+/* NAV */
+nav { background: rgba(10,10,15,.96); backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border); padding: 0 2.5rem; height: 62px;
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 100; }
+.logo { display: flex; align-items: center; gap: 10px; font-weight: 800;
+  font-size: 1.15rem; color: var(--text); }
+nav ul { list-style: none; display: flex; gap: 2rem; }
+nav ul a { color: var(--muted); text-decoration: none; font-size: .9rem; transition: color .2s; }
+nav ul a:hover { color: var(--cyan); }
+
+/* HERO */
+.hero { background: var(--bg); position: relative; overflow: visible;
+  padding-top: 0; }
+.hero-inner { max-width: 1200px; margin: 0 auto; padding: 2.8rem 2.5rem 0;
+  display: grid; grid-template-columns: 1fr 480px; align-items: end;
+  gap: 2rem; position: relative; min-height: 300px; }
+.hero-left { padding-bottom: 3rem; }
+.category-label { font-size: .78rem; text-transform: uppercase; letter-spacing: .12em;
+  color: var(--cyan); margin-bottom: .7rem; }
+.hero h1 { font-size: 3.5rem; font-weight: 900; line-height: 1.05; margin-bottom: .6rem; }
+.subtitle { font-size: 1.15rem; color: var(--muted); margin-bottom: 1.5rem; font-weight: 400; }
+.byline { display: flex; align-items: center; gap: .8rem; }
+.avatar { width: 44px; height: 44px; border-radius: 50%; overflow: hidden; flex-shrink: 0; }
+.author-name { font-size: .95rem; font-weight: 700; color: var(--text); }
+.read-time { font-size: .82rem; color: var(--muted); }
+
+/* Hero right — controller */
+.hero-right { position: relative; min-height: 280px; }
+.gradient-band {
+  position: absolute; bottom: 0; left: 0; right: -40px; height: 140px;
+  background: linear-gradient(135deg, #3b0764 0%, #7c3aed 55%, #0284c7 100%);
+  opacity: .82; border-radius: 14px 14px 0 0; }
+.controller-img {
+  position: absolute; right: -50px; top: 0; width: 520px; max-width: none;
+  transform: perspective(1200px) rotateY(-7deg);
+  filter: drop-shadow(0 24px 55px rgba(0,0,0,.85)) drop-shadow(0 0 35px rgba(124,58,237,.25));
+  z-index: 2; }
+
+/* DISCLOSURE */
+.disclosure {
+  background: rgba(19,19,26,.98); border-top: 1px solid rgba(124,58,237,.2);
+  border-bottom: 1px solid rgba(124,58,237,.2);
+  text-align: center; padding: .8rem 1rem; font-size: .86rem; color: var(--muted);
+  margin-top: 110px; }
+.disclosure strong { color: var(--text); }
+
+/* MAIN */
+main { max-width: 1200px; margin: 0 auto; padding: 0 2.5rem 4rem; }
+
+/* SCORE ROW */
+.score-row { display: grid; grid-template-columns: 220px 1fr; gap: 1.5rem;
+  margin: 2rem 0 2.5rem; }
+.score-card { background: var(--surface); border: 1px solid var(--border);
+  border-radius: 14px; padding: 1.5rem; display: flex; flex-direction: column;
+  align-items: center; text-align: center; gap: .5rem; }
+.score-labels { font-size: .78rem; color: var(--muted); line-height: 1.5; }
+.score-pills { display: flex; gap: .5rem; flex-wrap: wrap; justify-content: center;
+  margin-top: .5rem; }
+.pill { background: var(--s2); border: 1px solid var(--border); border-radius: 20px;
+  padding: .22rem .75rem; font-size: .74rem; color: var(--muted); }
+
+/* RETAILERS */
+.retailers-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; }
+.retailer-card { background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 1.4rem; text-align: center;
+  display: flex; flex-direction: column; align-items: center; gap: .55rem; }
+.retailer-name { font-size: 1.1rem; font-weight: 800; }
+.retailer-name.amazon { color: #ff9900; }
+.retailer-name.sweetwater { color: #e2e8f0; }
+.retailer-name.guitar-center { color: #ef4444; }
+.retailer-price { font-size: 1.85rem; font-weight: 800; color: var(--text); }
+.stars { color: #f59e0b; font-size: .95rem; }
+.buy-btn { background: linear-gradient(135deg,var(--cyan),var(--purple));
+  color: #fff; border: none; border-radius: 8px; padding: .6rem 0; font-weight: 700;
+  cursor: pointer; font-size: .9rem; width: 100%; text-decoration: none;
+  display: block; margin-top: .25rem; transition: opacity .2s; }
+.buy-btn:hover { opacity: .88; }
+
+/* SECTIONS */
+.section { margin-bottom: 2.5rem; }
+.section-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 1.25rem;
+  padding-bottom: .6rem; border-bottom: 1px solid var(--border); }
+
+/* SPECS */
+.specs-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: .75rem; }
+.spec-item { background: var(--surface); border: 1px solid var(--border);
+  border-radius: 8px; padding: .8rem 1rem; font-size: .86rem; }
+.spec-label { color: var(--muted); margin-bottom: .2rem; font-size: .78rem; }
+.spec-value { font-weight: 600; }
+
+/* PROS CONS */
+.pros-cons { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.pros-card, .cons-card { background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; padding: 1.25rem; }
+.pros-title { color: var(--green); font-weight: 700; font-size: .85rem;
+  text-transform: uppercase; letter-spacing: .08em; margin-bottom: .9rem; }
+.cons-title { color: var(--red); font-weight: 700; font-size: .85rem;
+  text-transform: uppercase; letter-spacing: .08em; margin-bottom: .9rem; }
+.pro-item, .con-item { display: flex; align-items: center; gap: .55rem;
+  font-size: .9rem; margin-bottom: .55rem; }
+.pro-icon { color: var(--green); font-weight: 900; flex-shrink: 0; }
+.con-icon { color: var(--red); font-weight: 900; flex-shrink: 0; }
+
+/* COMPARISON TABLE */
+.comparison-table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+.comparison-table th { background: var(--s2); padding: .75rem 1rem; text-align: left;
+  font-size: .78rem; text-transform: uppercase; letter-spacing: .06em;
+  color: var(--muted); border-bottom: 1px solid var(--border); }
+.comparison-table td { padding: .75rem 1rem; border-bottom: 1px solid rgba(42,42,58,.5); }
+.comparison-table td:first-child { font-weight: 600; }
+.winner-row { background: rgba(124,58,237,.18); }
+.winner-row td { color: var(--text); }
+
+/* FAQ */
+.faq-item { border-bottom: 1px solid var(--border); padding: 1rem 0; }
+.faq-q { display: flex; justify-content: space-between; align-items: center;
+  font-size: .95rem; font-weight: 500; cursor: pointer; }
+.faq-icon { color: var(--cyan); }
+.faq-a { font-size: .88rem; color: var(--muted); padding-top: .7rem; }
+
+/* AUTHOR */
+.author-card { background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 1.5rem; display: flex; gap: 1.25rem;
+  align-items: flex-start; }
+.author-avatar { width: 70px; height: 70px; border-radius: 50%; overflow: hidden;
+  flex-shrink: 0; }
+.author-name-lg { font-size: 1.05rem; font-weight: 700; margin-bottom: .3rem; }
+.author-bio { font-size: .88rem; color: var(--muted); line-height: 1.55; }
+.author-socials { display: flex; gap: 1rem; margin-top: .75rem; }
+.social-link { color: var(--muted); text-decoration: none; font-size: .82rem;
+  transition: color .2s; }
+.social-link:hover { color: var(--cyan); }
+
+
+/* V4: Impact — deep purple hero, centered score, dramatic shadows */
+body { --bg: #050510; }
+.hero {
+  background: linear-gradient(160deg, #050510 0%, #1a0a30 40%, #050510 100%);
+}
+.hero h1 {
+  font-size: 5rem; line-height: .95; letter-spacing: -.04em;
+  color: #fff;
+  text-shadow: 0 0 60px rgba(168,85,247,.45);
+}
+.hero-inner { min-height: 340px; }
+.gradient-band {
+  background: linear-gradient(135deg, #4c1d95 0%, #7c3aed 40%, #0e7490 100%);
+  opacity: .9;
+}
+.score-row { grid-template-columns: 1fr 1fr 1fr 1fr; gap: .75rem; }
+.score-card-v4 {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+  padding: 1.5rem; display: flex; flex-direction: column; align-items: center;
+  text-align: center; gap: .5rem;
+  box-shadow: 0 0 40px rgba(124,58,237,.18);
+}
+.retailers-grid-v4 {
+  display: contents;
+}
+.retailers-grid-v4 .retailer-card {
+  border-radius: 14px;
+  box-shadow: 0 0 20px rgba(124,58,237,.12);
+  border: 1px solid rgba(124,58,237,.35);
+}
+
+</style>
+</head>
+<body>
+
+  <nav>
+    <div class="logo">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+        <circle cx="14" cy="14" r="13" stroke="#7c3aed" stroke-width="2"/>
+        <path d="M8 10 Q14 7 20 10 Q20 18 14 21 Q8 18 8 10Z" fill="#7c3aed" opacity="0.3"/>
+        <circle cx="14" cy="14" r="4" fill="#7c3aed"/>
+        <path d="M7 9 C7 5 21 5 21 9" stroke="#06b6d4" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      </svg>
+      <span>OffbeatDJ</span>
+    </div>
+    <ul>
+      <li><a href="#">Reviews</a></li>
+      <li><a href="#">Gear Guides</a></li>
+      <li><a href="#">Tips &amp; Tricks</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-left">
+        <div class="category-label">DJ Controller Review</div>
+        <h1>Pioneer DJ<br>DDJ-FLX10</h1>
+        <p class="subtitle">Advanced 4-Channel Controller with Stems</p>
+        <div class="byline">
+          <div class="avatar">
+            <svg width="44" height="44" viewBox="0 0 44 44">
+              <defs>
+                <linearGradient id="avG" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#7c3aed"/>
+                  <stop offset="100%" stop-color="#06b6d4"/>
+                </linearGradient>
+              </defs>
+              <circle cx="22" cy="22" r="22" fill="url(#avG)"/>
+              <circle cx="22" cy="17" r="8" fill="rgba(255,255,255,0.8)"/>
+              <ellipse cx="22" cy="38" rx="13" ry="9" fill="rgba(255,255,255,0.8)"/>
+            </svg>
+          </div>
+          <div class="byline-text">
+            <div class="author-name">Jake Morrison</div>
+            <div class="read-time">8 min read</div>
+          </div>
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="gradient-band"></div>
+        <img class="controller-img" src="ddj-flx10.jpg" alt="Pioneer DJ DDJ-FLX10 controller" />
+      </div>
+    </div>
+  </section>
+
+  <div class="disclosure">
+    <strong>Disclosure:</strong> We may earn a commission if you purchase through our links.
+  </div>
+<main>
+
+    <div class="score-row">
+      <div class="score-card-v4">
+        
+<svg width="170" height="170" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gArc" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#7c3aed"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="2" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <circle cx="100" cy="100" r="88" fill="#111120" stroke="#2a2a3a" stroke-width="1.5"/>
+  <!-- bg arc -->
+  <circle cx="100" cy="100" r="70" fill="none"
+    stroke="#2d2d45" stroke-width="13" stroke-linecap="round"
+    stroke-dasharray="330 110"
+    transform="rotate(135 100 100)"/>
+  <!-- filled arc 8.4/10 -->
+  <circle cx="100" cy="100" r="70" fill="none"
+    stroke="url(#gArc)" stroke-width="13" stroke-linecap="round"
+    stroke-dasharray="277 163"
+    transform="rotate(135 100 100)" filter="url(#glow)"/>
+  <!-- tick marks every 30° around the arc -->
+  <g stroke="#444" stroke-width="1.5">
+    <line x1="100" y1="18" x2="100" y2="26" transform="rotate(0 100 100)"/>
+    <line x1="100" y1="18" x2="100" y2="26" transform="rotate(30 100 100)"/>
+    <line x1="100" y1="18" x2="100" y2="26" transform="rotate(60 100 100)"/>
+    <line x1="100" y1="18" x2="100" y2="26" transform="rotate(90 100 100)"/>
+    <line x1="100" y1="18" x2="100" y2="26" transform="rotate(120 100 100)"/>
+    <line x1="100" y1="18" x2="100" y2="26" transform="rotate(150 100 100)"/>
+    <line x1="100" y1="18" x2="100" y2="26" transform="rotate(180 100 100)"/>
+    <line x1="100" y1="18" x2="100" y2="26" transform="rotate(210 100 100)"/>
+    <line x1="100" y1="18" x2="100" y2="26" transform="rotate(240 100 100)"/>
+    <line x1="100" y1="18" x2="100" y2="26" transform="rotate(270 100 100)"/>
+    <line x1="100" y1="18" x2="100" y2="26" transform="rotate(300 100 100)"/>
+    <line x1="100" y1="18" x2="100" y2="26" transform="rotate(330 100 100)"/>
+  </g>
+  <!-- inner circle -->
+  <circle cx="100" cy="100" r="52" fill="#0a0a14" stroke="#222233" stroke-width="1"/>
+  <!-- score text -->
+  <text x="100" y="97" text-anchor="middle" font-size="34" font-weight="900"
+    fill="#e2e8f0" font-family="system-ui,-apple-system,sans-serif">8.4</text>
+  <text x="100" y="115" text-anchor="middle" font-size="12" fill="#94a3b8"
+    font-family="system-ui,-apple-system,sans-serif">/10</text>
+</svg>
+        <div class="score-labels">Build Quality<br>Sound Performance</div>
+        <div class="score-pills">
+          <span class="pill">Feature Set</span>
+          <span class="pill">Value</span>
+        </div>
+      </div>
+      <div class="retailers-grid-v4">
+        <div class="retailer-card" style="border-radius:14px;box-shadow:0 0 20px rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.35)">
+          <div class="retailer-name amazon">amazon</div>
+          <div class="retailer-price">$1,399</div>
+          <div class="stars">★★★★½</div>
+          <a href="#" class="buy-btn">Buy Now</a>
+        </div>
+        <div class="retailer-card" style="border-radius:14px;box-shadow:0 0 20px rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.35)">
+          <div class="retailer-name sweetwater">Sweetwater</div>
+          <div class="retailer-price">$1,399</div>
+          <div class="stars">★★★★½</div>
+          <a href="#" class="buy-btn">Buy Now</a>
+        </div>
+        <div class="retailer-card" style="border-radius:14px;box-shadow:0 0 20px rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.35)">
+          <div class="retailer-name guitar-center"><em>Guitar Center</em></div>
+          <div class="retailer-price">$1,399</div>
+          <div class="stars">★★★★½</div>
+          <a href="#" class="buy-btn">Buy Now</a>
+        </div>
+      </div>
+    </div>
+
+    <section class="section">
+      <h2 class="section-title">Specs</h2>
+      <div class="specs-grid">
+        <div class="spec-item"><div class="spec-label">Channels</div><div class="spec-value">4</div></div>
+        <div class="spec-item"><div class="spec-label">Jog Wheels</div><div class="spec-value">8.1&quot; capacitive</div></div>
+        <div class="spec-item"><div class="spec-label">Mixer Type</div><div class="spec-value">3-Band EQ</div></div>
+        <div class="spec-item"><div class="spec-label">Stems Control</div><div class="spec-value">Yes</div></div>
+        <div class="spec-item"><div class="spec-label">Outputs</div><div class="spec-value">XLR, RCA, USB</div></div>
+        <div class="spec-item"><div class="spec-label">Pad Modes</div><div class="spec-value">16 Performance</div></div>
+        <div class="spec-item"><div class="spec-label">Compatibility</div><div class="spec-value">rekordbox, Serato</div></div>
+        <div class="spec-item"><div class="spec-label">Weight</div><div class="spec-value">6.7 lbs</div></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="pros-cons">
+        <div class="pros-card">
+          <div class="pros-title">PROS</div>
+          <div class="pro-item"><span class="pro-icon">✓</span> Great Stem Separation</div>
+          <div class="pro-item"><span class="pro-icon">✓</span> High-Quality Build</div>
+          <div class="pro-item"><span class="pro-icon">✓</span> Versatile Effects</div>
+          <div class="pro-item"><span class="pro-icon">✓</span> rekordbox &amp; Serato Compatible</div>
+        </div>
+        <div class="cons-card">
+          <div class="cons-title">CONS</div>
+          <div class="con-item"><span class="con-icon">✗</span> No Standalone Mode</div>
+          <div class="con-item"><span class="con-icon">✗</span> Steep Learning Curve</div>
+          <div class="con-item"><span class="con-icon">✗</span> Large &amp; Bulky</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Comparison Chart</h2>
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th>Model</th><th>Features</th><th>Compatibility</th><th>Price</th><th>Rating</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="winner-row">
+            <td>Pioneer DDJ-FLX10</td><td>Stem Control</td><td>rekordbox, Serato</td>
+            <td>$1,399</td><td><strong>8.4</strong></td>
+          </tr>
+          <tr><td>DDJ-1000</td><td>Magvel Faders</td><td>rekordbox</td><td>$1,399</td><td>8.1</td></tr>
+          <tr><td>Denon DJ MC7000</td><td>Dual USB Ports</td><td>Serato</td><td>$1,249</td><td>8.0</td></tr>
+          <tr><td>Numark NVII</td><td>Dual Displays</td><td>Serato</td><td>$999</td><td>7.6</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">FAQ</h2>
+      <div class="faq-item">
+        <div class="faq-q">Is the DDJ FLX10 standalone? <span class="faq-icon">▾</span></div>
+        <div class="faq-a">No, the DDJ-FLX10 requires a laptop running rekordbox or Serato DJ Pro.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Does it work with Serato and rekordbox? <span class="faq-icon">▾</span></div>
+        <div class="faq-a">Yes — it ships with rekordbox and Serato DJ Pro licenses included.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What are the main features of the DDJ-FLX10? <span class="faq-icon">▾</span></div>
+        <div class="faq-a">Stems separation, 8.1&quot; jog wheels, 3-band channel EQ, Sound Color FX, and Beat FX.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Is it suitable for beginners? <span class="faq-icon">▾</span></div>
+        <div class="faq-a">Not ideal for beginners — the DDJ-200 or DDJ-400 are better starting points.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What comes in the box? <span class="faq-icon">▾</span></div>
+        <div class="faq-a">DDJ-FLX10, USB cable, power cable, and access cards for rekordbox and Serato DJ Pro.</div>
+      </div>
+    </section>
+
+    <section class="section author-section">
+      <div class="author-card">
+        <div class="author-avatar">
+          <svg width="70" height="70" viewBox="0 0 70 70">
+            <defs>
+              <linearGradient id="avA" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#7c3aed"/>
+                <stop offset="100%" stop-color="#06b6d4"/>
+              </linearGradient>
+            </defs>
+            <circle cx="35" cy="35" r="35" fill="url(#avA)"/>
+            <circle cx="35" cy="28" r="12" fill="rgba(255,255,255,0.85)"/>
+            <ellipse cx="35" cy="58" rx="19" ry="13" fill="rgba(255,255,255,0.85)"/>
+          </svg>
+        </div>
+        <div class="author-info">
+          <div class="author-name-lg">Jake Morrison</div>
+          <p class="author-bio">Jake is a DJ and gear enthusiast with over 10 years of experience in the industry.
+          He loves testing the latest equipment and sharing his insights with the DJ community.</p>
+          <div class="author-socials">
+            <a href="#" class="social-link">🐦 Twitter</a>
+            <a href="#" class="social-link">▶ YouTube</a>
+            <a href="#" class="social-link">📷 Instagram</a>
+          </div>
+        </div>
+      </div>
+    </section>
+</main>
+<script>
+document.querySelectorAll('.faq-item').forEach(item => {
+  item.querySelector('.faq-q').addEventListener('click', () => {
+    const a = item.querySelector('.faq-a');
+    a.style.display = a.style.display === 'block' ? 'none' : 'block';
+  });
+});
+</script>
+</body>
+</html>
