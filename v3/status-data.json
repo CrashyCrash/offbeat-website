@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-05-13T19:55:22Z",
-  "live_pages": 102,
+  "generated_at": "2026-05-14T03:29:43Z",
+  "live_pages": 118,
   "prs_merged": 7,
   "issues_dispatched": 8,
   "open_issues": 94,
@@ -8,7 +8,7 @@
   "open_prs": 22,
   "pages_up": 2,
   "pages_checked": 10,
-  "last_commit_offbeat": "2026-05-13T19:20:01Z",
-  "last_commit_msg": "chore: auto-publish AI content [2026-05-13 15:20] (4 files, 4fileschanged,542ins",
-  "last_commit_sha": "27093b6"
+  "last_commit_offbeat": "2026-05-14T03:20:01Z",
+  "last_commit_msg": "chore: auto-publish AI content [2026-05-13 23:20] (1 files, 1filechanged,360inse",
+  "last_commit_sha": "c1dd5ac"
 }
