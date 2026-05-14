@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-14T03:29:43Z",
+  "generated_at": "2026-05-14T08:38:10Z",
   "live_pages": 118,
   "prs_merged": 7,
   "issues_dispatched": 8,
@@ -8,7 +8,7 @@
   "open_prs": 22,
   "pages_up": 2,
   "pages_checked": 10,
-  "last_commit_offbeat": "2026-05-14T03:20:01Z",
-  "last_commit_msg": "chore: auto-publish AI content [2026-05-13 23:20] (1 files, 1filechanged,360inse",
-  "last_commit_sha": "c1dd5ac"
+  "last_commit_offbeat": "2026-05-14T08:20:01Z",
+  "last_commit_msg": "chore: auto-publish AI content [2026-05-14 04:20] (1 files, 1filechanged,357inse",
+  "last_commit_sha": "095d291"
 }
