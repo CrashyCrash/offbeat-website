@@ -70,10 +70,11 @@ a:hover{color:var(--accent2-hover)}
 .hero-band{position:absolute;bottom:0;left:0;right:-60px;border-radius:14px 14px 0 0}
 .controller-wrap{position:relative;z-index:2}
 .controller-img{
-  display:block;width:100%;margin-bottom:-90px;
-  transform:perspective(1200px) rotateY(-6deg);
-  filter:drop-shadow(0 30px 70px rgba(0,0,0,.97))
-         drop-shadow(0 0 50px rgba(124,58,237,.35));
+  display:block;width:120%;margin-bottom:-170px;margin-left:-5%;
+  transform:perspective(1400px) rotateY(-4deg);
+  filter:drop-shadow(0 45px 110px rgba(0,0,0,1))
+         drop-shadow(0 2px 80px rgba(124,58,237,.6))
+         drop-shadow(0 25px 50px rgba(6,182,212,.22));
 }
 .disclosure-bar{
   border-bottom:1px solid rgba(124,58,237,.15);
@@ -100,27 +101,64 @@ a:hover{color:var(--accent2-hover)}
 .ret-btn:hover{opacity:.85;color:#fff}
 
 
-.hero{background:#04040e}
-.review-hero-inner{grid-template-columns:1fr 520px;padding:4rem 2.5rem 0;min-height:380px}
+/* hero base — gradient sweeps from near-black to deep purple on right (Best.png) */
+.hero{
+  background:linear-gradient(115deg,#02020a 0%,#04030f 38%,#180735 58%,#2d1277 78%,#1a0a4a 100%);
+  position:relative;z-index:5;
+}
+.review-hero-inner{grid-template-columns:1fr 580px;padding:4.5rem 3rem 0;min-height:500px;align-items:start}
+
+/* h1 — Close2ndBest gradient style */
 .hero h1{
-  font-size:clamp(3.2rem,5vw,5rem);font-weight:900;line-height:.95;margin:.6rem 0 .65rem;
-  color:#ffffff;letter-spacing:-.03em;
-  text-shadow:0 2px 60px rgba(168,85,247,.4),0 0 120px rgba(124,58,237,.2);
+  font-size:clamp(3.4rem,5.5vw,5.2rem);font-weight:900;line-height:.93;margin:.75rem 0 .7rem;
+  background:linear-gradient(125deg,#c084fc 0%,#a855f7 28%,#e879f9 60%,#f43f5e 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  letter-spacing:-.03em;display:inline-block;
 }
-.hero-eyebrow{background:rgba(6,182,212,.1);border:1px solid rgba(6,182,212,.3);color:#67e8f9}
-.hero-band{height:150px;background:linear-gradient(135deg,#1e1b4b 0%,#5b21b6 45%,#0e7490 100%)}
-.fast-facts{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem;margin-top:-.1rem}
-.fast-fact{
-  background:#111122;border:1px solid #1e293b;border-radius:7px;
-  padding:.4rem .9rem;text-align:center;
-}
-.ff-label{font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
-.ff-val{font-size:1rem;font-weight:800;color:var(--text);line-height:1.2}
+
+/* narrow eyebrow tag — styled subtly */
+.hero-eyebrow{background:rgba(168,85,247,.12);border:1px solid rgba(168,85,247,.3);color:#c084fc}
+
+/* hero-band: hidden — color lives in .hero bg gradient */
+.hero-band{display:none}
+
+/* override base align-self:end — controller starts from top like Best.png */
+.hero-right{align-self:start;position:relative}
+
+/* remove fast-facts pills — replaced by big gradient title per Close2ndBest */
+.fast-facts{display:none}
+.ff-label,.ff-val{display:none}
+
+/* byline — single-line, compact */
+.hero-byline{display:flex;align-items:center;gap:.65rem;margin-top:1.6rem}
+.hero-byline-txt{font-size:.88rem;color:var(--muted);font-weight:500}
+
+/* hero rule — lower div line with gorgeous blue/purple gradient (Best.png) */
 .hero-rule{
-  height:2px;background:linear-gradient(90deg,transparent,#7c3aed 30%,#06b6d4 70%,transparent);
-  margin:0;border:none;
+  height:3px;
+  background:linear-gradient(90deg,transparent 0%,#6d28d9 18%,#7c3aed 35%,#06b6d4 58%,#a855f7 80%,transparent 100%);
+  margin:0;border:none;position:relative;z-index:2;
+  box-shadow:0 0 18px 3px rgba(124,58,237,.45), 0 0 35px 8px rgba(6,182,212,.2);
 }
-.disclosure-bar{background:#080816;padding:100px 2rem .75rem}
+
+/* hero-upper-rule — thin separator above disclosure (Best.png upper div line) */
+.hero-upper-rule{
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(124,58,237,.65) 30%,rgba(6,182,212,.5) 70%,transparent);
+  margin:0;border:none;position:relative;z-index:2;
+}
+
+/* disclosure bar — Best.png: centered dark strip, bold label */
+.disclosure-bar{
+  background:#06060f;
+  padding:75px 2rem 1.2rem;
+  text-align:center;
+  font-size:.87rem;
+  color:var(--muted);
+  position:relative;z-index:2;
+}
+.disclosure-bar strong{color:var(--text);letter-spacing:.01em}
+
 /* verdict section header */
 .verdict-section-hd{
   display:flex;align-items:center;gap:1rem;margin:2rem 0 0;
@@ -149,35 +187,26 @@ a:hover{color:var(--accent2-hover)}
 <div class="hero">
   <div class="review-hero-inner">
     <div class="hero-left">
-      <div class="hero-eyebrow">DJ Controller Review &mdash; 2026</div>
-      <div class="fast-facts">
-        <div class="fast-fact"><div class="ff-label">Price</div><div class="ff-val">$1,399</div></div>
-        <div class="fast-fact"><div class="ff-label">Channels</div><div class="ff-val">4-CH</div></div>
-        <div class="fast-fact"><div class="ff-label">Verdict</div><div class="ff-val" style="color:var(--accent2)">8.4/10</div></div>
-        <div class="fast-fact"><div class="ff-label">Stems</div><div class="ff-val" style="color:#4ade80">✓ Yes</div></div>
-      </div>
       <h1>Pioneer DJ<br>DDJ-FLX10</h1>
-      <p class="hero-subtitle">Advanced 4-Channel Controller with Stems Control &mdash; 35+ Hours Tested</p>
+      <p class="hero-subtitle">Advanced 4-Channel Performance Controller</p>
       <div class="hero-byline">
         <div class="hero-avatar">🎧</div>
-        <div class="hero-byline-txt">
-          <div class="author-name">Jake Morrison</div>
-          <div class="read-time">8 min read &bull; Updated May 2026</div>
-        </div>
+        <span class="hero-byline-txt">Jake Morrison &bull; 8 min read</span>
       </div>
     </div>
     <div class="hero-right">
       <div class="hero-band"></div>
       <div class="controller-wrap">
-        <img class="controller-img" src="ddj-flx10.png" alt="Pioneer DJ DDJ-FLX10">
+        <img class="controller-img" src="ddj-flx10_1.png" alt="Pioneer DJ DDJ-FLX10">
       </div>
     </div>
   </div>
 </div>
-<hr class="hero-rule">
+<div class="hero-upper-rule"></div>
 <div class="disclosure-bar">
   <strong>Disclosure:</strong> We may earn a commission if you purchase through our links.
 </div>
+<hr class="hero-rule">
 <main>
   <div class="verdict-section-hd">
   <span class="vsh-label">Our Verdict</span>
