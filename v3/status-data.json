@@ -1,14 +1,14 @@
 {
-  "generated_at": "2026-05-16T08:05:05Z",
+  "generated_at": "2026-05-16T13:23:06Z",
   "live_pages": 119,
-  "prs_merged": 8,
+  "prs_merged": 10,
   "issues_dispatched": 8,
   "open_issues": 100,
   "active_workflows": 9,
-  "open_prs": 21,
+  "open_prs": 19,
   "pages_up": 2,
   "pages_checked": 10,
-  "last_commit_offbeat": "2026-05-16T06:25:10Z",
-  "last_commit_msg": "Auto-merge: Add `v3/work.html` deployment showcase and wire `Work` nav across al",
-  "last_commit_sha": "930b2ff"
+  "last_commit_offbeat": "2026-05-16T11:04:28Z",
+  "last_commit_msg": "Auto-merge: Optimize `v3/tools.html` affiliate conversion UX and link consistenc",
+  "last_commit_sha": "a464ebb"
 }
