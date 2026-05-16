@@ -1,14 +1,14 @@
 {
-  "generated_at": "2026-05-16T02:56:16Z",
-  "live_pages": 118,
-  "prs_merged": 7,
+  "generated_at": "2026-05-16T08:05:05Z",
+  "live_pages": 119,
+  "prs_merged": 8,
   "issues_dispatched": 8,
-  "open_issues": 98,
+  "open_issues": 100,
   "active_workflows": 9,
-  "open_prs": 22,
+  "open_prs": 21,
   "pages_up": 2,
   "pages_checked": 10,
-  "last_commit_offbeat": "2026-05-15T19:38:54Z",
-  "last_commit_msg": "chore: update status dashboard data [skip ci]",
-  "last_commit_sha": "5b6b50c"
+  "last_commit_offbeat": "2026-05-16T06:25:10Z",
+  "last_commit_msg": "Auto-merge: Add `v3/work.html` deployment showcase and wire `Work` nav across al",
+  "last_commit_sha": "930b2ff"
 }
