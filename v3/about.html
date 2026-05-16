@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About — Offbeat, Inc.</title>
+    <meta name="description" content="Learn about Offbeat, Inc. — the team, products, and technology behind our AI automation and software systems.">
+    <link rel="canonical" href="https://crashycrash.github.io/offbeat-website/v3/about.html">
+    <meta property="og:title" content="About — Offbeat, Inc.">
+    <meta property="og:description" content="Meet Offbeat, Inc. and explore what we build, the stack we use, and how to connect with our team.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://crashycrash.github.io/offbeat-website/v3/about.html">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Offbeat, Inc.",
+      "url": "https://crashycrash.github.io/offbeat-website/v3/",
+      "logo": "https://crashycrash.github.io/offbeat-website/v3/favicon.png",
+      "foundingDate": "2015",
+      "description": "Offbeat, Inc. builds software products, AI automation systems, and music technology for creative and technical teams.",
+      "areaServed": "Global",
+      "sameAs": [
+        "https://github.com/CrashyCrash",
+        "https://muthaeffincrash.com"
+      ],
+      "knowsAbout": [
+        "Software Development",
+        "AI Automation",
+        "Music Technology",
+        "Workflow Automation",
+        "Data Systems"
+      ],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "contact@offbeatinc.com",
+        "url": "https://crashycrash.github.io/offbeat-website/v3/contact.html",
+        "availableLanguage": "English"
+      }
+    }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap');
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #020206;
+            --bg-card: #08090f;
+            --border: #141828;
+            --glow: #00ccff;
+            --glow-2: #00fff2;
+            --violet: #7c3aed;
+            --hot: #ff3d71;
+            --green: #00e676;
+            --text: #e6eaf4;
+            --text-2: #6e7599;
+            --text-3: #2d3150;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        .mesh-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse 800px 600px at 20% 20%, rgba(0, 204, 255, 0.04) 0%, transparent 50%),
+                radial-gradient(ellipse 600px 800px at 80% 70%, rgba(124, 58, 237, 0.04) 0%, transparent 50%);
+        }
+
+        .scanlines {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 204, 255, 0.008) 2px,
+                rgba(0, 204, 255, 0.008) 4px
+            );
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(2, 2, 6, 0.75);
+            backdrop-filter: blur(20px);
+        }
+
+        .brand {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            position: relative;
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .brand::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--glow), var(--violet));
+            animation: brand-line 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes brand-line {
+            0% { transform: scaleX(0.3); transform-origin: left; }
+            100% { transform: scaleX(1); transform-origin: left; }
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .header-nav a {
+            color: var(--text-2);
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .header-nav a:hover,
+        .header-nav .active { color: var(--glow); }
+
+        .page {
+            position: relative;
+            z-index: 1;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 9rem 2rem 4rem;
+        }
+
+        .tag-line {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.72rem;
+            color: var(--glow);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            margin-bottom: 0.75rem;
+        }
+
+        h1 {
+            font-size: clamp(2.2rem, 5vw, 3.8rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            margin-bottom: 0.9rem;
+        }
+
+        h1 span {
+            background: linear-gradient(135deg, var(--glow), var(--glow-2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .lead {
+            color: var(--text-2);
+            font-size: 1.05rem;
+            line-height: 1.75;
+            max-width: 760px;
+            margin-bottom: 2.5rem;
+        }
+
+        .section {
+            margin-top: 2.2rem;
+        }
+
+        .section h2 {
+            font-size: clamp(1.5rem, 3vw, 2.2rem);
+            margin-bottom: 0.9rem;
+            letter-spacing: -0.02em;
+        }
+
+        .section p {
+            color: var(--text-2);
+            line-height: 1.75;
+            margin-bottom: 0.9rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 1.2rem;
+        }
+
+        .card h3 {
+            font-size: 1rem;
+            margin-bottom: 0.45rem;
+            color: var(--text);
+        }
+
+        .card p {
+            font-size: 0.9rem;
+            margin: 0;
+            color: var(--text-2);
+            line-height: 1.6;
+        }
+
+        .chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.7rem;
+            margin-top: 1rem;
+        }
+
+        .chip {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.78rem;
+            color: var(--glow);
+            border: 1px solid rgba(0, 204, 255, 0.25);
+            background: rgba(0, 204, 255, 0.06);
+            border-radius: 999px;
+            padding: 0.45rem 0.75rem;
+        }
+
+        .cta {
+            margin-top: 2.5rem;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            background: linear-gradient(135deg, rgba(0, 204, 255, 0.05), rgba(124, 58, 237, 0.04));
+        }
+
+        .cta h2 {
+            margin-bottom: 0.7rem;
+        }
+
+        .cta p {
+            color: var(--text-2);
+            margin-bottom: 1rem;
+        }
+
+        .cta-actions {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 0.75rem 1.2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: border-color 0.3s, color 0.3s, box-shadow 0.3s, background 0.3s;
+        }
+
+        .cta-button.primary {
+            color: var(--bg);
+            background: var(--glow);
+            border: 1px solid var(--glow);
+        }
+
+        .cta-button.primary:hover {
+            box-shadow: 0 0 22px rgba(0, 204, 255, 0.28);
+        }
+
+        .cta-button.secondary {
+            color: var(--text);
+            background: transparent;
+            border: 1px solid var(--border);
+        }
+
+        .cta-button.secondary:hover {
+            border-color: var(--glow);
+            color: var(--glow);
+        }
+
+        footer {
+            position: relative;
+            z-index: 1;
+            padding: 1.5rem 3rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.78rem;
+            color: var(--text-3);
+            margin-top: 2rem;
+        }
+
+        footer a { color: var(--text-2); text-decoration: none; }
+        footer a:hover { color: var(--glow); }
+
+        @media (max-width: 900px) {
+            .grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 640px) {
+            header { padding: 1rem 1.5rem; }
+            .header-nav { display: none; }
+            .page { padding: 8rem 1.25rem 3rem; }
+            footer { flex-direction: column; gap: 0.5rem; text-align: center; padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="mesh-bg"></div>
+    <div class="scanlines"></div>
+
+    <header>
+        <a href="index.html" class="brand">OFFBEAT</a>
+        <ul class="header-nav">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="tools.html">Tools</a></li>
+            <li><a href="about.html" class="active">About</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="privacy.html">Privacy</a></li>
+            <li><a href="status.html">Status</a></li>
+        </ul>
+    </header>
+
+    <main class="page">
+        <div class="tag-line">About Offbeat, Inc.</div>
+        <h1>Building focused <span>technology systems</span>.</h1>
+        <p class="lead">Offbeat, Inc. is a software company that designs and operates practical automation and digital tools. We partner with teams that want dependable engineering, clear outcomes, and products that keep improving after launch.</p>
+
+        <section class="section" aria-labelledby="company-overview">
+            <h2 id="company-overview">Company overview</h2>
+            <p>Founded in 2015, Offbeat has grown from hands-on consulting into a product-driven studio. We combine product thinking, platform engineering, and automation to help clients move faster with less friction.</p>
+            <p>Our work spans internal operations systems, customer-facing web software, and creative tooling for music workflows.</p>
+        </section>
+
+        <section class="section" aria-labelledby="what-we-build">
+            <h2 id="what-we-build">What we build</h2>
+            <div class="grid">
+                <article class="card">
+                    <h3>Automation Platforms</h3>
+                    <p>Task orchestration, AI-assisted workflows, and reporting pipelines that reduce manual work and increase operational visibility.</p>
+                </article>
+                <article class="card">
+                    <h3>Web Applications</h3>
+                    <p>Fast, secure interfaces for internal teams and external users, with clean UX and production-ready deployment practices.</p>
+                </article>
+                <article class="card">
+                    <h3>Music Technology</h3>
+                    <p>DJ and audio utilities for library organization, metadata management, and preparation workflows used before live performance.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="section" aria-labelledby="tech-stack">
+            <h2 id="tech-stack">Tech stack</h2>
+            <p>We choose mature tools that support reliability, observability, and long-term maintenance.</p>
+            <div class="chips">
+                <span class="chip">Python</span>
+                <span class="chip">JavaScript</span>
+                <span class="chip">TypeScript</span>
+                <span class="chip">HTML/CSS</span>
+                <span class="chip">REST APIs</span>
+                <span class="chip">Linux</span>
+                <span class="chip">GitHub Actions</span>
+                <span class="chip">SQLite/PostgreSQL</span>
+            </div>
+        </section>
+
+        <section class="cta" aria-labelledby="contact-cta">
+            <h2 id="contact-cta">Let’s connect</h2>
+            <p>If you’re exploring automation, software delivery, or product strategy, we’d love to hear what you’re building.</p>
+            <div class="cta-actions">
+                <a href="contact.html" class="cta-button primary">Contact Offbeat</a>
+                <a href="mailto:contact@offbeatinc.com" class="cta-button secondary">contact@offbeatinc.com</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div>&copy; 2026 Offbeat, Inc. — All rights reserved.</div>
+        <div><a href="https://muthaeffincrash.com">mutha effin CRASH</a></div>
+    </footer>
+</body>
+</html>
