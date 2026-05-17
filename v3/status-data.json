@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-17T03:30:27Z",
+  "generated_at": "2026-05-17T08:22:07Z",
   "live_pages": 120,
   "prs_merged": 18,
   "issues_dispatched": 8,
@@ -8,7 +8,7 @@
   "open_prs": 11,
   "pages_up": 2,
   "pages_checked": 10,
-  "last_commit_offbeat": "2026-05-16T22:51:52Z",
-  "last_commit_msg": "Auto-merge: Add Person JSON-LD schema for Crash to v3 homepage* Initial plan",
-  "last_commit_sha": "fe20f98"
+  "last_commit_offbeat": "2026-05-17T03:30:27Z",
+  "last_commit_msg": "chore: update status dashboard data [skip ci]",
+  "last_commit_sha": "f49b935"
 }
