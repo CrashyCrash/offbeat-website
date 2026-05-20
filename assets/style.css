@@ -1019,3 +1019,10 @@ footer a:hover { color: var(--accent2); }
 .site-nav { background: var(--surface); border-bottom: 1px solid var(--border); }
 .site-nav a { color: var(--muted); text-decoration: none; }
 .nav-container { max-width: var(--max-w); margin: 0 auto; padding: 0.85rem 2rem; display: flex; align-items: center; justify-content: space-between; }
+
+/* Related Articles — Internal Link Mesh */
+.related-articles{background:#1a1a2e;border:1px solid #2d2d4e;border-radius:8px;padding:24px 28px;margin:32px auto;max-width:860px;}
+.related-articles h3{color:#7c3aed;font-size:.85rem;text-transform:uppercase;letter-spacing:.08em;margin:0 0 14px;font-weight:700;}
+.related-articles ul{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:8px;}
+.related-articles ul li a{display:inline-block;background:#0e0e1a;border:1px solid #3d3d6e;color:#c4b5f5;padding:6px 12px;border-radius:4px;font-size:.875rem;text-decoration:none;transition:border-color .2s,color .2s;}
+.related-articles ul li a:hover{border-color:#7c3aed;color:#fff;}
