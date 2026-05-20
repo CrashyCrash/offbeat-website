@@ -196,7 +196,14 @@ nav {
   line-height: 1.1;
   max-width: 780px;
   margin: 0.6rem auto 1rem;
-  color: var(--text);
+  background: linear-gradient(135deg, #e2e8f0 0%, #a78bfa 60%, #06b6d4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: none;
+}
+@media (max-width: 600px) {
+  .hero h1 { font-size: clamp(1.4rem, 6vw, 2rem); }
 }
 .hero h1 .gradient, .hero h1 .gradient-text {
   background: linear-gradient(90deg, var(--accent), var(--accent2));
