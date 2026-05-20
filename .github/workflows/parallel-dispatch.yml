@@ -46,7 +46,7 @@ jobs:
 
     steps:
       - name: Checkout (needed for task pool)
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Skip extra slots based on trigger type
         id: check-slot
