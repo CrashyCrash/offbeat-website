@@ -112,7 +112,7 @@ nav {
 .hero {
   background: linear-gradient(135deg, #0f0f1a 0%, #1a0a2e 60%, #0a1520 100%);
   border-bottom: 1px solid var(--border);
-  padding: 5rem 2rem 4rem;
+  padding: 4rem 2rem 2.5rem;
   text-align: center;
 }
 .hero-eyebrow {
@@ -158,6 +158,36 @@ nav {
   color: var(--muted-2);
 }
 .hero-meta span { display: flex; align-items: center; gap: 0.35rem; }
+.hero-figure {
+  margin: 2.5rem auto 0;
+  max-width: 860px;
+  padding: 0 1.5rem;
+}
+.hero-figure img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-lg);
+  display: block;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.45);
+}
+.hero-figure .img-attribution {
+  font-size: 0.72rem;
+  color: var(--muted-2);
+  text-align: right;
+  margin-top: 0.35rem;
+}
+.hero-disclosure {
+  max-width: 860px;
+  margin: 1.25rem auto 0;
+  padding: 0.65rem 1rem;
+  background: rgba(124,58,237,0.07);
+  border-left: 3px solid rgba(124,58,237,0.3);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 0.82rem;
+  color: var(--muted-2);
+  text-align: left;
+}
+.hero-disclosure a { color: var(--accent2); }
 
 /* --- Buttons --------------------------------------------------------------- */
 .btn, .btn-primary, .btn-secondary, .btn-affiliate, .buy-btn {
