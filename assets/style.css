@@ -189,6 +189,254 @@ nav {
 }
 .hero-disclosure a { color: var(--accent2); }
 
+/* --- Hero H1 Typography (injected by fix_hero_titles) ---------------------- */
+.hero h1 {
+  font-size: clamp(1.7rem, 4.5vw, 3.2rem);
+  font-weight: 900;
+  line-height: 1.1;
+  max-width: 780px;
+  margin: 0.6rem auto 1rem;
+  color: var(--text);
+}
+.hero h1 .gradient, .hero h1 .gradient-text {
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* --- Top-Pick / Recommendation Box ---------------------------------------- */
+.top-pick-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  background: linear-gradient(135deg, rgba(124,58,237,0.1), rgba(6,182,212,0.06));
+  border: 1px solid rgba(124,58,237,0.25);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 1.5rem;
+  margin: 1.5rem 0 2rem;
+}
+.top-pick-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #a78bfa;
+  margin-bottom: 0.35rem;
+}
+.top-pick-name {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 0.2rem;
+}
+.top-pick-desc {
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+/* --- Comparison Table ------------------------------------------------------ */
+.comparison-table, .comparison-grid {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.9rem;
+  overflow: hidden;
+  border-radius: var(--radius);
+}
+.comparison-table th, .comparison-grid th {
+  background: var(--surface);
+  color: var(--accent2);
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 2px solid var(--accent);
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.comparison-table td, .comparison-grid td {
+  padding: 0.65rem 1rem;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  color: var(--muted);
+  background: var(--surface);
+}
+.comparison-table tr:hover td, .comparison-grid tr:hover td {
+  background: rgba(124,58,237,0.05);
+}
+.comparison-table td strong, .comparison-grid td strong { color: var(--text); }
+/* apply to inline-styled tables too */
+table { border-radius: var(--radius); overflow: hidden; }
+table th {
+  background: var(--surface) !important;
+  color: var(--accent2) !important;
+  padding: 0.75rem 1rem !important;
+  border-bottom: 2px solid var(--accent) !important;
+}
+table td {
+  padding: 0.65rem 1rem !important;
+  border-bottom: 1px solid rgba(255,255,255,0.05) !important;
+  color: var(--muted) !important;
+  background: var(--surface) !important;
+}
+table tr:hover td { background: rgba(124,58,237,0.05) !important; }
+.table-wrap { overflow-x: auto; margin: 1.5rem 0; border-radius: var(--radius); border: 1px solid var(--border); }
+
+/* --- Pros / Cons Grid ----------------------------------------------------- */
+.pros-cons, .pros-cons-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+@media (max-width: 580px) { .pros-cons, .pros-cons-grid { grid-template-columns: 1fr; } }
+.pro-box, .con-box, .pros-box, .cons-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+}
+.pro-box { border-top: 3px solid #4ade80; }
+.con-box { border-top: 3px solid #f87171; }
+.pros-box { border-top: 3px solid #4ade80; }
+.cons-box { border-top: 3px solid #f87171; }
+.pro-box h3, .pros-box h3 { color: #4ade80 !important; margin-top: 0; font-size: 0.95rem; }
+.con-box h3, .cons-box h3 { color: #f87171 !important; margin-top: 0; font-size: 0.95rem; }
+.pro-box ul, .con-box ul, .pros-box ul, .cons-box ul {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+.pro-box li::before, .pros-box li::before { content: "✓ "; color: #4ade80; font-weight: 700; }
+.con-box li::before, .cons-box li::before { content: "✗ "; color: #f87171; font-weight: 700; }
+
+/* --- Verdict / Summary Box ------------------------------------------------- */
+.verdict-box {
+  background: var(--surface);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  margin: 2rem 0;
+}
+.verdict-box h3 { color: var(--accent2); margin-top: 0; }
+.score-row {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.4rem 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+.score-bar { height: 6px; background: var(--border); border-radius: 3px; margin: 0.2rem 0 0.6rem; }
+.score-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--accent), var(--accent2)); }
+
+/* --- Spec Grid ------------------------------------------------------------ */
+.spec-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 0.75rem;
+  margin: 1.5rem 0;
+}
+.spec-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.875rem;
+}
+.spec-label {
+  font-size: 0.75rem;
+  color: var(--muted-2);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.2rem;
+}
+.spec-val {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* --- FAQ Accordion --------------------------------------------------------- */
+.faq-item {
+  margin: 0.75rem 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.faq-item details summary {
+  cursor: pointer;
+  padding: 1rem 1.25rem;
+  font-weight: 600;
+  color: var(--text);
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.faq-item details summary::after {
+  content: "+";
+  font-size: 1.2rem;
+  color: var(--accent2);
+  flex-shrink: 0;
+}
+.faq-item details[open] summary::after { content: "−"; }
+.faq-item details p {
+  padding: 0 1.25rem 1rem;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+/* --- Affiliate Note (existing class upgrade) ------------------------------- */
+.affiliate-note {
+  background: var(--surface) !important;
+  border-left: 3px solid var(--accent) !important;
+  padding: 0.75rem 1rem !important;
+  margin: 2rem 0 !important;
+  font-size: 0.85rem !important;
+  color: var(--muted) !important;
+  border-radius: 0 var(--radius) var(--radius) 0 !important;
+}
+
+/* --- Badge / Tag ----------------------------------------------------------- */
+.badge {
+  display: inline-block;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  border-radius: var(--radius-pill);
+  padding: 0.2rem 0.75rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #fff;
+  text-decoration: none;
+}
+.badge-outline {
+  background: transparent;
+  border: 1px solid var(--accent);
+  color: #a78bfa;
+}
+.badge-green { background: linear-gradient(90deg, #059669, #10b981); }
+.badge-cyan { background: transparent; border: 1px solid var(--accent2); color: var(--accent2); }
+
+/* --- Review Hero Layout (wide two-col for review pages) ------------------- */
+.review-hero-inner {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 3.5rem 2rem 0;
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: 2rem;
+  align-items: end;
+}
+@media (max-width: 768px) {
+  .review-hero-inner { grid-template-columns: 1fr; }
+  .hero-right { display: none; }
+}
+.hero-left { padding-bottom: 3.5rem; }
+
 /* --- Buttons --------------------------------------------------------------- */
 .btn, .btn-primary, .btn-secondary, .btn-affiliate, .buy-btn {
   display: inline-flex;
