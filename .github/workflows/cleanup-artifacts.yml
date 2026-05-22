@@ -42,6 +42,29 @@ jobs:
           AFTER=$(gh api "repos/$REPO/actions/artifacts" --jq '.total_count' 2>/dev/null || echo 0)
           echo "- Before: $BEFORE  After: $AFTER  Cleaned: $((BEFORE - AFTER))" >> $GITHUB_STEP_SUMMARY
 
+      - name: Purge stale github-pages artifacts (keep only latest)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          # github-pages artifacts accumulate hourly (~22MB each) from Pages deployments.
+          # Keep only the most recent artifact; delete all older ones regardless of expiry.
+          echo "### github-pages artifact purge" >> $GITHUB_STEP_SUMMARY
+          ALL_PAGES=$(gh api "repos/$REPO/actions/artifacts?per_page=100&name=github-pages" \
+            --jq '[.artifacts[] | {id:.id, created:.created_at}] | sort_by(.created) | reverse' 2>/dev/null || echo '[]')
+          TOTAL=$(echo "$ALL_PAGES" | jq 'length')
+          echo "github-pages artifacts found: $TOTAL" >> $GITHUB_STEP_SUMMARY
+          if [ "$TOTAL" -gt 1 ]; then
+            # Delete all but the newest (first entry after sort-desc)
+            echo "$ALL_PAGES" | jq -c '.[1:] | .[].id' | while read -r AID; do
+              gh api --method DELETE "repos/$REPO/actions/artifacts/$AID" 2>/dev/null \
+                && echo "  Deleted stale github-pages artifact $AID" >> $GITHUB_STEP_SUMMARY
+            done
+            echo "- Kept 1 latest github-pages artifact; purged $((TOTAL - 1)) stale" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- No stale github-pages artifacts to purge" >> $GITHUB_STEP_SUMMARY
+          fi
+
       - name: Workflow run count audit
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
