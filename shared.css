@@ -224,3 +224,66 @@ footer a:hover { text-decoration: underline; }
     .hero { padding: 2.5rem 1rem; }
     .section { padding: 2rem 1rem; }
 }
+
+/* ─── Tablet breakpoint ──────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+    .hero { padding: 3rem 1.5rem; }
+    .section { padding: 2.5rem 1rem; }
+}
+
+/* ─── Table responsiveness — horizontal scroll on small screens ──────────── */
+.table-wrap {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: 1.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--border);
+}
+
+@media (max-width: 768px) {
+    /* Tables: enable horizontal scroll inside .table-wrap */
+    table { min-width: 520px; }
+
+    /* Navigation: collapse long link lists to smaller font */
+    .nav-links a { font-size: 0.82rem; }
+    .nav-links { gap: 0.6rem; }
+
+    /* Hero text sizing */
+    .hero h1 { font-size: clamp(1.4rem, 6vw, 2rem); }
+    .hero p   { font-size: 0.95rem; }
+
+    /* Card grids: force single column */
+    .card-grid, .products-grid, .grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* Buttons: full width on mobile */
+    .btn-primary, .btn-secondary {
+        display: block;
+        text-align: center;
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+
+    /* Comparison tables: hide less critical columns */
+    th:nth-child(n+5), td:nth-child(n+5) { display: none; }
+
+    /* Footer nav grid: stack */
+    .footer-nav-grid { grid-template-columns: 1fr 1fr !important; gap: 1rem; }
+}
+
+@media (max-width: 480px) {
+    /* Very small phones */
+    body { font-size: 15px; }
+    .hero { padding: 2rem 0.75rem; }
+    .section { padding: 1.5rem 0.75rem; }
+    .container { padding: 0 0.75rem; }
+    .card { padding: 1rem; }
+    nav { padding: 0.7rem 0.75rem; }
+
+    /* Two-column comparison: show price + rating only */
+    th:nth-child(n+4), td:nth-child(n+4) { display: none; }
+
+    .footer-nav-grid { grid-template-columns: 1fr !important; }
+}

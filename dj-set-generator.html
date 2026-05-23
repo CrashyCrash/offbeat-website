@@ -122,9 +122,18 @@ body{
 
 /* CONTROLS */
 .controls{
-  display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;
+  display:flex;flex-wrap:wrap;gap:0.75rem;justify-content:center;align-items:flex-end;
   margin-bottom:2rem;
 }
+.ctrl-group{display:flex;flex-direction:column;gap:0.3rem;}
+.ctrl-label{font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--dim);}
+.ctrl-select{
+  background:var(--card2);border:1px solid var(--border);
+  color:var(--text);padding:0.55rem 0.9rem;border-radius:0.4rem;
+  font-size:0.85rem;font-family:'Courier New',monospace;cursor:pointer;outline:none;
+  transition:border-color 0.2s;
+}
+.ctrl-select:focus{border-color:var(--cyan);}
 
 .btn{
   font-family:'Courier New',monospace;
@@ -447,6 +456,34 @@ body{
 
   <!-- CONTROLS -->
   <div class="controls">
+    <div class="ctrl-group">
+      <label class="ctrl-label">Genre</label>
+      <select id="ctrlGenre" class="ctrl-select">
+        <option value="all">All Genres</option>
+        <option value="Dubstep">Dubstep</option>
+        <option value="Ridim">Ridim</option>
+        <option value="Hybrid Trap">Hybrid Trap</option>
+        <option value="Melodic Bass">Melodic Bass</option>
+        <option value="Bass House">Bass House</option>
+      </select>
+    </div>
+    <div class="ctrl-group">
+      <label class="ctrl-label">BPM Range</label>
+      <select id="ctrlBpm" class="ctrl-select">
+        <option value="140">~140 BPM</option>
+        <option value="145">~145 BPM</option>
+        <option value="150" selected>~150 BPM</option>
+        <option value="0">Any BPM</option>
+      </select>
+    </div>
+    <div class="ctrl-group">
+      <label class="ctrl-label">Set Length</label>
+      <select id="ctrlLength" class="ctrl-select">
+        <option value="short">Short (8–10)</option>
+        <option value="medium" selected>Medium (12–16)</option>
+        <option value="long">Long (18–22)</option>
+      </select>
+    </div>
     <button class="btn btn-generate" id="btnGenerate" onclick="generateSet()">⚡ GENERATE SET</button>
     <button class="btn btn-save" id="btnSave" onclick="saveSet()" disabled>▼ SAVE AS TEXT</button>
   </div>
@@ -655,7 +692,14 @@ function generateSet() {
   btn.disabled = true;
   btn.textContent = '⟳ BUILDING SET...';
 
-  // Loading bar
+  // Read user controls
+  const genreFilter = document.getElementById('ctrlGenre')?.value || 'all';
+  const bpmTarget   = parseInt(document.getElementById('ctrlBpm')?.value || '150');
+  const lengthPref  = document.getElementById('ctrlLength')?.value || 'medium';
+  const lengthRange = {short:[8,10], medium:[12,16], long:[18,22]};
+  const [minTracks, maxTracks] = lengthRange[lengthPref] || [12,16];
+  const bpmBase = bpmTarget > 0 ? bpmTarget : rnd(128, 150);
+
   const bar = document.createElement('div');
   bar.className = 'load-bar';
   bar.style.width = '0%';
@@ -668,8 +712,8 @@ function generateSet() {
     bar.style.width = '100%';
     setTimeout(() => bar.remove(), 300);
 
-    const numTracks = rnd(12,18);
-    const chaosCount = rnd(2,3);
+    const numTracks = rnd(minTracks, maxTracks);
+    const chaosCount = numTracks > 12 ? rnd(2,3) : rnd(1,2);
     const chaosSlots = new Set();
     // Space chaos moments out: not first 2, not last 1, not adjacent
     const candidates = [];
@@ -683,11 +727,14 @@ function generateSet() {
 
     const tracks = [];
     let time = 0;
-    const bpmBase = rnd(141, 149);
 
-    // Build set from real track DB with BPM/key matching
-    const bpmTolerance = 8;
-    let pool = TRACK_DB.filter(t => Math.abs(t.bpm - bpmBase) <= bpmTolerance);
+    // Build set from real track DB with BPM/key matching + genre filter
+    const bpmTolerance = bpmTarget > 0 ? 8 : 999;
+    let pool = TRACK_DB.filter(t => {
+      const bpmOk = Math.abs(t.bpm - bpmBase) <= bpmTolerance;
+      const genreOk = genreFilter === 'all' || t.g === genreFilter;
+      return bpmOk && genreOk;
+    });
     if (pool.length < numTracks) pool = TRACK_DB; // Fall back to all tracks if pool too small
     pool = pool.sort(() => Math.random() - 0.5); // Shuffle
 
