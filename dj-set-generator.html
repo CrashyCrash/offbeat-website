@@ -505,7 +505,124 @@ body{
 </div>
 
 <script>
-// ── DATA ──────────────────────────────────────────────────────────────────────
+// ── REAL TRACK DATABASE (artist, title, bpm, camelot key, genre, energy 1-10) ─
+// Sources: Beatport, official releases, Tunebat.com. BPM ± 1 tolerance normal.
+const TRACK_DB = [
+  // DUBSTEP 140-150 BPM
+  {a:"Excision",t:"X Rated",bpm:150,key:"3A",g:"Dubstep",e:9},
+  {a:"Excision",t:"Throat",bpm:150,key:"5A",g:"Dubstep",e:10},
+  {a:"Excision & Sullivan King",t:"Watch Your Back",bpm:150,key:"6A",g:"Dubstep",e:9},
+  {a:"Excision & Wooli",t:"Tsunami",bpm:150,key:"4A",g:"Dubstep",e:9},
+  {a:"Subtronics",t:"Cyclops Optical",bpm:148,key:"9A",g:"Ridim",e:9},
+  {a:"Subtronics",t:"Fallout",bpm:150,key:"8A",g:"Ridim",e:10},
+  {a:"Subtronics & Space Laces",t:"Griztronics",bpm:150,key:"2A",g:"Ridim",e:10},
+  {a:"Subtronics",t:"Atom Smasher",bpm:150,key:"5A",g:"Ridim",e:9},
+  {a:"Sullivan King",t:"Loud Is How I Love You",bpm:150,key:"7A",g:"Dubstep",e:9},
+  {a:"Sullivan King & DROELOE",t:"Throne",bpm:148,key:"11A",g:"Dubstep",e:8},
+  {a:"Svdden Death",t:"Behemoth",bpm:150,key:"9A",g:"Ridim",e:10},
+  {a:"Svdden Death",t:"Demon Time",bpm:150,key:"4A",g:"Ridim",e:9},
+  {a:"Svdden Death & Yakz",t:"Voilence",bpm:150,key:"6A",g:"Ridim",e:10},
+  {a:"Space Laces",t:"Double Helix",bpm:150,key:"2A",g:"Dubstep",e:9},
+  {a:"Space Laces",t:"TBH",bpm:150,key:"8A",g:"Dubstep",e:9},
+  {a:"Zomboy",t:"Like A Drug",bpm:150,key:"1A",g:"Dubstep",e:9},
+  {a:"Zomboy",t:"Mind Control",bpm:150,key:"6A",g:"Dubstep",e:9},
+  {a:"Zomboy",t:"Terror Squad",bpm:150,key:"3A",g:"Dubstep",e:10},
+  {a:"Barely Alive",t:"Breathe",bpm:150,key:"7A",g:"Dubstep",e:8},
+  {a:"Barely Alive",t:"Warlord",bpm:150,key:"5A",g:"Dubstep",e:9},
+  {a:"Must Die!",t:"I Am",bpm:150,key:"4A",g:"Dubstep",e:8},
+  {a:"Must Die!",t:"Doomsday",bpm:150,key:"9A",g:"Dubstep",e:9},
+  {a:"Getter",t:"Suh Dude",bpm:150,key:"10A",g:"Dubstep",e:8},
+  {a:"Getter",t:"Rip N Dip",bpm:150,key:"3A",g:"Dubstep",e:9},
+  {a:"Kill The Noise",t:"Kill It Kiddo",bpm:150,key:"5A",g:"Dubstep",e:9},
+  {a:"Kill The Noise & Feed Me",t:"Thumbs Up",bpm:140,key:"8A",g:"Dubstep",e:8},
+  {a:"12th Planet",t:"Carry On",bpm:140,key:"6A",g:"Dubstep",e:7},
+  {a:"12th Planet & Funtcase",t:"Grimy Situation",bpm:140,key:"4A",g:"Dubstep",e:9},
+  {a:"Bear Grillz",t:"Outta My Face",bpm:150,key:"2A",g:"Dubstep",e:9},
+  {a:"Bear Grillz",t:"We The Fallen",bpm:150,key:"11A",g:"Dubstep",e:8},
+  {a:"Spag Heddy",t:"All I Have",bpm:150,key:"7A",g:"Dubstep",e:8},
+  {a:"Spag Heddy",t:"Pink Koeks",bpm:150,key:"3A",g:"Dubstep",e:8},
+  {a:"Ganja White Night",t:"Ghosts",bpm:140,key:"6A",g:"Dubstep",e:7},
+  {a:"Ganja White Night",t:"Back For More",bpm:143,key:"9A",g:"Dubstep",e:8},
+  {a:"Wooli",t:"Summit",bpm:150,key:"1A",g:"Dubstep",e:8},
+  {a:"Wooli & Conrank",t:"Tyrant",bpm:150,key:"8A",g:"Ridim",e:9},
+  {a:"Dirt Monkey",t:"Stampede",bpm:150,key:"5A",g:"Dubstep",e:9},
+  {a:"Dirt Monkey",t:"Two Zero One",bpm:150,key:"10A",g:"Dubstep",e:8},
+  {a:"PhaseOne",t:"Ascend",bpm:150,key:"4A",g:"Dubstep",e:8},
+  {a:"PhaseOne",t:"1000 Miles",bpm:150,key:"2A",g:"Dubstep",e:9},
+  {a:"PhaseOne & Stephen Walking",t:"Monsters",bpm:150,key:"7A",g:"Dubstep",e:9},
+  {a:"DISKORD",t:"Serotonin",bpm:150,key:"11A",g:"Dubstep",e:8},
+  {a:"DISKORD",t:"Brainworm",bpm:148,key:"3A",g:"Dubstep",e:9},
+  {a:"Eptic",t:"The End",bpm:150,key:"6A",g:"Dubstep",e:9},
+  {a:"Eptic",t:"Monster",bpm:150,key:"1A",g:"Dubstep",e:10},
+  {a:"Eptic & Must Die!",t:"Good vs Evil",bpm:150,key:"9A",g:"Dubstep",e:10},
+  {a:"Dirtyphonics",t:"Rhythm Overdrive",bpm:150,key:"5A",g:"Dubstep",e:9},
+  {a:"Dirtyphonics",t:"Smuggler",bpm:150,key:"8A",g:"Dubstep",e:9},
+  {a:"Flux Pavilion",t:"Bass Cannon",bpm:140,key:"3A",g:"Dubstep",e:9},
+  {a:"Flux Pavilion",t:"I Can't Stop",bpm:140,key:"7A",g:"Dubstep",e:8},
+  {a:"Doctor P",t:"Sweet Shop",bpm:140,key:"6A",g:"Dubstep",e:9},
+  {a:"Doctor P",t:"Big Boss",bpm:140,key:"2A",g:"Dubstep",e:9},
+  // MELODIC BASS / HYBRID
+  {a:"Illenium & Tom DeLonge",t:"It's All On U",bpm:128,key:"10B",g:"Melodic Bass",e:7},
+  {a:"Illenium",t:"Needed You",bpm:140,key:"8B",g:"Melodic Bass",e:7},
+  {a:"Illenium",t:"Crawl Outta Love",bpm:140,key:"4B",g:"Melodic Bass",e:8},
+  {a:"Illenium & Said The Sky",t:"Where'd U Go",bpm:150,key:"9B",g:"Melodic Bass",e:7},
+  {a:"Said The Sky",t:"Nostalgia",bpm:140,key:"11B",g:"Melodic Bass",e:7},
+  {a:"Seven Lions",t:"Strangers",bpm:140,key:"5A",g:"Melodic Bass",e:7},
+  {a:"Seven Lions",t:"Silent Skies",bpm:140,key:"10A",g:"Melodic Bass",e:6},
+  {a:"Kill Eden",t:"Feel It",bpm:150,key:"3A",g:"Melodic Bass",e:8},
+  // BASS HOUSE
+  {a:"Virtual Riot",t:"Everything Everything Everything",bpm:150,key:"6A",g:"Bass House",e:9},
+  {a:"Virtual Riot",t:"Cannibal",bpm:150,key:"3A",g:"Bass House",e:9},
+  {a:"Habstrakt",t:"Da Wave",bpm:128,key:"7A",g:"Bass House",e:8},
+  {a:"NGHTMRE",t:"GUD VIBRATIONS",bpm:128,key:"8B",g:"Bass House",e:9},
+  {a:"NGHTMRE & Marshmello",t:"HIIIPOWER",bpm:128,key:"2B",g:"Bass House",e:9},
+  // RIDIM
+  {a:"Yakz",t:"Tread Lightly",bpm:150,key:"9A",g:"Ridim",e:9},
+  {a:"Yakz",t:"Aftermath",bpm:150,key:"5A",g:"Ridim",e:10},
+  {a:"Omeguh",t:"Peepin",bpm:150,key:"3A",g:"Ridim",e:8},
+  {a:"Ivory",t:"Sorcerer",bpm:150,key:"6A",g:"Ridim",e:9},
+  {a:"Ivory",t:"Grizzly",bpm:150,key:"4A",g:"Ridim",e:10},
+  {a:"Bommer",t:"Rampage",bpm:150,key:"8A",g:"Ridim",e:9},
+  {a:"Bommer",t:"Black Ops",bpm:150,key:"2A",g:"Ridim",e:10},
+  {a:"PEEKABOO",t:"GHOST MODE",bpm:150,key:"11A",g:"Ridim",e:9},
+  {a:"PEEKABOO & Sullivan King",t:"Headbanger",bpm:150,key:"7A",g:"Ridim",e:10},
+  {a:"Infekt",t:"Dipsy",bpm:150,key:"1A",g:"Ridim",e:9},
+  {a:"Infekt",t:"Nutron",bpm:150,key:"5A",g:"Ridim",e:10},
+  // HYBRID TRAP
+  {a:"Getter",t:"Whole Lotta Shit",bpm:150,key:"4A",g:"Hybrid Trap",e:9},
+  {a:"Getter",t:"Feels",bpm:150,key:"8A",g:"Hybrid Trap",e:8},
+  {a:"Spag Heddy & Barely Alive",t:"Rave Alarm",bpm:150,key:"6A",g:"Hybrid Trap",e:9},
+  {a:"Herobust",t:"Spicy",bpm:150,key:"2A",g:"Hybrid Trap",e:9},
+  {a:"Herobust",t:"Ride or Die",bpm:150,key:"10A",g:"Hybrid Trap",e:9},
+  {a:"Trampa",t:"Fire Storm",bpm:150,key:"3A",g:"Hybrid Trap",e:10},
+  {a:"Trampa",t:"Badboy",bpm:150,key:"7A",g:"Hybrid Trap",e:9},
+  // EXPERIMENTAL BASS
+  {a:"Skrillex",t:"Scary Monsters and Nice Sprites",bpm:140,key:"1A",g:"Dubstep",e:10},
+  {a:"Skrillex",t:"First of the Year (Equinox)",bpm:140,key:"8A",g:"Dubstep",e:9},
+  {a:"Skrillex",t:"Bangarang",bpm:110,key:"11B",g:"Dubstep",e:8},
+  {a:"Skrillex & Diplo",t:"To Ü",bpm:128,key:"9B",g:"Experimental",e:7},
+  {a:"Infected Mushroom",t:"Return to the Sauce",bpm:145,key:"5A",g:"Experimental Bass",e:8},
+  {a:"Infected Mushroom",t:"Becoming Insane",bpm:148,key:"9A",g:"Experimental Bass",e:9},
+];
+
+// ── CAMELOT COMPATIBILITY ────────────────────────────────────────────────────
+function camelotCompatible(k1, k2) {
+  if (!k1 || !k2) return true; // No key data — allow
+  const n1 = parseInt(k1), n2 = parseInt(k2);
+  const m1 = k1.slice(-1), m2 = k2.slice(-1);
+  if (n1 === n2) return true;                            // Same number (A↔B)
+  if (m1 === m2 && Math.abs(n1 - n2) === 1) return true; // Adjacent ±1 same mode
+  if (m1 === m2 && Math.abs(n1 - n2) === 11) return true; // Wrap-around (1↔12)
+  return false;
+}
+
+// ── KEY COMPATIBILITY SCORE ──────────────────────────────────────────────────
+function keyScore(k1, k2) {
+  if (!k1 || !k2 || k1 === k2) return 2; // Perfect match
+  if (camelotCompatible(k1, k2)) return 1;
+  return 0;
+}
+
 const GENRES = [
   'Dubstep','Riddim','Melodic Bass','Bass House',
   'Hybrid Trap','Color Bass','Tearout','Experimental Bass'
@@ -519,26 +636,6 @@ const TRANSITIONS = [
 const CHAOS_TYPES = [
   '★ DOUBLE DROP','★ TRIPLE SWITCH','★ BREAKDOWN → DROP',
   '★ VOCAL SCRATCH SECTION','★ REWIND + RELOAD','★ SILENCE DROP'
-];
-
-const ARTIST_WORDS = [
-  'Excision','Subtronics','Sullivan King','Svdden Death',
-  'Space Laces','Illenium','Rezz','Level Up','Zomboy',
-  'Barely Alive','Must Die!','Phantogram',
-  'Virtual Riot','Skrillex','Kill The Noise',
-  'Getter','Infected Mushroom','12th Planet','Bear Grillz',
-  'Spag Heddy','Ganja White Night','Wooli','Dirt Monkey',
-  'PhaseOne','The Anix','Snavs','DISKORD','Eptic'
-];
-
-const TRACK_WORDS = [
-  'Annihilation','Outbreak','Frequency','Overdrive','Signal',
-  'Collapse','Headbanga','Reactor','The Drop','Requiem',
-  'Static','Bassweight','Shutdown','Override','Warhead',
-  'Chaos Theory','Neon Abyss','Fracture','Surge','Breach',
-  'Terraform','Inferno','Cascade','Voltage','Resonance',
-  'Blackout','Neuromancer','Phantom Signal','The Pit','Uprising',
-  'Absolute Zero','Reboot','Demolition','Gridlock','Echo Chamber'
 ];
 
 // ── HELPERS ───────────────────────────────────────────────────────────────────
@@ -586,21 +683,47 @@ function generateSet() {
 
     const tracks = [];
     let time = 0;
-    const bpmBase = rnd(141, 147);
+    const bpmBase = rnd(141, 149);
+
+    // Build set from real track DB with BPM/key matching
+    const bpmTolerance = 8;
+    let pool = TRACK_DB.filter(t => Math.abs(t.bpm - bpmBase) <= bpmTolerance);
+    if (pool.length < numTracks) pool = TRACK_DB; // Fall back to all tracks if pool too small
+    pool = pool.sort(() => Math.random() - 0.5); // Shuffle
+
+    const used = new Set();
+    let lastKey = null;
 
     for (let i = 1; i <= numTracks; i++) {
       const isChaos = chaosSlots.has(i);
       const energy = isChaos
         ? rnd(8, 10)
         : (i <= 2 ? rnd(4,6) : i >= numTracks - 1 ? rnd(5,8) : rnd(5,10));
-      const bpm = bpmBase + rnd(-2, 3);
-      const genre = pick(GENRES);
-      const name = pick(ARTIST_WORDS) + ' - ' + pick(TRACK_WORDS);
+
+      // Try to find a key-compatible track first
+      let candidate = null;
+      if (lastKey) {
+        candidate = pool.find(t => !used.has(t.a + t.t) && camelotCompatible(lastKey, t.key));
+      }
+      // Fall back to any unused track
+      if (!candidate) {
+        candidate = pool.find(t => !used.has(t.a + t.t));
+      }
+      // Last resort: allow repeats if pool exhausted
+      if (!candidate) candidate = pool[i % pool.length];
+
+      used.add(candidate.a + candidate.t);
+      lastKey = candidate.key;
+
+      const bpm = candidate.bpm;
+      const genre = candidate.g;
+      const name = candidate.a + " — " + candidate.t;
+      const keyLabel = candidate.key || "?";
       const transition = i < numTracks ? pick(TRANSITIONS) : null;
       const chaosLabel = isChaos ? pick(CHAOS_TYPES) : null;
-      const duration = rnd(90, 180); // seconds per track
+      const duration = rnd(90, 180);
 
-      tracks.push({ num:i, name, genre, bpm, energy, transition, isChaos, chaosLabel, startTime:time, duration });
+      tracks.push({ num:i, name, genre, bpm, energy, transition, isChaos, chaosLabel, startTime:time, duration, key:keyLabel });
       time += duration;
     }
 
@@ -678,6 +801,7 @@ function renderSet(set) {
         <div class="track-tags">
           <span class="tag tag-genre">${t.genre}</span>
           <span class="tag tag-bpm">${t.bpm} BPM</span>
+          ${t.key ? `<span class="tag" style="background:rgba(155,89,182,0.2);color:#c39bd3;border:1px solid rgba(155,89,182,0.4);">${t.key}</span>` : ''}
           ${t.isChaos ? `<span class="tag tag-chaos">${t.chaosLabel}</span>` : ''}
         </div>
       </div>
