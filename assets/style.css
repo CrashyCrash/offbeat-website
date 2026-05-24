@@ -1006,13 +1006,30 @@ footer a:hover { color: var(--accent2); }
   .comparison-table th, .comparison-table td { padding: 0.65rem 0.75rem; font-size: 0.85rem; }
 }
 @media (max-width: 480px) {
-  nav { padding: 0.85rem 1.25rem; }
+  nav { padding: 0.85rem 1.25rem; flex-direction: column; align-items: flex-start; }
   .hero { padding: 2.5rem 1.25rem 2rem; }
   main, .main-content { padding: 2rem 1.1rem; }
   .hero-ctas, .cta-group { flex-direction: column; align-items: center; }
   .btn, .btn-primary, .btn-secondary, .btn-affiliate { width: 100%; justify-content: center; }
-  .nav-links { display: none; }
+  /* Stack nav links vertically instead of hiding them on smallest screens */
+  .nav-links {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.6rem 1rem;
+    width: 100%;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--border);
+  }
+  .nav-links a { font-size: 0.8rem; }
 }
+
+/* --- Horizontal-scroll safety (prevents overflow on narrow viewports) ------- */
+html, body { overflow-x: hidden; }
+/* Tables not yet wrapped: auto-scroll them on mobile */
+.comparison-table, table:not(.no-scroll) { max-width: 100%; }
+/* Inline-width elements: allow shrinking */
+[style*="width:"] { max-width: 100% !important; }
 
 /* --- Legacy inline-CSS compatibility shims --------------------------------- */
 /* Pages that already have inline <style> will override these safely */
