@@ -114,6 +114,61 @@ tr:hover td{background:var(--surface)}
   ]
 }
 </script>
+<style>
+/* #744 product image widget */
+.product-img-widget {
+  margin: 1.5rem 0 2rem;
+  text-align: center;
+}
+.product-img-widget .product-img-link {
+  display: inline-block;
+  background: var(--surface);
+  border: 1px solid var(--accent);
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  text-decoration: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  max-width: 380px;
+  width: 100%;
+}
+.product-img-widget .product-img-link:hover {
+  border-color: var(--accent2);
+  box-shadow: 0 0 0 2px var(--accent2);
+}
+.product-img-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+.product-img-placeholder .product-icon {
+  font-size: 3rem;
+  line-height: 1;
+}
+.product-img-placeholder .product-name {
+  color: var(--text);
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1.4;
+  margin: 0;
+}
+.product-img-placeholder .product-cta {
+  display: inline-block;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  margin-top: 0.25rem;
+}
+.product-img-caption {
+  color: var(--muted);
+  font-size: 0.75rem;
+  margin-top: 0.5rem;
+  font-style: italic;
+}
+</style>
 </head>
 <body>
 <nav>
@@ -146,6 +201,16 @@ tr:hover td{background:var(--surface)}
      loading="eager" decoding="async"
      style="width:100%;height:auto;border-radius:8px;display:block;">
 <p class="img-attribution">Photo by <a href="https://unsplash.com/@bobbykittleberger?utm_source=offbeatinc&utm_medium=referral" rel="nofollow" target="_blank">Bobby Kittleberger</a> on <a href="https://unsplash.com?utm_source=offbeatinc&utm_medium=referral" rel="nofollow" target="_blank">Unsplash</a></p>
+<figure class="product-img-widget" aria-label="Best DJ Headphones 2026 product image">
+  <a href="https://www.amazon.com/s?k=best+professional+DJ+headphones&tag=offbeatdj-20" rel="sponsored nofollow" target="_blank" class="product-img-link">
+    <div class="product-img-placeholder">
+      <span class="product-icon">🎧</span>
+      <p class="product-name">Best DJ Headphones 2026</p>
+      <span class="product-cta">Check Price on Amazon →</span>
+    </div>
+  </a>
+  <figcaption class="product-img-caption">Affiliate link — we earn a small commission at no extra cost to you.</figcaption>
+</figure>
 </figure>
 <p class="hero-disclosure">&#9432; <strong>Disclosure:</strong> This page uses affiliate links. We may earn a commission at no extra cost to you. <a href="disclosure.html">Full disclosure →</a></p>
 </div>
