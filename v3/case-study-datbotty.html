@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Case study on DatBotty: How Offbeat, Inc. leveraged AI automation to revolutionize data scraping for modern music platforms.">
+    <meta property="og:title" content="Case Study: DatBotty — AI-Driven Data Automation | Offbeat, Inc.">
+    <meta property="og:description" content="A deep dive into the architecture, challenges, and success of DatBotty, our flagship AI scraping solution.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://crashycrash.github.io/offbeat-website/v3/case-study-datbotty.html">
+    <link rel="canonical" href="https://crashycrash.github.io/offbeat-website/v3/case-study-datbotty.html">
+    <title>Case Study: DatBotty — AI-Driven Data Automation | OFFBEAT</title>
+    <style>
+        :root {
+            --bg: #0d0d0d;
+            --text: #e0e0e0;
+            --accent: #00f2ff;
+            --accent-dark: #008899;
+            --font-main: 'Outfit', sans-serif;
+            --font-mono: 'Fira Code', monospace;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg); color: var(--text); font-family: var(--font-main); line-height: 1.6; }
+        
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-dark));
+            z-index: 9999;
+            transition: width 0.1s ease-out;
+        }
+
+        nav { padding: 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: var(--font-mono); font-weight: 800; letter-spacing: 2px; }
+        
+        main { max-width: 800px; margin: 4rem auto; padding: 0 2rem; }
+        h1 { font-size: 3rem; margin-bottom: 2rem; color: var(--accent); }
+        h2 { margin: 2rem 0 1rem; }
+        p { margin-bottom: 1.5rem; }
+        
+        .code-block { background: #1a1a1a; padding: 1.5rem; border-left: 3px solid var(--accent); font-family: var(--font-mono); margin: 2rem 0; overflow-x: auto; }
+    </style>
+</head>
+<body>
+
+    <div id="progress-bar"></div>
+
+    <nav>
+        <div class="logo">OFFBEAT</div>
+        <div class="links">
+            <a href="index.html" style="color:white; text-decoration:none;">Back to Home</a>
+        </div>
+    </nav>
+
+    <main>
+        <h1>DatBotty: Automating the Impossible</h1>
+        <p>In 2023, Offbeat, Inc. was tasked with a monumental challenge: aggregate fragmented metadata across 50,000+ daily music releases. The result was DatBotty, an AI-driven automation engine that redefined our internal data workflows.</p>
+        
+        <h2>The Challenge</h2>
+        <p>Legacy scraping methods were failing due to dynamic DOM structures and aggressive rate limiting. We needed a solution that was not only robust but adaptive to real-time site updates.</p>
+
+        <h2>The Solution</h2>
+        <p>We implemented a headless browser cluster powered by custom heuristic algorithms. By integrating AI models to identify content patterns rather than static selectors, DatBotty achieved a 99.4% success rate in data extraction.</p>
+
+        <div class="code-block">
+            // Core logic snippet for DatBotty heuristic engine
+            async function extractMetadata(page) {
+                return await page.evaluate(() => {
+                    return document.querySelector('.ai-inferred-title').innerText;
+                });
+            }
+        </div>
+
+        <h2>Results</h2>
+        <p>DatBotty reduced manual data entry by 85% and saved our clients approximately 400 hours of development time per month. It stands as a testament to Offbeat's commitment to building the unusual.</p>
+    </main>
+
+    <script>
+        window.onscroll = function() {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById("progress-bar").style.width = scrolled + "%";
+        };
+    </script>
+
+</body>
+</html>
