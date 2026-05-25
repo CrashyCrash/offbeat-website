@@ -1,14 +1,14 @@
 {
-  "generated_at": "2026-05-24T19:17:33Z",
-  "live_pages": 159,
+  "generated_at": "2026-05-25T03:53:10Z",
+  "live_pages": 163,
   "prs_merged": 18,
-  "issues_dispatched": 8,
-  "open_issues": 100,
+  "issues_dispatched": 99,
+  "open_issues": 48,
   "active_workflows": 10,
   "open_prs": 0,
   "pages_up": 0,
   "pages_checked": 10,
-  "last_commit_offbeat": "2026-05-24T18:20:01Z",
-  "last_commit_msg": "chore: auto-publish AI content [2026-05-24 14:20] (9 files, 9fileschanged,1233in",
-  "last_commit_sha": "26888e5"
+  "last_commit_offbeat": "2026-05-25T03:50:09Z",
+  "last_commit_msg": "Close #32: Create v3/tools/key-finder.html \u2014 musical key compatibility chart f",
+  "last_commit_sha": "919e984"
 }
