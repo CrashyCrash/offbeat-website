@@ -3,106 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Offbeat, Inc. is committed to the open-source community, utilizing and contributing to tools that empower innovation in AI and technology development.">
-    <meta name="theme-color" content="#00d4ff">
-    <link rel="manifest" href="manifest.json">
-    <meta property="og:title" content="Offbeat, Inc. — Open Source Contributions">
-    <meta property="og:description" content="Learn about Offbeat's philosophy and engagement with the open-source ecosystem.">
+    <meta name="description" content="Offbeat, Inc. open-source contributions — tools, libraries, and automations released to the community.">
+    <meta property="og:title" content="Open Source — Offbeat, Inc.">
+    <meta property="og:description" content="Offbeat, Inc. open-source contributions — tools, libraries, and automations released to the community.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://crashycrash.github.io/offbeat-website/v3/open-source.html">
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="Offbeat, Inc. — Open Source Contributions">
-    <meta name="twitter:description" content="Discover how Offbeat Inc. leverages and supports open-source technologies.">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Open Source — Offbeat, Inc.">
+    <meta name="twitter:description" content="Offbeat, Inc. open-source contributions — tools, libraries, and automations released to the community.">
     <meta name="twitter:site" content="@offbeatinc">
     <link rel="canonical" href="https://crashycrash.github.io/offbeat-website/v3/open-source.html">
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js');
-            });
+    <title>Open Source — Offbeat, Inc.</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap');
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg: #020206; --bg-card: #08090f; --border: #141828;
+            --glow: #00ccff; --glow-2: #00fff2; --violet: #7c3aed;
+            --hot: #ff3d71; --green: #00e676;
+            --text: #e6eaf4; --text-2: #6e7599; --text-3: #2d3150;
         }
-    </script>
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      "itemListElement": [
-        {"@type":"ListItem","position":1,"name":"Home","item":"https://crashycrash.github.io/offbeat-website/v3/"},
-        {"@type":"ListItem","position":2,"name":"Open Source","item":"https://crashycrash.github.io/offbeat-website/v3/open-source.html"}
-      ]
-    }
-    </script>
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebPage",
-      "headline": "Offbeat, Inc. — Open Source Contributions",
-      "description": "Offbeat, Inc. is committed to the open-source community, utilizing and contributing to tools that empower innovation in AI and technology development.",
-      "url": "https://crashycrash.github.io/offbeat-website/v3/open-source.html",
-      "publisher": {
-        "@type": "Organization",
-        "name": "Offbeat, Inc.",
-        "url": "https://crashycrash.github.io/offbeat-website/v3/"
-      }
-    }
-    </script>
-    <title>Offbeat, Inc. — Open Source Contributions</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+        .mesh-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none;
+            background: radial-gradient(ellipse 800px 600px at 20% 20%, rgba(0,204,255,0.04) 0%,transparent 50%),
+                        radial-gradient(ellipse 600px 800px at 80% 70%, rgba(124,58,237,0.04) 0%,transparent 50%); }
+        header { position: fixed; top: 0; width: 100%; z-index: 100; padding: 1.25rem 3rem;
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(2,2,6,0.85); backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border); }
+        .brand { font-size: 1.4rem; font-weight: 800; letter-spacing: 0.08em; color: var(--glow); text-decoration: none; }
+        .header-nav { display: flex; gap: 1.75rem; list-style: none; }
+        .header-nav a { color: var(--text-2); text-decoration: none; font-size: 0.88rem; font-weight: 500; transition: color 0.3s; }
+        .header-nav a:hover, .header-nav .active a { color: var(--glow); }
+        .page-hero { padding: 9rem 2rem 4rem; text-align: center; position: relative; z-index: 1; }
+        .page-tag { font-family: 'Fira Code', monospace; font-size: 0.72rem; color: var(--glow);
+            text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 1rem; }
+        .page-hero h1 { font-size: clamp(2.2rem,5vw,4rem); font-weight: 800; letter-spacing: -0.03em;
+            margin-bottom: 1rem; }
+        .page-hero p { color: var(--text-2); font-size: 1.05rem; line-height: 1.7;
+            max-width: 600px; margin: 0 auto; }
+        .section { position: relative; z-index: 1; padding: 5rem 2rem; }
+        .wrap { max-width: 1100px; margin: 0 auto; }
+        .narrow { max-width: 800px; margin: 0 auto; }
+        .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 2rem; margin-bottom: 1.5rem; transition: border-color 0.3s; }
+        .card:hover { border-color: rgba(0,204,255,0.15); }
+        .card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 0.6rem; }
+        .card p { color: var(--text-2); font-size: 0.9rem; line-height: 1.65; }
+        .tag { font-family: 'Fira Code', monospace; font-size: 0.68rem; text-transform: uppercase;
+            letter-spacing: 0.12em; color: var(--glow); margin-bottom: 0.5rem; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
+        .badge { display: inline-block; padding: 0.25rem 0.75rem; border-radius: 99px; font-size: 0.72rem;
+            font-weight: 600; letter-spacing: 0.05em; border: 1px solid; }
+        .badge-glow { color: var(--glow); border-color: rgba(0,204,255,0.3); background: rgba(0,204,255,0.06); }
+        .badge-violet { color: var(--violet); border-color: rgba(124,58,237,0.3); background: rgba(124,58,237,0.06); }
+        .code-block { background: #060810; border: 1px solid var(--border); border-radius: 10px;
+            padding: 1.5rem; font-family: 'Fira Code', monospace; font-size: 0.83rem;
+            color: var(--text-2); line-height: 1.8; overflow-x: auto; }
+        .code-block .kw { color: var(--violet); } .code-block .str { color: var(--green); }
+        .code-block .cm { color: var(--text-3); } .code-block .fn { color: var(--glow); }
+        .divider { border: none; border-top: 1px solid var(--border); margin: 3rem 0; }
+        footer { position: relative; z-index: 1; padding: 1.5rem 3rem; border-top: 1px solid var(--border);
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.78rem; color: var(--text-3); flex-wrap: wrap; gap: 0.5rem; }
+        footer a { color: var(--text-2); text-decoration: none; }
+        footer a:hover { color: var(--glow); }
+        @media (max-width: 768px) {
+            header { padding: 1rem 1.25rem; flex-wrap: wrap; gap: 0.5rem; }
+            .header-nav { gap: 0.75rem 1rem; flex-wrap: wrap; }
+            .grid-2, .grid-3 { grid-template-columns: 1fr; }
+            footer { flex-direction: column; text-align: center; padding: 1.5rem; }
+        }
+        @media (max-width: 640px) { .header-nav { display: none; } }
+    </style>
 </head>
-<body class="bg-dark text-light font-sans">
-    <header class="container mx-auto px-4 py-6 flex justify-between items-center">
-        <div class="flex items-center">
-            <a href="index.html" class="text-2xl font-bold text-cyan-500 hover:text-cyan-300 transition duration-300">OFFBEAT</a>
-        </div>
-        <nav>
-            <ul class="flex space-x-6">
-                <li><a href="index.html" class="text-gray-300 hover:text-cyan-300 transition duration-300">Home</a></li>
-                <li><a href="about.html" class="text-gray-300 hover:text-cyan-300 transition duration-300">About</a></li>
-                <li><a href="services.html" class="text-gray-300 hover:text-cyan-300 transition duration-300">Services</a></li>
-                <li><a href="contact.html" class="text-gray-300 hover:text-cyan-300 transition duration-300">Contact</a></li>
-            </ul>
-        </nav>
+<body>
+    <div class="mesh-bg"></div>
+    <header>
+        <a href="index.html" class="brand">OFFBEAT</a>
+        <ul class="header-nav">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="tools.html">Tools</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="status.html">Status</a></li>
+            <li><a href="work.html">Work</a></li>
+            <li class=""><a href="open-source.html" style="color:var(--glow)"></a></li>
+        </ul>
     </header>
 
-    <main class="container mx-auto px-4 py-16">
-        <h1 class="text-5xl font-bold text-center mb-16 text-cyan-400">Open Source Contributions</h1>
+    <section class="page-hero">
+        <div class="page-tag">Community</div>
+        <h1>Open Source</h1>
+        <p>Tools, libraries, and automations we've released publicly. Built in the open, maintained by the community.</p>
+    </section>
 
-        <section class="mb-16">
-            <h2 class="text-4xl font-bold mb-8 text-cyan-300">Our Philosophy</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-                <div>
-                    <p class="text-lg text-gray-300 leading-relaxed mb-6">
-                        At Offbeat, Inc., we believe in the power of collaboration and shared knowledge. The open-source ecosystem is a cornerstone of modern technology, and we actively engage with it by leveraging its vast resources and contributing back where we can. Our development practices are deeply influenced by the transparency, adaptability, and community-driven nature of open source.
-                    </p>
-                    <p class="text-lg text-gray-300 leading-relaxed mb-6">
-                        We are committed to using and supporting robust open-source tools that enable us to build innovative AI automation and powerful software solutions. This approach allows us to stay at the forefront of technological advancements, ensuring our clients receive cutting-edge products. For instance, our use of browser automation frameworks helps us in rigorous testing and data acquisition, critical for developing sophisticated AI models. We also engage with projects like OpenClaw, recognizing their value in advancing specific technological domains.
-                    </p>
-                </div>
-                <div class="flex justify-center">
-                    <img src="https://via.placeholder.com/500x300/0d0d0d/00d4ff?text=Open+Source+Philosophy" alt="Open Source Illustration" class="rounded-lg shadow-lg shadow-cyan-500/20">
-                </div>
+    <section class="section">
+        <div class="wrap">
+            <div class="card">
+                <div class="tag">Offbeat Website</div>
+                <h3>CrashyCrash/offbeat-website</h3>
+                <p>The full source code for this website — including DatBotty's autonomous build pipeline, HTML templates, and task orchestration system. A working example of AI-driven web development at scale.</p>
+                <div style="margin-top:1rem"><a href="https://github.com/CrashyCrash/offbeat-website" target="_blank" rel="noopener" style="color:var(--glow);font-family:'Fira Code',monospace;font-size:0.85rem">→ github.com/CrashyCrash/offbeat-website</a></div>
             </div>
-        </section>
+            <div class="card">
+                <div class="tag">DJ Tools</div>
+                <h3>BPM Calculator &amp; Key Finder</h3>
+                <p>Standalone JavaScript tools for working DJs — tempo math, Camelot Wheel compatibility, time signatures, and harmonic mixing support. Dependency-free, works offline.</p>
+                <div style="margin-top:1rem"><a href="tools/bpm-calculator.html" style="color:var(--glow);font-family:'Fira Code',monospace;font-size:0.85rem">→ Try BPM Calculator</a></div>
+            </div>
+            <div class="card">
+                <div class="tag">Infrastructure</div>
+                <h3>DatBotty Automation Framework</h3>
+                <p>The task orchestration, quality scoring, and multi-model AI dispatch system powering DatBotty's autonomous operation. Full source available in the offbeat-website repository under <code style="font-family:'Fira Code',monospace;color:var(--glow)">hub/</code>.</p>
+            </div>
+            <div class="card">
+                <div class="tag">Contributing</div>
+                <h3>Want to contribute?</h3>
+                <p>Open an issue or pull request on any of our repositories. We welcome bug reports, feature suggestions, and code contributions. All contributions are considered for merging with proper credit.</p>
+                <div style="margin-top:1rem"><a href="https://github.com/CrashyCrash" target="_blank" rel="noopener" style="color:var(--glow);font-family:'Fira Code',monospace;font-size:0.85rem">→ github.com/CrashyCrash</a></div>
+            </div>
+        </div>
+    </section>
 
-        <section class="mb-16">
-            <h2 class="text-4xl font-bold mb-8 text-cyan-300">Tools We Use</h2>
-            <p class="text-lg text-gray-300 leading-relaxed mb-12 text-center">
-                We rely on a curated selection of powerful open-source tools to drive our development and innovation.
-            </p>
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
-                <div class="bg-darker p-6 rounded-lg shadow-lg shadow-cyan-500/10 text-center">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original-wordmark.svg" alt="Docker Icon" class="h-16 mx-auto mb-4">
-                    <h3 class="text-xl font-bold text-cyan-400 mb-2">Docker</h3>
-                    <p class="text-gray-400">Containerization for consistent deployments.</p>
-                </div>
-                <div class="bg-darker p-6 rounded-lg shadow-lg shadow-cyan-500/10 text-center">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python Icon" class="h-16 mx-auto mb-4">
-                    <h3 class="text-xl font-bold text-cyan-400 mb-2">Python</h3>
-                    <p class="text-gray-400">Versatile language for AI & scripting.</p>
-                </div>
-                <div class="bg-darker p-6 rounded-lg shadow-lg shadow-cyan-500/10 text-center">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/playwright/playwright-original.svg" alt="Playwright Icon" class="h-16 mx-auto mb-4">
-                    <h3 class="text-xl font-bold text-cyan-400
+    <footer>
+        <div>&copy; 2026 Offbeat, Inc. — <a href="affiliate-disclosure.html">Affiliate Disclosure</a> &middot; <a href="privacy.html">Privacy</a></div>
+        <div><a href="https://github.com/CrashyCrash" target="_blank" rel="noopener">GitHub</a> &middot; <a href="status.html">DatBotty Status</a></div>
+    </footer>
+</body>
+</html>

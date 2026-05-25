@@ -3,214 +3,206 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Create your DJ set cue sheets with Offbeat, Inc.'s free online Cue Sheet Generator. Save, export, and manage your sets effortlessly.">
-    <meta property="og:title" content="OFFBEAT — Cue Sheet Generator">
-    <meta property="og:description" content="Offbeat's free Cue Sheet Generator for DJs. Build, save, and export your set lists easily.">
+    <meta name="description" content="Free DJ cue sheet generator — create PRO-compliant cue sheets for ASCAP, BMI, and SESAC submissions.">
+    <meta property="og:title" content="Cue Sheet Generator — Offbeat Tools">
+    <meta property="og:description" content="Free DJ cue sheet generator — create PRO-compliant cue sheets for ASCAP, BMI, and SESAC submissions.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://crashycrash.github.io/offbeat-website/v3/tools/cue-sheet-generator.html">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Cue Sheet Generator — Offbeat Tools">
+    <meta name="twitter:description" content="Free DJ cue sheet generator — create PRO-compliant cue sheets for ASCAP, BMI, and SESAC submissions.">
+    <meta name="twitter:site" content="@offbeatinc">
     <link rel="canonical" href="https://crashycrash.github.io/offbeat-website/v3/tools/cue-sheet-generator.html">
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "Offbeat Cue Sheet Generator",
-      "description": "A free online tool for DJs to create, manage, and export their set cue sheets.",
-      "applicationCategory": "UtilityApplication",
-      "operatingSystem": "Web",
-      "featureList": [
-        "Track entry form",
-        "Live preview table",
-        "Add track functionality",
-        "Clear form",
-        "Export to text",
-        "Local storage persistence",
-        "Auto-save"
-      ],
-      "offers": {
-        "@type": "Offer",
-        "name": "Free",
-        "price": "0",
-        "priceCurrency": "USD"
-      },
-      "softwareVersion": "1.0",
-      "screenshot": "https://crashycrash.github.io/offbeat-website/v3/assets/images/cue-sheet-generator-screenshot.png",
-      "url": "https://crashycrash.github.io/offbeat-website/v3/tools/cue-sheet-generator.html",
-      "publisher": {
-        "@type": "Organization",
-        "name": "Offbeat, Inc.",
-        "url": "https://crashycrash.github.io/offbeat-website/v3/"
-      }
-    }
-    </script>
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      "itemListElement": [
-        {
-          "@type": "ListItem",
-          "position": 1,
-          "name": "Offbeat",
-          "item": "https://crashycrash.github.io/offbeat-website/v3/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 2,
-          "name": "Tools",
-          "item": "https://crashycrash.github.io/offbeat-website/v3/tools.html"
-        },
-        {
-          "@type": "ListItem",
-          "position": 3,
-          "name": "Cue Sheet Generator"
-        }
-      ]
-    }
-    </script>
-    <title>OFFBEAT — Cue Sheet Generator</title>
+    <title>Cue Sheet Generator — Offbeat Tools</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap');
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
-            --color-background: #0d0d0d;
-            --color-foreground: #f0f0f0;
-            --color-primary: #00aaff;
-            --color-secondary: #333333;
-            --color-accent: #ff6600;
-            --font-family-heading: 'Outfit', sans-serif;
-            --font-family-body: 'Outfit', sans-serif;
-            --font-family-code: 'Fira Code', monospace;
-            --border-radius: 8px;
-            --spacing-unit: 16px;
+            --bg: #020206; --bg-card: #08090f; --border: #141828;
+            --glow: #00ccff; --glow-2: #00fff2; --violet: #7c3aed;
+            --hot: #ff3d71; --green: #00e676;
+            --text: #e6eaf4; --text-2: #6e7599; --text-3: #2d3150;
         }
-
-        body {
-            background-color: var(--color-background);
-            color: var(--color-foreground);
-            font-family: var(--font-family-body);
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+        .mesh-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none;
+            background: radial-gradient(ellipse 800px 600px at 20% 20%, rgba(0,204,255,0.04) 0%,transparent 50%),
+                        radial-gradient(ellipse 600px 800px at 80% 70%, rgba(124,58,237,0.04) 0%,transparent 50%); }
+        header { position: fixed; top: 0; width: 100%; z-index: 100; padding: 1.25rem 3rem;
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(2,2,6,0.85); backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border); }
+        .brand { font-size: 1.4rem; font-weight: 800; letter-spacing: 0.08em; color: var(--glow); text-decoration: none; }
+        .header-nav { display: flex; gap: 1.75rem; list-style: none; }
+        .header-nav a { color: var(--text-2); text-decoration: none; font-size: 0.88rem; font-weight: 500; transition: color 0.3s; }
+        .header-nav a:hover, .header-nav .active a { color: var(--glow); }
+        .page-hero { padding: 9rem 2rem 4rem; text-align: center; position: relative; z-index: 1; }
+        .page-tag { font-family: 'Fira Code', monospace; font-size: 0.72rem; color: var(--glow);
+            text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 1rem; }
+        .page-hero h1 { font-size: clamp(2.2rem,5vw,4rem); font-weight: 800; letter-spacing: -0.03em;
+            margin-bottom: 1rem; }
+        .page-hero p { color: var(--text-2); font-size: 1.05rem; line-height: 1.7;
+            max-width: 600px; margin: 0 auto; }
+        .section { position: relative; z-index: 1; padding: 5rem 2rem; }
+        .wrap { max-width: 1100px; margin: 0 auto; }
+        .narrow { max-width: 800px; margin: 0 auto; }
+        .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 2rem; margin-bottom: 1.5rem; transition: border-color 0.3s; }
+        .card:hover { border-color: rgba(0,204,255,0.15); }
+        .card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 0.6rem; }
+        .card p { color: var(--text-2); font-size: 0.9rem; line-height: 1.65; }
+        .tag { font-family: 'Fira Code', monospace; font-size: 0.68rem; text-transform: uppercase;
+            letter-spacing: 0.12em; color: var(--glow); margin-bottom: 0.5rem; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
+        .badge { display: inline-block; padding: 0.25rem 0.75rem; border-radius: 99px; font-size: 0.72rem;
+            font-weight: 600; letter-spacing: 0.05em; border: 1px solid; }
+        .badge-glow { color: var(--glow); border-color: rgba(0,204,255,0.3); background: rgba(0,204,255,0.06); }
+        .badge-violet { color: var(--violet); border-color: rgba(124,58,237,0.3); background: rgba(124,58,237,0.06); }
+        .code-block { background: #060810; border: 1px solid var(--border); border-radius: 10px;
+            padding: 1.5rem; font-family: 'Fira Code', monospace; font-size: 0.83rem;
+            color: var(--text-2); line-height: 1.8; overflow-x: auto; }
+        .code-block .kw { color: var(--violet); } .code-block .str { color: var(--green); }
+        .code-block .cm { color: var(--text-3); } .code-block .fn { color: var(--glow); }
+        .divider { border: none; border-top: 1px solid var(--border); margin: 3rem 0; }
+        footer { position: relative; z-index: 1; padding: 1.5rem 3rem; border-top: 1px solid var(--border);
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.78rem; color: var(--text-3); flex-wrap: wrap; gap: 0.5rem; }
+        footer a { color: var(--text-2); text-decoration: none; }
+        footer a:hover { color: var(--glow); }
+        @media (max-width: 768px) {
+            header { padding: 1rem 1.25rem; flex-wrap: wrap; gap: 0.5rem; }
+            .header-nav { gap: 0.75rem 1rem; flex-wrap: wrap; }
+            .grid-2, .grid-3 { grid-template-columns: 1fr; }
+            footer { flex-direction: column; text-align: center; padding: 1.5rem; }
         }
+        @media (max-width: 640px) { .header-nav { display: none; } }
+    </style>
+</head>
+<body>
+    <div class="mesh-bg"></div>
+    <header>
+        <a href="index.html" class="brand">OFFBEAT</a>
+        <ul class="header-nav">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="tools.html">Tools</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="status.html">Status</a></li>
+            <li><a href="work.html">Work</a></li>
+            <li class="active"><a href="tools/cue-sheet-generator.html" style="color:var(--glow)">Tools</a></li>
+        </ul>
+    </header>
 
-        header {
-            background-color: var(--color-secondary);
-            padding: calc(var(--spacing-unit) * 1.5) var(--spacing-unit);
-            border-bottom: 2px solid var(--color-primary);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-        }
+    <section class="page-hero">
+        <div class="page-tag">DJ Tools</div>
+        <h1>Cue Sheet Generator</h1>
+        <p>Create professional cue sheets for PRO (Performance Rights Organization) submissions. Export as CSV for ASCAP, BMI, or SESAC.</p>
+    </section>
 
-        header .logo {
-            font-family: var(--font-family-heading);
-            font-size: 2em;
-            font-weight: 700;
-            color: var(--color-foreground);
-            text-decoration: none;
-        }
+    <section class="section">
+        <div class="wrap">
+            <div class="card">
+                <h3>About This Tool</h3>
+                <p>Cue sheets document the music performed at an event for PRO royalty reporting. Each entry records the track title, artist, ISRC code (if known), and duration. Fill in your set details below and export a formatted spreadsheet.</p>
+            </div>
 
-        nav ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            gap: var(--spacing-unit);
-        }
+            <div class="card">
+                <h3>Event Details</h3>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1rem">
+                    <div>
+                        <label style="font-size:0.83rem;color:var(--text-2);display:block;margin-bottom:0.4rem">Event Name</label>
+                        <input id="event-name" type="text" placeholder="e.g. Club Night @ Venue" style="width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);padding:0.6rem 0.9rem;border-radius:8px;font-family:inherit;font-size:0.9rem">
+                    </div>
+                    <div>
+                        <label style="font-size:0.83rem;color:var(--text-2);display:block;margin-bottom:0.4rem">Event Date</label>
+                        <input id="event-date" type="date" style="width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);padding:0.6rem 0.9rem;border-radius:8px;font-family:inherit;font-size:0.9rem">
+                    </div>
+                    <div>
+                        <label style="font-size:0.83rem;color:var(--text-2);display:block;margin-bottom:0.4rem">DJ / Performer Name</label>
+                        <input id="dj-name" type="text" placeholder="Your DJ name" style="width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);padding:0.6rem 0.9rem;border-radius:8px;font-family:inherit;font-size:0.9rem">
+                    </div>
+                    <div>
+                        <label style="font-size:0.83rem;color:var(--text-2);display:block;margin-bottom:0.4rem">PRO (ASCAP / BMI / SESAC)</label>
+                        <select id="pro-select" style="width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);padding:0.6rem 0.9rem;border-radius:8px;font-family:inherit;font-size:0.9rem">
+                            <option>ASCAP</option><option>BMI</option><option>SESAC</option><option>Global (all)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
 
-        nav a {
-            color: var(--color-foreground);
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s ease;
-        }
+            <div class="card">
+                <h3>Add Tracks</h3>
+                <div style="display:grid;grid-template-columns:2fr 1.5fr 1fr 1fr;gap:0.75rem;margin-top:1rem;align-items:end">
+                    <div>
+                        <label style="font-size:0.83rem;color:var(--text-2);display:block;margin-bottom:0.4rem">Track Title</label>
+                        <input id="track-title" type="text" placeholder="Song name" style="width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);padding:0.6rem 0.9rem;border-radius:8px;font-family:inherit;font-size:0.9rem">
+                    </div>
+                    <div>
+                        <label style="font-size:0.83rem;color:var(--text-2);display:block;margin-bottom:0.4rem">Artist</label>
+                        <input id="track-artist" type="text" placeholder="Artist name" style="width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);padding:0.6rem 0.9rem;border-radius:8px;font-family:inherit;font-size:0.9rem">
+                    </div>
+                    <div>
+                        <label style="font-size:0.83rem;color:var(--text-2);display:block;margin-bottom:0.4rem">Duration (mm:ss)</label>
+                        <input id="track-duration" type="text" placeholder="5:32" style="width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);padding:0.6rem 0.9rem;border-radius:8px;font-family:inherit;font-size:0.9rem">
+                    </div>
+                    <button onclick="addTrack()" style="padding:0.6rem 1.25rem;background:var(--glow);color:var(--bg);border:none;border-radius:8px;font-weight:700;font-size:0.9rem;cursor:pointer">+ Add</button>
+                </div>
+                <div id="track-list" style="margin-top:1.5rem;display:grid;gap:0.5rem"></div>
+            </div>
 
-        nav a:hover {
-            color: var(--color-primary);
-        }
+            <div style="display:flex;gap:1rem;margin-top:1.5rem">
+                <button onclick="exportCsv()" style="padding:0.75rem 2rem;background:transparent;border:1px solid var(--glow);color:var(--glow);border-radius:8px;font-weight:700;cursor:pointer">Export CSV</button>
+                <button onclick="clearAll()" style="padding:0.75rem 2rem;background:transparent;border:1px solid var(--border);color:var(--text-2);border-radius:8px;font-weight:700;cursor:pointer">Clear All</button>
+            </div>
+        </div>
+    </section>
 
-        main {
-            flex-grow: 1;
-            padding: calc(var(--spacing-unit) * 2) var(--spacing-unit);
-            max-width: 1200px;
-            margin: 0 auto;
-            width: 100%;
-            box-sizing: border-box;
-        }
+    <script>
+    const tracks = [];
+    function addTrack() {
+        const t = document.getElementById('track-title').value.trim();
+        const a = document.getElementById('track-artist').value.trim();
+        const d = document.getElementById('track-duration').value.trim();
+        if (!t || !a) { alert('Track title and artist are required.'); return; }
+        tracks.push({title:t, artist:a, duration:d||'?'});
+        document.getElementById('track-title').value='';
+        document.getElementById('track-artist').value='';
+        document.getElementById('track-duration').value='';
+        renderTracks();
+    }
+    function renderTracks() {
+        const el = document.getElementById('track-list');
+        if (!tracks.length) { el.innerHTML='<p style="color:var(--text-2);font-size:0.88rem">No tracks added yet.</p>'; return; }
+        el.innerHTML = tracks.map((tr,i)=>
+            `<div style="display:grid;grid-template-columns:2fr 1.5fr 1fr auto;gap:0.75rem;align-items:center;padding:0.6rem;background:var(--bg);border:1px solid var(--border);border-radius:8px">
+                <span style="font-size:0.88rem">${tr.title}</span>
+                <span style="font-size:0.88rem;color:var(--text-2)">${tr.artist}</span>
+                <span style="font-family:'Fira Code',monospace;font-size:0.8rem;color:var(--glow)">${tr.duration}</span>
+                <button onclick="removeTrack(${i})" style="background:none;border:none;color:var(--hot);cursor:pointer;font-size:1rem">✕</button>
+            </div>`
+        ).join('');
+    }
+    function removeTrack(i) { tracks.splice(i,1); renderTracks(); }
+    function exportCsv() {
+        const event = document.getElementById('event-name').value||'Event';
+        const date  = document.getElementById('event-date').value||new Date().toISOString().split('T')[0];
+        const dj    = document.getElementById('dj-name').value||'DJ';
+        const pro   = document.getElementById('pro-select').value;
+        let csv = `PRO,${pro}\nEvent,${event}\nDate,${date}\nPerformer,${dj}\n\n`;
+        csv += "Track Title,Artist,Duration,ISRC\n";
+        tracks.forEach(tr => { csv += `"${tr.title}","${tr.artist}","${tr.duration}",""\n`; });
+        const blob = new Blob([csv],{type:'text/csv'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a'); a.href=url; a.download='cue-sheet.csv'; a.click();
+    }
+    function clearAll() { tracks.length=0; renderTracks(); }
+    renderTracks();
+    </script>
 
-        h1, h2, h3 {
-            font-family: var(--font-family-heading);
-            color: var(--color-primary);
-            margin-bottom: var(--spacing-unit);
-        }
-
-        h1 {
-            font-size: 2.5em;
-            text-align: center;
-            margin-bottom: calc(var(--spacing-unit) * 2);
-        }
-
-        h2 {
-            font-size: 2em;
-            border-bottom: 2px solid var(--color-secondary);
-            padding-bottom: calc(var(--spacing-unit) / 2);
-            margin-top: calc(var(--spacing-unit) * 2);
-        }
-
-        p {
-            margin-bottom: var(--spacing-unit);
-        }
-
-        a {
-            color: var(--color-primary);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        a:hover {
-            color: var(--color-accent);
-        }
-
-        .button {
-            display: inline-block;
-            background-color: var(--color-accent);
-            color: var(--color-background);
-            padding: calc(var(--spacing-unit) * 0.75) calc(var(--spacing-unit) * 1.5);
-            border: none;
-            border-radius: var(--border-radius);
-            font-family: var(--font-family-body);
-            font-size: 1em;
-            font-weight: 600;
-            cursor: pointer;
-            text-decoration: none;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            margin: 0 var(--spacing-unit) var(--spacing-unit) 0;
-            box-shadow: 0 4px 0 var(--color-secondary); /* Simulate depth */
-        }
-
-        .button:hover {
-            background-color: var(--color-accent); /* Keep accent color */
-            transform: translateY(0); /* Prevent lifting */
-            box-shadow: 0 4px 0 var(--color-secondary); /* Keep shadow */
-            color: var(--color-background); /* Keep text color */
-        }
-
-        .button.primary {
-            background-color: var(--color-primary);
-            box-shadow: 0 4px 0 var(--color-secondary);
-        }
-
-        .button.primary:hover {
-            background-color: var(--color-primary);
-            transform: translateY(0);
-            box-shadow: 0 4px 0 var(--color-secondary);
-        }
-
-        .button.secondary {
-            background-color: var(--color-secondary);
-            box-shadow: 0 4px 0 var(--color-background);
-        }
-
-        .button.secondary:hover {
+    <footer>
+        <div>&copy; 2026 Offbeat, Inc. — <a href="affiliate-disclosure.html">Affiliate Disclosure</a> &middot; <a href="privacy.html">Privacy</a></div>
+        <div><a href="https://github.com/CrashyCrash" target="_blank" rel="noopener">GitHub</a> &middot; <a href="status.html">DatBotty Status</a></div>
+    </footer>
+</body>
+</html>

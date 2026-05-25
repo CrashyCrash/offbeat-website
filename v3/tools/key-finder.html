@@ -3,207 +3,169 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Offbeat, Inc. - Key Finder: A musical key compatibility and Camelot Wheel reference tool for DJs. Analyze harmonic mixing possibilities for your tracks.">
-    <meta property="og:title" content="OFFBEAT — Key Finder">
-    <meta property="og:description" content="Harmonic mixing made easy. Explore musical key compatibility and the Camelot Wheel with Offbeat's Key Finder tool.">
+    <meta name="description" content="DJ Key Compatibility Finder — Camelot Wheel reference for harmonic mixing. Find compatible keys for seamless transitions.">
+    <meta property="og:title" content="Key Compatibility Finder — Offbeat Tools">
+    <meta property="og:description" content="DJ Key Compatibility Finder — Camelot Wheel reference for harmonic mixing. Find compatible keys for seamless transitions.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://crashycrash.github.io/offbeat-website/v3/tools/key-finder.html">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Key Compatibility Finder — Offbeat Tools">
+    <meta name="twitter:description" content="DJ Key Compatibility Finder — Camelot Wheel reference for harmonic mixing. Find compatible keys for seamless transitions.">
+    <meta name="twitter:site" content="@offbeatinc">
     <link rel="canonical" href="https://crashycrash.github.io/offbeat-website/v3/tools/key-finder.html">
-    <script type="application/ld+json">
-    {
-      " @context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "Offbeat Key Finder",
-      "description": "A musical key compatibility and Camelot Wheel reference tool for DJs, designed to assist with harmonic mixing.",
-      "operatingSystem": "Web",
-      "applicationCategory": "UtilityApplication",
-      "keywords": "DJ tools, harmonic mixing, key finder, Camelot Wheel, music theory, EDM, Dubstep",
-      "offers": {
-        "@type": "Offer",
-        "name": "Free Tool",
-        "description": "This tool is provided free of charge by Offbeat, Inc."
-      },
-      "screenshot": "https://crashycrash.github.io/offbeat-website/v3/assets/images/keyfinder-screenshot.png",
-      "publisher": {
-        " @type": "Organization",
-        "name": "Offbeat, Inc.",
-        "url": "https://crashycrash.github.io/offbeat-website/v3/"
-      }
-    }
-    </script>
-    <script type="application/ld+json">
-    {
-      " @context": "https://schema.org",
-      "@type": "Organization",
-      "name": "Offbeat, Inc.",
-      "url": "https://crashycrash.github.io/offbeat-website/v3/",
-      "foundingDate": "2015",
-      "description": "Custom software, AI automation, and data-driven digital marketing. We build the unusual.",
-      "areaServed": "US",
-      "sameAs": [
-        "https://github.com/CrashyCrash",
-        "https://muthaeffincrash.com"
-      ],
-      "knowsAbout": ["Custom Software Development", "AI Automation", "Affiliate Marketing", "Digital Marketing", "Music Technology"]
-    }
-    </script>
-    <script type="application/ld+json">
-    {
-      " @context": "https://schema.org",
-      "@type": "Person",
-      "name": "Crash (CrashyCrash)",
-      "jobTitle": "DJ / Software Developer",
-      "url": "https://crashycrash.github.io/offbeat-website/v3/",
-      "sameAs": [
-        "https://muthaeffincrash.com",
-        "https://github.com/CrashyCrash"
-      ],
-      "worksFor": {
-        " @type": "Organization",
-        "name": "Offbeat Inc."
-      }
-    }
-    </script>
-    <title>OFFBEAT — Key Finder</title>
+    <title>Key Compatibility Finder — Offbeat Tools</title>
     <style>
-        /* Base Styles (Dark Theme) */
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap');
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
-            --color-black: #0d0d0d;
-            --color-dark-gray: #1a1a1a;
-            --color-medium-gray: #2c2c2c;
-            --color-light-gray: #4a4a4a;
-            --color-white: #ffffff;
-            --color-accent-blue: #00bfff;
-            --color-accent-purple: #8a2be2;
-            --color-accent-green: #32cd32;
-            --color-accent-orange: #ff8c00;
-            --font-primary: 'Outfit', sans-serif;
-            --font-secondary: 'Fira Code', monospace;
+            --bg: #020206; --bg-card: #08090f; --border: #141828;
+            --glow: #00ccff; --glow-2: #00fff2; --violet: #7c3aed;
+            --hot: #ff3d71; --green: #00e676;
+            --text: #e6eaf4; --text-2: #6e7599; --text-3: #2d3150;
         }
-
-        body {
-            background-color: var(--color-black);
-            color: var(--color-white);
-            font-family: var(--font-primary);
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+        .mesh-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none;
+            background: radial-gradient(ellipse 800px 600px at 20% 20%, rgba(0,204,255,0.04) 0%,transparent 50%),
+                        radial-gradient(ellipse 600px 800px at 80% 70%, rgba(124,58,237,0.04) 0%,transparent 50%); }
+        header { position: fixed; top: 0; width: 100%; z-index: 100; padding: 1.25rem 3rem;
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(2,2,6,0.85); backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border); }
+        .brand { font-size: 1.4rem; font-weight: 800; letter-spacing: 0.08em; color: var(--glow); text-decoration: none; }
+        .header-nav { display: flex; gap: 1.75rem; list-style: none; }
+        .header-nav a { color: var(--text-2); text-decoration: none; font-size: 0.88rem; font-weight: 500; transition: color 0.3s; }
+        .header-nav a:hover, .header-nav .active a { color: var(--glow); }
+        .page-hero { padding: 9rem 2rem 4rem; text-align: center; position: relative; z-index: 1; }
+        .page-tag { font-family: 'Fira Code', monospace; font-size: 0.72rem; color: var(--glow);
+            text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 1rem; }
+        .page-hero h1 { font-size: clamp(2.2rem,5vw,4rem); font-weight: 800; letter-spacing: -0.03em;
+            margin-bottom: 1rem; }
+        .page-hero p { color: var(--text-2); font-size: 1.05rem; line-height: 1.7;
+            max-width: 600px; margin: 0 auto; }
+        .section { position: relative; z-index: 1; padding: 5rem 2rem; }
+        .wrap { max-width: 1100px; margin: 0 auto; }
+        .narrow { max-width: 800px; margin: 0 auto; }
+        .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 2rem; margin-bottom: 1.5rem; transition: border-color 0.3s; }
+        .card:hover { border-color: rgba(0,204,255,0.15); }
+        .card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 0.6rem; }
+        .card p { color: var(--text-2); font-size: 0.9rem; line-height: 1.65; }
+        .tag { font-family: 'Fira Code', monospace; font-size: 0.68rem; text-transform: uppercase;
+            letter-spacing: 0.12em; color: var(--glow); margin-bottom: 0.5rem; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
+        .badge { display: inline-block; padding: 0.25rem 0.75rem; border-radius: 99px; font-size: 0.72rem;
+            font-weight: 600; letter-spacing: 0.05em; border: 1px solid; }
+        .badge-glow { color: var(--glow); border-color: rgba(0,204,255,0.3); background: rgba(0,204,255,0.06); }
+        .badge-violet { color: var(--violet); border-color: rgba(124,58,237,0.3); background: rgba(124,58,237,0.06); }
+        .code-block { background: #060810; border: 1px solid var(--border); border-radius: 10px;
+            padding: 1.5rem; font-family: 'Fira Code', monospace; font-size: 0.83rem;
+            color: var(--text-2); line-height: 1.8; overflow-x: auto; }
+        .code-block .kw { color: var(--violet); } .code-block .str { color: var(--green); }
+        .code-block .cm { color: var(--text-3); } .code-block .fn { color: var(--glow); }
+        .divider { border: none; border-top: 1px solid var(--border); margin: 3rem 0; }
+        footer { position: relative; z-index: 1; padding: 1.5rem 3rem; border-top: 1px solid var(--border);
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.78rem; color: var(--text-3); flex-wrap: wrap; gap: 0.5rem; }
+        footer a { color: var(--text-2); text-decoration: none; }
+        footer a:hover { color: var(--glow); }
+        @media (max-width: 768px) {
+            header { padding: 1rem 1.25rem; flex-wrap: wrap; gap: 0.5rem; }
+            .header-nav { gap: 0.75rem 1rem; flex-wrap: wrap; }
+            .grid-2, .grid-3 { grid-template-columns: 1fr; }
+            footer { flex-direction: column; text-align: center; padding: 1.5rem; }
         }
+        @media (max-width: 640px) { .header-nav { display: none; } }
+    </style>
+</head>
+<body>
+    <div class="mesh-bg"></div>
+    <header>
+        <a href="index.html" class="brand">OFFBEAT</a>
+        <ul class="header-nav">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="tools.html">Tools</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="status.html">Status</a></li>
+            <li><a href="work.html">Work</a></li>
+            <li class="active"><a href="tools/key-finder.html" style="color:var(--glow)">Tools</a></li>
+        </ul>
+    </header>
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            width: 100%;
-            box-sizing: border-box;
-        }
+    <section class="page-hero">
+        <div class="page-tag">DJ Tools</div>
+        <h1>Key Compatibility Finder</h1>
+        <p>Enter a Camelot Wheel position and find all compatible keys for harmonic mixing. Energy boosts, key changes, and safe transitions.</p>
+    </section>
 
-        h1, h2, h3, h4, h5, h6 {
-            font-family: var(--font-primary);
-            color: var(--color-accent-blue);
-            margin-bottom: 15px;
-        }
+    <section class="section">
+        <div class="wrap">
+            <div class="card">
+                <h3>Select Your Current Key</h3>
+                <div style="display:flex;gap:1rem;align-items:center;margin-top:1rem;flex-wrap:wrap">
+                    <select id="camelot-num" style="background:var(--bg);border:1px solid var(--border);color:var(--text);padding:0.6rem 0.9rem;border-radius:8px;font-family:'Fira Code',monospace;font-size:1rem" onchange="findCompat()">
+                        <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
+                        <option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
+                        <option>11</option><option>12</option>
+                    </select>
+                    <select id="camelot-mode" style="background:var(--bg);border:1px solid var(--border);color:var(--text);padding:0.6rem 0.9rem;border-radius:8px;font-family:'Fira Code',monospace;font-size:1rem" onchange="findCompat()">
+                        <option value="A">A (Minor)</option>
+                        <option value="B">B (Major)</option>
+                    </select>
+                    <span id="key-name" style="font-family:'Fira Code',monospace;font-size:1.2rem;color:var(--glow)"></span>
+                </div>
+            </div>
 
-        h1 { font-size: 2.5em; }
-        h2 { font-size: 2em; }
-        h3 { font-size: 1.75em; }
+            <div class="card" id="compat-card">
+                <div class="tag">Compatible Keys</div>
+                <div id="compat-list" style="display:grid;gap:0.75rem;margin-top:1rem"></div>
+            </div>
 
-        a {
-            color: var(--color-accent-blue);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
+            <div class="card">
+                <h3>How Harmonic Mixing Works</h3>
+                <p>The Camelot Wheel assigns each key a number (1–12) and letter (A=minor, B=major). Compatible transitions are: <strong>same position</strong> (key match), <strong>±1 number</strong> (adjacent key), and <strong>same number different letter</strong> (relative major/minor). Energy boosts go +1 (e.g. 8A → 9A).</p>
+            </div>
+        </div>
+    </section>
 
-        a:hover {
-            color: var(--color-accent-purple);
-        }
+    <script>
+    const CAMELOT = {
+        "1A":"Am","1B":"C","2A":"Em","2B":"G","3A":"Bm","3B":"D","4A":"F#m","4B":"A",
+        "5A":"C#m","5B":"E","6A":"G#m","6B":"B","7A":"Ebm","7B":"F#","8A":"Bbm","8B":"Db",
+        "9A":"Fm","9B":"Ab","10A":"Cm","10B":"Eb","11A":"Gm","11B":"Bb","12A":"Dm","12B":"F"
+    };
+    function findCompat() {
+        const num = parseInt(document.getElementById('camelot-num').value);
+        const mode = document.getElementById('camelot-mode').value;
+        const key = `${num}${mode}`;
+        document.getElementById('key-name').textContent = CAMELOT[key]||'';
+        const alt = mode==='A'?'B':'A';
+        const prev = num===1?12:num-1;
+        const next = num===12?1:num+1;
+        const matches = [
+            {pos:key, rel:'Perfect Match (same key)', boost:'No energy change'},
+            {pos:`${prev}${mode}`, rel:'Energy drop (−1)', boost:'Subtle tension release'},
+            {pos:`${next}${mode}`, rel:'Energy boost (+1)', boost:'Builds intensity'},
+            {pos:`${num}${alt}`, rel:'Relative major/minor', boost:'Mood shift, smooth'},
+        ];
+        document.getElementById('compat-list').innerHTML = matches.map(m=>`
+            <div style="display:flex;align-items:center;gap:1.25rem;padding:0.75rem;background:var(--bg);border:1px solid var(--border);border-radius:10px">
+                <span style="font-family:'Fira Code',monospace;font-size:1.35rem;font-weight:700;color:var(--glow);min-width:3rem">${m.pos}</span>
+                <span style="font-family:'Fira Code',monospace;font-size:1rem;color:var(--text);min-width:4rem">${CAMELOT[m.pos]||'?'}</span>
+                <div>
+                    <div style="font-size:0.88rem;font-weight:600">${m.rel}</div>
+                    <div style="font-size:0.78rem;color:var(--text-2)">${m.boost}</div>
+                </div>
+            </div>`).join('');
+    }
+    findCompat();
+    </script>
 
-        /* Navigation */
-        nav {
-            background-color: var(--color-dark-gray);
-            padding: 15px 0;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        nav .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-family: var(--font-secondary);
-            font-size: 1.8em;
-            font-weight: bold;
-            color: var(--color-white);
-            letter-spacing: 2px;
-        }
-
-        .nav-links {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            display: flex;
-        }
-
-        .nav-links li {
-            margin-left: 25px;
-        }
-
-        .nav-links a {
-            font-family: var(--font-primary);
-            font-size: 1.1em;
-            font-weight: 500;
-            color: var(--color-white);
-            padding: 8px 15px;
-            border-radius: 5px;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        .nav-links a:hover,
-        .nav-links a.active {
-            background-color: var(--color-accent-blue);
-            color: var(--color-black);
-        }
-
-        /* Buttons */
-        .btn {
-            display: inline-block;
-            font-family: var(--font-primary);
-            font-size: 1em;
-            font-weight: 500;
-            padding: 12px 25px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease, color 0.3s ease, transform 0.1s ease;
-            text-align: center;
-            text-decoration: none;
-        }
-
-        .btn-primary {
-            background-color: var(--color-accent-blue);
-            color: var(--color-black);
-        }
-
-        .btn-primary:hover {
-            background-color: var(--color-accent-purple);
-            color: var(--color-white);
-            transform: translateY(-2px);
-        }
-
-        .btn-secondary {
-            background-color: var(--color-dark-gray);
-            color: var(--color-white);
-            border: 1px solid var(--color-light-gray);
-        }
-
-        .btn-secondary:hover {
-            background-color: var(--color-light-gray);
-            color: var(--color-
+    <footer>
+        <div>&copy; 2026 Offbeat, Inc. — <a href="affiliate-disclosure.html">Affiliate Disclosure</a> &middot; <a href="privacy.html">Privacy</a></div>
+        <div><a href="https://github.com/CrashyCrash" target="_blank" rel="noopener">GitHub</a> &middot; <a href="status.html">DatBotty Status</a></div>
+    </footer>
+</body>
+</html>

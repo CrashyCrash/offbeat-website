@@ -3,193 +3,154 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Calculate your freelance project costs and recommended rates with Offbeat, Inc.'s pure JavaScript calculator. Perfect for designers, developers, and creatives.">
-    <meta property="og:title" content="Freelance Rate Calculator — OFFBEAT Tools">
-    <meta property="og:description" content="Estimate project costs and set your freelance rates accurately with our in-browser calculator.">
+    <meta name="description" content="Freelance rate calculator — estimate your hourly rate based on annual income goal, expenses, and utilization.">
+    <meta property="og:title" content="Freelance Rate Calculator — Offbeat Tools">
+    <meta property="og:description" content="Freelance rate calculator — estimate your hourly rate based on annual income goal, expenses, and utilization.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://crashycrash.github.io/offbeat-website/v3/tools/freelance-rate-calculator.html">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Freelance Rate Calculator — Offbeat Tools">
+    <meta name="twitter:description" content="Freelance rate calculator — estimate your hourly rate based on annual income goal, expenses, and utilization.">
+    <meta name="twitter:site" content="@offbeatinc">
     <link rel="canonical" href="https://crashycrash.github.io/offbeat-website/v3/tools/freelance-rate-calculator.html">
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "Freelance Rate Calculator",
-      "description": "A pure JavaScript freelance rate and project cost calculator for estimating project expenses and setting rates.",
-      "operatingSystem": "All",
-      "applicationCategory": "UtilityApplication",
-      "screenshot": "https://crashycrash.github.io/offbeat-website/v3/images/freelance-calculator-screenshot.png",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD",
-        "description": "Free to use"
-      },
-      "url": "https://crashycrash.github.io/offbeat-website/v3/tools/freelance-rate-calculator.html",
-      "publisher": {
-        "@type": "Organization",
-        "name": "Offbeat, Inc.",
-        "url": "https://crashycrash.github.io/offbeat-website/v3/"
-      }
-    }
-    </script>
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "Offbeat, Inc.",
-      "url": "https://crashycrash.github.io/offbeat-website/v3/",
-      "foundingDate": "2015",
-      "description": "Custom software, AI automation, and data-driven digital marketing. We build the unusual.",
-      "areaServed": "US",
-      "sameAs": [
-        "https://github.com/CrashyCrash",
-        "https://muthaeffincrash.com"
-      ],
-      "knowsAbout": ["Custom Software Development", "AI Automation", "Affiliate Marketing", "Digital Marketing", "Music Technology"]
-    }
-    </script>
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "Crash (CrashyCrash)",
-      "jobTitle": "DJ / Software Developer",
-      "url": "https://crashycrash.github.io/offbeat-website/v3/",
-      "sameAs": [
-        "https://muthaeffincrash.com",
-        "https://github.com/CrashyCrash"
-      ],
-      "worksFor": {
-        "@type": "Organization",
-        "name": "Offbeat Inc."
-      }
-    }
-    </script>
-    <title>Freelance Rate Calculator — OFFBEAT Tools</title>
+    <title>Freelance Rate Calculator — Offbeat Tools</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&family=Fira+Code:wght@400;700&display=swap');
-
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap');
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
-            --color-background: #0d0d0d;
-            --color-primary: #4CAF50;
-            --color-secondary: #FFEB3B;
-            --color-accent: #FF9800;
-            --color-text-primary: #e0e0e0;
-            --color-text-secondary: #a0a0a0;
-            --color-border: #333333;
-            --font-family-sans: 'Outfit', sans-serif;
-            --font-family-mono: 'Fira Code', monospace;
-            --border-radius: 8px;
-            --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
-            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
-            --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
-            --transition-fast: all 0.2s ease-in-out;
-            --transition-slow: all 0.4s ease-in-out;
-            --spacing-xs: 4px;
-            --spacing-sm: 8px;
-            --spacing-md: 16px;
-            --spacing-lg: 24px;
-            --spacing-xl: 32px;
-            --container-max-width: 1200px;
-            --header-height: 70px;
+            --bg: #020206; --bg-card: #08090f; --border: #141828;
+            --glow: #00ccff; --glow-2: #00fff2; --violet: #7c3aed;
+            --hot: #ff3d71; --green: #00e676;
+            --text: #e6eaf4; --text-2: #6e7599; --text-3: #2d3150;
         }
-
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: var(--color-background);
-            color: var(--color-text-primary);
-            font-family: var(--font-family-sans);
-            line-height: 1.6;
-            overflow-x: hidden;
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+        .mesh-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none;
+            background: radial-gradient(ellipse 800px 600px at 20% 20%, rgba(0,204,255,0.04) 0%,transparent 50%),
+                        radial-gradient(ellipse 600px 800px at 80% 70%, rgba(124,58,237,0.04) 0%,transparent 50%); }
+        header { position: fixed; top: 0; width: 100%; z-index: 100; padding: 1.25rem 3rem;
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(2,2,6,0.85); backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border); }
+        .brand { font-size: 1.4rem; font-weight: 800; letter-spacing: 0.08em; color: var(--glow); text-decoration: none; }
+        .header-nav { display: flex; gap: 1.75rem; list-style: none; }
+        .header-nav a { color: var(--text-2); text-decoration: none; font-size: 0.88rem; font-weight: 500; transition: color 0.3s; }
+        .header-nav a:hover, .header-nav .active a { color: var(--glow); }
+        .page-hero { padding: 9rem 2rem 4rem; text-align: center; position: relative; z-index: 1; }
+        .page-tag { font-family: 'Fira Code', monospace; font-size: 0.72rem; color: var(--glow);
+            text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 1rem; }
+        .page-hero h1 { font-size: clamp(2.2rem,5vw,4rem); font-weight: 800; letter-spacing: -0.03em;
+            margin-bottom: 1rem; }
+        .page-hero p { color: var(--text-2); font-size: 1.05rem; line-height: 1.7;
+            max-width: 600px; margin: 0 auto; }
+        .section { position: relative; z-index: 1; padding: 5rem 2rem; }
+        .wrap { max-width: 1100px; margin: 0 auto; }
+        .narrow { max-width: 800px; margin: 0 auto; }
+        .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 2rem; margin-bottom: 1.5rem; transition: border-color 0.3s; }
+        .card:hover { border-color: rgba(0,204,255,0.15); }
+        .card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 0.6rem; }
+        .card p { color: var(--text-2); font-size: 0.9rem; line-height: 1.65; }
+        .tag { font-family: 'Fira Code', monospace; font-size: 0.68rem; text-transform: uppercase;
+            letter-spacing: 0.12em; color: var(--glow); margin-bottom: 0.5rem; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
+        .badge { display: inline-block; padding: 0.25rem 0.75rem; border-radius: 99px; font-size: 0.72rem;
+            font-weight: 600; letter-spacing: 0.05em; border: 1px solid; }
+        .badge-glow { color: var(--glow); border-color: rgba(0,204,255,0.3); background: rgba(0,204,255,0.06); }
+        .badge-violet { color: var(--violet); border-color: rgba(124,58,237,0.3); background: rgba(124,58,237,0.06); }
+        .code-block { background: #060810; border: 1px solid var(--border); border-radius: 10px;
+            padding: 1.5rem; font-family: 'Fira Code', monospace; font-size: 0.83rem;
+            color: var(--text-2); line-height: 1.8; overflow-x: auto; }
+        .code-block .kw { color: var(--violet); } .code-block .str { color: var(--green); }
+        .code-block .cm { color: var(--text-3); } .code-block .fn { color: var(--glow); }
+        .divider { border: none; border-top: 1px solid var(--border); margin: 3rem 0; }
+        footer { position: relative; z-index: 1; padding: 1.5rem 3rem; border-top: 1px solid var(--border);
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.78rem; color: var(--text-3); flex-wrap: wrap; gap: 0.5rem; }
+        footer a { color: var(--text-2); text-decoration: none; }
+        footer a:hover { color: var(--glow); }
+        @media (max-width: 768px) {
+            header { padding: 1rem 1.25rem; flex-wrap: wrap; gap: 0.5rem; }
+            .header-nav { gap: 0.75rem 1rem; flex-wrap: wrap; }
+            .grid-2, .grid-3 { grid-template-columns: 1fr; }
+            footer { flex-direction: column; text-align: center; padding: 1.5rem; }
         }
+        @media (max-width: 640px) { .header-nav { display: none; } }
+    </style>
+</head>
+<body>
+    <div class="mesh-bg"></div>
+    <header>
+        <a href="index.html" class="brand">OFFBEAT</a>
+        <ul class="header-nav">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="tools.html">Tools</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="status.html">Status</a></li>
+            <li><a href="work.html">Work</a></li>
+            <li class="active"><a href="tools/freelance-rate-calculator.html" style="color:var(--glow)">Tools</a></li>
+        </ul>
+    </header>
 
-        .container {
-            max-width: var(--container-max-width);
-            margin: 0 auto;
-            padding: 0 var(--spacing-md);
-        }
+    <section class="page-hero">
+        <div class="page-tag">Business Tools</div>
+        <h1>Freelance Rate Calculator</h1>
+        <p>Calculate your minimum viable hourly rate based on your income goal, business expenses, and expected billable hours.</p>
+    </section>
 
-        header {
-            background-color: rgba(13, 13, 13, 0.8);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            height: var(--header-height);
-            display: flex;
-            align-items: center;
-            border-bottom: 1px solid var(--color-border);
-        }
+    <section class="section">
+        <div class="wrap">
+            <div class="card">
+                <h3>Your Targets</h3>
+                <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-top:1rem">
+                    <div>
+                        <label style="font-size:0.83rem;color:var(--text-2);display:block;margin-bottom:0.4rem">Annual Income Goal ($)</label>
+                        <input id="income" type="number" value="120000" min="0" style="width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);padding:0.6rem 0.9rem;border-radius:8px;font-family:inherit;font-size:0.9rem" oninput="calc()">
+                    </div>
+                    <div>
+                        <label style="font-size:0.83rem;color:var(--text-2);display:block;margin-bottom:0.4rem">Annual Business Expenses ($)</label>
+                        <input id="expenses" type="number" value="15000" min="0" style="width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);padding:0.6rem 0.9rem;border-radius:8px;font-family:inherit;font-size:0.9rem" oninput="calc()">
+                    </div>
+                    <div>
+                        <label style="font-size:0.83rem;color:var(--text-2);display:block;margin-bottom:0.4rem">Billable Hours / Week</label>
+                        <input id="hours" type="number" value="30" min="1" max="60" style="width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);padding:0.6rem 0.9rem;border-radius:8px;font-family:inherit;font-size:0.9rem" oninput="calc()">
+                    </div>
+                </div>
+            </div>
 
-        header .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-        }
+            <div class="card" id="result-card">
+                <div class="tag">Result</div>
+                <div style="font-size:4rem;font-weight:800;color:var(--glow);margin:1rem 0" id="rate-display">—</div>
+                <p id="rate-detail" style="color:var(--text-2);font-size:0.9rem"></p>
+            </div>
 
-        .logo {
-            font-family: var(--font-family-mono);
-            font-weight: 700;
-            font-size: 1.8em;
-            color: var(--color-primary);
-            text-decoration: none;
-        }
+            <div class="card">
+                <h3>What This Tells You</h3>
+                <p>This is your <strong>minimum viable rate</strong> — the floor below which you lose money. Most freelancers add 20–40% on top of this to account for: unpaid admin time, scope creep, late payers, and saving for taxes (self-employment tax adds ~15.3% in the US on top of income tax).</p>
+            </div>
+        </div>
+    </section>
 
-        nav ul {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            gap: var(--spacing-md);
-        }
+    <script>
+    function calc() {
+        const income = parseFloat(document.getElementById('income').value)||0;
+        const expenses = parseFloat(document.getElementById('expenses').value)||0;
+        const hoursPerWeek = parseFloat(document.getElementById('hours').value)||30;
+        const annualBillable = hoursPerWeek * 50; // ~50 working weeks
+        const needed = income + expenses;
+        const rate = Math.ceil(needed / annualBillable);
+        document.getElementById('rate-display').textContent = '$' + rate.toLocaleString() + '/hr';
+        document.getElementById('rate-detail').textContent =
+            `Based on ${annualBillable.toLocaleString()} billable hours/year (${hoursPerWeek}h/wk × 50 weeks) to cover $${needed.toLocaleString()} total. Recommended with buffer: $${Math.ceil(rate*1.3).toLocaleString()}/hr.`;
+    }
+    calc();
+    </script>
 
-        nav a {
-            color: var(--color-text-secondary);
-            text-decoration: none;
-            font-weight: 700;
-            transition: var(--transition-fast);
-            padding: var(--spacing-sm) var(--spacing-md);
-            border-radius: var(--border-radius);
-        }
-
-        nav a:hover {
-            color: var(--color-primary);
-            background-color: rgba(76, 175, 80, 0.1);
-        }
-
-        .hero {
-            text-align: center;
-            padding: var(--spacing-xl) 0;
-            background-color: rgba(25, 25, 25, 0.5);
-            border-bottom: 1px solid var(--color-border);
-        }
-
-        .hero h1 {
-            font-size: 3em;
-            margin-bottom: var(--spacing-md);
-            color: var(--color-primary);
-            line-height: 1.2;
-        }
-
-        .hero p {
-            font-size: 1.2em;
-            color: var(--color-text-secondary);
-            max-width: 700px;
-            margin: 0 auto;
-        }
-
-        section {
-            padding: var(--spacing-xl) 0;
-        }
-
-        h2 {
-            font-size: 2.5em;
-            text-align: center;
-            margin-bottom: var(--spacing-lg);
-            color: var(--color-secondary);
-        }
-
-        h3
+    <footer>
+        <div>&copy; 2026 Offbeat, Inc. — <a href="affiliate-disclosure.html">Affiliate Disclosure</a> &middot; <a href="privacy.html">Privacy</a></div>
+        <div><a href="https://github.com/CrashyCrash" target="_blank" rel="noopener">GitHub</a> &middot; <a href="status.html">DatBotty Status</a></div>
+    </footer>
+</body>
+</html>

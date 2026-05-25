@@ -3,241 +3,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="A comprehensive sitemap for Offbeat, Inc.'s v3 website, detailing all sections, pages, tools, and resources.">
-    <meta property="og:title" content="OFFBEAT — Sitemap">
-    <meta property="og:description" content="Explore the structure of Offbeat, Inc.'s v3 website with our detailed sitemap.">
+    <meta name="description" content="Offbeat, Inc. HTML sitemap — find every page on our site organized by category.">
+    <meta property="og:title" content="Sitemap — Offbeat, Inc.">
+    <meta property="og:description" content="Offbeat, Inc. HTML sitemap — find every page on our site organized by category.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://crashycrash.github.io/offbeat-website/v3/sitemap.html">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Sitemap — Offbeat, Inc.">
+    <meta name="twitter:description" content="Offbeat, Inc. HTML sitemap — find every page on our site organized by category.">
+    <meta name="twitter:site" content="@offbeatinc">
     <link rel="canonical" href="https://crashycrash.github.io/offbeat-website/v3/sitemap.html">
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebPage",
-      "name": "OFFBEAT — Sitemap",
-      "description": "A comprehensive sitemap for Offbeat, Inc.'s v3 website, detailing all sections, pages, tools, and resources.",
-      "breadcrumb": {
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-          {
-            "@type": "ListItem",
-            "position": 1,
-            "name": "Home",
-            "item": "https://crashycrash.github.io/offbeat-website/v3/"
-          },
-          {
-            "@type": "ListItem",
-            "position": 2,
-            "name": "Sitemap"
-          }
-        ]
-      }
-    }
-    </script>
-    <title>OFFBEAT — Sitemap</title>
+    <title>Sitemap — Offbeat, Inc.</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&family=Outfit:wght@400;700&display=swap');
-
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap');
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
-            --color-primary: #ffffff;
-            --color-secondary: #00ffff;
-            --color-background: #0d0d0d;
-            --color-dark-gray: #1a1a1a;
-            --color-light-gray: #333333;
-            --font-primary: 'Outfit', sans-serif;
-            --font-code: 'Fira Code', monospace;
+            --bg: #020206; --bg-card: #08090f; --border: #141828;
+            --glow: #00ccff; --glow-2: #00fff2; --violet: #7c3aed;
+            --hot: #ff3d71; --green: #00e676;
+            --text: #e6eaf4; --text-2: #6e7599; --text-3: #2d3150;
         }
-
-        body {
-            font-family: var(--font-primary);
-            background-color: var(--color-background);
-            color: var(--color-primary);
-            margin: 0;
-            padding: 0;
-            line-height: 1.6;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+        .mesh-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none;
+            background: radial-gradient(ellipse 800px 600px at 20% 20%, rgba(0,204,255,0.04) 0%,transparent 50%),
+                        radial-gradient(ellipse 600px 800px at 80% 70%, rgba(124,58,237,0.04) 0%,transparent 50%); }
+        header { position: fixed; top: 0; width: 100%; z-index: 100; padding: 1.25rem 3rem;
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(2,2,6,0.85); backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border); }
+        .brand { font-size: 1.4rem; font-weight: 800; letter-spacing: 0.08em; color: var(--glow); text-decoration: none; }
+        .header-nav { display: flex; gap: 1.75rem; list-style: none; }
+        .header-nav a { color: var(--text-2); text-decoration: none; font-size: 0.88rem; font-weight: 500; transition: color 0.3s; }
+        .header-nav a:hover, .header-nav .active a { color: var(--glow); }
+        .page-hero { padding: 9rem 2rem 4rem; text-align: center; position: relative; z-index: 1; }
+        .page-tag { font-family: 'Fira Code', monospace; font-size: 0.72rem; color: var(--glow);
+            text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 1rem; }
+        .page-hero h1 { font-size: clamp(2.2rem,5vw,4rem); font-weight: 800; letter-spacing: -0.03em;
+            margin-bottom: 1rem; }
+        .page-hero p { color: var(--text-2); font-size: 1.05rem; line-height: 1.7;
+            max-width: 600px; margin: 0 auto; }
+        .section { position: relative; z-index: 1; padding: 5rem 2rem; }
+        .wrap { max-width: 1100px; margin: 0 auto; }
+        .narrow { max-width: 800px; margin: 0 auto; }
+        .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 2rem; margin-bottom: 1.5rem; transition: border-color 0.3s; }
+        .card:hover { border-color: rgba(0,204,255,0.15); }
+        .card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 0.6rem; }
+        .card p { color: var(--text-2); font-size: 0.9rem; line-height: 1.65; }
+        .tag { font-family: 'Fira Code', monospace; font-size: 0.68rem; text-transform: uppercase;
+            letter-spacing: 0.12em; color: var(--glow); margin-bottom: 0.5rem; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
+        .badge { display: inline-block; padding: 0.25rem 0.75rem; border-radius: 99px; font-size: 0.72rem;
+            font-weight: 600; letter-spacing: 0.05em; border: 1px solid; }
+        .badge-glow { color: var(--glow); border-color: rgba(0,204,255,0.3); background: rgba(0,204,255,0.06); }
+        .badge-violet { color: var(--violet); border-color: rgba(124,58,237,0.3); background: rgba(124,58,237,0.06); }
+        .code-block { background: #060810; border: 1px solid var(--border); border-radius: 10px;
+            padding: 1.5rem; font-family: 'Fira Code', monospace; font-size: 0.83rem;
+            color: var(--text-2); line-height: 1.8; overflow-x: auto; }
+        .code-block .kw { color: var(--violet); } .code-block .str { color: var(--green); }
+        .code-block .cm { color: var(--text-3); } .code-block .fn { color: var(--glow); }
+        .divider { border: none; border-top: 1px solid var(--border); margin: 3rem 0; }
+        footer { position: relative; z-index: 1; padding: 1.5rem 3rem; border-top: 1px solid var(--border);
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.78rem; color: var(--text-3); flex-wrap: wrap; gap: 0.5rem; }
+        footer a { color: var(--text-2); text-decoration: none; }
+        footer a:hover { color: var(--glow); }
+        @media (max-width: 768px) {
+            header { padding: 1rem 1.25rem; flex-wrap: wrap; gap: 0.5rem; }
+            .header-nav { gap: 0.75rem 1rem; flex-wrap: wrap; }
+            .grid-2, .grid-3 { grid-template-columns: 1fr; }
+            footer { flex-direction: column; text-align: center; padding: 1.5rem; }
         }
+        @media (max-width: 640px) { .header-nav { display: none; } }
+    </style>
+</head>
+<body>
+    <div class="mesh-bg"></div>
+    <header>
+        <a href="index.html" class="brand">OFFBEAT</a>
+        <ul class="header-nav">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="tools.html">Tools</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="status.html">Status</a></li>
+            <li><a href="work.html">Work</a></li>
+            <li class=""><a href="sitemap.html" style="color:var(--glow)"></a></li>
+        </ul>
+    </header>
 
-        header {
-            background-color: var(--color-dark-gray);
-            padding: 1.5rem 2rem;
-            border-bottom: 1px solid var(--color-light-gray);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+    <section class="page-hero">
+        <div class="page-tag">Navigation</div>
+        <h1>Sitemap</h1>
+        <p>Every page on the Offbeat, Inc. v3 site organized by section.</p>
+    </section>
 
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--color-primary);
-            text-decoration: none;
-        }
+    <section class="section">
+        <div class="narrow">
+            <div class="card">
+                <div class="tag">Main Pages</div>
+                <ul style="list-style:none;display:grid;gap:0.6rem;margin-top:1rem">
+                    <li><a href="index.html" style="color:var(--glow)">Home</a> — Company overview and hero</li>
+                    <li><a href="about.html" style="color:var(--glow)">About</a> — The people and mission behind Offbeat</li>
+                    <li><a href="services.html" style="color:var(--glow)">Services</a> — What we build and how we work</li>
+                    <li><a href="work.html" style="color:var(--glow)">Work</a> — Featured projects and deployments</li>
+                    <li><a href="faq.html" style="color:var(--glow)">FAQ</a> — Common questions answered</li>
+                    <li><a href="contact.html" style="color:var(--glow)">Contact</a> — Get in touch</li>
+                </ul>
+            </div>
+            <div class="card">
+                <div class="tag">Tools</div>
+                <ul style="list-style:none;display:grid;gap:0.6rem;margin-top:1rem">
+                    <li><a href="tools.html" style="color:var(--glow)">Tools Overview</a> — All tools at a glance</li>
+                    <li><a href="tools/bpm-calculator.html" style="color:var(--glow)">BPM Calculator</a> — Tempo and time calculator for DJs</li>
+                    <li><a href="tools/key-finder.html" style="color:var(--glow)">Key Compatibility Finder</a> — Camelot Wheel reference</li>
+                    <li><a href="tools/time-zone-converter.html" style="color:var(--glow)">Time Zone Converter</a> — DJ gig planning tool</li>
+                    <li><a href="tools/freelance-rate-calculator.html" style="color:var(--glow)">Freelance Rate Calculator</a> — Project pricing estimator</li>
+                    <li><a href="tools/cue-sheet-generator.html" style="color:var(--glow)">Cue Sheet Generator</a> — PRO submission cue sheets</li>
+                </ul>
+            </div>
+            <div class="card">
+                <div class="tag">Legal &amp; Info</div>
+                <ul style="list-style:none;display:grid;gap:0.6rem;margin-top:1rem">
+                    <li><a href="privacy.html" style="color:var(--glow)">Privacy Policy</a></li>
+                    <li><a href="affiliate-disclosure.html" style="color:var(--glow)">Affiliate Disclosure</a></li>
+                    <li><a href="status.html" style="color:var(--glow)">DatBotty Status</a></li>
+                    <li><a href="changelog.html" style="color:var(--glow)">Changelog</a></li>
+                    <li><a href="open-source.html" style="color:var(--glow)">Open Source</a></li>
+                    <li><a href="neural.html" style="color:var(--glow)">Offbeat Neural</a></li>
+                </ul>
+            </div>
+        </div>
+    </section>
 
-        nav ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            gap: 2rem;
-        }
-
-        nav a {
-            color: var(--color-primary);
-            text-decoration: none;
-            font-weight: 400;
-            transition: color 0.3s ease;
-        }
-
-        nav a:hover {
-            color: var(--color-secondary);
-        }
-
-        main {
-            flex-grow: 1;
-            padding: 3rem 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-            width: 100%;
-        }
-
-        h1, h2, h3 {
-            color: var(--color-secondary);
-            margin-bottom: 1.5rem;
-        }
-
-        h1 {
-            font-size: 2.8rem;
-            font-weight: 700;
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        h2 {
-            font-size: 2rem;
-            font-weight: 700;
-            border-bottom: 2px solid var(--color-secondary);
-            padding-bottom: 0.5rem;
-            margin-top: 2.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        h3 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-top: 2rem;
-            margin-bottom: 1rem;
-        }
-
-        p {
-            margin-bottom: 1rem;
-            color: var(--color-primary);
-            font-size: 1.1rem;
-        }
-
-        a {
-            color: var(--color-secondary);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        a:hover {
-            color: var(--color-primary);
-            text-decoration: underline;
-        }
-
-        .button, button {
-            display: inline-block;
-            background-color: var(--color-secondary);
-            color: var(--color-background);
-            padding: 0.8rem 1.5rem;
-            border: none;
-            border-radius: 5px;
-            font-size: 1rem;
-            font-weight: 700;
-            text-decoration: none;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.1s ease;
-            font-family: var(--font-primary);
-        }
-
-        .button:hover, button:hover {
-            background-color: var(--color-primary);
-            color: var(--color-background);
-            transform: none; /* Buttons must NEVER lift on hover */
-        }
-
-        .button.secondary {
-            background-color: var(--color-light-gray);
-            color: var(--color-primary);
-        }
-
-        .button.secondary:hover {
-            background-color: var(--color-primary);
-            color: var(--color-background);
-        }
-
-        .button.outline {
-            background-color: transparent;
-            color: var(--color-secondary);
-            border: 2px solid var(--color-secondary);
-        }
-
-        .button.outline:hover {
-            background-color: var(--color-secondary);
-            color: var(--color-background);
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .section-header h2 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--color-primary);
-            border-bottom: none;
-            margin-bottom: 0.5rem;
-        }
-
-        .section-header p {
-            font-size: 1.2rem;
-            color: var(--color-primary);
-        }
-
-        .content-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-
-        .card {
-            background-color: var(--color-dark-gray);
-            border: 1px solid var(--color-light-gray);
-            border-radius: 8px;
-            padding: 1.5rem;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .card:hover {
-            box-shadow: 0 0 15px var(--color-secondary);
-            transform: translateY(-5px); /* This will be overridden by button hover */
-        }
-
-        .card h3 {
-            margin-top: 0;
-            font-size: 1.4rem;
-            color: var(--color-secondary);
-        }
-
-        .card p {
-            font-size: 1rem;
-            color: var(--color-primary);
-        }
-
-        .card a {
-            font-size: 1rem;
-            font-weight: 700;
-            margin-top:
+    <footer>
+        <div>&copy; 2026 Offbeat, Inc. — <a href="affiliate-disclosure.html">Affiliate Disclosure</a> &middot; <a href="privacy.html">Privacy</a></div>
+        <div><a href="https://github.com/CrashyCrash" target="_blank" rel="noopener">GitHub</a> &middot; <a href="status.html">DatBotty Status</a></div>
+    </footer>
+</body>
+</html>

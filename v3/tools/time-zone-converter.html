@@ -3,212 +3,192 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="DJ Time Zone Converter by Offbeat, Inc. — Instantly convert event times across major global time zones to simplify international DJ bookings.">
-    <meta property="og:title" content="OFFBEAT — DJ Time Zone Converter">
-    <meta property="og:description" content="Instantly convert event times across major global time zones for DJs. Simplify international bookings with Offbeat's free tool.">
+    <meta name="description" content="DJ Time Zone Converter — convert gig times between cities for international touring DJs.">
+    <meta property="og:title" content="Time Zone Converter — Offbeat Tools">
+    <meta property="og:description" content="DJ Time Zone Converter — convert gig times between cities for international touring DJs.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://crashycrash.github.io/offbeat-website/v3/tools/time-zone-converter.html">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Time Zone Converter — Offbeat Tools">
+    <meta name="twitter:description" content="DJ Time Zone Converter — convert gig times between cities for international touring DJs.">
+    <meta name="twitter:site" content="@offbeatinc">
     <link rel="canonical" href="https://crashycrash.github.io/offbeat-website/v3/tools/time-zone-converter.html">
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "DJ Time Zone Converter",
-      "description": "A free online tool for DJs to easily convert event times across different time zones, simplifying international bookings.",
-      "developer": {
-        "@type": "Organization",
-        "name": "Offbeat, Inc.",
-        "url": "https://crashycrash.github.io/offbeat-website/v3/"
-      },
-      "applicationCategory": "UtilityApplication",
-      "featureList": [
-        "Real-time time zone conversion",
-        "Support for major US, EU, UK, AU time zones",
-        "DJ-centric pre-filled examples",
-        "Pure JavaScript implementation",
-        "No backend required"
-      ],
-      "operatingSystem": "Any",
-      "browserRequirements": "Modern web browser"
-    }
-    </script>
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "Offbeat, Inc.",
-      "url": "https://crashycrash.github.io/offbeat-website/v3/",
-      "foundingDate": "2015",
-      "description": "Custom software, AI automation, and data-driven digital marketing. We build the unusual.",
-      "areaServed": "US",
-      "sameAs": [
-        "https://github.com/CrashyCrash",
-        "https://muthaeffincrash.com"
-      ],
-      "knowsAbout": ["Custom Software Development", "AI Automation", "Affiliate Marketing", "Digital Marketing", "Music Technology"]
-    }
-    </script>
-    <title>OFFBEAT — DJ Time Zone Converter</title>
+    <title>Time Zone Converter for DJs — Offbeat Tools</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&family=Outfit:wght@400;700&display=swap');
-
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap');
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
-            --color-primary: #00ffff;
-            --color-secondary: #ff00ff;
-            --color-accent: #ffff00;
-            --color-background: #0d0d0d;
-            --color-surface: #1a1a1a;
-            --color-text-primary: #e0e0e0;
-            --color-text-secondary: #a0a0a0;
-            --color-border: #333333;
-            --font-family-heading: 'Outfit', sans-serif;
-            --font-family-body: 'Outfit', sans-serif;
-            --font-family-code: 'Fira Code', monospace;
-            --spacing-unit: 1rem;
-            --border-radius: 0.5rem;
-            --transition-fast: 0.15s ease-in-out;
-            --transition-slow: 0.3s ease-in-out;
+            --bg: #020206; --bg-card: #08090f; --border: #141828;
+            --glow: #00ccff; --glow-2: #00fff2; --violet: #7c3aed;
+            --hot: #ff3d71; --green: #00e676;
+            --text: #e6eaf4; --text-2: #6e7599; --text-3: #2d3150;
         }
-
-        *, *::before, *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+        .mesh-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none;
+            background: radial-gradient(ellipse 800px 600px at 20% 20%, rgba(0,204,255,0.04) 0%,transparent 50%),
+                        radial-gradient(ellipse 600px 800px at 80% 70%, rgba(124,58,237,0.04) 0%,transparent 50%); }
+        header { position: fixed; top: 0; width: 100%; z-index: 100; padding: 1.25rem 3rem;
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(2,2,6,0.85); backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border); }
+        .brand { font-size: 1.4rem; font-weight: 800; letter-spacing: 0.08em; color: var(--glow); text-decoration: none; }
+        .header-nav { display: flex; gap: 1.75rem; list-style: none; }
+        .header-nav a { color: var(--text-2); text-decoration: none; font-size: 0.88rem; font-weight: 500; transition: color 0.3s; }
+        .header-nav a:hover, .header-nav .active a { color: var(--glow); }
+        .page-hero { padding: 9rem 2rem 4rem; text-align: center; position: relative; z-index: 1; }
+        .page-tag { font-family: 'Fira Code', monospace; font-size: 0.72rem; color: var(--glow);
+            text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 1rem; }
+        .page-hero h1 { font-size: clamp(2.2rem,5vw,4rem); font-weight: 800; letter-spacing: -0.03em;
+            margin-bottom: 1rem; }
+        .page-hero p { color: var(--text-2); font-size: 1.05rem; line-height: 1.7;
+            max-width: 600px; margin: 0 auto; }
+        .section { position: relative; z-index: 1; padding: 5rem 2rem; }
+        .wrap { max-width: 1100px; margin: 0 auto; }
+        .narrow { max-width: 800px; margin: 0 auto; }
+        .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 2rem; margin-bottom: 1.5rem; transition: border-color 0.3s; }
+        .card:hover { border-color: rgba(0,204,255,0.15); }
+        .card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 0.6rem; }
+        .card p { color: var(--text-2); font-size: 0.9rem; line-height: 1.65; }
+        .tag { font-family: 'Fira Code', monospace; font-size: 0.68rem; text-transform: uppercase;
+            letter-spacing: 0.12em; color: var(--glow); margin-bottom: 0.5rem; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
+        .badge { display: inline-block; padding: 0.25rem 0.75rem; border-radius: 99px; font-size: 0.72rem;
+            font-weight: 600; letter-spacing: 0.05em; border: 1px solid; }
+        .badge-glow { color: var(--glow); border-color: rgba(0,204,255,0.3); background: rgba(0,204,255,0.06); }
+        .badge-violet { color: var(--violet); border-color: rgba(124,58,237,0.3); background: rgba(124,58,237,0.06); }
+        .code-block { background: #060810; border: 1px solid var(--border); border-radius: 10px;
+            padding: 1.5rem; font-family: 'Fira Code', monospace; font-size: 0.83rem;
+            color: var(--text-2); line-height: 1.8; overflow-x: auto; }
+        .code-block .kw { color: var(--violet); } .code-block .str { color: var(--green); }
+        .code-block .cm { color: var(--text-3); } .code-block .fn { color: var(--glow); }
+        .divider { border: none; border-top: 1px solid var(--border); margin: 3rem 0; }
+        footer { position: relative; z-index: 1; padding: 1.5rem 3rem; border-top: 1px solid var(--border);
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.78rem; color: var(--text-3); flex-wrap: wrap; gap: 0.5rem; }
+        footer a { color: var(--text-2); text-decoration: none; }
+        footer a:hover { color: var(--glow); }
+        @media (max-width: 768px) {
+            header { padding: 1rem 1.25rem; flex-wrap: wrap; gap: 0.5rem; }
+            .header-nav { gap: 0.75rem 1rem; flex-wrap: wrap; }
+            .grid-2, .grid-3 { grid-template-columns: 1fr; }
+            footer { flex-direction: column; text-align: center; padding: 1.5rem; }
         }
+        @media (max-width: 640px) { .header-nav { display: none; } }
+    </style>
+</head>
+<body>
+    <div class="mesh-bg"></div>
+    <header>
+        <a href="index.html" class="brand">OFFBEAT</a>
+        <ul class="header-nav">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="tools.html">Tools</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="status.html">Status</a></li>
+            <li><a href="work.html">Work</a></li>
+            <li class="active"><a href="tools/time-zone-converter.html" style="color:var(--glow)">Tools</a></li>
+        </ul>
+    </header>
 
-        html {
-            font-size: 16px;
-            line-height: 1.6;
-            scroll-behavior: smooth;
-        }
+    <section class="page-hero">
+        <div class="page-tag">DJ Tools</div>
+        <h1>Time Zone Converter</h1>
+        <p>Convert gig start times between cities. Essential for international touring, remote set streaming, and back-to-back bookings across time zones.</p>
+    </section>
 
-        body {
-            background-color: var(--color-background);
-            color: var(--color-text-primary);
-            font-family: var(--font-family-body);
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            margin: 0;
-        }
+    <section class="section">
+        <div class="wrap">
+            <div class="card">
+                <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:1.5rem;align-items:end">
+                    <div>
+                        <label style="font-size:0.83rem;color:var(--text-2);display:block;margin-bottom:0.4rem">Origin Time Zone</label>
+                        <select id="tz-from" style="width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);padding:0.6rem 0.9rem;border-radius:8px;font-family:inherit;font-size:0.9rem" onchange="convert()"></select>
+                        <input id="time-in" type="time" value="22:00" style="margin-top:0.75rem;width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);padding:0.6rem 0.9rem;border-radius:8px;font-family:inherit;font-size:1.1rem" oninput="convert()">
+                    </div>
+                    <div style="text-align:center;font-size:2rem;color:var(--text-3);padding-bottom:0.5rem">⟶</div>
+                    <div>
+                        <label style="font-size:0.83rem;color:var(--text-2);display:block;margin-bottom:0.4rem">Destination Time Zone</label>
+                        <select id="tz-to" style="width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);padding:0.6rem 0.9rem;border-radius:8px;font-family:inherit;font-size:0.9rem" onchange="convert()"></select>
+                        <div id="time-out" style="margin-top:0.75rem;padding:0.6rem 0.9rem;border:1px solid var(--border);border-radius:8px;font-size:1.5rem;font-weight:700;color:var(--glow);font-family:'Fira Code',monospace">—</div>
+                    </div>
+                </div>
+                <p id="offset-note" style="margin-top:1rem;color:var(--text-2);font-size:0.85rem"></p>
+            </div>
 
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: var(--spacing-unit);
-        }
+            <div class="card">
+                <h3>Common DJ Time Zones</h3>
+                <div class="grid-3" id="tz-quick" style="margin-top:1rem"></div>
+            </div>
+        </div>
+    </section>
 
-        h1, h2, h3, h4, h5, h6 {
-            font-family: var(--font-family-heading);
-            font-weight: 700;
-            margin-bottom: var(--spacing-unit);
-            color: var(--color-text-primary);
-        }
+    <script>
+    const ZONES = [
+        {label:"New York (ET)",       tz:"America/New_York"},
+        {label:"Los Angeles (PT)",    tz:"America/Los_Angeles"},
+        {label:"Chicago (CT)",        tz:"America/Chicago"},
+        {label:"London (GMT/BST)",    tz:"Europe/London"},
+        {label:"Amsterdam (CET)",     tz:"Europe/Amsterdam"},
+        {label:"Berlin (CET)",        tz:"Europe/Berlin"},
+        {label:"Paris (CET)",         tz:"Europe/Paris"},
+        {label:"Ibiza (CET)",         tz:"Europe/Madrid"},
+        {label:"Tokyo (JST)",         tz:"Asia/Tokyo"},
+        {label:"Sydney (AEDT)",       tz:"Australia/Sydney"},
+        {label:"Dubai (GST)",         tz:"Asia/Dubai"},
+        {label:"São Paulo (BRT)",     tz:"America/Sao_Paulo"},
+    ];
+    const fromSel = document.getElementById('tz-from');
+    const toSel   = document.getElementById('tz-to');
+    ZONES.forEach((z,i)=>{
+        const o1=document.createElement('option'); o1.value=z.tz; o1.textContent=z.label; fromSel.appendChild(o1);
+        const o2=document.createElement('option'); o2.value=z.tz; o2.textContent=z.label; toSel.appendChild(o2);
+    });
+    toSel.selectedIndex=3; // Default to London
+    function convert() {
+        const timeStr = document.getElementById('time-in').value;
+        const fromTz  = fromSel.value;
+        const toTz    = toSel.value;
+        if (!timeStr) return;
+        const [h,m] = timeStr.split(':');
+        const now = new Date(); now.setHours(parseInt(h),parseInt(m),0,0);
+        const fromFmt = new Intl.DateTimeFormat('en-US',{hour:'2-digit',minute:'2-digit',timeZone:fromTz,hour12:false});
+        const toFmt   = new Intl.DateTimeFormat('en-US',{hour:'2-digit',minute:'2-digit',timeZone:toTz,  hour12:false});
+        // Use Intl offset trick
+        const fromDate = new Date(now.toLocaleString('en-US',{timeZone:fromTz}));
+        const toDate   = new Date(now.toLocaleString('en-US',{timeZone:toTz}));
+        const diff = Math.round((toDate - fromDate) / 60000); // minutes
+        const targetDate = new Date(now.getTime() + diff*60000);
+        const hh = String(targetDate.getHours()).padStart(2,'0');
+        const mm2 = String(targetDate.getMinutes()).padStart(2,'0');
+        document.getElementById('time-out').textContent = hh+':'+mm2;
+        const diffH = Math.floor(Math.abs(diff)/60); const diffM = Math.abs(diff)%60;
+        const sign  = diff>=0?'+':'-';
+        document.getElementById('offset-note').textContent =
+            diff===0 ? 'Same time zone.' :
+            `Offset: ${sign}${diffH}h${diffM?diffM+'m':''}. Destination is ${diff>0?'ahead':'behind'}.`;
+        renderQuick(now);
+    }
+    function renderQuick(base) {
+        const el = document.getElementById('tz-quick');
+        el.innerHTML = ZONES.map(z=>{
+            const fmt = new Intl.DateTimeFormat('en-US',{hour:'2-digit',minute:'2-digit',timeZone:z.tz,hour12:false});
+            const t = fmt.format(base);
+            return `<div style="padding:0.75rem;background:var(--bg);border:1px solid var(--border);border-radius:8px;text-align:center">
+                <div style="font-size:0.78rem;color:var(--text-2)">${z.label}</div>
+                <div style="font-family:'Fira Code',monospace;font-size:1.2rem;color:var(--glow);margin-top:0.25rem">${t}</div>
+            </div>`;
+        }).join('');
+    }
+    convert();
+    </script>
 
-        h1 { font-size: 2.5rem; }
-        h2 { font-size: 2rem; }
-        h3 { font-size: 1.75rem; }
-
-        p {
-            margin-bottom: var(--spacing-unit);
-            color: var(--color-text-secondary);
-        }
-
-        a {
-            color: var(--color-primary);
-            text-decoration: none;
-            transition: color var(--transition-fast);
-        }
-
-        a:hover {
-            color: var(--color-accent);
-        }
-
-        code {
-            font-family: var(--font-family-code);
-            background-color: var(--color-surface);
-            padding: 0.2em 0.4em;
-            border-radius: var(--border-radius);
-            color: var(--color-accent);
-        }
-
-        pre {
-            font-family: var(--font-family-code);
-            background-color: var(--color-surface);
-            padding: var(--spacing-unit);
-            border-radius: var(--border-radius);
-            overflow-x: auto;
-            margin-bottom: var(--spacing-unit);
-        }
-
-        pre code {
-            background-color: transparent;
-            padding: 0;
-            color: inherit;
-        }
-
-        .button {
-            display: inline-block;
-            padding: var(--spacing-unit) calc(var(--spacing-unit) * 1.5);
-            background-color: var(--color-primary);
-            color: var(--color-background);
-            font-family: var(--font-family-heading);
-            font-weight: 700;
-            text-align: center;
-            border: none;
-            border-radius: var(--border-radius);
-            cursor: pointer;
-            transition: background-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
-            text-decoration: none;
-        }
-
-        .button:hover {
-            background-color: var(--color-accent);
-            transform: translateY(0); /* Ensure no lift on hover */
-            box-shadow: none; /* Ensure no shadow on hover */
-        }
-
-        .button--secondary {
-            background-color: var(--color-secondary);
-            color: var(--color-background);
-        }
-
-        .button--secondary:hover {
-            background-color: var(--color-accent);
-            transform: translateY(0);
-            box-shadow: none;
-        }
-
-        .button--outline {
-            background-color: transparent;
-            color: var(--color-primary);
-            border: 1px solid var(--color-primary);
-        }
-
-        .button--outline:hover {
-            background-color: var(--color-primary);
-            color: var(--color-background);
-            transform: translateY(0);
-            box-shadow: none;
-        }
-
-        header {
-            background-color: var(--color-surface);
-            padding: var(--spacing-unit) 0;
-            border-bottom: 1px solid var(--color-border);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        header .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-family: var(--font-family-heading);
-            font-weight: 700;
-            font
+    <footer>
+        <div>&copy; 2026 Offbeat, Inc. — <a href="affiliate-disclosure.html">Affiliate Disclosure</a> &middot; <a href="privacy.html">Privacy</a></div>
+        <div><a href="https://github.com/CrashyCrash" target="_blank" rel="noopener">GitHub</a> &middot; <a href="status.html">DatBotty Status</a></div>
+    </footer>
+</body>
+</html>
