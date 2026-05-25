@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Newsletter | Offbeat, Inc.</title>
+    <meta name="description" content="Subscribe to the Offbeat, Inc. newsletter for the latest in tech insights, DatBotty updates, and AI automation news.">
+    <meta property="og:title" content="Newsletter — Offbeat, Inc.">
+    <meta property="og:description" content="Stay ahead of the curve with deep dives into AI, automation, and software development from Offbeat.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://crashycrash.github.io/offbeat-website/v3/newsletter.html">
+    <link rel="canonical" href="https://crashycrash.github.io/offbeat-website/v3/newsletter.html">
+    <style>
+        :root {
+            --bg: #0d0d0d;
+            --text: #e0e0e0;
+            --accent: #00ff41;
+            --font-main: 'Outfit', sans-serif;
+            --font-mono: 'Fira Code', monospace;
+        }
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: var(--font-main);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+        nav { padding: 2rem; display: flex; gap: 2rem; }
+        nav a { color: var(--text); text-decoration: none; font-family: var(--font-mono); font-size: 0.9rem; }
+        main { max-width: 600px; margin: 4rem auto; padding: 0 1rem; }
+        h1 { font-size: 2.5rem; margin-bottom: 1rem; }
+        p { color: #888; margin-bottom: 2rem; }
+        form { display: flex; flex-direction: column; gap: 1rem; }
+        input { background: #1a1a1a; border: 1px solid #333; padding: 1rem; color: white; font-family: var(--font-mono); }
+        button { background: var(--accent); color: black; border: none; padding: 1rem; cursor: pointer; font-weight: bold; transition: opacity 0.2s; }
+        button:hover { opacity: 0.8; }
+        .privacy { font-size: 0.8rem; color: #555; }
+        .privacy a { color: var(--accent); }
+        footer { margin-top: 4rem; border-top: 1px solid #333; padding: 2rem; text-align: center; }
+        footer a { color: #555; text-decoration: none; font-size: 0.8rem; }
+    </style>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Newsletter Signup",
+      "description": "Subscribe for tech insights and AI automation updates."
+    }
+    </script>
+</head>
+<body>
+    <nav>
+        <a href="index.html">OFFBEAT</a>
+    </nav>
+    <main>
+        <h1>Stay ahead of the curve</h1>
+        <p>Join our community of developers and creators. Get monthly deep dives into AI automation, exclusive DatBotty feature updates, and technical insights on modern software architecture delivered directly to your inbox.</p>
+        <form action="mailto:contact@offbeat.inc" method="POST" enctype="text/plain">
+            <input type="email" name="email" placeholder="Enter your email address" required>
+            <button type="submit">SUBSCRIBE</button>
+        </form>
+        <p class="privacy">Your data is handled with care. Read our <a href="privacy.html">privacy policy</a>.</p>
+    </main>
+    <footer>
+        <a href="newsletter.html">Newsletter</a>
+    </footer>
+</body>
+</html>
