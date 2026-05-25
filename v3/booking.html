@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Book Crash for your next EDM/Dubstep event - High-energy DJ with years of experience in crowd reading and performance.">
+    <meta property="og:title" content="Crash - DJ Booking Inquiry">
+    <meta property="og:description" content="Book Crash for your next EDM/Dubstep event - High-energy DJ with years of experience in crowd reading and performance.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://crashycrash.github.io/offbeat-website/v3/booking.html">
+    <link rel="canonical" href="https://crashycrash.github.io/offbeat-website/v3/booking.html">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Event",
+      "name": "Crash DJ Booking",
+      "description": "Book Crash for your next EDM/Dubstep event - High-energy DJ with years of experience in crowd reading and performance.",
+      "url": "https://crashycrash.github.io/offbeat-website/v3/booking.html"
+    }
+    </script>
+    <title>Crash - DJ Booking Inquiry</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&family=Fira+Code:wght@300;400;500;600;700&display=swap');
+        :root {
+            --bg: #020206;
+            --glow: #ffffff;
+            --violet: #7a288a;
+            --hot: #ff9900;
+            --cool: #0099ff;
+        }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg);
+            color: var(--glow);
+            margin: 0;
+            padding: 0;
+        }
+        nav {
+            background-color: var(--bg);
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        nav a {
+            color: var(--glow);
+            text-decoration: none;
+            margin-right: 1rem;
+        }
+        nav a:hover {
+            color: var(--violet);
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .hero {
+            background-color: var(--violet);
+            color: var(--bg);
+            padding: 2rem;
+            text-align: center;
+        }
+        .hero h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        .hero p {
+            font-size: 1.2rem;
+        }
+        .section {
+            background-color: var(--bg);
+            padding: 2rem;
+        }
+        .section h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .section p {
+            font-size: 1rem;
+        }
+        .booking-form {
+            margin-top: 2rem;
+        }
+        .booking-form input, .booking-form textarea {
+            width: 100%;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            border: none;
+            border-radius: 0.5rem;
+            background-color: var(--bg);
+            color: var(--glow);
+        }
+        .booking-form input:focus, .booking-form textarea:focus {
+            outline: none;
+            border: 1px solid var(--violet);
+        }
+        .booking-form button {
+            background-color: var(--violet);
+            color: var(--bg);
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+        }
+        .booking-form button:hover {
+            background-color: var(--hot);
+        }
+        .availability {
+            margin-top: 2rem;
+            text-align: center;
+        }
+        .availability p {
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html">Offbeat</a>
+        <a href="booking.html">Booking</a>
+        <a href="https://github.com/CrashyCrash" target="_blank">GitHub</a>
+        <a href="https://muthaeffincrash.com" target="_blank">Crash</a>
+    </nav>
+    <div class="container">
+        <div class="hero">
+            <h1>Book Crash for your next EDM/Dubstep event</h1>
+            <p>High-energy DJ with years of experience in crowd reading and performance.</p>
+        </div>
+        <div class="section">
+            <h2>Why Book Crash</h2>
+            <p>Crash brings a unique energy to every event, with a deep understanding of crowd reading and performance. With years of experience in the EDM and Dubstep scenes, Crash is the perfect choice for your next event.</p>
+        </div>
+        <div class="section">
+            <h2>Booking Form</h2>
+            <form class="booking-form" action="mailto:crash@offbeat.website?subject=Booking Inquiry" method="post" enctype="text/plain">
+                <input type="text" name="name" placeholder="Name">
+                <input type="email" name="email" placeholder="Email">
+                <input type="text" name="event-type" placeholder="Event Type">
+                <input type="date" name="date" placeholder="Date">
+                <input type="text" name="venue" placeholder="Venue/City">
+                <textarea name="message" placeholder="Message"></textarea>
+                <button type="submit">Send Inquiry</button>
+                <p>No spam, we promise. Your information will only be used to respond to your inquiry.</p>
+            </form>
+        </div>
+        <div class="availability">
+            <p>Currently accepting bookings - contact for rates.</p>
+        </div>
+    </div>
+</body>
+</html>
