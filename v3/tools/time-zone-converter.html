@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="DJ Time Zone Converter by Offbeat, Inc. — Instantly convert event times across major global time zones to simplify international DJ bookings.">
+    <meta property="og:title" content="OFFBEAT — DJ Time Zone Converter">
+    <meta property="og:description" content="Instantly convert event times across major global time zones for DJs. Simplify international bookings with Offbeat's free tool.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://crashycrash.github.io/offbeat-website/v3/tools/time-zone-converter.html">
+    <link rel="canonical" href="https://crashycrash.github.io/offbeat-website/v3/tools/time-zone-converter.html">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "DJ Time Zone Converter",
+      "description": "A free online tool for DJs to easily convert event times across different time zones, simplifying international bookings.",
+      "developer": {
+        "@type": "Organization",
+        "name": "Offbeat, Inc.",
+        "url": "https://crashycrash.github.io/offbeat-website/v3/"
+      },
+      "applicationCategory": "UtilityApplication",
+      "featureList": [
+        "Real-time time zone conversion",
+        "Support for major US, EU, UK, AU time zones",
+        "DJ-centric pre-filled examples",
+        "Pure JavaScript implementation",
+        "No backend required"
+      ],
+      "operatingSystem": "Any",
+      "browserRequirements": "Modern web browser"
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Offbeat, Inc.",
+      "url": "https://crashycrash.github.io/offbeat-website/v3/",
+      "foundingDate": "2015",
+      "description": "Custom software, AI automation, and data-driven digital marketing. We build the unusual.",
+      "areaServed": "US",
+      "sameAs": [
+        "https://github.com/CrashyCrash",
+        "https://muthaeffincrash.com"
+      ],
+      "knowsAbout": ["Custom Software Development", "AI Automation", "Affiliate Marketing", "Digital Marketing", "Music Technology"]
+    }
+    </script>
+    <title>OFFBEAT — DJ Time Zone Converter</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&family=Outfit:wght@400;700&display=swap');
+
+        :root {
+            --color-primary: #00ffff;
+            --color-secondary: #ff00ff;
+            --color-accent: #ffff00;
+            --color-background: #0d0d0d;
+            --color-surface: #1a1a1a;
+            --color-text-primary: #e0e0e0;
+            --color-text-secondary: #a0a0a0;
+            --color-border: #333333;
+            --font-family-heading: 'Outfit', sans-serif;
+            --font-family-body: 'Outfit', sans-serif;
+            --font-family-code: 'Fira Code', monospace;
+            --spacing-unit: 1rem;
+            --border-radius: 0.5rem;
+            --transition-fast: 0.15s ease-in-out;
+            --transition-slow: 0.3s ease-in-out;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            font-size: 16px;
+            line-height: 1.6;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--color-background);
+            color: var(--color-text-primary);
+            font-family: var(--font-family-body);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--spacing-unit);
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-family-heading);
+            font-weight: 700;
+            margin-bottom: var(--spacing-unit);
+            color: var(--color-text-primary);
+        }
+
+        h1 { font-size: 2.5rem; }
+        h2 { font-size: 2rem; }
+        h3 { font-size: 1.75rem; }
+
+        p {
+            margin-bottom: var(--spacing-unit);
+            color: var(--color-text-secondary);
+        }
+
+        a {
+            color: var(--color-primary);
+            text-decoration: none;
+            transition: color var(--transition-fast);
+        }
+
+        a:hover {
+            color: var(--color-accent);
+        }
+
+        code {
+            font-family: var(--font-family-code);
+            background-color: var(--color-surface);
+            padding: 0.2em 0.4em;
+            border-radius: var(--border-radius);
+            color: var(--color-accent);
+        }
+
+        pre {
+            font-family: var(--font-family-code);
+            background-color: var(--color-surface);
+            padding: var(--spacing-unit);
+            border-radius: var(--border-radius);
+            overflow-x: auto;
+            margin-bottom: var(--spacing-unit);
+        }
+
+        pre code {
+            background-color: transparent;
+            padding: 0;
+            color: inherit;
+        }
+
+        .button {
+            display: inline-block;
+            padding: var(--spacing-unit) calc(var(--spacing-unit) * 1.5);
+            background-color: var(--color-primary);
+            color: var(--color-background);
+            font-family: var(--font-family-heading);
+            font-weight: 700;
+            text-align: center;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: background-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+            text-decoration: none;
+        }
+
+        .button:hover {
+            background-color: var(--color-accent);
+            transform: translateY(0); /* Ensure no lift on hover */
+            box-shadow: none; /* Ensure no shadow on hover */
+        }
+
+        .button--secondary {
+            background-color: var(--color-secondary);
+            color: var(--color-background);
+        }
+
+        .button--secondary:hover {
+            background-color: var(--color-accent);
+            transform: translateY(0);
+            box-shadow: none;
+        }
+
+        .button--outline {
+            background-color: transparent;
+            color: var(--color-primary);
+            border: 1px solid var(--color-primary);
+        }
+
+        .button--outline:hover {
+            background-color: var(--color-primary);
+            color: var(--color-background);
+            transform: translateY(0);
+            box-shadow: none;
+        }
+
+        header {
+            background-color: var(--color-surface);
+            padding: var(--spacing-unit) 0;
+            border-bottom: 1px solid var(--color-border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: var(--font-family-heading);
+            font-weight: 700;
+            font
