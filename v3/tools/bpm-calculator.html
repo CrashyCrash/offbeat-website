@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Free online BPM calculator for DJs. Calculate tempo with tap, convert BPM to millisecond delay times, and perform half/double-time calculations. Optimized for Dubstep at 145 BPM.">
+    <meta property="og:title" content="BPM Calculator for DJs — Offbeat Inc.">
+    <meta property="og:description" content="Calculate BPM, delay times in ms, and tempo shifts for your DJ sets.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://offbeatinc.com/v3/tools/bpm-calculator.html">
+    <link rel="canonical" href="https://offbeatinc.com/v3/tools/bpm-calculator.html">
+    <link rel="stylesheet" href="../assets/style.css">
+    <title>BPM Calculator — DJ Tools | Offbeat Inc.</title>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "BPM Calculator",
+      "url": "https://offbeatinc.com/v3/tools/bpm-calculator.html",
+      "description": "Interactive BPM and tempo tool for DJs, including tap tempo and delay calculator.",
+      "applicationCategory": "MusicSoftware",
+      "operatingSystem": "All"
+    }
+    </script>
+    <style>
+        .tool-container { max-width: 800px; margin: 2rem auto; padding: 2rem; background: var(--surface); border-radius: 8px; border: 1px solid var(--accent); }
+        .tap-btn { width: 100%; padding: 3rem; font-size: 2rem; font-weight: bold; background: var(--accent); color: #000; border: none; border-radius: 8px; cursor: pointer; margin-bottom: 1rem; transition: background 0.2s; }
+        .tap-btn:active { background: #fff; }
+        .result-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-top: 2rem; }
+        .result-card { background: #1a1a1a; padding: 1rem; border-radius: 4px; text-align: center; }
+        .result-val { font-family: 'Fira Code', monospace; font-size: 1.25rem; color: var(--accent2); }
+        input { background: #1a1a1a; color: #fff; border: 1px solid #333; padding: 0.5rem; width: 100px; }
+    </style>
+</head>
+<body>
+    <nav>
+        <a class="nav-brand" href="../index.html">Offbeat Inc.</a>
+    </nav>
+    <main class="tool-container">
+        <h1>BPM Calculator</h1>
+        <p><em>Optimized for Dubstep at 145 BPM.</em></p>
+        
+        <button class="tap-btn" id="tapBtn">TAP TEMPO</button>
+        <div style="text-align:center; font-size: 1.5rem;" id="bpmDisplay">--- BPM</div>
+
+        <hr style="border: 0; border-top: 1px solid #333; margin: 2rem 0;">
+
+        <h3>BPM to Delay (ms)</h3>
+        <input type="number" id="bpmInput" value="145" oninput="calculate()">
+        <div class="result-grid" id="results"></div>
+
+        <div style="margin-top: 2rem;">
+            <h3>Tempo Shift</h3>
+            <p>Half-time: <span id="halfBpm" class="result-val">---</span> | Double-time: <span id="doubleBpm" class="result-val">---</span></p>
+        </div>
+    </main>
+    <script>
+        let taps = [];
+        const tapBtn = document.getElementById('tapBtn');
+        const bpmDisplay = document.getElementById('bpmDisplay');
+        const bpmInput = document.getElementById('bpmInput');
+
+        tapBtn.addEventListener('click', () => {
+            const now = Date.now();
+            taps.push(now);
+            if (taps.length > 5) taps.shift();
+            if (taps.length >= 2) {
+                const diffs = [];
+                for(let i=1; i<taps.length; i++) diffs.push(taps[i] - taps[i-1]);
+                const avg = diffs.reduce((a,b) => a+b) / diffs.length;
+                const bpm = Math.round(60000 / avg);
+                bpmDisplay.innerText = bpm + ' BPM';
+                bpmInput.value = bpm;
+                calculate();
+            }
+        });
+
+        function calculate() {
+            const bpm = parseFloat(bpmInput.value);
+            if (!bpm) return;
+            const ms = 60000 / bpm;
+            const notes = { '1/4': 1, '1/8': 0.5, '1/16': 0.25, 'Dotted 1/8': 0.75, 'Triplet 1/4': 0.666 };
+            const results = document.getElementById('results');
+            results.innerHTML = '';
+            for (const [name, val] of Object.entries(notes)) {
+                results.innerHTML += `<div class="result-card"><div>${name}</div><div class="result-val">${Math.round(ms * val)}ms</div></div>`;
+            }
+            document.getElementById('halfBpm').innerText = (bpm / 2).toFixed(1);
+            document.getElementById('doubleBpm').innerText = (bpm * 2).toFixed(1);
+        }
+        calculate();
+    </script>
+</body>
+</html>
