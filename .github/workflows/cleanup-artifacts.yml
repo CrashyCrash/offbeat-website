@@ -1,12 +1,17 @@
 name: Cleanup Old Artifacts & Workflow Runs
 
-# Runs daily to keep Actions storage well under the 500 MB limit.
+# Runs every 2 hours to keep Actions storage well under the 500 MB limit.
 # github-pages artifacts (~23 MB each) accumulate every push — we keep only 2.
+# Running hourly because every git push creates a new ~23 MB artifact.
 
 on:
   schedule:
-    - cron: '0 5 * * *'   # Daily at 5:00 AM UTC
+    - cron: '0 */2 * * *'   # Every 2 hours
   workflow_dispatch:
+  # Also trigger after GitHub Pages deployment completes
+  workflow_run:
+    workflows: ["pages build and deployment"]
+    types: [completed]
 
 jobs:
   cleanup:
@@ -81,15 +86,18 @@ jobs:
           TOTAL=$(gh api "repos/$REPO/actions/runs?per_page=1" --jq '.total_count' 2>/dev/null || echo 0)
           echo "Total workflow runs: $TOTAL" >> $GITHUB_STEP_SUMMARY
           if [ "$TOTAL" -gt 3000 ]; then
-            echo "::warning::$REPO has $TOTAL workflow runs. Consider further reducing automation frequency."
-            echo "⚠ **WARNING**: $TOTAL runs may be contributing to Offbeat-Inc org storage if this repo ever lived there." >> $GITHUB_STEP_SUMMARY
+            echo "::warning::$REPO has $TOTAL workflow runs. Consider reducing automation frequency."
+            echo "⚠ **WARNING**: $TOTAL runs on CrashyCrash/offbeat-website. Consider archiving or reducing workflow frequency." >> $GITHUB_STEP_SUMMARY
           fi
 
-      - name: Storage tips reminder
+      - name: Storage summary
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
         run: |
+          REMAINING=$(gh api "repos/$REPO/actions/artifacts" --jq '[.artifacts[].size_in_bytes] | add // 0 | . / 1048576 | . * 10 | round / 10' 2>/dev/null || echo 0)
+          COUNT=$(gh api "repos/$REPO/actions/artifacts" --jq '.total_count' 2>/dev/null || echo 0)
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### Required: Fix Offbeat-Inc Org Storage" >> $GITHUB_STEP_SUMMARY
-          echo "1. Go to: https://github.com/organizations/Offbeat-Inc/settings/actions" >> $GITHUB_STEP_SUMMARY
-          echo "2. Set **Artifact and log retention** from 90 days → **7 days**" >> $GITHUB_STEP_SUMMARY
-          echo "3. Check: https://github.com/organizations/Offbeat-Inc/settings/billing for storage breakdown" >> $GITHUB_STEP_SUMMARY
-          echo "4. Delete any GitHub Packages at: https://github.com/orgs/Offbeat-Inc/packages" >> $GITHUB_STEP_SUMMARY
+          echo "### Storage Status" >> $GITHUB_STEP_SUMMARY
+          echo "- Remaining artifacts: $COUNT (~${REMAINING} MB)" >> $GITHUB_STEP_SUMMARY
+          echo "- Billing: https://github.com/settings/billing (CrashyCrash personal account)" >> $GITHUB_STEP_SUMMARY
