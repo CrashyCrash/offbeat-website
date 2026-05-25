@@ -85,6 +85,34 @@
             overflow-x: hidden;
         }
 
+        /* Powered By Section */
+        .powered-by {
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+        .powered-by h3 {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-2);
+            margin-bottom: 1.5rem;
+        }
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+        .tech-pill {
+            padding: 0.4rem 1rem;
+            background: rgba(124, 58, 237, 0.1);
+            border: 1px solid rgba(0, 204, 255, 0.2);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            color: var(--text);
+            transition: none;
+        }
+
         /* Animated mesh gradient background */
         .mesh-bg {
             position: fixed;
@@ -149,33 +177,4 @@
             appearance: none;
             border: 1px solid rgba(0, 212, 255, 0.35);
             background: rgba(0, 212, 255, 0.08);
-            color: #d9f7ff;
-            border-radius: 7px;
-            width: 26px;
-            height: 26px;
-            font-size: 0.9rem;
-            line-height: 1;
-            cursor: pointer;
-            transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
-            transform: none;
-            flex: 0 0 auto;
-        }
-
-        .announcement-dismiss:hover,
-        .announcement-dismiss:focus-visible {
-            border-color: rgba(0, 212, 255, 0.55);
-            background: rgba(0, 212, 255, 0.16);
-            color: #ffffff;
-            transform: none;
-        }
-
-        body.announcement-dismissed {
-            --announcement-offset: 0px;
-        }
-
-        body.announcement-dismissed .announcement-banner {
-            display: none;
-        }
-
-        header {
-            position: fixed
+            color: #d
