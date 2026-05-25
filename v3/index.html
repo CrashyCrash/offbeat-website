@@ -62,6 +62,20 @@
 
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
+        .skip-link {
+            position: absolute;
+            left: -9999px;
+            z-index: 999;
+            background: var(--glow);
+            color: var(--bg);
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            font-weight: 700;
+        }
+        .skip-link:focus {
+            position: static;
+        }
+
         :root {
             --bg: #020206;
             --bg-card: #08090f;
@@ -167,14 +181,4 @@
             color: #d9f7ff;
             letter-spacing: 0.01em;
             white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .announcement-text span { color: var(--glow-2); }
-
-        .announcement-dismiss {
-            appearance: none;
-            border: 1px solid rgba(0, 212, 255, 0.35);
-            background: rgba(0, 212, 255, 0.08);
-            color: #d
+            overflow
