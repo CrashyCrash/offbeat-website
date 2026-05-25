@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A comprehensive sitemap for Offbeat, Inc.'s v3 website, detailing all sections, pages, tools, and resources.">
+    <meta property="og:title" content="OFFBEAT — Sitemap">
+    <meta property="og:description" content="Explore the structure of Offbeat, Inc.'s v3 website with our detailed sitemap.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://crashycrash.github.io/offbeat-website/v3/sitemap.html">
+    <link rel="canonical" href="https://crashycrash.github.io/offbeat-website/v3/sitemap.html">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "OFFBEAT — Sitemap",
+      "description": "A comprehensive sitemap for Offbeat, Inc.'s v3 website, detailing all sections, pages, tools, and resources.",
+      "breadcrumb": {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://crashycrash.github.io/offbeat-website/v3/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Sitemap"
+          }
+        ]
+      }
+    }
+    </script>
+    <title>OFFBEAT — Sitemap</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&family=Outfit:wght@400;700&display=swap');
+
+        :root {
+            --color-primary: #ffffff;
+            --color-secondary: #00ffff;
+            --color-background: #0d0d0d;
+            --color-dark-gray: #1a1a1a;
+            --color-light-gray: #333333;
+            --font-primary: 'Outfit', sans-serif;
+            --font-code: 'Fira Code', monospace;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            background-color: var(--color-background);
+            color: var(--color-primary);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: var(--color-dark-gray);
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--color-light-gray);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            text-decoration: none;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: var(--color-primary);
+            text-decoration: none;
+            font-weight: 400;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--color-secondary);
+        }
+
+        main {
+            flex-grow: 1;
+            padding: 3rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        h1, h2, h3 {
+            color: var(--color-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            border-bottom: 2px solid var(--color-secondary);
+            padding-bottom: 0.5rem;
+            margin-top: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            color: var(--color-primary);
+            font-size: 1.1rem;
+        }
+
+        a {
+            color: var(--color-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: var(--color-primary);
+            text-decoration: underline;
+        }
+
+        .button, button {
+            display: inline-block;
+            background-color: var(--color-secondary);
+            color: var(--color-background);
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+            font-family: var(--font-primary);
+        }
+
+        .button:hover, button:hover {
+            background-color: var(--color-primary);
+            color: var(--color-background);
+            transform: none; /* Buttons must NEVER lift on hover */
+        }
+
+        .button.secondary {
+            background-color: var(--color-light-gray);
+            color: var(--color-primary);
+        }
+
+        .button.secondary:hover {
+            background-color: var(--color-primary);
+            color: var(--color-background);
+        }
+
+        .button.outline {
+            background-color: transparent;
+            color: var(--color-secondary);
+            border: 2px solid var(--color-secondary);
+        }
+
+        .button.outline:hover {
+            background-color: var(--color-secondary);
+            color: var(--color-background);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            border-bottom: none;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-header p {
+            font-size: 1.2rem;
+            color: var(--color-primary);
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background-color: var(--color-dark-gray);
+            border: 1px solid var(--color-light-gray);
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 0 15px var(--color-secondary);
+            transform: translateY(-5px); /* This will be overridden by button hover */
+        }
+
+        .card h3 {
+            margin-top: 0;
+            font-size: 1.4rem;
+            color: var(--color-secondary);
+        }
+
+        .card p {
+            font-size: 1rem;
+            color: var(--color-primary);
+        }
+
+        .card a {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-top:
