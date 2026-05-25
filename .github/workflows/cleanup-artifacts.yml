@@ -1,11 +1,11 @@
 name: Cleanup Old Artifacts & Workflow Runs
 
-# Runs weekly to delete expired artifacts and audit workflow run counts.
-# Helps keep Actions storage under the 500 MB org/personal included limit.
+# Runs daily to keep Actions storage well under the 500 MB limit.
+# github-pages artifacts (~23 MB each) accumulate every push — we keep only 2.
 
 on:
   schedule:
-    - cron: '0 4 * * 0'   # Every Sunday at 4:00 AM UTC (offset from datbotty-v2)
+    - cron: '0 5 * * *'   # Daily at 5:00 AM UTC
   workflow_dispatch:
 
 jobs:
@@ -42,27 +42,35 @@ jobs:
           AFTER=$(gh api "repos/$REPO/actions/artifacts" --jq '.total_count' 2>/dev/null || echo 0)
           echo "- Before: $BEFORE  After: $AFTER  Cleaned: $((BEFORE - AFTER))" >> $GITHUB_STEP_SUMMARY
 
-      - name: Purge stale github-pages artifacts (keep only latest)
+      - name: Purge stale github-pages artifacts (keep only latest 2)
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO: ${{ github.repository }}
         run: |
-          # github-pages artifacts accumulate hourly (~22MB each) from Pages deployments.
-          # Keep only the most recent artifact; delete all older ones regardless of expiry.
+          # github-pages artifacts accumulate with every push (~23 MB each).
+          # Keep only the 2 most recent; delete ALL older ones (expired or not).
           echo "### github-pages artifact purge" >> $GITHUB_STEP_SUMMARY
           ALL_PAGES=$(gh api "repos/$REPO/actions/artifacts?per_page=100&name=github-pages" \
-            --jq '[.artifacts[] | {id:.id, created:.created_at}] | sort_by(.created) | reverse' 2>/dev/null || echo '[]')
+            --jq '[.artifacts[] | {id:.id, created:.created_at, size:.size_in_bytes}] | sort_by(.created) | reverse' 2>/dev/null || echo '[]')
           TOTAL=$(echo "$ALL_PAGES" | jq 'length')
-          echo "github-pages artifacts found: $TOTAL" >> $GITHUB_STEP_SUMMARY
-          if [ "$TOTAL" -gt 1 ]; then
-            # Delete all but the newest (first entry after sort-desc)
-            echo "$ALL_PAGES" | jq -c '.[1:] | .[].id' | while read -r AID; do
+          TOTAL_MB=$(echo "$ALL_PAGES" | jq '[.[].size] | add // 0 | . / 1048576 | floor')
+          echo "github-pages artifacts found: $TOTAL (~${TOTAL_MB} MB total)" >> $GITHUB_STEP_SUMMARY
+          if [ "$TOTAL" -gt 2 ]; then
+            TO_DELETE=$((TOTAL - 2))
+            DELETED=0
+            FREED_BYTES=0
+            while IFS= read -r row; do
+              AID=$(echo "$row" | jq -r '.id')
+              SZ=$(echo "$row" | jq -r '.size')
               gh api --method DELETE "repos/$REPO/actions/artifacts/$AID" 2>/dev/null \
-                && echo "  Deleted stale github-pages artifact $AID" >> $GITHUB_STEP_SUMMARY
-            done
-            echo "- Kept 1 latest github-pages artifact; purged $((TOTAL - 1)) stale" >> $GITHUB_STEP_SUMMARY
+                && DELETED=$((DELETED + 1)) \
+                && FREED_BYTES=$((FREED_BYTES + SZ)) \
+                && echo "  Deleted artifact $AID ($(( SZ / 1048576 )) MB)" >> $GITHUB_STEP_SUMMARY
+            done < <(echo "$ALL_PAGES" | jq -c '.[2:][]')
+            FREED_MB=$((FREED_BYTES / 1048576))
+            echo "- Kept 2 latest; purged $DELETED stale artifacts (~${FREED_MB} MB freed)" >> $GITHUB_STEP_SUMMARY
           else
-            echo "- No stale github-pages artifacts to purge" >> $GITHUB_STEP_SUMMARY
+            echo "- Only $TOTAL artifact(s) present — nothing to purge (threshold: >2)" >> $GITHUB_STEP_SUMMARY
           fi
 
       - name: Workflow run count audit

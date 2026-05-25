@@ -81,6 +81,27 @@ jobs:
           echo "Task pool: $TOTAL tasks | Day: $DAY | Slot: $SLOT | Index: $IDX"
           echo "Dispatching: $TITLE"
 
+          # Dedup check — skip if an open issue with this exact title already exists
+          EXISTING_COUNT=$(gh issue list \
+            --repo "${{ github.repository }}" \
+            --state open \
+            --search "\"$TITLE\" in:title" \
+            --json number \
+            --jq 'length' 2>/dev/null || echo 0)
+          if [ "$EXISTING_COUNT" -gt 0 ]; then
+            EXISTING_NUM=$(gh issue list \
+              --repo "${{ github.repository }}" \
+              --state open \
+              --search "\"$TITLE\" in:title" \
+              --json number \
+              --jq '.[0].number' 2>/dev/null || echo "?")
+            echo "DEDUP: Issue already open (#$EXISTING_NUM) — skipping duplicate creation"
+            echo "## Dedup Skip (pool index $IDX / $TOTAL)" >> $GITHUB_STEP_SUMMARY
+            echo "- **Task**: $TITLE" >> $GITHUB_STEP_SUMMARY
+            echo "- **Reason**: Issue #$EXISTING_NUM already open — no duplicate created" >> $GITHUB_STEP_SUMMARY
+            exit 0
+          fi
+
           ISSUE=$(gh api "repos/${{ github.repository }}/issues" \
             --method POST \
             --field "title=$TITLE" \
