@@ -99,6 +99,33 @@
             overflow-x: hidden;
         }
 
+        /* Stats Row */
+        .stats-row {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+        .stat-item {
+            text-align: center;
+        }
+        .stat-value {
+            display: block;
+            font-family: 'Fira Code', monospace;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--glow), var(--glow-2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-2);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
         /* Powered By Section */
         .powered-by {
             padding: 2rem 1rem;
@@ -163,22 +190,4 @@
             z-index: 150;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            gap: 1rem;
-            padding: 0 1rem 0 1.25rem;
-            border-bottom: 1px solid rgba(0, 212, 255, 0.2);
-            background: linear-gradient(
-                90deg,
-                rgba(0, 212, 255, 0.15) 0%,
-                rgba(0, 212, 255, 0.06) 45%,
-                rgba(0, 212, 255, 0.15) 100%
-            );
-            backdrop-filter: blur(14px);
-        }
-
-        .announcement-text {
-            font-size: 0.83rem;
-            color: #d9f7ff;
-            letter-spacing: 0.01em;
-            white-space: nowrap;
-            overflow
+            justify-content:
