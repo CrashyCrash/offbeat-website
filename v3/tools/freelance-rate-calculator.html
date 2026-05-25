@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Calculate your freelance project costs and recommended rates with Offbeat, Inc.'s pure JavaScript calculator. Perfect for designers, developers, and creatives.">
+    <meta property="og:title" content="Freelance Rate Calculator — OFFBEAT Tools">
+    <meta property="og:description" content="Estimate project costs and set your freelance rates accurately with our in-browser calculator.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://crashycrash.github.io/offbeat-website/v3/tools/freelance-rate-calculator.html">
+    <link rel="canonical" href="https://crashycrash.github.io/offbeat-website/v3/tools/freelance-rate-calculator.html">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Freelance Rate Calculator",
+      "description": "A pure JavaScript freelance rate and project cost calculator for estimating project expenses and setting rates.",
+      "operatingSystem": "All",
+      "applicationCategory": "UtilityApplication",
+      "screenshot": "https://crashycrash.github.io/offbeat-website/v3/images/freelance-calculator-screenshot.png",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD",
+        "description": "Free to use"
+      },
+      "url": "https://crashycrash.github.io/offbeat-website/v3/tools/freelance-rate-calculator.html",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Offbeat, Inc.",
+        "url": "https://crashycrash.github.io/offbeat-website/v3/"
+      }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Offbeat, Inc.",
+      "url": "https://crashycrash.github.io/offbeat-website/v3/",
+      "foundingDate": "2015",
+      "description": "Custom software, AI automation, and data-driven digital marketing. We build the unusual.",
+      "areaServed": "US",
+      "sameAs": [
+        "https://github.com/CrashyCrash",
+        "https://muthaeffincrash.com"
+      ],
+      "knowsAbout": ["Custom Software Development", "AI Automation", "Affiliate Marketing", "Digital Marketing", "Music Technology"]
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Crash (CrashyCrash)",
+      "jobTitle": "DJ / Software Developer",
+      "url": "https://crashycrash.github.io/offbeat-website/v3/",
+      "sameAs": [
+        "https://muthaeffincrash.com",
+        "https://github.com/CrashyCrash"
+      ],
+      "worksFor": {
+        "@type": "Organization",
+        "name": "Offbeat Inc."
+      }
+    }
+    </script>
+    <title>Freelance Rate Calculator — OFFBEAT Tools</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&family=Fira+Code:wght@400;700&display=swap');
+
+        :root {
+            --color-background: #0d0d0d;
+            --color-primary: #4CAF50;
+            --color-secondary: #FFEB3B;
+            --color-accent: #FF9800;
+            --color-text-primary: #e0e0e0;
+            --color-text-secondary: #a0a0a0;
+            --color-border: #333333;
+            --font-family-sans: 'Outfit', sans-serif;
+            --font-family-mono: 'Fira Code', monospace;
+            --border-radius: 8px;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+            --transition-fast: all 0.2s ease-in-out;
+            --transition-slow: all 0.4s ease-in-out;
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+            --container-max-width: 1200px;
+            --header-height: 70px;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--color-background);
+            color: var(--color-text-primary);
+            font-family: var(--font-family-sans);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: var(--container-max-width);
+            margin: 0 auto;
+            padding: 0 var(--spacing-md);
+        }
+
+        header {
+            background-color: rgba(13, 13, 13, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .logo {
+            font-family: var(--font-family-mono);
+            font-weight: 700;
+            font-size: 1.8em;
+            color: var(--color-primary);
+            text-decoration: none;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            gap: var(--spacing-md);
+        }
+
+        nav a {
+            color: var(--color-text-secondary);
+            text-decoration: none;
+            font-weight: 700;
+            transition: var(--transition-fast);
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--border-radius);
+        }
+
+        nav a:hover {
+            color: var(--color-primary);
+            background-color: rgba(76, 175, 80, 0.1);
+        }
+
+        .hero {
+            text-align: center;
+            padding: var(--spacing-xl) 0;
+            background-color: rgba(25, 25, 25, 0.5);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .hero h1 {
+            font-size: 3em;
+            margin-bottom: var(--spacing-md);
+            color: var(--color-primary);
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.2em;
+            color: var(--color-text-secondary);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        section {
+            padding: var(--spacing-xl) 0;
+        }
+
+        h2 {
+            font-size: 2.5em;
+            text-align: center;
+            margin-bottom: var(--spacing-lg);
+            color: var(--color-secondary);
+        }
+
+        h3
