@@ -630,7 +630,59 @@
 
     </main>
 
-    <footer>
+    
+<table>
+    <tbody>
+        <tr>
+            <td class="workflow-name">GitHub Repository</td>
+            <td id="github-repo-link">Loading...</td>
+            <td id="github-last-commit">Loading...</td>
+            <td id="github-open-issues">Loading...</td>
+        </tr>
+    </tbody>
+</table>
+<script>
+    const repoLink = document.getElementById('github-repo-link');
+    const lastCommit = document.getElementById('github-last-commit');
+    const openIssues = document.getElementById('github-open-issues');
+
+    // Fetch GitHub repository data
+    fetch('https://api.github.com/repos/CrashyCrash/offbeat-website')
+    .then(response => response.json())
+    .then(data => {
+        // Repository link with star/fork count
+        repoLink.innerHTML = `<a href="${data.html_url}" target="_blank">${data.name}</a> (Stars: ${data.stargazers_count}, Forks: ${data.forks_count})`;
+
+        // Last commit date
+        fetch('https://api.github.com/repos/CrashyCrash/offbeat-website/commits/main')
+        .then(response => response.json())
+        .then(commitData => {
+            const commitDate = new Date(commitData.commit.author.date);
+            lastCommit.innerText = `Last commit: ${commitDate.toLocaleString()}`;
+        })
+        .catch(error => {
+            // Fallback to hardcoded date if fetch fails
+            lastCommit.innerText = 'Last commit: 2026-01-01';
+        });
+
+        // Open issues labeled datbotty-task
+        fetch(`https://api.github.com/search/issues?q=repo:CrashyCrash/offbeat-website+label:datbotty-task+state:open`)
+        .then(response => response.json())
+        .then(issuesData => {
+            openIssues.innerText = `Open issues: ${issuesData.total_count}`;
+        })
+        .catch(error => {
+            openIssues.innerText = 'Open issues: unavailable';
+        });
+    })
+    .catch(error => {
+        repoLink.innerText = 'unavailable';
+        lastCommit.innerText = 'unavailable';
+        openIssues.innerText = 'unavailable';
+    });
+</script>
+
+<footer>
         <div>
             &copy; 2026 Offbeat, Inc. — All rights reserved.
             <div class="footer-last-updated" id="footerLastUpdated">Last updated: April 16, 2026</div>
