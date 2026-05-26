@@ -275,7 +275,79 @@
             </div>
         </div>
     </main>
-    <div class="footer">
+    
+<section class="search-section" style="padding: 4rem 2rem; max-width: 800px; margin: 0 auto;">
+    <div id="search-container" style="position: relative;">
+        <form id="search-form" onsubmit="return false;" style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <input type="text" id="search-input" placeholder="Search our site..." 
+                   style="background: #111; border: 1px solid #333; color: #fff; padding: 1rem; border-radius: 4px; outline: none; transition: border 0.3s ease;"
+                   aria-expanded="false" aria-controls="search-results">
+        </form>
+        <div id="search-results" style="position: absolute; top: 100%; left: 0; right: 0; background: #111; border: 1px solid #333; border-top: none; z-index: 100; display: none; max-height: 300px; overflow-y: auto;"></div>
+    </div>
+</section>
+
+<style>
+    #search-input:focus { border-color: var(--glow); box-shadow: 0 0 8px rgba(0, 255, 255, 0.2); }
+    .search-result-item { padding: 1rem; cursor: pointer; color: #ccc; border-bottom: 1px solid #222; }
+    .search-result-item:hover { background: #1a1a1a; color: #fff; }
+</style>
+
+<script>
+(function() {
+    const pages = [
+        { title: "Home", url: "index.html", desc: "Offbeat, Inc. home page" },
+        { title: "Services", url: "services.html", desc: "Custom software and AI automation services" },
+        { title: "Tools", url: "tools.html", desc: "Powerful tools for DJs and developers" },
+        { title: "FAQ", url: "faq.html", desc: "Common questions about our technology" },
+        { title: "Contact", url: "contact.html", desc: "Get in touch with Offbeat, Inc." },
+        { title: "About", url: "about.html", desc: "Our story and mission" },
+        { title: "Blog", url: "blog.html", desc: "Insights on tech and innovation" },
+        { title: "Portfolio", url: "portfolio.html", desc: "Selected projects and case studies" },
+        { title: "Status", url: "status.html", desc: "System and service uptime" }
+    ];
+
+    const input = document.getElementById('search-input');
+    const results = document.getElementById('search-results');
+    let debounceTimer;
+
+    input.addEventListener('input', () => {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+            const query = input.value.toLowerCase();
+            results.innerHTML = '';
+            if (query.length < 2) {
+                results.style.display = 'none';
+                input.setAttribute('aria-expanded', 'false');
+                return;
+            }
+
+            const matches = pages.filter(p => p.title.toLowerCase().includes(query) || p.desc.toLowerCase().includes(query));
+            
+            if (matches.length > 0) {
+                matches.forEach(m => {
+                    const div = document.createElement('div');
+                    div.className = 'search-result-item';
+                    div.innerHTML = `<strong>${m.title}</strong><br><small>${m.desc}</small>`;
+                    div.onclick = () => window.location.href = m.url;
+                    results.appendChild(div);
+                });
+                results.style.display = 'block';
+                input.setAttribute('aria-expanded', 'true');
+            } else {
+                results.style.display = 'none';
+                input.setAttribute('aria-expanded', 'false');
+            }
+        }, 300);
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!input.contains(e.target)) results.style.display = 'none';
+    });
+})();
+</script>
+
+<div class="footer">
         &copy; 2024 Offbeat, Inc. &mdash; Powered by <span>DatBotty</span> v3 <!-- Neon Edge --><br>
         <div class="footer-last-updated">Last updated: April 16, 2026</div>
     </div>
