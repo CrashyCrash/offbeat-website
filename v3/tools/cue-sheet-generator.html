@@ -272,6 +272,79 @@
 })();
 </script>
 
+
+<section class="search-container" style="position: relative; margin: 2rem 0; max-width: 600px;">
+    <form onsubmit="return false;" style="position: relative;">
+        <input 
+            type="text" 
+            id="site-search" 
+            placeholder="Search our tools and services..." 
+            aria-label="Search site content" 
+            aria-expanded="false"
+            aria-controls="search-results"
+            style="width: 100%; padding: 1rem; background: #1a1a1a; border: 1px solid #333; color: #fff; border-radius: 4px; transition: border 0.3s ease;"
+            onfocus="this.style.borderColor='#00f2ff'; this.style.boxShadow='0 0 8px rgba(0, 242, 255, 0.3)';"
+            onblur="this.style.borderColor='#333'; this.style.boxShadow='none';"
+        >
+    </form>
+    <div id="search-results" style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: #121212; border: 1px solid #333; z-index: 1000; margin-top: 0.5rem; border-radius: 4px; overflow: hidden;"></div>
+</section>
+
+<script>
+(function() {
+    const pages = [
+        { title: 'Home', desc: 'Offbeat, Inc. main dashboard', url: './' },
+        { title: 'Services', desc: 'AI automation and custom software solutions', url: './services.html' },
+        { title: 'Tools', desc: 'Powerful utilities for DJs and developers', url: './tools.html' },
+        { title: 'FAQ', desc: 'Common questions about our tech and services', url: './faq.html' },
+        { title: 'Contact', desc: 'Get in touch with the Offbeat team', url: './contact.html' },
+        { title: 'About', desc: 'Our mission and history since 2015', url: './about.html' },
+        { title: 'Blog', desc: 'Latest updates on AI and software engineering', url: './blog.html' },
+        { title: 'Portfolio', desc: 'Showcase of our recent technology projects', url: './portfolio.html' },
+        { title: 'Status', desc: 'System uptime and service health', url: './status.html' }
+    ];
+
+    const input = document.getElementById('site-search');
+    const results = document.getElementById('search-results');
+    let debounceTimer;
+
+    input.addEventListener('input', () => {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+            const query = input.value.toLowerCase();
+            results.innerHTML = '';
+            if (query.length < 2) {
+                results.style.display = 'none';
+                input.setAttribute('aria-expanded', 'false');
+                return;
+            }
+
+            const matches = pages.filter(p => p.title.toLowerCase().includes(query) || p.desc.toLowerCase().includes(query));
+            
+            if (matches.length > 0) {
+                matches.forEach(m => {
+                    const div = document.createElement('div');
+                    div.className = 'search-result-item';
+                    div.style.padding = '10px';
+                    div.style.cursor = 'pointer';
+                    div.style.borderBottom = '1px solid #333';
+                    div.innerHTML = `<div style="color: #00f2ff;">${m.title}</div><div style="font-size: 0.8rem; color: #888;">${m.desc}</div>`;
+                    div.onmouseover = (e) => e.target.style.background = '#222';
+                    div.onmouseout = (e) => e.target.style.background = 'transparent';
+                    div.onclick = () => window.location.href = m.url;
+                    results.appendChild(div);
+                });
+                results.style.display = 'block';
+                input.setAttribute('aria-expanded', 'true');
+            } else {
+                results.style.display = 'none';
+                input.setAttribute('aria-expanded', 'false');
+            }
+        }, 300);
+    });
+})();
+</script>
+
 <footer>
         <div>&copy; 2026 Offbeat, Inc. — <a href="affiliate-disclosure.html">Affiliate Disclosure</a> &middot; <a href="privacy.html">Privacy</a></div>
         <div><a href="https://github.com/CrashyCrash" target="_blank" rel="noopener">GitHub</a> &middot; <a href="status.html">DatBotty Status</a></div>
