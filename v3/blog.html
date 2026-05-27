@@ -50,6 +50,8 @@
         .card:hover { border-color: rgba(0,204,255,0.15); }
         .card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 0.6rem; }
         .card p { color: var(--text-2); font-size: 0.9rem; line-height: 1.65; }
+        .card-link { display: inline-block; margin-top: 1rem; color: var(--glow); text-decoration: none; font-size: 0.84rem; font-weight: 600; }
+        .card-link:hover { color: var(--glow-2); }
         .tag { font-family: 'Fira Code', monospace; font-size: 0.68rem; text-transform: uppercase;
             letter-spacing: 0.12em; color: var(--glow); margin-bottom: 0.5rem; }
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
@@ -90,7 +92,7 @@
             <li><a href="faq.html">FAQ</a></li>
             <li><a href="status.html">Status</a></li>
             <li><a href="work.html">Work</a></li>
-            <li class=""><a href="blog.html" style="color:var(--glow)"></a></li>
+            <li class="active"><a href="blog.html">Blog</a></li>
         </ul>
     </header>
 
@@ -108,41 +110,42 @@
                     <h3 style="margin-top:0.75rem">Building DatBotty: 6 Months of Autonomous Operation</h3>
                     <p>What it actually takes to run an AI agent 24/7. Quota management, quality scoring, stale lock detection, and lessons from 10,000+ automated task completions.</p>
                     <p style="margin-top:0.75rem;font-size:0.78rem;color:var(--text-3)">May 2026</p>
+                    <a class="card-link" href="status.html">View DatBotty status →</a>
                 </div>
                 <div class="card">
                     <span class="badge badge-violet">Music Tech</span>
                     <h3 style="margin-top:0.75rem">The Problem with DJ Metadata (And How to Fix It)</h3>
                     <p>Most DJs ignore metadata until it causes a train wreck mid-set. A practical guide to library management, beatgrid repair, and confidence scoring for large collections.</p>
                     <p style="margin-top:0.75rem;font-size:0.78rem;color:var(--text-3)">April 2026</p>
+                    <a class="card-link" href="../dj-software-hub.html">Read the DJ software hub →</a>
                 </div>
                 <div class="card">
                     <span class="badge badge-glow">Revenue</span>
                     <h3 style="margin-top:0.75rem">Affiliate Marketing in 2026: What Still Works</h3>
                     <p>Cut through the noise. After 10+ years in the space: the tactics that survive algorithm updates, the ones that died, and the systems that compound over time.</p>
                     <p style="margin-top:0.75rem;font-size:0.78rem;color:var(--text-3)">March 2026</p>
+                    <a class="card-link" href="../dj-affiliate-programs-guide.html">Browse affiliate program guides →</a>
                 </div>
                 <div class="card">
                     <span class="badge badge-glow">Dev</span>
                     <h3 style="margin-top:0.75rem">Why I Chose Static HTML Over Every Framework</h3>
                     <p>No build step. No Node.js. No dependencies to update. The case for plain HTML/CSS when your bottleneck is content, not interactivity.</p>
                     <p style="margin-top:0.75rem;font-size:0.78rem;color:var(--text-3)">February 2026</p>
+                    <a class="card-link" href="services.html">See how Offbeat builds sites →</a>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    
-<div class="card">
+                <div class="card">
                     <span class="badge badge-glow">AI Automation</span>
                     <h3 style="margin-top:0.75rem">GitHub Copilot Cloud Agent: The Future of Autonomous Coding</h3>
                     <p>How the GitHub Copilot cloud agent autonomously creates pull requests from issue descriptions — and why this changes everything for small teams.</p>
                     <p style="margin-top:0.75rem;font-size:0.78rem;color:var(--text-3)">April 2026</p>
+                    <a class="card-link" href="work.html">Explore recent client work →</a>
                 </div>
                 <div class="card">
                     <span class="badge badge-glow">Indie Hacking</span>
                     <h3 style="margin-top:0.75rem">DJ to Developer: Building an AI System That Actually Makes Money</h3>
                     <p>What I learned building DatBotty as a non-developer using AI to write most of the code.</p>
                     <p style="margin-top:0.75rem;font-size:0.78rem;color:var(--text-3)">April 2026</p>
+                    <a class="card-link" href="about.html">Read the company background →</a>
                 </div>
             </div>
         </div>
