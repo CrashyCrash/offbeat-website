@@ -6,6 +6,34 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DJ Set Generator — Free BPM-Matched Playlist Builder | Offbeat Inc.</title>
 <meta name="description" content="Discover the ultimate DJ set generator tool, creating seamless BPM-matched playlists and track sequences for a flawless night of mixing.">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "DJ Set Generator",
+  "url": "https://offbeatinc.com/dj-set-generator.html",
+  "applicationCategory": "MusicApplication",
+  "operatingSystem": "All",
+  "browserRequirements": "Requires JavaScript",
+  "description": "A free DJ set generator that creates BPM-matched track sequences and an energy map to help you plan a DJ set.",
+  "creator": {
+    "@type": "Organization",
+    "name": "Offbeat Inc.",
+    "url": "https://offbeatinc.com/"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "featureList": [
+    "Generate a DJ set by genre, BPM target, and length",
+    "Show a timeline and energy map",
+    "Copy or export the generated set as text"
+  ]
+}
+</script>
   <link rel="stylesheet" href="assets/style.css">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
@@ -424,6 +452,44 @@ body{
   .timeline{margin-left:0.75rem;}
   .track-card{margin-left:0.75rem;}
 }
+
+  /* EDITORIAL GUIDE (below the tool) */
+  .guide{margin-top:2.25rem;}
+  .guide-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:1.35rem 1.5rem;
+    margin-top:1.15rem;
+    box-shadow:0 0 30px rgba(0,0,0,0.18);
+  }
+  .guide h2{
+    color:var(--cyan);
+    font-size:1.05rem;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    margin-bottom:0.75rem;
+  }
+  .guide p{color:rgba(224,228,244,0.92);line-height:1.7;font-size:0.92rem;margin-bottom:0.9rem;}
+  .guide ul{margin:0.4rem 0 1rem 1.25rem;color:rgba(224,228,244,0.92);}
+  .guide li{margin-bottom:0.5rem;line-height:1.6;font-size:0.92rem;}
+  .guide a{color:var(--cyan);}
+  .guide .muted{color:var(--dim);}
+  .guide .chip{display:inline-block;padding:0.15rem 0.45rem;border:1px solid var(--border);border-radius:999px;color:var(--dim);font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;}
+  .guide pre{
+    background:var(--card2);
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:0.9rem 1rem;
+    overflow:auto;
+    color:rgba(224,228,244,0.95);
+    font-size:0.85rem;
+    line-height:1.6;
+    margin:0.75rem 0 1rem;
+  }
+  .guide details{background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:0.85rem 1rem;margin:0 0 0.85rem;}
+  .guide summary{cursor:pointer;color:var(--text);font-weight:800;letter-spacing:0.02em;}
+  .guide details p{margin-top:0.7rem;}
 </style>
 </head>
 <body>
@@ -558,6 +624,112 @@ body{
     </p>
   </div>
 </div>
+
+<main class="container guide" aria-label="DJ set generator guide">
+  <div class="guide-card">
+    <div class="chip">Guide</div>
+    <h2>How to use this DJ set generator</h2>
+    <p>This tool is meant to be a fast <strong>starting point</strong> for planning a DJ set: BPM direction, energy curve, and a rough sequence you can refine in your crate. You’ll still want to sanity-check transitions (especially key, energy jumps, and vocal clashes).</p>
+    <ul>
+      <li><strong>Pick a Genre</strong> to keep the vibe coherent (or choose “All Genres” for chaos / surprises).</li>
+      <li><strong>Choose a BPM Range</strong> as your “center of gravity.” If you plan to change tempo mid-set, generate two sets and stitch them together.</li>
+      <li><strong>Set Length</strong> controls how many tracks you’ll get. Think in 2–4 track mini-arcs rather than a single long ramp.</li>
+      <li>Click <strong>GENERATE SET</strong>. Once it’s generated, use <strong>COPY</strong> or <strong>SAVE AS TEXT</strong> and paste into Notes, Google Docs, or a cue-sheet template.</li>
+    </ul>
+    <p class="muted"><strong>Pro tip:</strong> if you’re playing a real room, don’t chase the “perfect playlist.” Use the sequence as a map, then swap tracks based on crowd response.</p>
+  </div>
+
+  <div class="guide-card">
+    <div class="chip">Templates</div>
+    <h2>Example set templates</h2>
+    <p>These are proven “shapes” you can apply to almost any genre. Use them to decide <em>when</em> to peak and how long to hold intensity.</p>
+
+    <h3 class="muted" style="margin:0.5rem 0 0.25rem;letter-spacing:0.12em;text-transform:uppercase;font-size:0.8rem;">House warmup (60–90 minutes)</h3>
+    <pre>
+Intro (2–3 tracks): groove + space
+Build (6–10 tracks): tighten drums, raise energy slowly
+First peak (2–3 tracks): biggest hooks, but not the hardest
+Reset (1–2 tracks): breath, drop energy one notch
+Second peak (3–5 tracks): main floor drivers
+Landing (2–3 tracks): keep movement, reduce aggression
+    </pre>
+
+    <h3 class="muted" style="margin:0.5rem 0 0.25rem;letter-spacing:0.12em;text-transform:uppercase;font-size:0.8rem;">Peak-time techno (45–75 minutes)</h3>
+    <pre>
+Lock-in (3–4 tracks): hypnotic loop + consistent groove
+Pressure (4–6 tracks): more percussion, shorter breakdowns
+Peak run (4–8 tracks): hardest hitters, minimal dead air
+Release (2–3 tracks): longer breakdowns / melodic relief
+Final push (2–4 tracks): last peak, then a clean exit
+    </pre>
+
+    <h3 class="muted" style="margin:0.5rem 0 0.25rem;letter-spacing:0.12em;text-transform:uppercase;font-size:0.8rem;">Open format (bar / wedding) (60–120 minutes)</h3>
+    <pre>
+On-ramp: 2–3 accessible tracks (recognition matters)
+Party lane: 6–12 tracks in one BPM neighborhood
+Singalong moment: 1–2 anthems (don’t overdo)
+Genre pivot: 2–4 tracks to transition lanes (tempo + vibe)
+Late peak: 4–8 biggest crowd-pleasers
+Close: 1–3 “everyone knows it” closers
+    </pre>
+
+    <p class="muted">If you want more precision, generate a set and then tag each track as <strong>Warmup</strong>, <strong>Build</strong>, <strong>Peak</strong>, or <strong>Reset</strong> before you finalize the order.</p>
+  </div>
+
+  <div class="guide-card">
+    <div class="chip">Workflow</div>
+    <h2>Export formats &amp; workflow</h2>
+    <p>The generator gives you a clean sequence, but your job is to turn it into something you can execute under pressure.</p>
+    <ul>
+      <li><strong>Copy/paste set list:</strong> paste into Notes or a doc, then add columns like “Intro cue,” “Out cue,” “Energy,” and “Transition idea.”</li>
+      <li><strong>Cue sheet:</strong> write one transition note per track (e.g., “echo out @ 32 bars,” “swap on vocal clash,” “double drop”).</li>
+      <li><strong>Two-set stitch:</strong> for tempo changes, generate Set A at BPM1 and Set B at BPM2. Pick 1–2 “bridge” tracks you own that can live in both BPM lanes (or use half/double-time tricks).</li>
+    </ul>
+    <p class="muted">Reality check: the best set is the one you can <strong>adapt</strong>. Keep 5–10 extra tracks in your crate that fit the same vibe and BPM range.</p>
+  </div>
+
+  <div class="guide-card">
+    <div class="chip">FAQ</div>
+    <h2>FAQ</h2>
+
+    <details>
+      <summary>Is this generator creating a “perfect” set order?</summary>
+      <p>No. It’s a planning tool: it gives you a plausible sequence and energy arc fast. The final order should be adjusted for vocals, phrasing, and what the room wants.</p>
+    </details>
+
+    <details>
+      <summary>How do I handle key clashes?</summary>
+      <p>Use the generated list as a base, then swap 1–2 tracks where you hear harmonic tension. If your software supports Camelot keys, prefer same key or adjacent moves, and avoid back-to-back vocal hooks that fight each other.</p>
+    </details>
+
+    <details>
+      <summary>What’s the best way to export this into a usable cue sheet?</summary>
+      <p>Click <strong>COPY</strong> or <strong>SAVE AS TEXT</strong>, paste into a document, then add notes per transition (mix-in point, mix-out point, and a backup transition if the crowd isn’t feeling it).</p>
+    </details>
+
+    <details>
+      <summary>Can I use this for a wedding / open format set?</summary>
+      <p>Yes, but treat the output as a “lane.” For weddings, keep multiple lanes ready (throwbacks, singalongs, modern hits) and pivot based on the dance floor.</p>
+    </details>
+
+    <details>
+      <summary>Why do two generated sets feel different?</summary>
+      <p>Variation is the point. Two DJs can play the same BPM and genre with totally different energy and transitions. Generate 2–3 options, then merge the best parts into one final plan.</p>
+    </details>
+  </div>
+
+  <div class="guide-card">
+    <div class="chip">Related</div>
+    <h2>Related guides</h2>
+    <ul>
+      <li><a href="how-to-mix-music-beginners.html">How to Mix Music (Beginners)</a></li>
+      <li><a href="how-to-record-dj-mix.html">How to Record a DJ Mix</a></li>
+      <li><a href="best-dj-controllers-2026.html">Best DJ Controllers (2026)</a></li>
+      <li><a href="best-dj-software-beginners-2026.html">Best DJ Software for Beginners (2026)</a></li>
+      <li><a href="best-dj-headphones-2026.html">Best DJ Headphones (2026)</a></li>
+    </ul>
+  </div>
+</main>
 
 <script>
 // ── REAL TRACK DATABASE (artist, title, bpm, camelot key, genre, energy 1-10) ─
