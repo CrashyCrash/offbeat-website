@@ -39,6 +39,14 @@
     <p><strong>Short version:</strong> We earn a small commission when you buy products through links on this site, at no additional cost to you. We only recommend products we have researched and believe are genuinely useful.</p>
   </div>
 
+  <figure class="hero-figure" style="margin: 28px 0 24px;">
+    <img class="page-hero-img"
+         src="https://images.unsplash.com/photo-1571266028243-d220c6a3d7c4?ixlib=rb-4.1.0&w=900&h=380&fit=crop&q=80"
+         alt="DJ controller, laptop, and headphones on a desk"
+         width="900" height="380" loading="eager" decoding="async"
+         style="width:100%;height:auto;max-height:320px;object-fit:cover;border-radius:12px;display:block;">
+  </figure>
+
   <h2>What this means</h2>
   <p>Offbeat Inc. participates in affiliate advertising programs. This means that when you click on certain product links on this site and make a qualifying purchase, we may earn a commission from the retailer or brand. The price you pay is the same whether or not you use our affiliate link.</p>
 
@@ -63,134 +71,62 @@
   <h2>Changes to this disclosure</h2>
   <p>We may update this page when we add or remove affiliate programs. The "last updated" date at the top of this page will reflect any changes.</p>
 
-Looking at the existing page, I need to scan what's already present to avoid duplicating sections.
-
-From "SECTIONS ALREADY ON THE PAGE (DO NOT DUPLICATE)", the page already has:
-- What this means
-- Which programs we participate in
-- How we select what we recommend
-- Per-article disclosures
-- FTC compliance
-- Changes to this disclosure
-
-The page does NOT already have a `comparison-table-wrap`/`comparison-table` or a `faq-item`/`details`/`summary` FAQ section — those are absent from the existing section list. So I can add both.
-
-Now let me also check what the full page looks like to find the exact DATBOTTY-AI-CONTENT markers and understand placement.
-
-The page structure shows:
-1. `<main class="disclosure-container">` with existing content
-2. Then presumably a `</main>` closing tag
-3. Then the DATBOTTY-AI-CONTENT block
-4. Then likely a footer
-
-The task says to replace the DATBOTTY-AI-CONTENT block entirely. I need to:
-1. Add a hero image above the existing content (or right after it)
-2. Add a FAQ section (4-6 Q&As)
-3. Add a "How links are labeled" example with an HTML snippet
-4. Add an affiliate CTA box
-5. Use the required CSS classes
-
-Let me craft the replacement block carefully.
-
-```
-<!-- DATBOTTY-AI-CONTENT-START -->
-
-<img class="page-hero-img" src="assets/images/disclosure-hero.jpg" alt="DJ controller on a desk with laptop and headphones, representing affiliate disclosure for DJ gear reviews" style="width:100%;max-height:320px;object-fit:cover;border-radius:12px;margin-bottom:24px;display:block;">
-
-<div class="section datbotty-ai-section" style="margin-top:40px;">
-  <h2 style="color:#a0c4e0;font-size:1.1rem;margin-bottom:16px;">How Our Affiliate Links Are Labeled</h2>
-  <p style="color:#c0d0e0;line-height:1.7;margin-bottom:16px;font-size:0.95rem;">
-    On every review and recommendation page, affiliate links are visually identified. You'll see a small label next to or near the link so you always know when a link is part of an affiliate program. Here's an example of what an affiliate link looks like in our HTML:
-  </p>
-  <div style="background:#0e1520;border:1px solid #1e2d3d;border-radius:8px;padding:16px 20px;margin:16px 0 24px;overflow-x:auto;">
-    <code style="color:#00d4ff;font-family:'Courier New',monospace;font-size:0.85rem;line-height:1.6;white-space:pre;">&lt;a href="https://www.amazon.com/dp/EXAMPLE?tag=offbeatdj-20"
+  <section class="section" style="margin-top:40px;">
+    <h2>How Our Affiliate Links Are Labeled</h2>
+    <p>On product roundups, reviews, and recommendation pages, we label affiliate links so readers can recognize them before clicking. We also use the appropriate link attributes to indicate a commercial relationship clearly.</p>
+    <div style="background:#0e1520;border:1px solid #1e2d3d;border-radius:8px;padding:16px 20px;margin:16px 0 24px;overflow-x:auto;">
+      <pre style="margin:0;white-space:pre-wrap;"><code style="color:#00d4ff;font-family:'Courier New',monospace;font-size:0.85rem;line-height:1.6;">&lt;a href="https://www.amazon.com/dp/EXAMPLE?tag=offbeatdj-20"
    class="affiliate-link"
    rel="nofollow sponsored"
    target="_blank"
    data-affiliate="amazon"&gt;
   Check Price on Amazon
   &lt;span class="aff-label"&gt;(affiliate link)&lt;/span&gt;
-&lt;/a&gt;</code>
-  </div>
-  <p style="color:#c0d0e0;line-height:1.7;margin-bottom:16px;font-size:0.95rem;">
-    Every affiliate link on this site uses <code style="color:#00d4ff;font-size:0.85rem;">rel="nofollow sponsored"</code> to comply with search engine and FTC guidelines. The <code style="color:#00d4ff;font-size:0.85rem;">(affiliate link)</code> label is visible to readers so there is never any ambiguity.
-  </p>
-</div>
+&lt;/a&gt;</code></pre>
+    </div>
+    <p>That visible label matters. A reader should not have to guess whether a retailer link may generate commission revenue for us. If the relationship is material, we disclose it near the link and in the page disclosure notice.</p>
+  </section>
 
-<div class="section datbotty-ai-section" style="margin-top:40px;">
-  <h2 style="color:#a0c4e0;font-size:1.1rem;margin-bottom:16px;">Frequently Asked Questions</h2>
+  <section class="section" style="margin-top:40px;">
+    <h2>Frequently Asked Questions</h2>
 
-  <details class="faq-item" style="background:#0e1520;border:1px solid #1e2d3d;border-radius:8px;padding:16px 20px;margin-bottom:12px;">
-    <summary style="color:#e0eef8;font-weight:600;cursor:pointer;font-size:0.95rem;list-style:none;display:flex;justify-content:space-between;align-items:center;">
-      How are affiliate links labeled on Offbeat pages?
-      <span style="color:#00d4ff;font-size:1.2rem;">+</span>
-    </summary>
-    <p style="color:#c0d0e0;line-height:1.7;margin-top:12px;font-size:0.95rem;">
-      Every product link that is part of an affiliate program carries a visible <strong>(affiliate link)</strong> label. In the HTML, these links also include <code style="color:#00d4ff;font-size:0.85rem;">rel="nofollow sponsored"</code> so search engines and readers can clearly identify them. We never hide affiliate relationships.
-    </p>
-  </details>
+    <details class="faq-item" style="background:#0e1520;border:1px solid #1e2d3d;border-radius:8px;padding:16px 20px;margin-bottom:12px;">
+      <summary style="color:#e0eef8;font-weight:600;cursor:pointer;font-size:0.95rem;">How are affiliate links labeled on Offbeat pages?</summary>
+      <p style="color:#c0d0e0;line-height:1.7;margin-top:12px;font-size:0.95rem;">We use visible wording such as <strong>(affiliate link)</strong> or a disclosure notice near the section that contains retailer links. In the HTML, those links also use <code style="color:#00d4ff;font-size:0.85rem;">rel="nofollow sponsored"</code>.</p>
+    </details>
 
-  <details class="faq-item" style="background:#0e1520;border:1px solid #1e2d3d;border-radius:8px;padding:16px 20px;margin-bottom:12px;">
-    <summary style="color:#e0eef8;font-weight:600;cursor:pointer;font-size:0.95rem;list-style:none;display:flex;justify-content:space-between;align-items:center;">
-      Do prices change for readers who use affiliate links?
-      <span style="color:#00d4ff;font-size:1.2rem;">+</span>
-    </summary>
-    <p style="color:#c0d0e0;line-height:1.7;margin-top:12px;font-size:0.95rem;">
-      No. The price you pay is exactly the same whether you click our affiliate link or go directly to the retailer's website. Our commission comes from the retailer at no additional cost to you. In some cases, using our link may even surface a coupon or deal that benefits you.
-    </p>
-  </details>
+    <details class="faq-item" style="background:#0e1520;border:1px solid #1e2d3d;border-radius:8px;padding:16px 20px;margin-bottom:12px;">
+      <summary style="color:#e0eef8;font-weight:600;cursor:pointer;font-size:0.95rem;">Do prices change if I use an affiliate link?</summary>
+      <p style="color:#c0d0e0;line-height:1.7;margin-top:12px;font-size:0.95rem;">No. The price is typically the same whether you use our link or go directly to the merchant. The retailer pays the commission, not the reader.</p>
+    </details>
 
-  <details class="faq-item" style="background:#0e1520;border:1px solid #1e2d3d;border-radius:8px;padding:16px 20px;margin-bottom:12px;">
-    <summary style="color:#e0eef8;font-weight:600;cursor:pointer;font-size:0.95rem;list-style:none;display:flex;justify-content:space-between;align-items:center;">
-      Can brands pay for positive reviews on Offbeat?
-      <span style="color:#00d4ff;font-size:1.2rem;">+</span>
-    </summary>
-    <p style="color:#c0d0e0;line-height:1.7;margin-top:12px;font-size:0.95rem;">
-      Absolutely not. Brands cannot pay us for a positive review, a higher ranking, or inclusion in any of our "best of" or recommendation lists. If a brand sends us a product for evaluation, our assessment is honest and independent. Any product provided for review is disclosed in the article itself.
-    </p>
-  </details>
+    <details class="faq-item" style="background:#0e1520;border:1px solid #1e2d3d;border-radius:8px;padding:16px 20px;margin-bottom:12px;">
+      <summary style="color:#e0eef8;font-weight:600;cursor:pointer;font-size:0.95rem;">Can brands pay for a positive review or a higher ranking?</summary>
+      <p style="color:#c0d0e0;line-height:1.7;margin-top:12px;font-size:0.95rem;">No. We do not sell positive coverage, guaranteed rankings, or hidden placements. If we are compensated for anything beyond standard affiliate commissions, that relationship should be separately disclosed.</p>
+    </details>
 
-  <details class="faq-item" style="background:#0e1520;border:1px solid #1e2d3d;border-radius:8px;padding:16px 20px;margin-bottom:12px;">
-    <summary style="color:#e0eef8;font-weight:600;cursor:pointer;font-size:0.95rem;list-style:none;display:flex;justify-content:space-between;align-items:center;">
-      How are your recommendations chosen and updated?
-      <span style="color:#00d4ff;font-size:1.2rem;">+</span>
-    </summary>
-    <p style="color:#c0d0e0;line-height:1.7;margin-top:12px;font-size:0.95rem;">
-      We research products based on specifications, professional and user reviews, price-to-value ratio, build quality, and real-world performance. Our team tests products wherever possible. Pages are reviewed and updated regularly — at least twice per year — to reflect price changes, new firmware, or newer competing products. Last-updated dates are displayed on every article page.
-    </p>
-  </details>
+    <details class="faq-item" style="background:#0e1520;border:1px solid #1e2d3d;border-radius:8px;padding:16px 20px;margin-bottom:12px;">
+      <summary style="color:#e0eef8;font-weight:600;cursor:pointer;font-size:0.95rem;">What should I do if you missed a disclosure or used a broken link?</summary>
+      <p style="color:#c0d0e0;line-height:1.7;margin-top:12px;font-size:0.95rem;">Email us at <a href="mailto:hello@offbeatinc.com" style="color:#00d4ff;">hello@offbeatinc.com</a> or use our <a href="contact.html" style="color:#00d4ff;">contact page</a>. We would rather fix a disclosure problem immediately than leave it live.</p>
+    </details>
 
-  <details class="faq-item" style="background:#0e1520;border:1px solid #1e2d3d;border-radius:8px;padding:16px 20px;margin-bottom:12px;">
-    <summary style="color:#e0eef8;font-weight:600;cursor:pointer;font-size:0.95rem;list-style:none;display:flex;justify-content:space-between;align-items:center;">
-      What happens if an affiliate link is broken or a product is discontinued?
-      <span style="color:#00d4ff;font-size:1.2rem;">+</span>
-    </summary>
-    <p style="color:#c0d0e0;line-height:1.7;margin-top:12px;font-size:0.95rem;">
-      We run regular link audits to catch broken or redirected affiliate links. If a product has been discontinued, we update the page to either remove the link or replace it with a current alternative. You can always report a broken link via our <a href="about.html" style="color:#00d4ff;">contact page</a> and we'll fix it promptly.
-    </p>
-  </details>
+    <details class="faq-item" style="background:#0e1520;border:1px solid #1e2d3d;border-radius:8px;padding:16px 20px;margin-bottom:12px;">
+      <summary style="color:#e0eef8;font-weight:600;cursor:pointer;font-size:0.95rem;">How often do you review this disclosure page?</summary>
+      <p style="color:#c0d0e0;line-height:1.7;margin-top:12px;font-size:0.95rem;">We review it whenever affiliate partners change and during broader content audits. The effective date and last-updated line at the top of the page are there so readers can see when the disclosure was last checked.</p>
+    </details>
+  </section>
 
-  <details class="faq-item" style="background:#0e1520;border:1px solid #1e2d3d;border-radius:8px;padding:16px 20px;margin-bottom:12px;">
-    <summary style="color:#e0eef8;font-weight:600;cursor:pointer;font-size:0.95rem;list-style:none;display:flex;justify-content:space-between;align-items:center;">
-      Do you use affiliate revenue to influence which products appear on the site?
-      <span style="color:#00d4ff;font-size:1.2rem;">+</span>
-    </summary>
-    <p style="color:#c0d0e0;line-height:1.7;margin-top:12px;font-size:0.95rem;">
-      No. Affiliate revenue does not determine which products we feature or how we rank them. Our editorial process is independent of our monetization. We include affiliate links as a way to keep the site running and fund continued research — not as a factor in our recommendations.
-    </p>
-  </details>
-</div>
-
-<div class="section datbotty-ai-section" style="margin-top:40px;">
-  <div style="overflow-x:auto;">
+  <section class="section" style="margin-top:40px;">
+    <h2>Affiliate Program Snapshot</h2>
+    <p>The table below summarizes the kinds of partner relationships readers may see referenced on Offbeat. It is a practical snapshot, not a promise that every merchant appears on every page.</p>
     <div class="comparison-table-wrap">
       <table class="comparison-table" style="width:100%;border-collapse:collapse;color:#c0d0e0;font-size:0.9rem;">
         <thead>
           <tr style="background:#0e1520;">
             <th style="padding:12px 16px;text-align:left;border-bottom:2px solid #1e2d3d;color:#a0c4e0;">Affiliate Program</th>
             <th style="padding:12px 16px;text-align:left;border-bottom:2px solid #1e2d3d;color:#a0c4e0;">Network</th>
-            <th style="padding:12px 16px;text-align:left;border-bottom:2px solid #1e2d3d;color:#a0c4e0;">Product Categories</th>
-            <th style="padding:12px 16px;text-align:left;border-bottom:2px solid #1e2d3d;color:#a0c4e0;">Disclosure Status</th>
+            <th style="padding:12px 16px;text-align:left;border-bottom:2px solid #1e2d3d;color:#a0c4e0;">Typical Product Categories</th>
+            <th style="padding:12px 16px;text-align:left;border-bottom:2px solid #1e2d3d;color:#a0c4e0;">Reader-Facing Disclosure</th>
           </tr>
         </thead>
         <tbody>
@@ -198,66 +134,46 @@ Let me craft the replacement block carefully.
             <td style="padding:12px 16px;">Amazon Associates</td>
             <td style="padding:12px 16px;">Direct</td>
             <td style="padding:12px 16px;">Controllers, headphones, mixers, accessories</td>
-            <td style="padding:12px 16px;color:#00d4ff;">Labeled on every page</td>
+            <td style="padding:12px 16px;">Visible disclosure and labeled affiliate links</td>
           </tr>
           <tr style="border-bottom:1px solid #1e2d3d;">
             <td style="padding:12px 16px;">Sweetwater</td>
             <td style="padding:12px 16px;">FlexOffers</td>
-            <td style="padding:12px 16px;">Studio monitors, audio interfaces, DJ gear</td>
-            <td style="padding:12px 16px;color:#00d4ff;">Labeled on every page</td>
+            <td style="padding:12px 16px;">Studio monitors, interfaces, DJ gear</td>
+            <td style="padding:12px 16px;">Visible disclosure and labeled affiliate links</td>
           </tr>
           <tr style="border-bottom:1px solid #1e2d3d;">
-            <td style="padding:12px 16px;">FL Studio (Image-Line)</td>
+            <td style="padding:12px 16px;">Impact.com partners</td>
             <td style="padding:12px 16px;">Impact.com</td>
-            <td style="padding:12px 16px;">DJ &amp; music production software</td>
-            <td style="padding:12px 16px;color:#00d4ff;">Labeled on every page</td>
+            <td style="padding:12px 16px;">Software, music tools, selected retailers</td>
+            <td style="padding:12px 16px;">Visible disclosure and labeled affiliate links</td>
           </tr>
           <tr>
-            <td style="padding:12px 16px;">Guitar Center</td>
-            <td style="padding:12px 16px;">Impact.com</td>
-            <td style="padding:12px 16px;">DJ controllers, PA systems, instruments</td>
-            <td style="padding:12px 16px;color:#00d4ff;">Labeled on every page</td>
+            <td style="padding:12px 16px;">Direct brand programs</td>
+            <td style="padding:12px 16px;">Brand-managed</td>
+            <td style="padding:12px 16px;">DJ and music production products</td>
+            <td style="padding:12px 16px;">Visible disclosure and labeled affiliate links</td>
           </tr>
         </tbody>
       </table>
     </div>
-  </div>
-</div>
+  </section>
 
-<div class="section datbotty-ai-section" style="margin-top:40px;">
-  <div class="verdict-box" style="background:#0e1520;border-left:3px solid #00d4ff;padding:20px 24px;border-radius:0 8px 8px 0;">
-    <h2 style="color:#a0c4e0;font-size:1.1rem;margin-bottom:10px;">Our Commitment to You</h2>
-    <p style="color:#c0d0e0;line-height:1.7;font-size:0.95rem;margin-bottom:12px;">
-      Transparency is non-negotiable. Every affiliate link on Offbeat is labeled, every relationship is disclosed, and every recommendation is editorially independent. We built this site to help DJs and producers find the best gear — the affiliate revenue simply keeps the lights on so we can keep doing that.
-    </p>
-    <p style="color:#c0d0e0;line-height:1.7;font-size:0.95rem;margin:0;">
-      If you ever have questions about how we work, please reach out via our <a href="about.html" style="color:#00d4ff;">about / contact page</a>.
-    </p>
-  </div>
-</div>
+  <section class="section" style="margin-top:40px;">
+    <div class="verdict-box" style="background:#0e1520;border-left:3px solid #00d4ff;padding:20px 24px;border-radius:0 8px 8px 0;">
+      <h2 style="color:#a0c4e0;font-size:1.1rem;margin-bottom:10px;">Our Commitment to Readers</h2>
+      <p style="color:#c0d0e0;line-height:1.7;font-size:0.95rem;margin-bottom:12px;">Transparency is the baseline, not a bonus. Every disclosure on this site should help a reader understand when money may change hands and when it does not influence the verdict.</p>
+      <p style="color:#c0d0e0;line-height:1.7;font-size:0.95rem;margin:0;">If you ever see a disclosure that is unclear, missing, or inconsistent with the way a link is presented, tell us through <a href="contact.html" style="color:#00d4ff;">the contact page</a> and we will review it.</p>
+    </div>
+  </section>
 
-<div class="affiliate-cta-box" style="margin-top:40px;background:#0e1520;border:1px solid #1e2d3d;border-radius:12px;padding:24px;text-align:center;">
-  <h2 style="color:#a0c4e0;font-size:1.1rem;margin-bottom:12px;">Reader Favorites</h2>
-  <p style="color:#c0d0e0;line-height:1.7;font-size:0.95rem;margin-bottom:20px;">
-    These are the most-clicked products by Offbeat readers this month. All links below are affiliate links — we may earn a commission at no extra cost to you.
-  </p>
-  <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;">
-    <a href="best-dj-controllers-2026.html" class="affiliate-link" rel="sponsored nofollow" style="display:inline-block;background:#1a2a3a;color:#e0eef8;padding:10px 20px;border-radius:8px;text-decoration:none;font-size:0.9rem;font-weight:600;border:1px solid #2a3a4a;">
-      Best DJ Controllers 2026
-    </a>
-    <a href="best-dj-headphones-2026.html" class="affiliate-link" rel="sponsored nofollow" style="display:inline-block;background:#1a2a3a;color:#e0eef8;padding:10px 20px;border-radius:8px;text-decoration:none;font-size:0.9rem;font-weight:600;border:1px solid #2a3a4a;">
-      Top DJ Headphones
-    </a>
-    <a href="https://www.amazon.com/dp/B098QXY4F2?tag=offbeatdj-20" class="affiliate-link" rel="nofollow sponsored" target="_blank" data-affiliate="amazon" style="display:inline-block;background:#00d4ff;color:#0a0f18;padding:10px 20px;border-radius:8px;text-decoration:none;font-size:0.9rem;font-weight:600;">
-      Shop DJ Gear on Amazon <span class="aff-label" style="font-size:0.75rem;opacity:0.8;">(affiliate link)</span>
-    </a>
-  </div>
-  <!-- Amazon widget container pattern -->
-  <div id="amzn-assoc-ad-offbeat-widget" style="margin-top:20px;"></div>
-  <script type="text/javascript" src="//z-na.amazon-adsystem.com/widgets/onejs?MarketPlace=US&adInstanceId=offbeatdj-20" async></script>
-</div>
-
-<!-- DATBOTTY-AI-CONTENT-END -->
+  <section class="section" style="margin-top:40px;">
+    <div class="affiliate-cta-box" style="background:#0e1520;border:1px solid #1e2d3d;border-radius:12px;padding:24px;">
+      <h2 style="color:#a0c4e0;font-size:1.1rem;margin-bottom:12px;">Example Reader Links</h2>
+      <p style="color:#c0d0e0;line-height:1.7;font-size:0.95rem;margin-bottom:16px;">This page is about disclosure, so these are included as examples of the kind of links readers may encounter elsewhere on the site. Where affiliate relationships apply, they should be labeled before or next to the link.</p>
+      <p style="color:#c0d0e0;line-height:1.7;font-size:0.95rem;margin-bottom:16px;">See our <a href="best-dj-controllers-2026.html" style="color:#00d4ff;">DJ controller guide</a> and <a href="best-dj-headphones-2026.html" style="color:#00d4ff;">DJ headphones guide</a> for full editorial context. If you only want a plain example retailer link, you can <a href="https://www.amazon.com/s?k=dj+controller&tag=offbeatdj-20" rel="nofollow sponsored" target="_blank" style="color:#00d4ff;">check price on Amazon</a> <span class="aff-label">(affiliate link)</span>.</p>
+    </div>
+  </section>
 </main>
 
 <footer>
