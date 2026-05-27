@@ -1,14 +1,14 @@
 {
-  "generated_at": "2026-05-27T15:42:54Z",
+  "generated_at": "2026-05-27T20:18:36Z",
   "live_pages": 173,
   "prs_merged": 18,
   "issues_dispatched": 100,
-  "open_issues": 0,
+  "open_issues": 13,
   "active_workflows": 10,
   "open_prs": 0,
   "pages_up": 0,
   "pages_checked": 10,
-  "last_commit_offbeat": "2026-05-27T15:31:32Z",
-  "last_commit_msg": "fix: replace 14 Amazon search links with direct ASIN links (#930)Convert /s?k=",
-  "last_commit_sha": "a24c2de"
+  "last_commit_offbeat": "2026-05-27T19:20:01Z",
+  "last_commit_msg": "chore: auto-publish AI content [2026-05-27 15:20] (1 files, 1filechanged,25inser",
+  "last_commit_sha": "98325be"
 }
