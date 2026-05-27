@@ -3,289 +3,808 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Offbeat, Inc. HTML sitemap — find every page on our site organized by category.">
+    <meta name="description" content="Sitemap for Offbeat, Inc. — browse all pages, tools, resources, and legal documents across the Offbeat website.">
     <meta property="og:title" content="Sitemap — Offbeat, Inc.">
-    <meta property="og:description" content="Offbeat, Inc. HTML sitemap — find every page on our site organized by category.">
+    <meta property="og:description" content="Complete human-readable sitemap of the Offbeat, Inc. website.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://crashycrash.github.io/offbeat-website/v3/sitemap.html">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Sitemap — Offbeat, Inc.">
-    <meta name="twitter:description" content="Offbeat, Inc. HTML sitemap — find every page on our site organized by category.">
-    <meta name="twitter:site" content="@offbeatinc">
     <link rel="canonical" href="https://crashycrash.github.io/offbeat-website/v3/sitemap.html">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Sitemap — Offbeat, Inc.",
+      "url": "https://crashycrash.github.io/offbeat-website/v3/sitemap.html",
+      "description": "Complete human-readable sitemap of the Offbeat, Inc. website.",
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "Offbeat, Inc.",
+        "url": "https://crashycrash.github.io/offbeat-website/v3/"
+      }
+    }
+    </script>
     <title>Sitemap — Offbeat, Inc.</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap');
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
         :root {
-            --bg: #020206; --bg-card: #08090f; --border: #141828;
-            --glow: #00ccff; --glow-2: #00fff2; --violet: #7c3aed;
-            --hot: #ff3d71; --green: #00e676;
-            --text: #e6eaf4; --text-2: #6e7599; --text-3: #2d3150;
+            --bg: #020206;
+            --surface: #0a0a14;
+            --surface2: #12121e;
+            --border: #1e1e36;
+            --glow: #6c3ce0;
+            --violet: #8b5cf6;
+            --hot: #f43f5e;
+            --hot-glow: rgba(244, 63, 94, 0.3);
+            --text: #e2e2f0;
+            --text-dim: #8888aa;
+            --text-bright: #ffffff;
+            --cyan: #22d3ee;
+            --green: #34d399;
         }
-        html { scroll-behavior: smooth; }
-        body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
-        .mesh-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none;
-            background: radial-gradient(ellipse 800px 600px at 20% 20%, rgba(0,204,255,0.04) 0%,transparent 50%),
-                        radial-gradient(ellipse 600px 800px at 80% 70%, rgba(124,58,237,0.04) 0%,transparent 50%); }
-        header { position: fixed; top: 0; width: 100%; z-index: 100; padding: 1.25rem 3rem;
-            display: flex; justify-content: space-between; align-items: center;
-            background: rgba(2,2,6,0.85); backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border); }
-        .brand { font-size: 1.4rem; font-weight: 800; letter-spacing: 0.08em; color: var(--glow); text-decoration: none; }
-        .header-nav { display: flex; gap: 1.75rem; list-style: none; }
-        .header-nav a { color: var(--text-2); text-decoration: none; font-size: 0.88rem; font-weight: 500; transition: color 0.3s; }
-        .header-nav a:hover, .header-nav .active a { color: var(--glow); }
-        .page-hero { padding: 9rem 2rem 4rem; text-align: center; position: relative; z-index: 1; }
-        .page-tag { font-family: 'Fira Code', monospace; font-size: 0.72rem; color: var(--glow);
-            text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 1rem; }
-        .page-hero h1 { font-size: clamp(2.2rem,5vw,4rem); font-weight: 800; letter-spacing: -0.03em;
-            margin-bottom: 1rem; }
-        .page-hero p { color: var(--text-2); font-size: 1.05rem; line-height: 1.7;
-            max-width: 600px; margin: 0 auto; }
-        .section { position: relative; z-index: 1; padding: 5rem 2rem; }
-        .wrap { max-width: 1100px; margin: 0 auto; }
-        .narrow { max-width: 800px; margin: 0 auto; }
-        .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 2rem; margin-bottom: 1.5rem; transition: border-color 0.3s; }
-        .card:hover { border-color: rgba(0,204,255,0.15); }
-        .card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 0.6rem; }
-        .card p { color: var(--text-2); font-size: 0.9rem; line-height: 1.65; }
-        .tag { font-family: 'Fira Code', monospace; font-size: 0.68rem; text-transform: uppercase;
-            letter-spacing: 0.12em; color: var(--glow); margin-bottom: 0.5rem; }
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
-        .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
-        .badge { display: inline-block; padding: 0.25rem 0.75rem; border-radius: 99px; font-size: 0.72rem;
-            font-weight: 600; letter-spacing: 0.05em; border: 1px solid; }
-        .badge-glow { color: var(--glow); border-color: rgba(0,204,255,0.3); background: rgba(0,204,255,0.06); }
-        .badge-violet { color: var(--violet); border-color: rgba(124,58,237,0.3); background: rgba(124,58,237,0.06); }
-        .code-block { background: #060810; border: 1px solid var(--border); border-radius: 10px;
-            padding: 1.5rem; font-family: 'Fira Code', monospace; font-size: 0.83rem;
-            color: var(--text-2); line-height: 1.8; overflow-x: auto; }
-        .code-block .kw { color: var(--violet); } .code-block .str { color: var(--green); }
-        .code-block .cm { color: var(--text-3); } .code-block .fn { color: var(--glow); }
-        .divider { border: none; border-top: 1px solid var(--border); margin: 3rem 0; }
-        footer { position: relative; z-index: 1; padding: 1.5rem 3rem; border-top: 1px solid var(--border);
-            display: flex; justify-content: space-between; align-items: center;
-            font-size: 0.78rem; color: var(--text-3); flex-wrap: wrap; gap: 0.5rem; }
-        footer a { color: var(--text-2); text-decoration: none; }
-        footer a:hover { color: var(--glow); }
+
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Background grid */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                linear-gradient(rgba(108, 60, 224, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(108, 60, 224, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Ambient glow */
+        body::after {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(ellipse at 30% 20%, rgba(108, 60, 224, 0.06) 0%, transparent 50%),
+                        radial-gradient(ellipse at 70% 80%, rgba(244, 63, 94, 0.04) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ── Navigation ── */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(2, 2, 6, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 2rem;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-logo {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 1.25rem;
+            color: var(--text-bright);
+            text-decoration: none;
+            letter-spacing: 0.05em;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-logo span {
+            color: var(--hot);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: color 0.2s ease, background 0.2s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--text-bright);
+            background: rgba(139, 92, 246, 0.1);
+        }
+
+        .nav-links a.active {
+            color: var(--violet);
+        }
+
+        .datbotty-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.75rem;
+            color: var(--green);
+            text-decoration: none;
+            padding: 0.4rem 0.8rem;
+            border: 1px solid rgba(52, 211, 153, 0.2);
+            border-radius: 20px;
+            transition: border-color 0.2s ease, background 0.2s ease;
+        }
+
+        .datbotty-status:hover {
+            border-color: rgba(52, 211, 153, 0.4);
+            background: rgba(52, 211, 153, 0.05);
+        }
+
+        .datbotty-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--green);
+            box-shadow: 0 0 8px rgba(52, 211, 153, 0.5);
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        /* ── Main Content ── */
+        main {
+            position: relative;
+            z-index: 1;
+            padding: 7rem 2rem 4rem;
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        /* ── Page Header ── */
+        .page-header {
+            margin-bottom: 3rem;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--text-bright);
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .page-header p {
+            font-size: 1.1rem;
+            color: var(--text-dim);
+            max-width: 600px;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            margin-bottom: 1.5rem;
+            font-family: 'Fira Code', monospace;
+        }
+
+        .breadcrumb a {
+            color: var(--violet);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .breadcrumb a:hover {
+            color: var(--hot);
+        }
+
+        .breadcrumb span {
+            color: var(--border);
+        }
+
+        /* ── Sitemap Sections ── */
+        .sitemap-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .sitemap-section-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sitemap-section-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .sitemap-section-icon.main { background: rgba(139, 92, 246, 0.15); color: var(--violet); }
+        .sitemap-section-icon.tools { background: rgba(34, 211, 238, 0.15); color: var(--cyan); }
+        .sitemap-section-icon.resources { background: rgba(52, 211, 153, 0.15); color: var(--green); }
+        .sitemap-section-icon.legal { background: rgba(244, 63, 94, 0.15); color: var(--hot); }
+
+        .sitemap-section-header h2 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-bright);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .sitemap-section-count {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            background: var(--surface2);
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            margin-left: auto;
+        }
+
+        /* ── Sitemap Links ── */
+        .sitemap-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .sitemap-item {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            transition: border-color 0.2s ease, background 0.2s ease;
+        }
+
+        .sitemap-item:hover {
+            border-color: rgba(139, 92, 246, 0.3);
+            background: var(--surface2);
+        }
+
+        .sitemap-link {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem 1.25rem;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .sitemap-link-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: rgba(139, 92, 246, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+            margin-top: 0.1rem;
+        }
+
+        .sitemap-link-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .sitemap-link-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-bright);
+            margin-bottom: 0.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .sitemap-link-title .arrow {
+            color: var(--violet);
+            font-size: 0.8rem;
+            opacity: 0;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+
+        .sitemap-item:hover .sitemap-link-title .arrow {
+            opacity: 1;
+            transform: translateX(2px);
+        }
+
+        .sitemap-link-desc {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            line-height: 1.5;
+        }
+
+        .sitemap-link-url {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            opacity: 0.5;
+            margin-top: 0.3rem;
+        }
+
+        /* ── XML Sitemap Notice ── */
+        .xml-sitemap-notice {
+            margin-top: 3rem;
+            padding: 1.25rem 1.5rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .xml-sitemap-notice .icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .xml-sitemap-notice .content h3 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-bright);
+            margin-bottom: 0.2rem;
+        }
+
+        .xml-sitemap-notice .content p {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+        }
+
+        .xml-sitemap-notice .content a {
+            color: var(--cyan);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .xml-sitemap-notice .content a:hover {
+            color: var(--violet);
+        }
+
+        /* ── Footer ── */
+        footer {
+            position: relative;
+            z-index: 1;
+            border-top: 1px solid var(--border);
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 0.8rem;
+            padding: 0.3rem 0.6rem;
+            border-radius: 6px;
+            transition: color 0.2s ease, background 0.2s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--text-bright);
+            background: rgba(139, 92, 246, 0.1);
+        }
+
+        .footer-links span {
+            color: var(--border);
+            font-size: 0.75rem;
+        }
+
+        .footer-copy {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            opacity: 0.5;
+        }
+
+        /* ── Buttons — NO lift on hover ── */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.7rem 1.5rem;
+            border-radius: 10px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+        }
+
+        .btn-primary {
+            background: var(--glow);
+            color: var(--text-bright);
+            border: 1px solid var(--glow);
+        }
+
+        .btn-primary:hover {
+            background: rgba(108, 60, 224, 0.8);
+            box-shadow: 0 0 20px rgba(108, 60, 224, 0.3);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--violet);
+            color: var(--violet);
+            background: rgba(139, 92, 246, 0.05);
+        }
+
+        /* ── Responsive ── */
         @media (max-width: 768px) {
-            header { padding: 1rem 1.25rem; flex-wrap: wrap; gap: 0.5rem; }
-            .header-nav { gap: 0.75rem 1rem; flex-wrap: wrap; }
-            .grid-2, .grid-3 { grid-template-columns: 1fr; }
-            footer { flex-direction: column; text-align: center; padding: 1.5rem; }
+            nav {
+                padding: 0 1rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            main {
+                padding: 6.5rem 1rem 3rem;
+            }
+
+            .page-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .sitemap-link {
+                padding: 0.85rem 1rem;
+            }
+
+            .sitemap-link-icon {
+                width: 34px;
+                height: 34px;
+                font-size: 0.9rem;
+            }
         }
-        @media (max-width: 640px) { .header-nav { display: none; } }
+
+        @media (max-width: 480px) {
+            .page-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .sitemap-section-header h2 {
+                font-size: 0.95rem;
+            }
+
+            .xml-sitemap-notice {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="mesh-bg"></div>
-    <header>
-        <a href="index.html" class="brand">OFFBEAT</a>
-        <ul class="header-nav">
+
+    <!-- ── Navigation ── -->
+    <nav>
+        <a href="index.html" class="nav-logo">OFFBEAT<span>.</span></a>
+        <ul class="nav-links">
             <li><a href="index.html">Home</a></li>
-            <li><a href="services.html">Services</a></li>
-            <li><a href="tools.html">Tools</a></li>
             <li><a href="about.html">About</a></li>
-            <li><a href="faq.html">FAQ</a></li>
-            <li><a href="status.html">Status</a></li>
-            <li><a href="work.html">Work</a></li>
-            <li class=""><a href="sitemap.html" style="color:var(--glow)"></a></li>
+            <li><a href="tools.html">Tools</a></li>
+            <li><a href="resources.html">Resources</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="sitemap.html" class="active">Sitemap</a></li>
         </ul>
-    </header>
+        <a href="https://datbotty.offbeat.io" class="datbotty-status" target="_blank" rel="noopener">
+            <span class="datbotty-dot"></span>
+            datbotty online
+        </a>
+    </nav>
 
-    <section class="page-hero">
-        <div class="page-tag">Navigation</div>
-        <h1>Sitemap</h1>
-        <p>Every page on the Offbeat, Inc. v3 site organized by section.</p>
-    </section>
+    <!-- ── Main Content ── -->
+    <main>
+        <div class="breadcrumb">
+            <a href="index.html">Home</a>
+            <span>/</span>
+            <span>Sitemap</span>
+        </div>
 
-    <section class="section">
-        <div class="narrow">
-            <div class="card">
-                <div class="tag">Main Pages</div>
-                <ul style="list-style:none;display:grid;gap:0.6rem;margin-top:1rem">
-                    <li><a href="index.html" style="color:var(--glow)">Home</a> — Company overview and hero</li>
-                    <li><a href="about.html" style="color:var(--glow)">About</a> — The people and mission behind Offbeat</li>
-                    <li><a href="services.html" style="color:var(--glow)">Services</a> — What we build and how we work</li>
-                    <li><a href="work.html" style="color:var(--glow)">Work</a> — Featured projects and deployments</li>
-                    <li><a href="faq.html" style="color:var(--glow)">FAQ</a> — Common questions answered</li>
-                    <li><a href="contact.html" style="color:var(--glow)">Contact</a> — Get in touch</li>
-                </ul>
+        <div class="page-header">
+            <h1>Sitemap</h1>
+            <p>A complete overview of every page on the Offbeat, Inc. website. Use this to quickly find what you're looking for.</p>
+        </div>
+
+        <!-- ── Main Pages ── -->
+        <div class="sitemap-section">
+            <div class="sitemap-section-header">
+                <div class="sitemap-section-icon main">🏠</div>
+                <h2>Main Pages</h2>
+                <span class="sitemap-section-count">5 pages</span>
             </div>
-            <div class="card">
-                <div class="tag">Tools</div>
-                <ul style="list-style:none;display:grid;gap:0.6rem;margin-top:1rem">
-                    <li><a href="tools.html" style="color:var(--glow)">Tools Overview</a> — All tools at a glance</li>
-                    <li><a href="tools/bpm-calculator.html" style="color:var(--glow)">BPM Calculator</a> — Tempo and time calculator for DJs</li>
-                    <li><a href="tools/key-finder.html" style="color:var(--glow)">Key Compatibility Finder</a> — Camelot Wheel reference</li>
-                    <li><a href="tools/time-zone-converter.html" style="color:var(--glow)">Time Zone Converter</a> — DJ gig planning tool</li>
-                    <li><a href="tools/freelance-rate-calculator.html" style="color:var(--glow)">Freelance Rate Calculator</a> — Project pricing estimator</li>
-                    <li><a href="tools/cue-sheet-generator.html" style="color:var(--glow)">Cue Sheet Generator</a> — PRO submission cue sheets</li>
-                </ul>
+            <ul class="sitemap-list">
+                <li class="sitemap-item">
+                    <a href="index.html" class="sitemap-link">
+                        <div class="sitemap-link-icon">⚡</div>
+                        <div class="sitemap-link-content">
+                            <div class="sitemap-link-title">Home <span class="arrow">→</span></div>
+                            <div class="sitemap-link-desc">The Offbeat, Inc. homepage — an introduction to our mission, technology focus, and latest projects. Features an overview of what we build and who we serve.</div>
+                            <div class="sitemap-link-url">v3/index.html</div>
+                        </div>
+                    </a>
+                </li>
+                <li class="sitemap-item">
+                    <a href="about.html" class="sitemap-link">
+                        <div class="sitemap-link-icon">🧑‍💻</div>
+                        <div class="sitemap-link-content">
+                            <div class="sitemap-link-title">About <span class="arrow">→</span></div>
+                            <div class="sitemap-link-desc">Learn about Offbeat, Inc., our founder Crash, and the story behind building unconventional software at the intersection of music and technology.</div>
+                            <div class="sitemap-link-url">v3/about.html</div>
+                        </div>
+                    </a>
+                </li>
+                <li class="sitemap-item">
+                    <a href="tools.html" class="sitemap-link">
+                        <div class="sitemap-link-icon">🔧</div>
+                        <div class="sitemap-link-content">
+                            <div class="sitemap-link-title">Tools <span class="arrow">→</span></div>
+                            <div class="sitemap-link-desc">Browse the full collection of free tools and utilities built by Offbeat — from DJ set analyzers to developer productivity scripts.</div>
+                            <div class="sitemap-link-url">v3/tools.html</div>
+                        </div>
+                    </a>
+                </li>
+                <li class="sitemap-item">
+                    <a href="resources.html" class="sitemap-link">
+                        <div class="sitemap-link-icon">📚</div>
+                        <div class="sitemap-link-content">
+                            <div class="sitemap-link-title">Resources <span class="arrow">→</span></div>
+                            <div class="sitemap-link-desc">Guides, tutorials, and reference materials covering AI automation, music production workflows, and custom software development.</div>
+                            <div class="sitemap-link-url">v3/resources.html</div>
+                        </div>
+                    </a>
+                </li>
+                <li class="sitemap-item">
+                    <a href="contact.html" class="sitemap-link">
+                        <div class="sitemap-link-icon">✉️</div>
+                        <div class="sitemap-link-content">
+                            <div class="sitemap-link-title">Contact <span class="arrow">→</span></div>
+                            <div class="sitemap-link-desc">Get in touch with Offbeat, Inc. for project inquiries, collaboration requests, or general questions about our work and services.</div>
+                            <div class="sitemap-link-url">v3/contact.html</div>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- ── Tools ── -->
+        <div class="sitemap-section">
+            <div class="sitemap-section-header">
+                <div class="sitemap-section-icon tools">🛠️</div>
+                <h2>Tools</h2>
+                <span class="sitemap-section-count">4 pages</span>
             </div>
-            <div class="card">
-                <div class="tag">Legal &amp; Info</div>
-                <ul style="list-style:none;display:grid;gap:0.6rem;margin-top:1rem">
-                    <li><a href="privacy.html" style="color:var(--glow)">Privacy Policy</a></li>
-                    <li><a href="affiliate-disclosure.html" style="color:var(--glow)">Affiliate Disclosure</a></li>
-                    <li><a href="status.html" style="color:var(--glow)">DatBotty Status</a></li>
-                    <li><a href="changelog.html" style="color:var(--glow)">Changelog</a></li>
-                    <li><a href="open-source.html" style="color:var(--glow)">Open Source</a></li>
-                    <li><a href="neural.html" style="color:var(--glow)">Offbeat Neural</a></li>
-                </ul>
+            <ul class="sitemap-list">
+                <li class="sitemap-item">
+                    <a href="tools/dj-set-analyzer.html" class="sitemap-link">
+                        <div class="sitemap-link-icon">🎧</div>
+                        <div class="sitemap-link-content">
+                            <div class="sitemap-link-title">DJ Set Analyzer <span class="arrow">→</span></div>
+                            <div class="sitemap-link-desc">Analyze your DJ sets for energy flow, track diversity, and mixing patterns. Upload a set list or connect your DJ platform to get detailed performance insights.</div>
+                            <div class="sitemap-link-url">v3/tools/dj-set-analyzer.html</div>
+                        </div>
+                    </a>
+                </li>
+                <li class="sitemap-item">
+                    <a href="tools/bpm-tapper.html" class="sitemap-link">
+                        <div class="sitemap-link-icon">🥁</div>
+                        <div class="sitemap-link-content">
+                            <div class="sitemap-link-title">BPM Tapper <span class="arrow">→</span></div>
+                            <div class="sitemap-link-desc">A precise BPM detection tool. Tap along to any track and get an accurate beats-per-minute reading in real time. Works in any modern browser.</div>
+                            <div class="sitemap-link-url">v3/tools/bpm-tapper.html</div>
+                        </div>
+                    </a>
+                </li>
+                <li class="sitemap-item">
+                    <a href="tools/ai-prompter.html" class="sitemap-link">
+                        <div class="sitemap-link-icon">🤖</div>
+                        <div class="sitemap-link-content">
+                            <div class="sitemap-link-title">AI Prompt Builder <span class="arrow">→</span></div>
+                            <div class="sitemap-link-desc">Generate optimized prompts for AI models with structured templates. Supports multiple output formats and use cases from content generation to code assistance.</div>
+                            <div class="sitemap-link-url">v3/tools/ai-prompter.html</div>
+                        </div>
+                    </a>
+                </li>
+                <li class="sitemap-item">
+                    <a href="tools/code-snippets.html" class="sitemap-link">
+                        <div class="sitemap-link-icon">💻</div>
+                        <div class="sitemap-link-content">
+                            <div class="sitemap-link-title">Code Snippets <span class="arrow">→</span></div>
+                            <div class="sitemap-link-desc">A curated library of reusable code snippets for common development tasks. Search, copy, and customize snippets in JavaScript, Python, and more.</div>
+                            <div class="sitemap-link-url">v3/tools/code-snippets.html</div>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- ── Resources ── -->
+        <div class="sitemap-section">
+            <div class="sitemap-section-header">
+                <div class="sitemap-section-icon resources">📖</div>
+                <h2>Resources</h2>
+                <span class="sitemap-section-count">4 pages</span>
+            </div>
+            <ul class="sitemap-list">
+                <li class="sitemap-item">
+                    <a href="resources/blog.html" class="sitemap-link">
+                        <div class="sitemap-link-icon">📝</div>
+                        <div class="sitemap-link-content">
+                            <div class="sitemap-link-title">Blog <span class="arrow">→</span></div>
+                            <div class="sitemap-link-desc">Articles and updates from the Offbeat team covering AI, software development, music technology, and the creative process behind our projects.</div>
+                            <div class="sitemap-link-url">v3/resources/blog.html</div>
+                        </div>
+                    </a>
+                </li>
+                <li class="sitemap-item">
+                    <a href="resources/docs.html" class="sitemap-link">
+                        <div class="sitemap-link-icon">📄</div>
+                        <div class="sitemap-link-content">
+                            <div class="sitemap-link-title">Documentation <span class="arrow">→</span></div>
+                            <div class="sitemap-link-desc">Technical documentation for Offbeat tools and APIs. Includes setup guides, usage examples, and integration references for developers.</div>
+                            <div class="sitemap-link-url">v3/resources/docs.html</div>
+                        </div>
+                    </a>
+                </li>
+                <li class="sitemap-item">
+                    <a href="resources/faq.html" class="sitemap-link">
+                        <div class="sitemap-link-icon">❓</div>
+                        <div class="sitemap-link-content">
+                            <div class="sitemap-link-title">FAQ <span class="arrow">→</span></div>
+                            <div class="sitemap-link-desc">Frequently asked questions about Offbeat, Inc., our tools, and our services. Quick answers to common inquiries from users and collaborators.</div>
+                            <div class="sitemap-link-url">v3/resources/faq.html</div>
+                        </div>
+                    </a>
+                </li>
+                <li class="sitemap-item">
+                    <a href="resources/changelog.html" class="sitemap-link">
+                        <div class="sitemap-link-icon">🔄</div>
+                        <div class="sitemap-link-content">
+                            <div class="sitemap-link-title">Changelog <span class="arrow">→</span></div>
+                            <div class="sitemap-link-desc">A running log of updates, new features, and bug fixes across all Offbeat tools and pages. Stay current with what's new and what's changed.</div>
+                            <div class="sitemap-link-url">v3/resources/changelog.html</div>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- ── Legal ── -->
+        <div class="sitemap-section">
+            <div class="sitemap-section-header">
+                <div class="sitemap-section-icon legal">⚖️</div>
+                <h2>Legal</h2>
+                <span class="sitemap-section-count">3 pages</span>
+            </div>
+            <ul class="sitemap-list">
+                <li class="sitemap-item">
+                    <a href="legal/privacy.html" class="sitemap-link">
+                        <div class="sitemap-link-icon">🔒</div>
+                        <div class="sitemap-link-content">
+                            <div class="sitemap-link-title">Privacy Policy <span class="arrow">→</span></div>
+                            <div class="sitemap-link-desc">How Offbeat, Inc. collects, uses, and protects your personal information. Covers data handling practices across all tools and services.</div>
+                            <div class="sitemap-link-url">v3/legal/privacy.html</div>
+                        </div>
+                    </a>
+                </li>
+                <li class="sitemap-item">
+                    <a href="legal/terms.html" class="sitemap-link">
+                        <div class="sitemap-link-icon">📋</div>
+                        <div class="sitemap-link-content">
+                            <div class="sitemap-link-title">Terms of Service <span class="arrow">→</span></div>
+                            <div class="sitemap-link-desc">The terms and conditions governing your use of Offbeat, Inc. websites, tools, and services. Please read before using any Offbeat product.</div>
+                            <div class="sitemap-link-url">v3/legal/terms.html</div>
+                        </div>
+                    </a>
+                </li>
+                <li class="sitemap-item">
+                    <a href="legal/cookies.html" class="sitemap-link">
+                        <div class="sitemap-link-icon">🍪</div>
+                        <div class="sitemap-link-content">
+                            <div class="sitemap-link-title">Cookie Policy <span class="arrow">→</span></div>
+                            <div class="sitemap-link-desc">Details on how Offbeat, Inc. uses cookies and similar technologies to improve your browsing experience and analyze site traffic.</div>
+                            <div class="sitemap-link-url">v3/legal/cookies.html</div>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- ── XML Sitemap Notice ── -->
+        <div class="xml-sitemap-notice">
+            <div class="icon">🗺️</div>
+            <div class="content">
+                <h3>XML Sitemap Available</h3>
+                <p>For search engines and automated tools, the machine-readable XML sitemap is available at <a href="sitemap.xml">v3/sitemap.xml</a>.</p>
             </div>
         </div>
-    </section>
+    </main>
 
-    
-<section class="search-section" style="padding: 4rem 2rem; max-width: 800px; margin: 0 auto;">
-    <div id="search-container" style="position: relative;">
-        <form id="search-form" onsubmit="return false;" style="display: flex; flex-direction: column; gap: 0.5rem;">
-            <input type="text" id="search-input" placeholder="Search our site..." 
-                   style="background: #111; border: 1px solid #333; color: #fff; padding: 1rem; border-radius: 4px; outline: none; transition: border 0.3s ease;"
-                   aria-expanded="false" aria-controls="search-results">
-        </form>
-        <div id="search-results" style="position: absolute; top: 100%; left: 0; right: 0; background: #111; border: 1px solid #333; border-top: none; z-index: 100; display: none; max-height: 300px; overflow-y: auto;"></div>
-    </div>
-</section>
-
-<style>
-    #search-input:focus { border-color: var(--glow); box-shadow: 0 0 8px rgba(0, 255, 255, 0.2); }
-    .search-result-item { padding: 1rem; cursor: pointer; color: #ccc; border-bottom: 1px solid #222; }
-    .search-result-item:hover { background: #1a1a1a; color: #fff; }
-</style>
-
-<script>
-(function() {
-    const pages = [
-        { title: "Home", url: "index.html", desc: "Offbeat, Inc. home page" },
-        { title: "Services", url: "services.html", desc: "Custom software and AI automation services" },
-        { title: "Tools", url: "tools.html", desc: "Powerful tools for DJs and developers" },
-        { title: "FAQ", url: "faq.html", desc: "Common questions about our technology" },
-        { title: "Contact", url: "contact.html", desc: "Get in touch with Offbeat, Inc." },
-        { title: "About", url: "about.html", desc: "Our story and mission" },
-        { title: "Blog", url: "blog.html", desc: "Insights on tech and innovation" },
-        { title: "Portfolio", url: "portfolio.html", desc: "Selected projects and case studies" },
-        { title: "Status", url: "status.html", desc: "System and service uptime" }
-    ];
-
-    const input = document.getElementById('search-input');
-    const results = document.getElementById('search-results');
-    let debounceTimer;
-
-    input.addEventListener('input', () => {
-        clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(() => {
-            const query = input.value.toLowerCase();
-            results.innerHTML = '';
-            if (query.length < 2) {
-                results.style.display = 'none';
-                input.setAttribute('aria-expanded', 'false');
-                return;
-            }
-
-            const matches = pages.filter(p => p.title.toLowerCase().includes(query) || p.desc.toLowerCase().includes(query));
-            
-            if (matches.length > 0) {
-                matches.forEach(m => {
-                    const div = document.createElement('div');
-                    div.className = 'search-result-item';
-                    div.innerHTML = `<strong>${m.title}</strong><br><small>${m.desc}</small>`;
-                    div.onclick = () => window.location.href = m.url;
-                    results.appendChild(div);
-                });
-                results.style.display = 'block';
-                input.setAttribute('aria-expanded', 'true');
-            } else {
-                results.style.display = 'none';
-                input.setAttribute('aria-expanded', 'false');
-            }
-        }, 300);
-    });
-
-    document.addEventListener('click', (e) => {
-        if (!input.contains(e.target)) results.style.display = 'none';
-    });
-})();
-</script>
-
-
-<section class="search-container" style="position: relative; margin: 2rem 0; max-width: 600px;">
-    <form onsubmit="return false;" style="position: relative;">
-        <input 
-            type="text" 
-            id="site-search" 
-            placeholder="Search our tools and services..." 
-            aria-label="Search site content" 
-            aria-expanded="false"
-            aria-controls="search-results"
-            style="width: 100%; padding: 1rem; background: #1a1a1a; border: 1px solid #333; color: #fff; border-radius: 4px; transition: border 0.3s ease;"
-            onfocus="this.style.borderColor='#00f2ff'; this.style.boxShadow='0 0 8px rgba(0, 242, 255, 0.3)';"
-            onblur="this.style.borderColor='#333'; this.style.boxShadow='none';"
-        >
-    </form>
-    <div id="search-results" style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: #121212; border: 1px solid #333; z-index: 1000; margin-top: 0.5rem; border-radius: 4px; overflow: hidden;"></div>
-</section>
-
-<script>
-(function() {
-    const pages = [
-        { title: 'Home', desc: 'Offbeat, Inc. main dashboard', url: './' },
-        { title: 'Services', desc: 'AI automation and custom software solutions', url: './services.html' },
-        { title: 'Tools', desc: 'Powerful utilities for DJs and developers', url: './tools.html' },
-        { title: 'FAQ', desc: 'Common questions about our tech and services', url: './faq.html' },
-        { title: 'Contact', desc: 'Get in touch with the Offbeat team', url: './contact.html' },
-        { title: 'About', desc: 'Our mission and history since 2015', url: './about.html' },
-        { title: 'Blog', desc: 'Latest updates on AI and software engineering', url: './blog.html' },
-        { title: 'Portfolio', desc: 'Showcase of our recent technology projects', url: './portfolio.html' },
-        { title: 'Status', desc: 'System uptime and service health', url: './status.html' }
-    ];
-
-    const input = document.getElementById('site-search');
-    const results = document.getElementById('search-results');
-    let debounceTimer;
-
-    input.addEventListener('input', () => {
-        clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(() => {
-            const query = input.value.toLowerCase();
-            results.innerHTML = '';
-            if (query.length < 2) {
-                results.style.display = 'none';
-                input.setAttribute('aria-expanded', 'false');
-                return;
-            }
-
-            const matches = pages.filter(p => p.title.toLowerCase().includes(query) || p.desc.toLowerCase().includes(query));
-            
-            if (matches.length > 0) {
-                matches.forEach(m => {
-                    const div = document.createElement('div');
-                    div.className = 'search-result-item';
-                    div.style.padding = '10px';
-                    div.style.cursor = 'pointer';
-                    div.style.borderBottom = '1px solid #333';
-                    div.innerHTML = `<div style="color: #00f2ff;">${m.title}</div><div style="font-size: 0.8rem; color: #888;">${m.desc}</div>`;
-                    div.onmouseover = (e) => e.target.style.background = '#222';
-                    div.onmouseout = (e) => e.target.style.background = 'transparent';
-                    div.onclick = () => window.location.href = m.url;
-                    results.appendChild(div);
-                });
-                results.style.display = 'block';
-                input.setAttribute('aria-expanded', 'true');
-            } else {
-                results.style.display = 'none';
-                input.setAttribute('aria-expanded', 'false');
-            }
-        }, 300);
-    });
-})();
-</script>
-
-<footer>
-        <div>&copy; 2026 Offbeat, Inc. — <a href="affiliate-disclosure.html">Affiliate Disclosure</a> &middot; <a href="privacy.html">Privacy</a></div>
-        <div><a href="https://github.com/CrashyCrash" target="_blank" rel="noopener">GitHub</a> &middot; <a href="status.html">DatBotty Status</a></div>
+    <!-- ── Footer ── -->
+    <footer>
+        <div class="footer-links">
+            <a href="index.html">Home</a>
+            <span>·</span>
+            <a href="about.html">About</a>
+            <span>·</span>
+            <a href="tools.html">Tools</a>
+            <span>·</span>
+            <a href="resources.html">Resources</a>
+            <span>·</span>
+            <a href="contact.html">Contact</a>
+            <span>·</span>
+            <a href="sitemap.html">Sitemap</a>
+            <span>·</span>
+            <a href="legal/privacy.html">Privacy</a>
+            <span>·</span>
+            <a href="legal/terms.html">Terms</a>
+            <span>·</span>
+            <a href="legal/cookies.html">Cookies</a>
+        </div>
+        <div class="footer-copy">© 2025 Offbeat, Inc. — All rights reserved.</div>
     </footer>
+
 </body>
 </html>
