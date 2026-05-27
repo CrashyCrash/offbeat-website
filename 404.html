@@ -8,13 +8,9 @@
   <link rel="stylesheet" href="assets/style.css">
   <style>
     .error-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 60vh;
-      text-align: center;
-      padding: 3rem 1rem;
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 3rem 1rem 4rem;
     }
     .big404 {
       font-size: clamp(5rem, 15vw, 9rem);
@@ -26,13 +22,76 @@
       line-height: 1;
       margin-bottom: 1rem;
     }
-    .error-msg { font-size: 1.25rem; color: var(--text); margin-bottom: 0.5rem; }
-    .redirect-msg { color: var(--muted); font-size: 0.95rem; margin-bottom: 2rem; }
+    .error-top {
+      text-align: center;
+      padding: 1.5rem 1rem 2.25rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      background: rgba(255,255,255,0.03);
+    }
+    .error-msg { font-size: 1.15rem; color: var(--text); margin: 0.25rem 0 1.25rem; }
+    .helper { color: var(--muted); font-size: 0.95rem; margin: 0.5rem 0 0; }
+    .search-wrap {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 0.75rem;
+      max-width: 640px;
+      margin: 1.25rem auto 0;
+    }
+    .search-wrap input[type="search"] {
+      width: 100%;
+      padding: 0.85rem 0.95rem;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(0,0,0,0.25);
+      color: var(--text);
+    }
+    .search-wrap button {
+      padding: 0.85rem 1.05rem;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.06);
+      color: var(--text);
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .recovery-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      margin: 2.25rem 0;
+    }
+    .recovery-card {
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 1.25rem;
+      background: rgba(255,255,255,0.02);
+    }
+    .recovery-card h2 { margin-top: 0; }
+    .recovery-card ul { margin: 0.75rem 0 0; padding-left: 1.1rem; }
+    .recovery-card li { margin: 0.35rem 0; }
+    .broken-link {
+      margin: 0 0 2rem;
+      padding: 1rem 1.25rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      background: rgba(255,255,255,0.02);
+    }
+    .faq details {
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 0.85rem 1rem;
+      background: rgba(255,255,255,0.02);
+      margin: 0.75rem 0;
+    }
+    .faq summary { cursor: pointer; font-weight: 700; }
+    .faq p { margin: 0.75rem 0 0; color: var(--text); }
+    @media (max-width: 820px) {
+      .recovery-grid { grid-template-columns: 1fr; }
+      .search-wrap { grid-template-columns: 1fr; }
+    }
     @media (max-width: 600px) { .big404 { font-size: 5rem; } }
   </style>
-  <script>
-    setTimeout(function() { window.location.href = "/"; }, 5000);
-  </script>
 </head>
 <body>
 <nav>
@@ -48,6 +107,11 @@
   </div>
 </nav>
 <div class="hero">
+  <img class="page-hero-img"
+       src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?ixlib=rb-4.1.0&w=900&h=380&fit=crop&q=80"
+       alt="DJ controller and headphones on a desk"
+       width="900" height="380"
+       loading="eager" decoding="async">
   <div class="hero-eyebrow">DJ &amp; Music Gear Guide</div>
   <h1><span class="gradient-text">404 —</span> Page Not Found</h1>
   <div class="hero-meta">
@@ -57,12 +121,106 @@
   </div>
 </div>
 
-<div class="error-container">
-  <div class="big404">404</div>
-  <div class="error-msg">This page doesn't exist (yet).</div>
-  <div class="redirect-msg">Redirecting to home in <span id="countdown">5</span> seconds...</div>
-  <a class="btn-primary" href="/">Go Home Now</a>
-</div>
+<main class="error-container" id="top">
+  <section class="error-top" aria-labelledby="not-found-title">
+    <div class="big404" aria-hidden="true">404</div>
+    <h2 id="not-found-title" style="margin:0.25rem 0 0;">We couldn’t find that page.</h2>
+    <p class="error-msg">The link may be broken, or the page may have been renamed.</p>
+    <a class="btn-primary" href="/">Go Home</a>
+
+    <form class="search-wrap" role="search" aria-label="Search Offbeat pages" onsubmit="return false;" style="margin-top:1.5rem;">
+      <input id="siteSearch" type="search" inputmode="search" autocomplete="off" placeholder="Search pages (e.g., controllers, software, headphones…)" aria-label="Search pages">
+      <button type="submit">Search</button>
+    </form>
+    <p class="helper">Tip: try searching for <strong>controllers</strong>, <strong>software</strong>, <strong>headphones</strong>, <strong>mixers</strong>, or <strong>beginner DJ setup</strong>.</p>
+  </section>
+
+  <section class="recovery-grid" aria-label="Recovery options">
+    <div class="recovery-card">
+      <h2>Popular pages</h2>
+      <ul id="popularPages">
+        <li><a href="best-dj-controllers-2026.html">Best DJ Controllers (2026)</a></li>
+        <li><a href="best-dj-controllers-under-200.html">Best DJ Controllers Under $200</a></li>
+        <li><a href="best-dj-software-beginners-2026.html">Best DJ Software for Beginners (2026)</a></li>
+        <li><a href="best-free-dj-software-2026.html">Best Free DJ Software (2026)</a></li>
+        <li><a href="best-dj-headphones-2026.html">Best DJ Headphones (2026)</a></li>
+        <li><a href="best-dj-mixers-2026.html">Best DJ Mixers (2026)</a></li>
+        <li><a href="best-dj-turntables-2026.html">Best DJ Turntables (2026)</a></li>
+        <li><a href="beginner-dj-setup-guide-2026.html">Beginner DJ Setup Guide (2026)</a></li>
+        <li><a href="dj-equipment-beginners.html">DJ Equipment for Beginners</a></li>
+        <li><a href="dj-equipment-checklist.html">DJ Equipment Checklist</a></li>
+        <li><a href="how-to-start-djing.html">How to Start DJing</a></li>
+        <li><a href="how-to-become-a-dj.html">How to Become a DJ</a></li>
+        <li><a href="best-online-dj-courses.html">Best Online DJ Courses</a></li>
+        <li><a href="dj-affiliate-programs-guide.html">Best DJ Affiliate Programs</a></li>
+        <li><a href="about.html">About Offbeat Inc.</a></li>
+        <li><a href="disclosure.html">Affiliate Disclosure</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+
+    <div class="recovery-card">
+      <h2>Browse by category</h2>
+      <ul id="browseCategories">
+        <li><a href="best-dj-controllers-2026.html">Controllers</a></li>
+        <li><a href="best-dj-software-beginners-2026.html">DJ Software</a></li>
+        <li><a href="best-dj-headphones-2026.html">DJ Headphones</a></li>
+        <li><a href="best-dj-mixers-2026.html">Mixers</a></li>
+        <li><a href="best-dj-turntables-2026.html">Turntables</a></li>
+        <li><a href="how-to-start-djing.html">Learn DJing</a></li>
+        <li><a href="dj-affiliate-programs-guide.html">Affiliate Programs</a></li>
+        <li><a href="best-music-production-software-2026.html">Music Production</a></li>
+      </ul>
+
+      <h2 style="margin-top:1.5rem;">Quick start: beginner DJ gear</h2>
+      <p style="color:var(--muted);margin:0.5rem 0 0;">If you were hunting for a product page, start with these guides — or jump straight to a gear search.</p>
+      <ul>
+        <li><a href="beginner-dj-setup-guide-2026.html">Beginner DJ Setup Guide</a></li>
+        <li><a href="best-dj-controllers-under-200.html">Controllers under $200 (best value)</a></li>
+        <li><a href="best-dj-headphones-under-100-2026.html">Headphones under $100</a></li>
+        <li><a href="https://www.amazon.com/s?k=dj+controller&tag=offbeatdj-20" rel="nofollow sponsored" target="_blank">Check price: DJ controllers on Amazon →</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="broken-link" aria-label="Report a broken link">
+    <p style="margin:0;">Found a broken link? Email us: <a href="mailto:hello@offbeatinc.com?subject=Broken%20link%20report%20(Offbeat%20Inc.)">hello@offbeatinc.com</a>. If you can, include the URL you tried to open and where you clicked it from.</p>
+  </section>
+
+  <section class="faq" aria-labelledby="faq-title">
+    <h2 id="faq-title">FAQ</h2>
+
+    <details>
+      <summary>Why did I land on a 404 page?</summary>
+      <p>Usually it’s a typo, an outdated bookmark, or a page we renamed when we updated a guide. Try the search box above, or pick a category that matches what you were looking for.</p>
+    </details>
+
+    <details>
+      <summary>Was the page removed?</summary>
+      <p>Sometimes older reviews get replaced by newer versions (for example, “Best DJ Controllers 2026”). If you were trying to find a specific model review, the <a href="best-dj-controllers-2026.html">Controllers hub</a> is the fastest recovery path.</p>
+    </details>
+
+    <details>
+      <summary>I’m brand new — what should I read first?</summary>
+      <p>Start with the <a href="beginner-dj-setup-guide-2026.html">Beginner DJ Setup Guide</a>, then pick either <a href="best-dj-controllers-under-200.html">controllers under $200</a> (best value) or <a href="best-dj-headphones-under-100-2026.html">headphones under $100</a> (quick win).</p>
+    </details>
+
+    <details>
+      <summary>Do you have a site map?</summary>
+      <p>Not yet. Until we publish one, the “Popular pages” list above is the best shortcut to the major hubs.</p>
+    </details>
+
+    <details>
+      <summary>How do I report an error on a guide?</summary>
+      <p>Please send us the correction details via <a href="contact.html">Contact</a> or email. We prioritize official sources (manufacturer manuals, changelogs, spec sheets) when updating pages.</p>
+    </details>
+
+    <details>
+      <summary>Do you cover music production gear too?</summary>
+      <p>Yes — we also publish music production guides. Start with <a href="best-music-production-software-2026.html">music production software</a> and <a href="best-studio-monitors.html">studio monitors</a>.</p>
+    </details>
+  </section>
+</main>
 <footer>
   <div class="footer-nav-grid">
     <div class="footer-col">
@@ -173,10 +331,26 @@
   </div>
 </footer>
 <script>
-  let s = 5;
-  const el = document.getElementById('countdown');
-  setInterval(() => { if (--s >= 0) el.textContent = s; }, 1000);
+  const search = document.getElementById('siteSearch');
+  const lists = [
+    document.getElementById('popularPages'),
+    document.getElementById('browseCategories'),
+  ].filter(Boolean);
+
+  function filterLinks(query) {
+    const q = (query || '').trim().toLowerCase();
+    for (const ul of lists) {
+      const items = ul.querySelectorAll('li');
+      for (const li of items) {
+        const text = (li.textContent || '').toLowerCase();
+        li.style.display = q && !text.includes(q) ? 'none' : '';
+      }
+    }
+  }
+
+  if (search) {
+    search.addEventListener('input', (e) => filterLinks(e.target.value));
+  }
 </script>
 </body>
-</html>
 </html>
