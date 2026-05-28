@@ -369,6 +369,40 @@
         <p style="color: #ccc; line-height: 1.6;">Executing a comprehensive content audit to resolve self-referential H2 headers and structural redundancies. By enriching our affiliate guides with data-backed performance metrics and specific conversion strategies, we aim to increase average content depth to 2,500+ words per guide, ensuring superior user utility and SEO authority.</p>
     </div>
 
+
+<div class="roadmap-item" style="margin-bottom: 30px; border-left: 2px solid #00f2ff; padding-left: 20px;">
+        <h3 style="color: #fff; margin-bottom: 10px;">Phase 9: Internationalization and SEO Infrastructure</h3>
+        <p style="color: #ccc; line-height: 1.6;">Finalizing global accessibility by implementing standardized language metadata across the v3 documentation suite. By establishing precise hreflang tags and language declarations, we ensure search engines correctly index our resources, providing a seamless experience for our international developer and DJ communities while improving our global search authority.</p>
+    </div>
+
+<script>
+    // Injecting SEO metadata dynamically to ensure compliance across all v3 pages
+    (function() {
+        if (!document.documentElement.hasAttribute('lang')) {
+            document.documentElement.setAttribute('lang', 'en');
+        }
+
+        const head = document.head;
+
+        const langMeta = document.createElement('meta');
+        langMeta.name = 'language';
+        langMeta.content = 'English';
+        head.appendChild(langMeta);
+
+        const hreflangSelf = document.createElement('link');
+        hreflangSelf.rel = 'alternate';
+        hreflangSelf.hreflang = 'en';
+        hreflangSelf.href = window.location.href;
+        head.appendChild(hreflangSelf);
+
+        const hreflangDefault = document.createElement('link');
+        hreflangDefault.rel = 'alternate';
+        hreflangDefault.hreflang = 'x-default';
+        hreflangDefault.href = 'https://crashycrash.github.io/offbeat-website/v3/';
+        head.appendChild(hreflangDefault);
+    })();
+</script>
+
 <footer>
         <div class="footer-links">
             <a href="index.html">Home</a>
