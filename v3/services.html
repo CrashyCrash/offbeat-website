@@ -688,6 +688,109 @@
     })();
 </script>
 
+
+<div class="hero__search">
+    <div class="container">
+        <div class="search-container">
+            <input type="search" id="search-input" placeholder="Search Offbeat, Inc."
+                title="Use the 'Enter' key to search or 'Esc' to close" aria-label="Search Offbeat, Inc."
+                class="input input--text input--small input--search input--shadow">
+            <button class="input__button input__button--shadow" aria-expanded="false">
+                <svg class="input__icon input__icon--search" viewBox="0 0 24 24" width="24" height="24">
+                    <path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                        stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+            </button>
+        </div>
+        <div class="results-container" aria-hidden="true">
+            <ul>
+                <li>
+                    <span class="results-item__content results-item__content--highlight">About Us</span>
+                </li>
+                <li>
+                    <span class="results-item__content results-item__content--highlight">Contact Us</span>
+                </li>
+                <li>
+                    <span class="results-item__content results-item__content--highlight">FAQ</span>
+                </li>
+                <li>
+                    <span class="results-item__content results-item__content--highlight">Portfolios</span>
+                </li>
+                <li>
+                    <span class="results-item__content results-item__content--highlight">Services</span>
+                </li>
+                <li>
+                    <span class="results-item__content results-item__content--highlight">Tools</span>
+                </li>
+                <li>
+                    <span class="results-item__content results-item__content--highlight">Status</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script>
+    const searchInput = document.getElementById('search-input');
+    const resultsContainer = document.querySelector('.results-container');
+
+    const searchItems = [
+        { title: 'About Us', description: 'Learn more about our company' },
+        { title: 'Contact Us', description: 'Get in touch with our team' },
+        { title: 'FAQ', description: 'Frequently asked questions' },
+        { title: 'Portfolios', description: 'View our portfolios' },
+        { title: 'Services', description: 'Discover our services' },
+        { title: 'Tools', description: 'Explore our tools' },
+        { title: 'Status', description: 'Check our status' },
+    ];
+
+    const debounceTimeout = null;
+
+    searchInput.addEventListener('input', () => {
+        if (debounceTimeout) {
+            clearTimeout(debounceTimeout);
+        }
+        debounceTimeout = setTimeout(search, 300);
+    });
+
+    searchInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            resultsContainer.classList.remove('results-container--visible');
+            resultsContainer.setAttribute('aria-hidden', 'true');
+        }
+    });
+
+    function search() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const matchingItems = searchItems.filter((item) => {
+            const titleMatches = item.title.toLowerCase().includes(searchTerm);
+            const descriptionMatches = item.description.toLowerCase().includes(searchTerm);
+            return titleMatches || descriptionMatches;
+        });
+
+        if (matchingItems.length > 0) {
+            resultsContainer.classList.add('results-container--visible');
+            resultsContainer.setAttribute('aria-hidden', 'false');
+            const listItems = matchingItems.map((item, index) => {
+                return `
+                    <li>
+                        <span class="results-item__content results-item__content--highlight">${item.title}</span>
+                    </li>
+                `;
+            }).join('');
+            resultsContainer.innerHTML = `
+                <ul>
+                    ${listItems}
+                </ul>
+            `;
+        } else {
+            resultsContainer.classList.remove('results-container--visible');
+            resultsContainer.setAttribute('aria-hidden', 'true');
+            resultsContainer.innerHTML = '';
+        }
+    }
+</script>
+
 <footer>
         &copy; 2024 <span>Offbeat, Inc.</span> — Powered by <span>DatBotty v2</span><br>
         <span class="footer-last-updated">Last updated: April 16, 2026</span>
