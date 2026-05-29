@@ -1,5 +1,7 @@
 User-agent: *
 Allow: /
 Disallow: /internal/
+Disallow: /datbotty-status.html
+Disallow: /404.html
 
 Sitemap: https://offbeatinc.com/sitemap.xml
