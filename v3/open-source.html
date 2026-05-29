@@ -383,6 +383,31 @@
     })();
 </script>
 
+
+<script>
+    // Injecting SEO metadata dynamically to ensure compliance across all v3 pages
+    (function() {
+        const head = document.head;
+
+        const langMeta = document.createElement('meta');
+        langMeta.name = 'language';
+        langMeta.content = 'English';
+        head.appendChild(langMeta);
+
+        const hreflangSelf = document.createElement('link');
+        hreflangSelf.rel = 'alternate';
+        hreflangSelf.hreflang = 'en';
+        hreflangSelf.href = window.location.href;
+        head.appendChild(hreflangSelf);
+
+        const hreflangDefault = document.createElement('link');
+        hreflangDefault.rel = 'alternate';
+        hreflangDefault.hreflang = 'x-default';
+        hreflangDefault.href = 'https://crashycrash.github.io/offbeat-website/v3/';
+        head.appendChild(hreflangDefault);
+    })();
+</script>
+
 <footer>
         <div>&copy; 2026 Offbeat, Inc. — <a href="affiliate-disclosure.html">Affiliate Disclosure</a> &middot; <a href="privacy.html">Privacy</a></div>
         <div><a href="https://github.com/CrashyCrash" target="_blank" rel="noopener">GitHub</a> &middot; <a href="status.html">DatBotty Status</a></div>
