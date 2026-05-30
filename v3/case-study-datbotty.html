@@ -76,7 +76,54 @@
 
         <h2>Results</h2>
         <p>DatBotty reduced manual data entry by 85% and saved our clients approximately 400 hours of development time per month. It stands as a testament to Offbeat's commitment to building the unusual.</p>
-    </main>
+    
+<div id="progress-bar">
+    <div class="progress-bar__filler" style="--accent: var(--accent); --accent-dark: var(--accent-dark);">
+        <div class="progress-bar__filler__inner"></div>
+    </div>
+</div>
+
+<style>
+#progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 3px;
+    transition: width 0.5s linear;
+    pointer-events: none;
+}
+
+.progress-bar__filler {
+    position: relative;
+    width: var(--width, 100%);
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.progress-bar__filler__inner {
+    width: 100px; /* initial size, will be animated */
+    height: 100%;
+    background: linear-gradient(to right, var(--accent), var(--accent-dark));
+    opacity: 0.8;
+    transform: translate3d(0, 0, 0);
+}
+
+window.addEventListener('scroll', function() {
+    const scrolled = window.scrollY;
+    const pageHeight = document.body.offsetHeight;
+    const progressBarWidth = (scrolled / pageHeight) * 100;
+
+    document.querySelector('#progress-bar').style.width = `${progressBarWidth}%`;
+
+    document.querySelectorAll('.progress-bar__filler__inner').forEach((filler) => {
+        filler.style.transform = `translate3d(-${100 - progressBarWidth}px, 0, 0)`;
+    });
+});
+</style>
+</main>
 
     <script>
         window.onscroll = function() {
