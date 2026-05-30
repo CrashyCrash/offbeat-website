@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Sitemap for Offbeat, Inc. Explore our tools, resources, and services for developers and DJs.">
-    <meta property="og:title" content="Sitemap — OFFBEAT">
-    <meta property="og:description" content="Navigate the Offbeat, Inc. website structure.">
+    <meta name="description" content="Offbeat, Inc. official website - v3 sitemap, navigation, and resource information for DJs and developers.">
+    <meta property="og:title" content="OFFBEAT SITEMAP">
+    <meta property="og:description" content="Offbeat, Inc. sitemap for DJs and developers.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://crashycrash.github.io/offbeat-website/v3/sitemap.html">
     <link rel="canonical" href="https://crashycrash.github.io/offbeat-website/v3/sitemap.html">
@@ -13,291 +13,184 @@
     {
       "@context": "https://schema.org",
       "@type": "WebPage",
-      "name": "Sitemap",
+      "name": "Offbeat, Inc. Sitemap",
       "url": "https://crashycrash.github.io/offbeat-website/v3/sitemap.html",
-      "description": "Index of all pages on the Offbeat, Inc. website."
+      "description": "Sitemap for Offbeat, Inc. official website",
+      "image": "https://crashycrash.github.io/offbeat-website/v3/assets/main-logo.png"
     }
     </script>
-    <title>Sitemap — OFFBEAT</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Outfit:wght@400;500&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone">
+    <script src="https://kit.fontawesome.com/8b45a2c0a8.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swagger-ui-dist/swagger-ui.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swagger-ui-dist/swagger-ui-bundle.css">
+    <link rel="stylesheet" href="v3/assets/dark-mode.css?v=1">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=Fira+Code:wght@400;500&display=swap');
+        @import url('https://fonts.googleapis.com/css?family=Fira+Code:wght@400;500&family=Outfit:wght@400;500&display=swap');
         :root {
             --bg: #020206;
-            --text: #e2e2e2;
-            --violet: #8a2be2;
-            --hot: #ff0055;
-            --glow: 0 0 15px rgba(138, 43, 226, 0.3);
+            --glow: #2a2f3a;
+            --violet: #5a14e7;
+            --hot: #a100ff;
+            --primary: #6f0dec;
+            --primary-contrast: #fff;
+            --secondary: #3f3d56;
+            --border: #333;
+            --accent: #5f8df6;
+            --shadow: #111;
+            --shadow-sm: #444;
+            --shadow-md: #555;
+            --shadow-lg: #666;
+            --shadow-xl: #777;
+            --text-lg: #fff;
+            --text-l: #fff;
+            --text: #666;
+            --text-sm: #666;
         }
-        body { background: var(--bg); color: var(--text); font-family: 'Outfit', sans-serif; margin: 0; line-height: 1.6; }
-        header { padding: 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #222; }
-        nav a { color: var(--text); text-decoration: none; margin-left: 2rem; font-family: 'Fira Code', monospace; font-size: 0.9rem; }
-        main { max-width: 800px; margin: 4rem auto; padding: 0 2rem; }
-        h1 { font-size: 3rem; margin-bottom: 2rem; background: linear-gradient(to right, #fff, var(--violet)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .section { margin-bottom: 3rem; }
-        .section h2 { color: var(--violet); font-family: 'Fira Code', monospace; }
-        .page-link { display: block; padding: 1rem; border: 1px solid #333; margin-bottom: 0.5rem; text-decoration: none; color: var(--text); border-radius: 4px; transition: background 0.2s; }
-        .page-link:hover { background: #0a0a12; border-color: var(--violet); }
-        .page-link span { display: block; font-size: 0.8rem; color: #888; margin-top: 0.25rem; }
-        footer { text-align: center; padding: 4rem; border-top: 1px solid #222; color: #666; font-size: 0.9rem; }
-        footer a { color: var(--text); margin: 0 1rem; text-decoration: none; }
+        body {
+            background-color: var(--bg);
+            font-family: 'Outfit', sans-serif;
+            color: var(--text-lg);
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        .scroll-smooth {
+            scroll-behavior: smooth;
+        }
+        .header-contrast {
+            color: var(--primary-contrast);
+        }
+        .header-contrast:hover {
+            color: var(--primary-contrast);
+        }
+        .btn-primary {
+            position: relative;
+            color: var(--primary-contrast);
+            background-color: var(--primary);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+        }
+        .btn-primary:hover {
+            color: var(--primary-contrast);
+            transform: translateY(2px);
+        }
+        nav ul ul {
+            transform: scale(1, 0);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        nav ul li:hover > ul {
+            transform: scale(1, 1);
+            opacity: 100;
+        }
     </style>
+    <link rel="stylesheet" href="v3/assets/sitemap.css">
+    <title>OFFBEAT SITEMAP</title>
 </head>
-<body>
-    <header>
-        <div style="font-weight: 600; font-size: 1.5rem;">OFFBEAT</div>
-        <nav>
-            <a href="index.html">Home</a>
-            <a href="tools.html">Tools</a>
-            <a href="status.html">Datbotty Status</a>
-        </nav>
-    </header>
-
-    <main>
-        <h1>Sitemap</h1>
-        
-        <div class="section">
-            <h2>Main Pages</h2>
-            <a href="index.html" class="page-link">Home <span>The central hub for Offbeat, Inc. technology.</span></a>
-            <a href="about.html" class="page-link">About <span>Our mission, vision, and the story of Crash.</span></a>
-        </div>
-
-        <div class="section">
-            <h2>Tools</h2>
-            <a href="tools.html" class="page-link">Tools Overview <span>AI-driven utilities for modern workflows.</span></a>
-            <a href="status.html" class="page-link">Datbotty Status <span>Real-time uptime and performance diagnostics.</span></a>
-        </div>
-
-        <div class="section">
-            <h2>Resources</h2>
-            <a href="blog.html" class="page-link">Blog <span>Technical articles, tutorials, and industry insights.</span></a>
-            <a href="sitemap.xml" class="page-link">XML Sitemap <span>Machine-readable index for search engines.</span></a>
-        </div>
-
-        <div class="section">
-            <h2>Legal</h2>
-            <a href="privacy.html" class="page-link">Privacy Policy <span>How we handle and protect your data.</span></a>
-            <a href="terms.html" class="page-link">Terms of Service <span>Rules and regulations for site usage.</span></a>
-        </div>
-    </main>
-
-    
-<section class="content-section" style="max-width: 800px; margin: 0 auto; padding: 40px 20px;">
-    <h2 style="font-size: 2rem; margin-bottom: 20px; color: #fff;">Development Roadmap</h2>
-    
-    <div class="roadmap-item" style="margin-bottom: 30px; border-left: 2px solid #00f2ff; padding-left: 20px;">
-        <h3 style="color: #fff; margin-bottom: 10px;">Phase 1: Performance Optimization</h3>
-        <p style="color: #ccc; line-height: 1.6;">Refactoring core logic to reduce latency in music tech applications. Focusing on WebAssembly integration to handle real-time audio processing directly in the browser.</p>
-    </div>
-
-    <div class="roadmap-item" style="margin-bottom: 30px; border-left: 2px solid #00f2ff; padding-left: 20px;">
-        <h3 style="color: #fff; margin-bottom: 10px;">Phase 2: AI Automation Suite</h3>
-        <p style="color: #ccc; line-height: 1.6;">Deploying custom machine learning models to assist DJs in track selection and metadata tagging. Automating the workflow between DAW exports and streaming distribution platforms.</p>
-    </div>
-
-    <div class="roadmap-item" style="margin-bottom: 30px; border-left: 2px solid #00f2ff; padding-left: 20px;">
-        <h3 style="color: #fff; margin-bottom: 10px;">Phase 3: Community Tools</h3>
-        <p style="color: #ccc; line-height: 1.6;">Building open-source utilities for music producers to manage sample libraries and sync project files across distributed teams, removing the need for proprietary cloud silos.</p>
-    </div>
-</section>
-
-
-<div class="roadmap-item" style="margin-bottom: 30px; border-left: 2px solid #00f2ff; padding-left: 20px;">
-        <h3 style="color: #fff; margin-bottom: 10px;">Phase 4: Global Developer SDK</h3>
-        <p style="color: #ccc; line-height: 1.6;">Releasing the Offbeat API to allow third-party developers to interface with our music processing engine. Providing documentation and sandbox environments for rapid prototyping of custom DJ plugins.</p>
-    </div>
-
-    <div class="roadmap-item" style="margin-bottom: 30px; border-left: 2px solid #00f2ff; padding-left: 20px;">
-        <h3 style="color: #fff; margin-bottom: 10px;">Phase 5: Hardware Integration</h3>
-        <p style="color: #ccc; line-height: 1.6;">Expanding into physical controller firmware. Developing low-latency drivers to bridge the gap between our cloud-based AI automation tools and industry-standard DJ hardware.</p>
-    </div>
-
-
-<div class="roadmap-item" style="margin-bottom: 30px; border-left: 2px solid #00f2ff; padding-left: 20px;">
-        <h3 style="color: #fff; margin-bottom: 10px;">Phase 6: Ethics and Governance</h3>
-        <p style="color: #ccc; line-height: 1.6;">Establishing a transparent framework for AI training data sourcing and algorithmic accountability. Ensuring our automation tools respect artist copyrights and maintain a fair digital ecosystem for all users.</p>
-    </div>
-
-
-<div class="roadmap-item" style="margin-bottom: 30px; border-left: 2px solid #00f2ff; padding-left: 20px;">
-        <h3 style="color: #fff; margin-bottom: 10px;">Phase 7: Affiliate Ecosystem Expansion</h3>
-        <p style="color: #ccc; line-height: 1.6;">Scaling our affiliate program infrastructure to support 9 specialized verticals, including DJ software, music distribution, and production tools. We are migrating from thin-content stubs to high-authority, long-form resource hubs that provide granular earnings estimates and strategic content frameworks for our partners.</p>
-    </div>
-
-    <div class="roadmap-item" style="margin-bottom: 30px; border-left: 2px solid #00f2ff; padding-left: 20px;">
-        <h3 style="color: #fff; margin-bottom: 10px;">Phase 8: Audit and Optimization</h3>
-        <p style="color: #ccc; line-height: 1.6;">Executing a comprehensive content audit to resolve self-referential H2 headers and structural redundancies. By enriching our affiliate guides with data-backed performance metrics and specific conversion strategies, we aim to increase average content depth to 2,500+ words per guide, ensuring superior user utility and SEO authority.</p>
-    </div>
-
-
-<div class="roadmap-item" style="margin-bottom: 30px; border-left: 2px solid #00f2ff; padding-left: 20px;">
-        <h3 style="color: #fff; margin-bottom: 10px;">Phase 9: Internationalization and SEO Infrastructure</h3>
-        <p style="color: #ccc; line-height: 1.6;">Finalizing global accessibility by implementing standardized language metadata across the v3 documentation suite. By establishing precise hreflang tags and language declarations, we ensure search engines correctly index our resources, providing a seamless experience for our international developer and DJ communities while improving our global search authority.</p>
-    </div>
-
-<script>
-    // Injecting SEO metadata dynamically to ensure compliance across all v3 pages
-    (function() {
-        if (!document.documentElement.hasAttribute('lang')) {
-            document.documentElement.setAttribute('lang', 'en');
-        }
-
-        const head = document.head;
-
-        const langMeta = document.createElement('meta');
-        langMeta.name = 'language';
-        langMeta.content = 'English';
-        head.appendChild(langMeta);
-
-        const hreflangSelf = document.createElement('link');
-        hreflangSelf.rel = 'alternate';
-        hreflangSelf.hreflang = 'en';
-        hreflangSelf.href = window.location.href;
-        head.appendChild(hreflangSelf);
-
-        const hreflangDefault = document.createElement('link');
-        hreflangDefault.rel = 'alternate';
-        hreflangDefault.hreflang = 'x-default';
-        hreflangDefault.href = 'https://crashycrash.github.io/offbeat-website/v3/';
-        head.appendChild(hreflangDefault);
-    })();
-</script>
-
-
-<script>
-    // Injecting SEO metadata dynamically to ensure compliance across all v3 pages
-    (function() {
-        const head = document.head;
-
-        const langMeta = document.createElement('meta');
-        langMeta.name = 'language';
-        langMeta.content = 'English';
-        head.appendChild(langMeta);
-
-        const hreflangSelf = document.createElement('link');
-        hreflangSelf.rel = 'alternate';
-        hreflangSelf.hreflang = 'en';
-        hreflangSelf.href = window.location.href;
-        head.appendChild(hreflangSelf);
-
-        const hreflangDefault = document.createElement('link');
-        hreflangDefault.rel = 'alternate';
-        hreflangDefault.hreflang = 'x-default';
-        hreflangDefault.href = 'https://crashycrash.github.io/offbeat-website/v3/';
-        head.appendChild(hreflangDefault);
-    })();
-</script>
-
-
-<div class="hero__search">
-    <div class="container">
-        <div class="search-container">
-            <input type="search" id="search-input" placeholder="Search Offbeat, Inc."
-                title="Use the 'Enter' key to search or 'Esc' to close" aria-label="Search Offbeat, Inc."
-                class="input input--text input--small input--search input--shadow">
-            <button class="input__button input__button--shadow" aria-expanded="false">
-                <svg class="input__icon input__icon--search" viewBox="0 0 24 24" width="24" height="24">
-                    <path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                        stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                </svg>
-            </button>
-        </div>
-        <div class="results-container" aria-hidden="true">
-            <ul>
-                <li>
-                    <span class="results-item__content results-item__content--highlight">About Us</span>
+<body class="scroll-smooth">
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a href="index.html" class="navbar-brand header-contrast">
+            <img src="v3/assets/main-logo.png" alt="Offbeat, Inc. Logo">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="material-icons">menu</span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link header-contrast" href="index.html">Home</a>
                 </li>
-                <li>
-                    <span class="results-item__content results-item__content--highlight">Contact Us</span>
-                </li>
-                <li>
-                    <span class="results-item__content results-item__content--highlight">FAQ</span>
-                </li>
-                <li>
-                    <span class="results-item__content results-item__content--highlight">Portfolios</span>
-                </li>
-                <li>
-                    <span class="results-item__content results-item__content--highlight">Services</span>
-                </li>
-                <li>
-                    <span class="results-item__content results-item__content--highlight">Tools</span>
-                </li>
-                <li>
-                    <span class="results-item__content results-item__content--highlight">Status</span>
+                <li class="nav-item">
+                    <a class="nav-link header-contrast" href="docs.html">Documentation</a>
                 </li>
             </ul>
         </div>
-    </div>
-</div>
-
-<script>
-    const searchInput = document.getElementById('search-input');
-    const resultsContainer = document.querySelector('.results-container');
-
-    const searchItems = [
-        { title: 'About Us', description: 'Learn more about our company' },
-        { title: 'Contact Us', description: 'Get in touch with our team' },
-        { title: 'FAQ', description: 'Frequently asked questions' },
-        { title: 'Portfolios', description: 'View our portfolios' },
-        { title: 'Services', description: 'Discover our services' },
-        { title: 'Tools', description: 'Explore our tools' },
-        { title: 'Status', description: 'Check our status' },
-    ];
-
-    const debounceTimeout = null;
-
-    searchInput.addEventListener('input', () => {
-        if (debounceTimeout) {
-            clearTimeout(debounceTimeout);
-        }
-        debounceTimeout = setTimeout(search, 300);
-    });
-
-    searchInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-            resultsContainer.classList.remove('results-container--visible');
-            resultsContainer.setAttribute('aria-hidden', 'true');
-        }
-    });
-
-    function search() {
-        const searchTerm = searchInput.value.toLowerCase();
-        const matchingItems = searchItems.filter((item) => {
-            const titleMatches = item.title.toLowerCase().includes(searchTerm);
-            const descriptionMatches = item.description.toLowerCase().includes(searchTerm);
-            return titleMatches || descriptionMatches;
-        });
-
-        if (matchingItems.length > 0) {
-            resultsContainer.classList.add('results-container--visible');
-            resultsContainer.setAttribute('aria-hidden', 'false');
-            const listItems = matchingItems.map((item, index) => {
-                return `
-                    <li>
-                        <span class="results-item__content results-item__content--highlight">${item.title}</span>
-                    </li>
-                `;
-            }).join('');
-            resultsContainer.innerHTML = `
-                <ul>
-                    ${listItems}
-                </ul>
-            `;
-        } else {
-            resultsContainer.classList.remove('results-container--visible');
-            resultsContainer.setAttribute('aria-hidden', 'true');
-            resultsContainer.innerHTML = '';
-        }
-    }
-</script>
-
-<footer>
-        <p>
-            <a href="index.html">Home</a> | 
-            <a href="privacy.html">Privacy</a> | 
-            <a href="terms.html">Terms</a> | 
-            <a href="sitemap.html">Sitemap</a>
-        </p>
-        <p>&copy; 2024 Offbeat, Inc. All rights reserved.</p>
-    </footer>
+        <button class="navbar-status">
+            <i class="material-icons">notifications</i>
+        </button>
+    </nav>
+    <main>
+        <h1 class="header-contrast">Offbeat, Inc. Sitemap</h1>
+        <div class="container">
+            <h4 class="header-contrast">Main Pages</h4>
+            <ul>
+                <li>
+                    <a href="index.html" class="text-white">
+                        <button class="btn-primary">HOME</button>
+                        <div class="text-white">Learn more about Offbeat, Inc.</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="docs.html" class="text-white">
+                        <button class="btn-primary">DOCS</button>
+                        <div class="text-white">View the official documentation.</div>
+                    </a>
+                </li>
+            </ul>
+            <h4 class="header-contrast">Tools</h4>
+            <ul>
+                <li>
+                    <a href="crash-botty.html" class="text-white">
+                        <button class="btn-primary">Crashbot</button>
+                        <div class="text-white">Manage your server status with AI.</div>
+                    </a>
+                </li>
+            </ul>
+            <h4 class="header-contrast">Resources</h4>
+            <ul>
+                <li>
+                    <a href="resources.html" class="text-white">
+                        <button class="btn-primary">RESOURCES</button>
+                        <div class="text-white">Find helpful links and external resources.</div>
+                    </a>
+                </li>
+            </ul>
+            <h4 class="header-contrast">Legal</h4>
+            <ul>
+                <li>
+                    <a href="about.html" class="text-white">
+                        <button class="btn-primary">ABOUT</button>
+                        <div class="text-white">Learn more about our founding story.</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="container footer-container">
+            <nav class="navbar navbar-expand-lg navbar-dark">
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link header-contrast" href="sitemap.xml">Sitemap.xml</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link header-contrast" href="sitemap.html#sitemap-footer-links">Sitemap</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+        <footer>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <p>&copy; 2023 Offbeat, Inc. All Rights Reserved.</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/swagger-ui-dist/swagger-ui-bundle.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swagger-ui-dist/swagger-ui-standalone-preset.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swagger-ui-dist/swagger-ui-standalone-preset.css"></script>
+    <script src="v3/assets/jquery.min.js"></script>
+    <script src="v3/assets/bootstrap.min.js"></script>
+    <script src="v3/assets/dark-mode.js"></script>
+    <script src="v3/assets/main.js"></script>
+    <script src="v3/assets/footer.js"></script>
 </body>
 </html>
