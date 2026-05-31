@@ -76,54 +76,7 @@
 
         <h2>Results</h2>
         <p>DatBotty reduced manual data entry by 85% and saved our clients approximately 400 hours of development time per month. It stands as a testament to Offbeat's commitment to building the unusual.</p>
-    
-<div id="progress-bar">
-    <div class="progress-bar__filler" style="--accent: var(--accent); --accent-dark: var(--accent-dark);">
-        <div class="progress-bar__filler__inner"></div>
-    </div>
-</div>
-
-<style>
-#progress-bar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 0%;
-    height: 3px;
-    transition: width 0.5s linear;
-    pointer-events: none;
-}
-
-.progress-bar__filler {
-    position: relative;
-    width: var(--width, 100%);
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.progress-bar__filler__inner {
-    width: 100px; /* initial size, will be animated */
-    height: 100%;
-    background: linear-gradient(to right, var(--accent), var(--accent-dark));
-    opacity: 0.8;
-    transform: translate3d(0, 0, 0);
-}
-
-window.addEventListener('scroll', function() {
-    const scrolled = window.scrollY;
-    const pageHeight = document.body.offsetHeight;
-    const progressBarWidth = (scrolled / pageHeight) * 100;
-
-    document.querySelector('#progress-bar').style.width = `${progressBarWidth}%`;
-
-    document.querySelectorAll('.progress-bar__filler__inner').forEach((filler) => {
-        filler.style.transform = `translate3d(-${100 - progressBarWidth}px, 0, 0)`;
-    });
-});
-</style>
-</main>
+    </main>
 
     <script>
         window.onscroll = function() {
@@ -507,61 +460,5 @@ window.addEventListener('scroll', function() {
         }
     }
 </script>
-
-<dl class="result-card__details">
-  <dt class="result-card__info">
-    <a href="v3/index.html">
-      <svg width="120" height="32" viewBox="0 0 120 32">
-        <rect width="120" height="32" fill="#fff" rx="2" />
-        <text x="10" y="24" font-family="Fira Code" font-size="20" fill="#00d4ff">
-          O
-        </text>
-        <text x="30" y="24" font-family="Fira Code" font-size="20" fill="#00d4ff">
-          F
-        </text>
-        <text x="50" y="24" font-family="Fira Code" font-size="20" fill="#00d4ff">
-          F
-        </text>
-        <text x="60" y="24" font-family="Fira Code" font-size="20" fill="#fff">
-          B
-        </text>
-        <text x="80" y="24" font-family="Fira Code" font-size="20" fill="#fff">
-          E
-        </text>
-        <text x="100" y="24" font-family="Fira Code" font-size="20" fill="#fff">
-          A
-        </text>
-        <text x="110" y="24" font-family="Fira Code" font-size="20" fill="#fff">
-          T
-        </text>
-      </svg>
-    </a>
-    <dl class="result-card__info result-card__info--small">
-      <dt></dt>
-      <dd>Custom software, AI automation, and data-driven digital marketing.</dd>
-    </dl>
-  </dt>
-</dl>
-```
-
-Updated files: `v3/index.html`
-
-<dt class="result-card__info">
-  <a href="v3/index.html">
-    <svg width="120" height="32" viewBox="0 0 120 32" role="img" aria-label="Offbeat, Inc.">
-      <text x="10" y="24" font-family="Fira Code, monospace" font-size="20" font-weight="500" fill="#00d4ff">O</text>
-      <text x="30" y="24" font-family="Fira Code, monospace" font-size="20" font-weight="500" fill="#00d4ff">F</text>
-      <text x="50" y="24" font-family="Fira Code, monospace" font-size="20" font-weight="500" fill="#00d4ff">F</text>
-      <text x="60" y="24" font-family="Fira Code, monospace" font-size="20" font-weight="500" fill="#fff">B</text>
-      <text x="80" y="24" font-family="Fira Code, monospace" font-size="20" font-weight="500" fill="#fff">E</text>
-      <text x="100" y="24" font-family="Fira Code, monospace" font-size="20" font-weight="500" fill="#fff">A</text>
-      <text x="110" y="24" font-family="Fira Code, monospace" font-size="20" font-weight="500" fill="#fff">T</text>
-    </svg>
-  </a>
-  <dl class="result-card__info result-card__info--small">
-    <dt></dt>
-    <dd>Custom software, AI automation, and data-driven digital marketing.</dd>
-  </dl>
-</dt>
 </body>
 </html>
