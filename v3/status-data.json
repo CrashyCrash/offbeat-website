@@ -1,14 +1,14 @@
 {
-  "generated_at": "2026-06-01T04:07:42Z",
+  "generated_at": "2026-06-01T11:35:14Z",
   "live_pages": 173,
   "prs_merged": 18,
   "issues_dispatched": 100,
-  "open_issues": 2,
+  "open_issues": 4,
   "active_workflows": 10,
   "open_prs": 0,
   "pages_up": 0,
   "pages_checked": 10,
-  "last_commit_offbeat": "2026-06-01T02:17:01Z",
-  "last_commit_msg": "chore: auto-publish AI content [2026-06-01 02:17] (32 files changed)",
-  "last_commit_sha": "c23b8da"
+  "last_commit_offbeat": "2026-06-01T08:20:01Z",
+  "last_commit_msg": "chore: auto-publish AI content [2026-06-01 04:20] (1 files, 1filechanged,86inser",
+  "last_commit_sha": "4d606d9"
 }
