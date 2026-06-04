@@ -1,14 +1,14 @@
 {
-  "generated_at": "2026-06-04T04:03:51Z",
+  "generated_at": "2026-06-04T09:56:30Z",
   "live_pages": 173,
   "prs_merged": 18,
   "issues_dispatched": 100,
-  "open_issues": 8,
+  "open_issues": 3,
   "active_workflows": 10,
   "open_prs": 0,
   "pages_up": 0,
   "pages_checked": 10,
-  "last_commit_offbeat": "2026-06-04T04:00:44Z",
-  "last_commit_msg": "Close #374: Add BreadcrumbList schema to all v3 pagesAutonomously implemented ",
-  "last_commit_sha": "e7207e3"
+  "last_commit_offbeat": "2026-06-04T09:17:01Z",
+  "last_commit_msg": "chore: auto-publish AI content [2026-06-04 09:17] (2 files changed)",
+  "last_commit_sha": "5e62c37"
 }
