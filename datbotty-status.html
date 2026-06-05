@@ -13,6 +13,7 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>DatBotty Status Dashboard | Offbeat Inc.</title>
 <meta content="DatBotty status dashboard: rounds, workflow health, and infrastructure signals — a quick snapshot for monitoring and triage." name="description"/>
+<meta content="dj controller, round metrics, status dashboard, 2026, dashboard, datbotty, djing, guide, headphones, mixer, offbeat, software, status" name="keywords"/>
 <meta content="noindex, nofollow" name="robots"/>
 <link href="https://offbeatinc.com/datbotty-status.html" rel="canonical"/>
 <link href="assets/style.css" rel="stylesheet"/>
@@ -433,6 +434,20 @@
 <p class="hero-disclosure">ⓘ <strong>Disclosure:</strong> Offbeat uses affiliate links. If you were looking for gear while browsing the site, you can <a href="https://www.amazon.com/s?k=dj+controller&amp;tag=offbeatinc-20" rel="nofollow sponsored" target="_blank">check price: DJ controllers on Amazon →</a></p>
 </div>
 <div class="container">
+<section class="page-content">
+<h2>Understanding the DatBotty Dashboard</h2>
+<p>DatBotty is an autonomous AI orchestration system designed to manage complex workflows and automate task execution across multiple handlers and agents. This status dashboard provides a real-time snapshot of system health, workflow progress, and infrastructure signals. If you're managing AI-driven operations, understanding these metrics helps you identify bottlenecks, track progress, and ensure reliable task execution at scale.</p>
+<h2>What DatBotty Tracks: Key Metrics Explained</h2>
+<p>The dashboard monitors several critical dimensions: Round Progress (completion status of current development cycles), Workflow Health (success rates across different task handlers), Infrastructure Status (system uptime and service availability), and Quality Signals (task quality scores, error rates, and performance benchmarks). Each metric serves a specific purpose: Round Progress keeps teams synchronized on feature delivery, Workflow Health identifies which handlers need optimization or debugging, Infrastructure Status prevents cascading failures, and Quality Signals enable data-driven improvements to task execution.</p>
+<h2>Reading the Workflow Status Cards</h2>
+<p>Green indicators (✅ Complete) represent finished workflow stages. Yellow indicators (🔄 In Progress) show active work. Gray indicators (⏳ Pending) represent queued tasks awaiting execution. The metrics cards display quantitative data: Round Metrics show which development cycle is active and overall progress, Briefing Health tracks knowledge base freshness, and Quality Scores reveal average task performance. Understanding this visual language lets you quickly assess system state without diving into detailed logs.</p>
+<h2>Workflow Health and Performance Optimization</h2>
+<p>Workflow Health metrics show success rates by handler (the specific automation components). High success rates (95%+) indicate reliable handlers suitable for critical tasks. Medium success rates (80-94%) suggest handlers that work well but may benefit from optimization. Low success rates (&lt;80%) flag handlers needing investigation or redesign. By monitoring these trends across sessions, you can allocate resources to improve underperforming handlers and scale successful ones. This data-driven approach ensures your autonomous systems deliver consistent results.</p>
+<h2>Infrastructure Status and System Reliability</h2>
+<p>Infrastructure Status indicates whether core services (databases, APIs, queues, storage) are operational. A green status means all systems are responsive and ready for task execution. Yellow status indicates latency or intermittent connectivity. Red status represents service unavailability requiring immediate attention. Monitoring infrastructure health prevents situations where tasks fail not due to logic errors but because underlying systems are unavailable. Regular infrastructure audits help maintain the SLOs (Service Level Objectives) required for reliable autonomous operations.</p>
+<h2>Using This Dashboard for Operational Decisions</h2>
+<p>Use this dashboard as your starting point for daily operations. Before launching large-scale task batches, verify that Infrastructure Status is green and Workflow Health shows no red indicators. If Round Progress is stalled on a specific stage, use that information to investigate the corresponding workflow handler. Monitor Quality Signals to detect degradation trends before they impact production. Share this dashboard with stakeholders to explain system state in clear, quantifiable terms. Combine dashboard insights with detailed logs (available in hub/logs/) to diagnose complex issues and optimize performance over time.</p>
+</section>
 <div class="grid">
 <!-- Round Progress Card -->
 <div class="card full-width">
