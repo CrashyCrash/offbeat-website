@@ -28,7 +28,7 @@ jobs:
 
     steps:
       - name: Checkout (needed for task pool)
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Dispatch manual task
         if: github.event_name == 'workflow_dispatch'
