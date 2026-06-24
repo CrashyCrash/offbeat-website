@@ -2,19 +2,22 @@
 """DatBotty v3 - cloud autonomous loop (single tick).
 
 Runs exactly one bounded, idempotent cycle inside GitHub Actions. This is the
-cloud replacement for the local systemd timer + unattended runner. It has NO
-dependency on the local machine or ~/.hermes; all configuration comes from
-environment variables (wired to repo Actions secrets in the workflow).
+CLOUD surface for PUBLIC, no-secret-exposure work only (today: offbeat-website).
+It has NO dependency on the local machine or ~/.hermes. Private/local execution,
+scheduling, memory and learning remain Hermes' job (see the v3 Execution
+Architecture ADR). GitHub Actions does not replace Hermes; it complements it
+across the public/private boundary.
 
 Design notes:
-* Mirrors the existing runtime convention: refuses to run without --once, so a
-  scheduler (here, the Actions cron) fires it once per tick.
+* Refuses to run without --once, so a scheduler (the Actions cron) fires it once
+  per tick.
 * Standard library only - no pip install step, fewer failure modes.
-* Each cycle does real, verifiable, read-only useful work today (a free-model
-  canary + a live offbeat-website audit). It never writes a bare heartbeat,
-  which the Continuous Approved Work Charter forbids.
-* Publish / Notion-queue consumption are the next step and activate only when
-  the corresponding secrets are present. Until then those steps cleanly skip.
+* Each cycle does real, verifiable work: a free-model canary, a live
+  offbeat-website audit, and consumption of the Notion Approved Work Queue.
+  It never writes a bare heartbeat (forbidden by the Continuous Approved Work
+  Charter).
+* Read-only today. Publishing activates only when the workflow is raised to
+  contents:write under bounded per-task approval (Gate A).
 """
 from __future__ import annotations
 
@@ -32,6 +35,9 @@ GA4_ID = "G-9MG87ETLPT"
 # Known post-restore formatting bug: this section renders full-width outside the
 # content wrap, between the editorial-review card and the footer.
 FORMATTING_BUG_MARKER = "full-width-section r27-buying-checkpoint"
+# Notion control plane: the consumable work queue (matched by title substring).
+QUEUE_DB_NAME = "Approved Work Queue"
+NOTION_VERSION = "2022-06-28"
 
 
 def log(event, **fields):
@@ -139,6 +145,109 @@ def audit_site(sample_limit=40):
     return scorecard
 
 
+def _notion_headers(token):
+    return {
+        "Authorization": "Bearer " + token,
+        "Notion-Version": NOTION_VERSION,
+        "Content-Type": "application/json",
+        "User-Agent": "datbotty-cloud-loop",
+    }
+
+
+def _rich(parts):
+    return "".join(p.get("plain_text", "") for p in (parts or []))
+
+
+def _select(prop):
+    val = (prop or {}).get("select")
+    return val.get("name") if val else None
+
+
+def consume_queue():
+    """Read the Notion Approved Work Queue (read-only).
+
+    Finds the queue database by title, pulls rows where Status=Approved AND
+    Approved-by-Tammy is checked, and reports them. The cloud loop only ACTS on
+    read_only-tier tasks today; bounded_write/publish tasks are reported as
+    pending capability (Gate A) so nothing silently stalls.
+    """
+    token = os.environ.get("NOTION_TOKEN")
+    if not token:
+        log("queue_consumption_skipped", reason="NOTION_TOKEN not set")
+        return {"skipped": True}
+    headers = _notion_headers(token)
+    try:
+        search_body = json.dumps(
+            {"query": QUEUE_DB_NAME, "filter": {"property": "object", "value": "database"}}
+        ).encode()
+        req = urllib.request.Request(
+            "https://api.notion.com/v1/search", data=search_body, headers=headers, method="POST"
+        )
+        with urllib.request.urlopen(req, timeout=60) as resp:
+            results = json.loads(resp.read().decode()).get("results", [])
+        db_id = None
+        for item in results:
+            title = _rich(item.get("title"))
+            if QUEUE_DB_NAME in title:
+                db_id = item.get("id")
+                break
+        if not db_id:
+            log("queue_db_not_found", hint="share the queue DB with the integration")
+            return {"ok": False, "reason": "queue database not found / not shared"}
+        query_body = json.dumps(
+            {
+                "filter": {
+                    "and": [
+                        {"property": "Status", "status": {"equals": "Approved"}},
+                        {"property": "Approved by Tammy", "checkbox": {"equals": True}},
+                    ]
+                },
+                "page_size": 25,
+            }
+        ).encode()
+        req = urllib.request.Request(
+            "https://api.notion.com/v1/databases/" + db_id + "/query",
+            data=query_body,
+            headers=headers,
+            method="POST",
+        )
+        with urllib.request.urlopen(req, timeout=60) as resp:
+            rows = json.loads(resp.read().decode()).get("results", [])
+        tasks = []
+        for row in rows:
+            props = row.get("properties", {})
+            tasks.append(
+                {
+                    "task": _rich((props.get("Task", {}) or {}).get("title")),
+                    "type": _select(props.get("Task Type")),
+                    "target": _rich((props.get("Target", {}) or {}).get("rich_text")),
+                    "tier": _select(props.get("Safety Tier")),
+                    "priority": _select(props.get("Priority")),
+                    "gate": _select(props.get("Gate")),
+                }
+            )
+        actionable = [t for t in tasks if t.get("tier") == "read_only"]
+        log(
+            "queue_consumed",
+            approved=len(tasks),
+            read_only_actionable=len(actionable),
+            tasks=tasks,
+        )
+        return {
+            "ok": True,
+            "approved": len(tasks),
+            "read_only_actionable": len(actionable),
+            "tasks": tasks,
+        }
+    except urllib.error.HTTPError as exc:
+        detail = exc.read().decode("utf-8", "replace")[:200]
+        log("queue_consumption_failed", status=exc.code, error=detail)
+        return {"ok": False, "status": exc.code, "error": detail}
+    except Exception as exc:
+        log("queue_consumption_failed", error=str(exc)[:200])
+        return {"ok": False, "error": str(exc)[:200]}
+
+
 def main():
     parser = argparse.ArgumentParser(description="DatBotty v3 cloud autonomous loop (one tick).")
     parser.add_argument(
@@ -152,16 +261,14 @@ def main():
         return 2
 
     log("cycle_start", runner="github-actions-cloud-loop")
-    result = {"provider": None, "audit": None}
+    result = {"provider": None, "audit": None, "queue": None}
     result["provider"] = provider_canary()
     try:
         result["audit"] = audit_site()
     except Exception as exc:
         log("site_audit_failed", error=str(exc)[:200])
         result["audit"] = {"error": str(exc)[:200]}
-
-    if not os.environ.get("NOTION_TOKEN"):
-        log("queue_consumption_skipped", reason="NOTION_TOKEN not set")
+    result["queue"] = consume_queue()
 
     try:
         with open("loop-scorecard.json", "w", encoding="utf-8") as handle:
