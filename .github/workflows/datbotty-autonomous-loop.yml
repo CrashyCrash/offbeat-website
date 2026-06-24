@@ -1,0 +1,42 @@
+name: DatBotty v3 - Autonomous Loop
+
+on:
+  schedule:
+    - cron: "0 * * * *"   # hourly (UTC); public repo = unlimited Actions minutes
+  workflow_dispatch: {}
+
+concurrency:
+  group: datbotty-autonomous-loop
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  tick:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run one autonomous cycle
+        env:
+          GITHUB_TOKEN: $ secrets.GITHUB_TOKEN 
+          OPENROUTER_API_KEY: $ secrets.OPENROUTER_API_KEY 
+          FREE_MODEL: $ vars.FREE_MODEL 
+          NOTION_TOKEN: $ secrets.NOTION_TOKEN 
+        run: python3 .github/scripts/cloud_autonomous_loop.py --once
+
+      - name: Upload cycle scorecard
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: loop-scorecard
+          path: loop-scorecard.json
+          if-no-files-found: ignore
