@@ -1,0 +1,47 @@
+name: DatBotty v3 - Autonomous Loop
+
+# CORRECTED SOURCE. To install: open this file on GitHub, click Edit (pencil),
+# change the path in the filename box to
+#   .github/workflows/datbotty-autonomous-loop.yml
+# and commit to main. (First delete the existing broken workflow file of the
+# same name.) Editing via the GitHub UI preserves the $  braces exactly.
+
+on:
+  schedule:
+    - cron: "0 * * * *"   # hourly (UTC); public repo = unlimited Actions minutes
+  workflow_dispatch: {}
+
+concurrency:
+  group: datbotty-autonomous-loop
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  tick:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run one autonomous cycle
+        env:
+          OPENROUTER_API_KEY: $ secrets.OPENROUTER_API_KEY 
+          NOTION_TOKEN: $ secrets.NOTION_TOKEN 
+          NOTION_QUEUE_DS: $ vars.NOTION_QUEUE_DS 
+        run: python3 .github/scripts/cloud_autonomous_loop.py --once
+
+      - name: Upload cycle scorecard
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: loop-scorecard
+          path: loop-scorecard.json
+          if-no-files-found: ignore
