@@ -23,15 +23,13 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: "3.11"
 
       - name: Run one autonomous cycle
         env:
-          GITHUB_TOKEN: $ secrets.GITHUB_TOKEN 
-          OPENROUTER_API_KEY: $ secrets.OPENROUTER_API_KEY 
-          FREE_MODEL: $ vars.FREE_MODEL 
-          NOTION_TOKEN: $ secrets.NOTION_TOKEN 
-        run: python3 .github/scripts/cloud_autonomous_loop.py --once
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+        run: python .github/scripts/cloud_autonomous_loop.py --once
 
       - name: Upload cycle scorecard
         if: always()
