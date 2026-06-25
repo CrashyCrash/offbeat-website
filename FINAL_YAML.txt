@@ -1,0 +1,51 @@
+name: DatBotty v3 - Autonomous Loop
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch: {}
+
+concurrency:
+  group: datbotty-autonomous-loop
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  issues: write
+  actions: write
+
+jobs:
+  tick:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run one autonomous cycle
+        env:
+          NOTION_TOKEN: $\u007B\u007B secrets.NOTION_TOKEN \u007D\u007D
+          GEMINI_API_KEY: $\u007B\u007B secrets.GEMINI_API_KEY \u007D\u007D
+          GOOGLE_API_KEY: $\u007B\u007B secrets.GOOGLE_API_KEY \u007D\u007D
+          GROQ_API_KEY: $\u007B\u007B secrets.GROQ_API_KEY \u007D\u007D
+          CEREBRAS_API_KEY: $\u007B\u007B secrets.CEREBRAS_API_KEY \u007D\u007D
+          MISTRAL_API_KEY: $\u007B\u007B secrets.MISTRAL_API_KEY \u007D\u007D
+          OPENROUTER_API_KEY: $\u007B\u007B secrets.OPENROUTER_API_KEY \u007D\u007D
+          BRAVE_SEARCH_API_KEY: $\u007B\u007B secrets.BRAVE_SEARCH_API_KEY \u007D\u007D
+          TAVILY_API_KEY: $\u007B\u007B secrets.TAVILY_API_KEY \u007D\u007D
+          GH_PAT: $\u007B\u007B secrets.GH_PAT \u007D\u007D
+          GITHUB_TOKEN: $\u007B\u007B secrets.GITHUB_TOKEN \u007D\u007D
+        run: python .github/scripts/cloud_autonomous_loop.py --once
+
+      - name: Upload cycle scorecard
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: loop-scorecard
+          path: loop-scorecard.json
+          if-no-files-found: ignore
