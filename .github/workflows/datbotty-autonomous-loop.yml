@@ -2,7 +2,7 @@ name: DatBotty v3 - Autonomous Loop
 
 on:
   schedule:
-    - cron: "0 * * * *"   # hourly (UTC); public repo = unlimited Actions minutes
+    - cron: "*/15 * * * *" # public repo = unlimited Actions minutes
   workflow_dispatch: {}
 
 concurrency:
