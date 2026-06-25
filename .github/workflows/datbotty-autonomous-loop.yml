@@ -1,19 +1,19 @@
 name: DatBotty v3 - Autonomous Loop
-​
+
 on:
   schedule:
     - cron: "*/15 * * * *"
   workflow_dispatch: {}
-​
+
 concurrency:
   group: datbotty-autonomous-loop
   cancel-in-progress: false
-​
+
 permissions:
   contents: write
   issues: write
   actions: write
-​
+
 jobs:
   tick:
     runs-on: ubuntu-latest
@@ -21,12 +21,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-​
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-​
+
       - name: Run one autonomous cycle
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
@@ -41,7 +41,7 @@ jobs:
           GH_PAT: ${{ secrets.GH_PAT }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python .github/scripts/cloud_autonomous_loop.py --once
-​
+
       - name: Upload cycle scorecard
         if: always()
         uses: actions/upload-artifact@v4
