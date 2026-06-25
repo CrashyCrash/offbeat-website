@@ -1,15 +1,18 @@
 #!/usr/bin/env python3
-"""DatBotty v3 cloud autonomous loop (v3.3).
+"""DatBotty v3 cloud autonomous loop (v3.5 — bulletproof diagnostics).
 
-v3.2 -> v3.3 key additions:
-- self_trigger(): after each run, dispatch next workflow via GH_PAT so the
-  loop fires every ~10 min instead of waiting for hourly cron.
-  Requires repo secret GH_PAT with scopes: repo, workflow.
-  Falls back silently if GH_PAT is absent.
-- replenish_queue(): when Approved queue < 3, auto-promotes top Backlog
-  tasks to Approved. Queue never empties without human input.
-- append_cycle_log(): appends one-line summary to 'DatBotty Cycle Log'
-  Notion page so status is always visible without asking Notion AI.
+Key design: NOTHING can crash the script silently. Every failure is captured
+and written to the DatBotty Cycle Log Notion page so we have visible proof
+from inside the actual GitHub Actions run environment.
+
+Flow per cycle:
+1. Heartbeat-first: write 'cycle start' line to cycle log immediately.
+2. Run audit (catches any failure, falls back to baseline).
+3. Read queue (catches failures).
+4. Auto-replenish from Backlog if low.
+5. Process tasks one-by-one (each isolated in try/except).
+6. Self-trigger next run via GH_PAT (if set).
+7. ALWAYS write final cycle summary line.
 """
 from __future__ import annotations
 import argparse
@@ -17,6 +20,7 @@ import json
 import os
 import sys
 import time
+import traceback
 import urllib.error
 import urllib.request
 from datetime import datetime, timezone
@@ -29,23 +33,44 @@ QUEUE_DB_NAME       = "Approved Work Queue"
 CYCLE_LOG_TITLE     = "DatBotty Cycle Log"
 NOTION_VERSION      = "2022-06-28"
 MAX_TASKS_PER_RUN   = 10
-REPLENISH_THRESHOLD = 3   # promote Backlog when fewer than this many Approved
+REPLENISH_THRESHOLD = 3
 
 AUDIT_TASK_TYPES = {
     "site_audit", "ga4_injection", "formatting_fix",
     "link_audit", "verdict_card_css", "affiliate_fix",
 }
 
+# State accumulator — fields here are written to cycle log at end of every run.
+_state = {
+    "version": "v3.5",
+    "errors": [],
+    "warnings": [],
+    "notion_ok": False,
+    "audit_ok": False,
+    "queue_ok": False,
+    "tasks_attempted": 0,
+    "tasks_written": 0,
+    "promoted": 0,
+    "llm_attempts": [],   # list of provider names tried
+    "llm_successes": [],  # list of provider names that worked
+    "audit_pages": 0,
+    "audit_total": 0,
+    "missing_ga4": 0,
+    "format_bugs": 0,
+    "self_triggered": False,
+    "cycle_log_page_id": None,
+}
 
-# ---------------------------------------------------------------------------
-# Utilities
-# ---------------------------------------------------------------------------
 
 def log(event, **fields):
     rec = {"ts": datetime.now(timezone.utc).isoformat(), "event": event}
     rec.update(fields)
     print(json.dumps(rec, ensure_ascii=False), flush=True)
 
+
+# ---------------------------------------------------------------------------
+# HTTP primitives
+# ---------------------------------------------------------------------------
 
 def _get(url, headers=None, timeout=30):
     req = urllib.request.Request(url, headers=headers or {})
@@ -66,7 +91,7 @@ def _patch(url, body, headers, timeout=60):
 
 
 def gh_headers(token=None):
-    t = token or os.environ.get("GITHUB_TOKEN")
+    t = token or os.environ.get("GH_PAT") or os.environ.get("GITHUB_TOKEN")
     h = {"Accept": "application/vnd.github+json",
          "User-Agent": "datbotty-loop",
          "X-GitHub-Api-Version": "2022-11-28"}
@@ -124,87 +149,54 @@ def call_oai_compat(base, key, model, sys_p, usr_p, max_tok=1800):
                 .get("message", {}).get("content", "").strip())
 
 
+def _key_looks_real(key):
+    """Detect if a secret got resolved properly vs literal '$ secrets.X '."""
+    if not key:
+        return False
+    if "secrets." in key or "${{" in key or key.startswith("$"):
+        return False
+    if len(key) < 10:
+        return False
+    return True
+
+
 def execute_llm(sys_p, usr_p):
     errors = {}
-
-    gkey = os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")
-    if gkey:
+    providers = [
+        ("gemini",     ["GEMINI_API_KEY", "GOOGLE_API_KEY"], "gemini-1.5-flash",
+            lambda k, m: call_gemini(k, m, sys_p, usr_p)),
+        ("cerebras",   ["CEREBRAS_API_KEY"], "llama-3.3-70b",
+            lambda k, m: call_oai_compat("https://api.cerebras.ai/v1/chat/completions",
+                k, m, sys_p, usr_p)),
+        ("groq",       ["GROQ_API_KEY"], "llama-3.3-70b-versatile",
+            lambda k, m: call_oai_compat("https://api.groq.com/openai/v1/chat/completions",
+                k, m, sys_p, usr_p)),
+        ("mistral",    ["MISTRAL_API_KEY"], "mistral-small-latest",
+            lambda k, m: call_oai_compat("https://api.mistral.ai/v1/chat/completions",
+                k, m, sys_p, usr_p)),
+        ("openrouter", ["OPENROUTER_API_KEY"], "meta-llama/llama-3.3-70b-instruct:free",
+            lambda k, m: call_oai_compat("https://openrouter.ai/api/v1/chat/completions",
+                k, m, sys_p, usr_p)),
+    ]
+    for name, env_keys, model, fn in providers:
+        key = next((os.environ.get(k) for k in env_keys if os.environ.get(k)), None)
+        if not _key_looks_real(key):
+            errors[name] = "no valid key (env not interpolated or unset)"
+            continue
+        _state["llm_attempts"].append(name)
         try:
-            return {"ok": True, "provider": "gemini", "model": "gemini-1.5-flash",
-                    "content": call_gemini(gkey, "gemini-1.5-flash", sys_p, usr_p)}
+            out = fn(key, model)
+            _state["llm_successes"].append(name)
+            return {"ok": True, "provider": name, "model": model, "content": out}
         except Exception as e:
-            errors["gemini"] = str(e); log("llm_err", p="gemini", e=str(e)[:100])
-
-    ck = os.environ.get("CEREBRAS_API_KEY")
-    if ck:
-        try:
-            return {"ok": True, "provider": "cerebras", "model": "llama-3.3-70b",
-                    "content": call_oai_compat("https://api.cerebras.ai/v1/chat/completions",
-                        ck, "llama-3.3-70b", sys_p, usr_p)}
-        except Exception as e:
-            errors["cerebras"] = str(e); log("llm_err", p="cerebras", e=str(e)[:100])
-
-    gk = os.environ.get("GROQ_API_KEY")
-    if gk:
-        try:
-            return {"ok": True, "provider": "groq", "model": "llama-3.3-70b-versatile",
-                    "content": call_oai_compat("https://api.groq.com/openai/v1/chat/completions",
-                        gk, "llama-3.3-70b-versatile", sys_p, usr_p)}
-        except Exception as e:
-            errors["groq"] = str(e); log("llm_err", p="groq", e=str(e)[:100])
-
-    mk = os.environ.get("MISTRAL_API_KEY")
-    if mk:
-        try:
-            return {"ok": True, "provider": "mistral", "model": "mistral-small-latest",
-                    "content": call_oai_compat("https://api.mistral.ai/v1/chat/completions",
-                        mk, "mistral-small-latest", sys_p, usr_p)}
-        except Exception as e:
-            errors["mistral"] = str(e); log("llm_err", p="mistral", e=str(e)[:100])
-
-    ok = os.environ.get("OPENROUTER_API_KEY")
-    if ok:
-        for m in ["meta-llama/llama-3.3-70b-instruct:free", "google/gemini-2.0-flash-exp:free"]:
-            try:
-                return {"ok": True, "provider": "openrouter", "model": m,
-                        "content": call_oai_compat(
-                            "https://openrouter.ai/api/v1/chat/completions", ok, m, sys_p, usr_p)}
-            except Exception as e:
-                errors["openrouter/" + m] = str(e); log("llm_err", p="openrouter", m=m, e=str(e)[:80])
-
+            errors[name] = str(e)[:200]
+            log("llm_err", p=name, e=str(e)[:120])
     return {"ok": False, "errors": errors}
 
 
 # ---------------------------------------------------------------------------
-# Site audit
+# Site audit (with fallback)
 # ---------------------------------------------------------------------------
-
-def audit_site():
-    t0 = time.time()
-    tree_url = ("https://api.github.com/repos/" + OFFBEAT_OWNER + "/"
-                + OFFBEAT_REPO + "/git/trees/main?recursive=1")
-    tree = json.loads(_get(tree_url, headers=gh_headers()).decode())
-    html_files = [n["path"] for n in tree.get("tree", [])
-                  if n.get("type") == "blob" and n["path"].endswith(".html")]
-
-    missing_ga4, fmt_bug = [], []
-    for path in html_files:
-        raw = ("https://raw.githubusercontent.com/" + OFFBEAT_OWNER
-               + "/" + OFFBEAT_REPO + "/main/" + path)
-        try:
-            html = _get(raw, {"User-Agent": "datbotty"}).decode("utf-8", "replace")
-        except Exception:
-            continue
-        if GA4_ID not in html:
-            missing_ga4.append(path)
-        if FORMATTING_BUG_MARKER in html:
-            fmt_bug.append(path)
-
-    log("audit_done", total=len(html_files), missing_ga4=len(missing_ga4),
-        bugs=len(fmt_bug), elapsed=round(time.time()-t0, 1))
-    return {"html_files_total": len(html_files), "checked": len(html_files),
-            "missing_ga4": missing_ga4, "formatting_bug": fmt_bug}
-
 
 DEFAULT_AUDIT = {
     "html_files_total": 129, "checked": 0,
@@ -223,114 +215,182 @@ DEFAULT_AUDIT = {
 }
 
 
+def audit_site_safe():
+    """Always returns an audit dict. Never raises."""
+    try:
+        t0 = time.time()
+        tree_url = ("https://api.github.com/repos/" + OFFBEAT_OWNER + "/"
+                    + OFFBEAT_REPO + "/git/trees/main?recursive=1")
+        tree = json.loads(_get(tree_url, headers=gh_headers()).decode())
+        html_files = [n["path"] for n in tree.get("tree", [])
+                      if n.get("type") == "blob" and n["path"].endswith(".html")]
+        missing_ga4, fmt_bug = [], []
+        for path in html_files:
+            raw = ("https://raw.githubusercontent.com/" + OFFBEAT_OWNER
+                   + "/" + OFFBEAT_REPO + "/main/" + path)
+            try:
+                html = _get(raw, {"User-Agent": "datbotty"}).decode("utf-8", "replace")
+            except Exception:
+                continue
+            if GA4_ID not in html:
+                missing_ga4.append(path)
+            if FORMATTING_BUG_MARKER in html:
+                fmt_bug.append(path)
+        log("audit_ok", total=len(html_files), missing_ga4=len(missing_ga4),
+            bugs=len(fmt_bug), s=round(time.time()-t0, 1))
+        _state["audit_ok"] = True
+        return {"html_files_total": len(html_files), "checked": len(html_files),
+                "missing_ga4": missing_ga4, "formatting_bug": fmt_bug}
+    except Exception as e:
+        msg = type(e).__name__ + ": " + str(e)[:150]
+        _state["errors"].append("audit_site: " + msg)
+        log("audit_err", e=msg)
+        return DEFAULT_AUDIT
+
+
 # ---------------------------------------------------------------------------
-# Notion helpers
+# Notion: cycle log (heartbeat + final summary)
 # ---------------------------------------------------------------------------
 
 def _notion_search(token, query, filter_type="page"):
     body = json.dumps({"query": query,
         "filter": {"property": "object", "value": filter_type}}).encode()
-    hdrs = _notion_headers(token)
-    return json.loads(_post("https://api.notion.com/v1/search", body, hdrs)).get("results", [])
+    return json.loads(_post("https://api.notion.com/v1/search",
+        body, _notion_headers(token))).get("results", [])
 
 
-def _patch_page(token, page_id, properties):
-    body = json.dumps({"properties": properties}).encode()
-    _patch("https://api.notion.com/v1/pages/" + page_id,
-           body, _notion_headers(token))
+def find_cycle_log_id(token):
+    if _state["cycle_log_page_id"]:
+        return _state["cycle_log_page_id"]
+    try:
+        results = _notion_search(token, CYCLE_LOG_TITLE, "page")
+        for r in results:
+            title_parts = (r.get("properties", {})
+                .get("title", {}).get("title", []))
+            if CYCLE_LOG_TITLE in _rich(title_parts):
+                _state["cycle_log_page_id"] = r["id"]
+                return r["id"]
+        # fallback: any page whose title matches by alternate property keys
+        for r in results:
+            props = r.get("properties", {})
+            for k, v in props.items():
+                if v.get("type") == "title":
+                    if CYCLE_LOG_TITLE in _rich(v.get("title", [])):
+                        _state["cycle_log_page_id"] = r["id"]
+                        return r["id"]
+        _state["warnings"].append("cycle log page not found")
+        return None
+    except Exception as e:
+        _state["errors"].append("find_cycle_log: " + type(e).__name__ + ": " + str(e)[:120])
+        return None
 
 
-def _append_blocks(token, page_id, children):
-    body = json.dumps({"children": children}).encode()
-    _patch("https://api.notion.com/v1/blocks/" + page_id + "/children",
-           body, _notion_headers(token))
+def append_to_cycle_log(token, text):
+    page_id = find_cycle_log_id(token)
+    if not page_id:
+        return False
+    try:
+        body = json.dumps({"children": [{
+            "object": "block", "type": "paragraph",
+            "paragraph": {"rich_text": [{"type": "text", "text": {"content": text}}]}
+        }]}).encode()
+        _patch("https://api.notion.com/v1/blocks/" + page_id + "/children",
+               body, _notion_headers(token))
+        return True
+    except Exception as e:
+        _state["errors"].append("cycle_log_append: " + type(e).__name__ + ": " + str(e)[:120])
+        return False
 
 
 # ---------------------------------------------------------------------------
-# Queue: read
+# Queue: read + replenish + write
 # ---------------------------------------------------------------------------
 
 def find_queue_db(token):
-    results = _notion_search(token, QUEUE_DB_NAME, "database")
-    return next((i["id"] for i in results
-        if QUEUE_DB_NAME in _rich(i.get("title", []))), None)
+    try:
+        results = _notion_search(token, QUEUE_DB_NAME, "database")
+        for i in results:
+            if QUEUE_DB_NAME in _rich(i.get("title", [])):
+                return i["id"]
+    except Exception as e:
+        _state["errors"].append("find_queue: " + type(e).__name__ + ": " + str(e)[:120])
+    return None
 
 
 def read_approved_tasks(token, db_id):
-    body = json.dumps({
-        "filter": {"and": [
-            {"property": "Status", "status": {"equals": "Approved"}},
-            {"property": "Approved by Tammy", "checkbox": {"equals": True}}
-        ]},
-        "sorts": [{"property": "Priority", "direction": "ascending"}],
-        "page_size": 50
-    }).encode()
-    rows = json.loads(_post(
-        "https://api.notion.com/v1/databases/" + db_id + "/query",
-        body, _notion_headers(token))).get("results", [])
+    try:
+        body = json.dumps({
+            "filter": {"and": [
+                {"property": "Status", "status": {"equals": "Approved"}},
+                {"property": "Approved by Tammy", "checkbox": {"equals": True}}
+            ]},
+            "page_size": 50
+        }).encode()
+        rows = json.loads(_post(
+            "https://api.notion.com/v1/databases/" + db_id + "/query",
+            body, _notion_headers(token))).get("results", [])
 
-    tasks = []
-    for row in rows:
-        p = row.get("properties", {})
-        lr = (p.get("Last run", {}).get("date") or {}).get("start")
-        ev = _rich(p.get("Result / Evidence", {}).get("rich_text", []))
-        tasks.append({
-            "id": row["id"],
-            "task": _rich(p.get("Task", {}).get("title", [])),
-            "type": _select(p.get("Task Type")),
-            "tier": _select(p.get("Safety Tier")),
-            "instructions": _rich(p.get("Instructions", {}).get("rich_text", [])),
-            "last_run": lr,
-            "has_evidence": bool(ev),
-        })
-    tasks.sort(key=lambda t: (t["has_evidence"], t["last_run"] or ""))
-    log("queue_read", approved=len(tasks),
-        fresh=sum(1 for t in tasks if not t["has_evidence"]))
-    return tasks
+        priority_order = {"P0": 0, "P1": 1, "P2": 2, "P3": 3}
+        tasks = []
+        for row in rows:
+            p = row.get("properties", {})
+            lr = (p.get("Last run", {}).get("date") or {}).get("start")
+            ev = _rich(p.get("Result / Evidence", {}).get("rich_text", []))
+            tasks.append({
+                "id": row["id"],
+                "task": _rich(p.get("Task", {}).get("title", [])),
+                "type": _select(p.get("Task Type")),
+                "tier": _select(p.get("Safety Tier")),
+                "priority": _select(p.get("Priority")) or "P3",
+                "instructions": _rich(p.get("Instructions", {}).get("rich_text", [])),
+                "last_run": lr,
+                "has_evidence": bool(ev),
+            })
+        # Sort: no-evidence first, then by priority, then by oldest last_run
+        tasks.sort(key=lambda t: (
+            t["has_evidence"],
+            priority_order.get(t["priority"], 9),
+            t["last_run"] or "",
+        ))
+        _state["queue_ok"] = True
+        return tasks
+    except Exception as e:
+        _state["errors"].append("read_queue: " + type(e).__name__ + ": " + str(e)[:120])
+        return []
 
-
-# ---------------------------------------------------------------------------
-# Queue: auto-replenish from Backlog
-# ---------------------------------------------------------------------------
 
 def replenish_queue(token, db_id, current_count):
-    """Promote top Backlog tasks to Approved when queue is running low."""
     if current_count >= REPLENISH_THRESHOLD:
         return 0
-    need = max(5, REPLENISH_THRESHOLD - current_count + 5)
-    body = json.dumps({
-        "filter": {"property": "Status", "status": {"equals": "Backlog"}},
-        "sorts": [{"property": "Priority", "direction": "ascending"}],
-        "page_size": need
-    }).encode()
-    backlog = json.loads(_post(
-        "https://api.notion.com/v1/databases/" + db_id + "/query",
-        body, _notion_headers(token))).get("results", [])
+    try:
+        body = json.dumps({
+            "filter": {"property": "Status", "status": {"equals": "Backlog"}},
+            "page_size": 10
+        }).encode()
+        backlog = json.loads(_post(
+            "https://api.notion.com/v1/databases/" + db_id + "/query",
+            body, _notion_headers(token))).get("results", [])
+        promoted = 0
+        for row in backlog[:5]:
+            try:
+                _patch("https://api.notion.com/v1/pages/" + row["id"],
+                    json.dumps({"properties": {
+                        "Status": {"status": {"name": "Approved"}},
+                        "Approved by Tammy": {"checkbox": True},
+                    }}).encode(), _notion_headers(token))
+                promoted += 1
+            except Exception as e:
+                _state["warnings"].append("promote fail: " + str(e)[:80])
+        log("replenished", promoted=promoted)
+        return promoted
+    except Exception as e:
+        _state["errors"].append("replenish: " + type(e).__name__ + ": " + str(e)[:120])
+        return 0
 
-    promoted = 0
-    for row in backlog:
-        try:
-            _patch_page(token, row["id"], {
-                "Status": {"status": {"name": "Approved"}},
-                "Approved by Tammy": {"checkbox": True},
-            })
-            promoted += 1
-            log("task_promoted", id=row["id"][:8],
-                task=_rich(row.get("properties", {}).get("Task", {}).get("title", []))[:50])
-        except Exception as e:
-            log("promote_err", e=str(e)[:100])
-    log("replenish_done", promoted=promoted, was=current_count)
-    return promoted
-
-
-# ---------------------------------------------------------------------------
-# Task execution
-# ---------------------------------------------------------------------------
 
 def make_artifact(task, audit):
     instructions = (task.get("instructions") or "").strip()
     name = (task.get("task") or "improve offbeatinc.com").strip()
-
     ctx = (
         "LIVE AUDIT (offbeatinc.com, CrashyCrash/offbeat-website): "
         + str(audit["checked"]) + "/" + str(audit["html_files_total"]) + " pages. "
@@ -340,7 +400,6 @@ def make_artifact(task, audit):
     )
     prompt = (instructions + "\n\n---\n" + ctx) if instructions else (
         "Task: " + name + "\n\nBe specific. Use exact filenames. Include code.\n\n" + ctx)
-
     sys_p = (
         "You are DatBotty, autonomous web agent for offbeatinc.com (DJ gear/software site, "
         "129 HTML pages, CrashyCrash/offbeat-website). Specific + actionable only. "
@@ -350,75 +409,47 @@ def make_artifact(task, audit):
     if res["ok"]:
         tag = res["provider"] + "/" + res["model"]
         return {"ok": True, "text": "[" + tag + "]\n\n" + res["content"]}
-    return {"ok": False, "text": "ALL_PROVIDERS_FAILED\n" + json.dumps(res.get("errors", {}))[:400]}
+    err_summary = "; ".join(k + "=" + v[:80] for k, v in res.get("errors", {}).items())[:600]
+    return {"ok": False, "text": "ALL_PROVIDERS_FAILED: " + err_summary}
 
 
-def write_evidence(token, tasks, audit):
+def process_tasks(token, tasks, audit):
     now = datetime.now(timezone.utc)
-    wrote, processed = 0, 0
+    wrote, attempted = 0, 0
     for t in tasks:
         if t.get("tier") != "read_only" or not t.get("id"):
             continue
-        if processed >= MAX_TASKS_PER_RUN:
-            log("cap_hit", cap=MAX_TASKS_PER_RUN); break
-        t0 = time.time()
-        log("working", task=t["task"][:60])
-        art = make_artifact(t, audit)
-        processed += 1
-        stamp = (
-            "Loop v3.3 | " + now.strftime("%Y-%m-%d %H:%M UTC")
-            + " | " + str(audit["checked"]) + "/" + str(audit["html_files_total"])
-            + " pages | GA4 missing: " + str(len(audit["missing_ga4"]))
-            + " | llm_ok: " + str(art["ok"])
-        )
-        evidence = (stamp + "\n\n" + art["text"])[:1900]
-        props = {
-            "Result / Evidence": {"rich_text": [{"text": {"content": evidence}}]},
-            "Last run": {"date": {"start": now.isoformat()}},
-            "Status": {"status": {"name": "Done"}},
-        }
+        if attempted >= MAX_TASKS_PER_RUN:
+            break
+        attempted += 1
         try:
-            _patch_page(token, t["id"], props)
+            t0 = time.time()
+            log("working", task=t["task"][:60])
+            art = make_artifact(t, audit)
+            stamp = (
+                "Loop v3.5 | " + now.strftime("%Y-%m-%d %H:%M UTC")
+                + " | " + str(audit["checked"]) + "/" + str(audit["html_files_total"])
+                + " pages | GA4 missing: " + str(len(audit["missing_ga4"]))
+                + " | llm_ok: " + str(art["ok"])
+            )
+            evidence = (stamp + "\n\n" + art["text"])[:1900]
+            props = {
+                "Result / Evidence": {"rich_text": [{"text": {"content": evidence}}]},
+                "Last run": {"date": {"start": now.isoformat()}},
+            }
+            if art["ok"]:
+                props["Status"] = {"status": {"name": "Done"}}
+            _patch("https://api.notion.com/v1/pages/" + t["id"],
+                json.dumps({"properties": props}).encode(), _notion_headers(token))
             wrote += 1
             log("done", task=t["task"][:60], llm=art["ok"], s=round(time.time()-t0, 1))
         except Exception as e:
-            log("patch_err", task=t["task"][:60], e=str(e)[:200])
+            _state["errors"].append("task '" + t["task"][:40] + "': "
+                + type(e).__name__ + ": " + str(e)[:100])
+            log("task_err", task=t["task"][:40], e=str(e)[:120])
+    _state["tasks_attempted"] = attempted
+    _state["tasks_written"] = wrote
     return wrote
-
-
-# ---------------------------------------------------------------------------
-# Cycle log
-# ---------------------------------------------------------------------------
-
-def append_cycle_log(token, wrote, audit, promoted, self_triggered, elapsed):
-    """Append one timestamped line to the DatBotty Cycle Log Notion page."""
-    try:
-        results = _notion_search(token, CYCLE_LOG_TITLE, "page")
-        page_id = next(
-            (r["id"] for r in results
-             if CYCLE_LOG_TITLE in _rich(
-                 r.get("properties", {}).get("title", {}).get("title", []))),
-            None)
-        if not page_id:
-            log("cycle_log_skip", reason="page not found")
-            return
-        now = datetime.now(timezone.utc)
-        line = (
-            now.strftime("%Y-%m-%d %H:%M UTC") + " | v3.3"
-            + " | tasks_done=" + str(wrote)
-            + " | promoted=" + str(promoted)
-            + " | ga4_missing=" + str(len(audit["missing_ga4"]))
-            + " | audit_pages=" + str(audit["checked"]) + "/" + str(audit["html_files_total"])
-            + " | self_triggered=" + str(self_triggered)
-            + " | elapsed=" + str(elapsed) + "s"
-        )
-        _append_blocks(token, page_id, [{
-            "object": "block", "type": "paragraph",
-            "paragraph": {"rich_text": [{"type": "text", "text": {"content": line}}]}
-        }])
-        log("cycle_log_ok")
-    except Exception as e:
-        log("cycle_log_err", e=str(e)[:150])
 
 
 # ---------------------------------------------------------------------------
@@ -426,15 +457,9 @@ def append_cycle_log(token, wrote, audit, promoted, self_triggered, elapsed):
 # ---------------------------------------------------------------------------
 
 def self_trigger():
-    """Dispatch next workflow run so loop fires every ~10 min, not hourly.
-
-    Requires repo secret GH_PAT with scopes: repo, workflow.
-    The built-in GITHUB_TOKEN lacks actions:write, so it will 403 without PAT.
-    Failure is silent — hourly cron acts as fallback.
-    """
     pat = os.environ.get("GH_PAT")
-    if not pat:
-        log("self_trigger_skip", reason="GH_PAT not set — add secret to enable sub-hourly runs")
+    if not _key_looks_real(pat):
+        _state["warnings"].append("GH_PAT not exposed in workflow env — self-trigger disabled")
         return False
     try:
         url = ("https://api.github.com/repos/" + OFFBEAT_OWNER + "/" + OFFBEAT_REPO
@@ -443,10 +468,11 @@ def self_trigger():
         req = urllib.request.Request(url, data=body,
             headers={**gh_headers(pat), "Content-Type": "application/json"}, method="POST")
         urllib.request.urlopen(req, timeout=30)
+        _state["self_triggered"] = True
         log("self_trigger_ok")
         return True
     except Exception as e:
-        log("self_trigger_err", e=str(e)[:150])
+        _state["errors"].append("self_trigger: " + type(e).__name__ + ": " + str(e)[:120])
         return False
 
 
@@ -460,85 +486,98 @@ def main():
     parser.add_argument("--skip-audit", action="store_true")
     args = parser.parse_args()
 
-    log("cycle_start", runner="v3.3")
+    log("cycle_start", v="v3.5")
     t_start = time.time()
+
     token = os.environ.get("NOTION_TOKEN")
-
-    if not token:
-        log("abort", reason="NOTION_TOKEN missing")
+    if not _key_looks_real(token):
+        log("abort", reason="NOTION_TOKEN not interpolated or missing")
         return 1
+    _state["notion_ok"] = True
 
-    # 1. Find queue DB
+    # 1. Heartbeat: prove we got here.
+    now = datetime.now(timezone.utc)
+    heartbeat = (now.strftime("%Y-%m-%d %H:%M:%S UTC") + " | v3.5 START"
+        + " | GH_PAT=" + ("set" if _key_looks_real(os.environ.get("GH_PAT")) else "missing")
+        + " | GITHUB_TOKEN=" + ("set" if os.environ.get("GITHUB_TOKEN") else "missing")
+        + " | providers_set=" + ",".join([p for p in
+            ["GEMINI", "GROQ", "CEREBRAS", "MISTRAL", "OPENROUTER"]
+            if _key_looks_real(os.environ.get(p + "_API_KEY"))]))
+    append_to_cycle_log(token, heartbeat)
+
+    # 2. Audit (safe)
+    audit = audit_site_safe() if not args.skip_audit else DEFAULT_AUDIT
+    _state["audit_pages"] = audit["checked"]
+    _state["audit_total"] = audit["html_files_total"]
+    _state["missing_ga4"] = len(audit["missing_ga4"])
+    _state["format_bugs"] = len(audit["formatting_bug"])
+
+    # 3. Find queue
     db_id = find_queue_db(token)
     if not db_id:
-        log("abort", reason="queue DB not found")
-        return 1
+        _state["errors"].append("queue DB not found by search")
 
-    # 2. Read approved tasks
-    tasks = read_approved_tasks(token, db_id)
+    # 4. Read + replenish + process
+    tasks = []
+    if db_id:
+        tasks = read_approved_tasks(token, db_id)
+        promoted = replenish_queue(token, db_id, len(tasks))
+        _state["promoted"] = promoted
+        if promoted:
+            tasks = read_approved_tasks(token, db_id)
+        if tasks:
+            process_tasks(token, tasks, audit)
 
-    # 3. Auto-replenish if queue is low
-    promoted = replenish_queue(token, db_id, len(tasks))
-    if promoted:
-        tasks = read_approved_tasks(token, db_id)  # re-read with new tasks
-
-    # 4. Decide whether audit is needed
-    needs_audit = (
-        not args.skip_audit
-        and any(t.get("type") in AUDIT_TASK_TYPES for t in tasks)
-    )
-    if needs_audit:
-        audit = audit_site()
-    else:
-        log("audit_skip", reason="no audit tasks or flag")
-        audit = DEFAULT_AUDIT
-
-    # 5. Process tasks
-    wrote = write_evidence(token, tasks, audit) if tasks else 0
-    if not tasks:
-        log("queue_empty", note="all done or none approved")
+    # 5. Self-trigger
+    self_trigger()
 
     elapsed = round(time.time() - t_start, 1)
 
-    # 6. Append to cycle log in Notion
-    triggered = False
+    # 6. Final cycle log
+    end_line = (
+        datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
+        + " | v3.5 END"
+        + " | tasks_done=" + str(_state["tasks_written"]) + "/" + str(_state["tasks_attempted"])
+        + " | promoted=" + str(_state["promoted"])
+        + " | audit=" + str(_state["audit_pages"]) + "/" + str(_state["audit_total"])
+        + " | ga4_missing=" + str(_state["missing_ga4"])
+        + " | llm_ok=" + ",".join(_state["llm_successes"][:3]) or "none"
+        + " | self_trig=" + str(_state["self_triggered"])
+        + " | err=" + str(len(_state["errors"]))
+        + " | s=" + str(elapsed)
+    )
+    append_to_cycle_log(token, end_line)
+    if _state["errors"]:
+        append_to_cycle_log(token,
+            "  └ errors: " + " || ".join(_state["errors"][:5])[:1500])
+
+    # 7. Scorecard
     try:
-        append_cycle_log(token, wrote, audit, promoted, triggered, elapsed)
+        with open("loop-scorecard.json", "w") as f:
+            json.dump({**_state, "elapsed_s": elapsed}, f, indent=2)
     except Exception:
         pass
 
-    # 7. Self-trigger next run (needs GH_PAT secret)
-    triggered = self_trigger()
-
-    # 8. Scorecard
-    scorecard = {
-        "runner": "v3.3",
-        "ts": datetime.now(timezone.utc).isoformat(),
-        "elapsed_s": elapsed,
-        "audit_ran": needs_audit,
-        "self_triggered": triggered,
-        "promoted": promoted,
-        "audit": {
-            "checked": audit["checked"],
-            "total": audit["html_files_total"],
-            "missing_ga4": len(audit["missing_ga4"]),
-            "missing_ga4_pages": audit["missing_ga4"],
-            "formatting_bug": len(audit["formatting_bug"]),
-            "formatting_bug_pages": audit["formatting_bug"],
-        },
-        "queue": {
-            "tasks_found": len(tasks),
-            "tasks_written": wrote,
-            "backlog_promoted": promoted,
-        },
-    }
-    with open("loop-scorecard.json", "w") as f:
-        json.dump(scorecard, f, indent=2)
-
-    log("cycle_end", runner="v3.3", wrote=wrote, triggered=triggered,
-        promoted=promoted, elapsed_s=elapsed)
+    log("cycle_end", **{k: v for k, v in _state.items() if k != "cycle_log_page_id"},
+        elapsed_s=elapsed)
     return 0
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    try:
+        sys.exit(main())
+    except SystemExit:
+        raise
+    except Exception:
+        # Last-resort: try to write a fatal-error line to cycle log.
+        tb = traceback.format_exc()[-1500:]
+        log("fatal", tb=tb[-500:])
+        try:
+            tok = os.environ.get("NOTION_TOKEN")
+            if tok and _key_looks_real(tok):
+                append_to_cycle_log(tok,
+                    datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
+                    + " | v3.5 FATAL: " + tb[-800:])
+        except Exception:
+            pass
+        sys.exit(1)
