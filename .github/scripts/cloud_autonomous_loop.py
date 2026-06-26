@@ -1,16 +1,28 @@
 #!/usr/bin/env python3
-"""DatBotty v3 cloud autonomous loop (v3.5 — bulletproof diagnostics).
+"""DatBotty v3 cloud autonomous loop (v3.6 — multi-provider LLM hardening).
 
 Key design: NOTHING can crash the script silently. Every failure is captured
 and written to the DatBotty Cycle Log Notion page so we have visible proof
 from inside the actual GitHub Actions run environment.
+
+v3.6 changes (LLM reliability):
+- Each provider tries a list of candidate models; a 404/400 model error falls
+  through to the next model instead of failing the whole provider.
+- 429 / 5xx responses are retried with exponential backoff that respects the
+  Retry-After header, then the provider is parked in a per-run cooldown so we
+  stop hammering it (this is what kept spamming Groq until it 429'd).
+- The starting provider rotates every minute (round-robin) so we do not always
+  begin with the same provider.
+- A real Provider Health Canary pings ALL five providers (not stop-at-first)
+  and writes a per-provider PROVIDER CANARY line to the cycle log.
 
 Flow per cycle:
 1. Heartbeat-first: write 'cycle start' line to cycle log immediately.
 2. Run audit (catches any failure, falls back to baseline).
 3. Read queue (catches failures).
 4. Auto-replenish from Backlog if low.
-5. Process tasks one-by-one (each isolated in try/except).
+5. Process tasks one-by-one (each isolated in try/except). Canary tasks ping
+   all providers; other read_only tasks generate an LLM artifact.
 6. Self-trigger next run via GH_PAT (if set).
 7. ALWAYS write final cycle summary line.
 """
@@ -18,6 +30,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import random
 import sys
 import time
 import traceback
@@ -34,6 +47,7 @@ CYCLE_LOG_TITLE     = "DatBotty Cycle Log"
 NOTION_VERSION      = "2022-06-28"
 MAX_TASKS_PER_RUN   = 10
 REPLENISH_THRESHOLD = 3
+VERSION             = "v3.6"
 
 AUDIT_TASK_TYPES = {
     "site_audit", "ga4_injection", "formatting_fix",
@@ -42,7 +56,7 @@ AUDIT_TASK_TYPES = {
 
 # State accumulator — fields here are written to cycle log at end of every run.
 _state = {
-    "version": "v3.5",
+    "version": VERSION,
     "errors": [],
     "warnings": [],
     "notion_ok": False,
@@ -119,34 +133,126 @@ def _select(prop):
 
 
 # ---------------------------------------------------------------------------
-# LLM providers
+# LLM providers (v3.6 — multi-model fallback, 429 backoff, rotation, canary)
 # ---------------------------------------------------------------------------
 
-def call_gemini(key, model, sys_p, usr_p):
+# Each provider lists candidate models tried in order. A 404/400 model error
+# falls through to the next model rather than failing the whole provider, which
+# makes the canary resilient to free-tier model-name drift (the cause of the
+# Gemini/Cerebras 404s).
+PROVIDERS = [
+    {
+        "name": "gemini",
+        "env": ["GEMINI_API_KEY", "GOOGLE_API_KEY"],
+        "kind": "gemini",
+        "models": ["gemini-2.0-flash", "gemini-2.5-flash",
+                   "gemini-flash-latest", "gemini-1.5-flash-latest"],
+    },
+    {
+        "name": "groq",
+        "env": ["GROQ_API_KEY"],
+        "kind": "openai",
+        "base": "https://api.groq.com/openai/v1/chat/completions",
+        "models": ["llama-3.3-70b-versatile", "llama-3.1-8b-instant"],
+    },
+    {
+        "name": "cerebras",
+        "env": ["CEREBRAS_API_KEY"],
+        "kind": "openai",
+        "base": "https://api.cerebras.ai/v1/chat/completions",
+        "models": ["llama-3.3-70b", "llama3.3-70b", "llama3.1-8b"],
+    },
+    {
+        "name": "mistral",
+        "env": ["MISTRAL_API_KEY"],
+        "kind": "openai",
+        "base": "https://api.mistral.ai/v1/chat/completions",
+        "models": ["mistral-small-latest", "open-mistral-7b"],
+    },
+    {
+        "name": "openrouter",
+        "env": ["OPENROUTER_API_KEY"],
+        "kind": "openai",
+        "base": "https://openrouter.ai/api/v1/chat/completions",
+        "models": ["meta-llama/llama-3.3-70b-instruct:free",
+                   "meta-llama/llama-3.1-8b-instruct:free"],
+    },
+]
+
+# Providers that 429'd or hard-failed during this process run are parked here
+# so we stop hammering them for the rest of the cycle.
+_provider_cooldown = set()
+
+
+class _RateLimited(Exception):
+    def __init__(self, retry_after=None):
+        super().__init__("rate_limited")
+        self.retry_after = retry_after
+
+
+class _ModelNotFound(Exception):
+    pass
+
+
+def _http_json(url, body, headers, timeout=90, max_retries=3):
+    """POST JSON with retry/backoff. Raises _RateLimited / _ModelNotFound /
+    the original error so the caller can decide whether to rotate model or
+    provider."""
+    attempt = 0
+    while True:
+        try:
+            req = urllib.request.Request(url, data=body, headers=headers, method="POST")
+            with urllib.request.urlopen(req, timeout=timeout) as r:
+                return json.loads(r.read())
+        except urllib.error.HTTPError as e:
+            code = e.code
+            if code in (400, 404):
+                raise _ModelNotFound(str(code))
+            if code == 429 or code >= 500:
+                retry_after = None
+                try:
+                    ra = e.headers.get("Retry-After") if e.headers else None
+                    retry_after = float(ra) if ra else None
+                except Exception:
+                    retry_after = None
+                attempt += 1
+                if attempt > max_retries:
+                    raise _RateLimited(retry_after) if code == 429 else e
+                sleep_s = retry_after if retry_after is not None else min(2 ** attempt + random.random(), 20)
+                time.sleep(sleep_s)
+                continue
+            raise
+
+
+def _call_gemini(key, model, sys_p, usr_p):
     url = ("https://generativelanguage.googleapis.com/v1beta/models/"
-           + model + ":generateContent?key=" + key)
+           + model + ":generateContent")
     body = json.dumps({
         "systemInstruction": {"parts": [{"text": sys_p}]},
-        "contents": [{"parts": [{"text": usr_p}]}
-    ]}).encode()
-    req = urllib.request.Request(url, data=body,
-        headers={"Content-Type": "application/json", "User-Agent": "datbotty"}, method="POST")
-    with urllib.request.urlopen(req, timeout=90) as r:
-        return json.loads(r.read())["candidates"][0]["content"]["parts"][0]["text"].strip()
+        "contents": [{"parts": [{"text": usr_p}]}],
+        "generationConfig": {"maxOutputTokens": 1800},
+    }).encode()
+    headers = {"Content-Type": "application/json",
+               "User-Agent": "datbotty",
+               "x-goog-api-key": key}
+    data = _http_json(url, body, headers)
+    return data["candidates"][0]["content"]["parts"][0]["text"].strip()
 
 
-def call_oai_compat(base, key, model, sys_p, usr_p, max_tok=1800):
+def _call_openai_compat(base, key, model, sys_p, usr_p, max_tok=1800):
     body = json.dumps({"model": model,
         "messages": [{"role": "system", "content": sys_p},
                      {"role": "user",   "content": usr_p}],
         "max_tokens": max_tok}).encode()
-    req = urllib.request.Request(base, data=body,
-        headers={"Authorization": "Bearer " + key,
-                 "Content-Type": "application/json",
-                 "User-Agent": "datbotty"}, method="POST")
-    with urllib.request.urlopen(req, timeout=90) as r:
-        return (json.loads(r.read()).get("choices", [{}])[0]
-                .get("message", {}).get("content", "").strip())
+    headers = {"Authorization": "Bearer " + key,
+               "Content-Type": "application/json",
+               "User-Agent": "datbotty",
+               # OpenRouter asks for these; harmless for the other providers.
+               "HTTP-Referer": "https://offbeatinc.com",
+               "X-Title": "DatBotty Offbeat Loop"}
+    data = _http_json(base, body, headers)
+    return (data.get("choices", [{}])[0]
+            .get("message", {}).get("content", "") or "").strip()
 
 
 def _key_looks_real(key):
@@ -160,38 +266,101 @@ def _key_looks_real(key):
     return True
 
 
+def _provider_key(p):
+    return next((os.environ.get(k) for k in p["env"]
+                 if _key_looks_real(os.environ.get(k))), None)
+
+
+def _try_provider(p, sys_p, usr_p):
+    """Try a single provider across its candidate models. Returns a dict with
+    ok=True/False. On 429 it parks the provider in the per-run cooldown."""
+    key = _provider_key(p)
+    if not key:
+        return {"ok": False, "provider": p["name"], "error": "no valid key"}
+    last_err = "no model succeeded"
+    for model in p["models"]:
+        try:
+            if p["kind"] == "gemini":
+                out = _call_gemini(key, model, sys_p, usr_p)
+            else:
+                out = _call_openai_compat(p["base"], key, model, sys_p, usr_p)
+            if out:
+                return {"ok": True, "provider": p["name"], "model": model, "content": out}
+            last_err = "empty response"
+        except _ModelNotFound as e:
+            last_err = "model_not_found(" + str(e) + ")"
+            continue
+        except _RateLimited:
+            _provider_cooldown.add(p["name"])
+            return {"ok": False, "provider": p["name"], "error": "rate_limited", "rate_limited": True}
+        except Exception as e:
+            last_err = type(e).__name__ + ": " + str(e)[:120]
+            continue
+    return {"ok": False, "provider": p["name"], "error": last_err}
+
+
+def _rotated_providers():
+    """Round-robin starting offset (changes each minute) so we do not always
+    begin with the same provider and burn it down to a 429."""
+    n = len(PROVIDERS)
+    offset = int(time.time() // 60) % n
+    return [PROVIDERS[(offset + i) % n] for i in range(n)]
+
+
 def execute_llm(sys_p, usr_p):
+    """Return the first provider that succeeds, rotating start order and
+    skipping providers already parked in cooldown."""
     errors = {}
-    providers = [
-        ("gemini",     ["GEMINI_API_KEY", "GOOGLE_API_KEY"], "gemini-1.5-flash",
-            lambda k, m: call_gemini(k, m, sys_p, usr_p)),
-        ("cerebras",   ["CEREBRAS_API_KEY"], "llama-3.3-70b",
-            lambda k, m: call_oai_compat("https://api.cerebras.ai/v1/chat/completions",
-                k, m, sys_p, usr_p)),
-        ("groq",       ["GROQ_API_KEY"], "llama-3.3-70b-versatile",
-            lambda k, m: call_oai_compat("https://api.groq.com/openai/v1/chat/completions",
-                k, m, sys_p, usr_p)),
-        ("mistral",    ["MISTRAL_API_KEY"], "mistral-small-latest",
-            lambda k, m: call_oai_compat("https://api.mistral.ai/v1/chat/completions",
-                k, m, sys_p, usr_p)),
-        ("openrouter", ["OPENROUTER_API_KEY"], "meta-llama/llama-3.3-70b-instruct:free",
-            lambda k, m: call_oai_compat("https://openrouter.ai/api/v1/chat/completions",
-                k, m, sys_p, usr_p)),
-    ]
-    for name, env_keys, model, fn in providers:
-        key = next((os.environ.get(k) for k in env_keys if os.environ.get(k)), None)
-        if not _key_looks_real(key):
+    for p in _rotated_providers():
+        name = p["name"]
+        if name in _provider_cooldown:
+            errors[name] = "skipped (cooldown)"
+            continue
+        if not _provider_key(p):
             errors[name] = "no valid key (env not interpolated or unset)"
             continue
         _state["llm_attempts"].append(name)
-        try:
-            out = fn(key, model)
+        res = _try_provider(p, sys_p, usr_p)
+        if res.get("ok"):
             _state["llm_successes"].append(name)
-            return {"ok": True, "provider": name, "model": model, "content": out}
-        except Exception as e:
-            errors[name] = str(e)[:200]
-            log("llm_err", p=name, e=str(e)[:120])
+            return {"ok": True, "provider": name, "model": res["model"], "content": res["content"]}
+        errors[name] = res.get("error", "failed")
+        log("llm_err", p=name, e=str(errors[name])[:120])
     return {"ok": False, "errors": errors}
+
+
+def provider_canary(token):
+    """Ping EVERY provider with a tiny prompt and record per-provider health,
+    then write a PROVIDER CANARY line to the cycle log. Unlike execute_llm this
+    does not stop at the first success and ignores cooldown, so it proves which
+    of the five providers are actually returning valid responses."""
+    sys_p = "You are a health check. Reply with exactly: OK"
+    usr_p = "Reply with exactly: OK"
+    results = {}
+    parts = []
+    for p in PROVIDERS:
+        name = p["name"]
+        if not _provider_key(p):
+            results[name] = {"ok": False, "detail": "no key"}
+            parts.append(name + "=NOKEY")
+            continue
+        res = _try_provider(p, sys_p, usr_p)
+        if res.get("ok"):
+            results[name] = {"ok": True, "model": res.get("model")}
+            parts.append(name + "=OK(" + str(res.get("model")) + ")")
+            if name not in _state["llm_successes"]:
+                _state["llm_successes"].append(name)
+        else:
+            detail = str(res.get("error", "fail"))[:50]
+            results[name] = {"ok": False, "detail": detail}
+            parts.append(name + "=FAIL(" + detail + ")")
+    ok_count = sum(1 for v in results.values() if v.get("ok"))
+    line = (datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
+            + " | PROVIDER CANARY | " + str(ok_count) + "/" + str(len(PROVIDERS))
+            + " ok | " + " | ".join(parts))
+    append_to_cycle_log(token, line)
+    log("provider_canary", ok_count=ok_count, results=results)
+    return {"ok": ok_count > 0, "ok_count": ok_count, "results": results, "line": line}
 
 
 # ---------------------------------------------------------------------------
@@ -409,8 +578,13 @@ def make_artifact(task, audit):
     if res["ok"]:
         tag = res["provider"] + "/" + res["model"]
         return {"ok": True, "text": "[" + tag + "]\n\n" + res["content"]}
-    err_summary = "; ".join(k + "=" + v[:80] for k, v in res.get("errors", {}).items())[:600]
+    err_summary = "; ".join(k + "=" + str(v)[:80] for k, v in res.get("errors", {}).items())[:600]
     return {"ok": False, "text": "ALL_PROVIDERS_FAILED: " + err_summary}
+
+
+def _is_canary(task):
+    name = (task.get("task") or "").lower()
+    return ("canary" in name) or ("provider health" in name)
 
 
 def process_tasks(token, tasks, audit):
@@ -425,24 +599,34 @@ def process_tasks(token, tasks, audit):
         try:
             t0 = time.time()
             log("working", task=t["task"][:60])
-            art = make_artifact(t, audit)
-            stamp = (
-                "Loop v3.5 | " + now.strftime("%Y-%m-%d %H:%M UTC")
-                + " | " + str(audit["checked"]) + "/" + str(audit["html_files_total"])
-                + " pages | GA4 missing: " + str(len(audit["missing_ga4"]))
-                + " | llm_ok: " + str(art["ok"])
-            )
-            evidence = (stamp + "\n\n" + art["text"])[:1900]
+            if _is_canary(t):
+                can = provider_canary(token)
+                ok = can["ok_count"] == len(PROVIDERS)
+                stamp = (
+                    "Loop " + VERSION + " | " + now.strftime("%Y-%m-%d %H:%M UTC")
+                    + " | Provider canary " + str(can["ok_count"]) + "/"
+                    + str(len(PROVIDERS)) + " OK")
+                body_text = can["line"]
+            else:
+                art = make_artifact(t, audit)
+                ok = art["ok"]
+                stamp = (
+                    "Loop " + VERSION + " | " + now.strftime("%Y-%m-%d %H:%M UTC")
+                    + " | " + str(audit["checked"]) + "/" + str(audit["html_files_total"])
+                    + " pages | GA4 missing: " + str(len(audit["missing_ga4"]))
+                    + " | llm_ok: " + str(art["ok"]))
+                body_text = art["text"]
+            evidence = (stamp + "\n\n" + body_text)[:1900]
             props = {
                 "Result / Evidence": {"rich_text": [{"text": {"content": evidence}}]},
                 "Last run": {"date": {"start": now.isoformat()}},
             }
-            if art["ok"]:
+            if ok:
                 props["Status"] = {"status": {"name": "Done"}}
             _patch("https://api.notion.com/v1/pages/" + t["id"],
                 json.dumps({"properties": props}).encode(), _notion_headers(token))
             wrote += 1
-            log("done", task=t["task"][:60], llm=art["ok"], s=round(time.time()-t0, 1))
+            log("done", task=t["task"][:60], ok=ok, s=round(time.time()-t0, 1))
         except Exception as e:
             _state["errors"].append("task '" + t["task"][:40] + "': "
                 + type(e).__name__ + ": " + str(e)[:100])
@@ -486,7 +670,7 @@ def main():
     parser.add_argument("--skip-audit", action="store_true")
     args = parser.parse_args()
 
-    log("cycle_start", v="v3.5")
+    log("cycle_start", v=VERSION)
     t_start = time.time()
 
     token = os.environ.get("NOTION_TOKEN")
@@ -497,7 +681,7 @@ def main():
 
     # 1. Heartbeat: prove we got here.
     now = datetime.now(timezone.utc)
-    heartbeat = (now.strftime("%Y-%m-%d %H:%M:%S UTC") + " | v3.5 START"
+    heartbeat = (now.strftime("%Y-%m-%d %H:%M:%S UTC") + " | " + VERSION + " START"
         + " | GH_PAT=" + ("set" if _key_looks_real(os.environ.get("GH_PAT")) else "missing")
         + " | GITHUB_TOKEN=" + ("set" if os.environ.get("GITHUB_TOKEN") else "missing")
         + " | providers_set=" + ",".join([p for p in
@@ -536,12 +720,12 @@ def main():
     # 6. Final cycle log
     end_line = (
         datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
-        + " | v3.5 END"
+        + " | " + VERSION + " END"
         + " | tasks_done=" + str(_state["tasks_written"]) + "/" + str(_state["tasks_attempted"])
         + " | promoted=" + str(_state["promoted"])
         + " | audit=" + str(_state["audit_pages"]) + "/" + str(_state["audit_total"])
         + " | ga4_missing=" + str(_state["missing_ga4"])
-        + " | llm_ok=" + ",".join(_state["llm_successes"][:3]) or "none"
+        + " | llm_ok=" + (",".join(_state["llm_successes"][:5]) or "none")
         + " | self_trig=" + str(_state["self_triggered"])
         + " | err=" + str(len(_state["errors"]))
         + " | s=" + str(elapsed)
@@ -549,7 +733,7 @@ def main():
     append_to_cycle_log(token, end_line)
     if _state["errors"]:
         append_to_cycle_log(token,
-            "  └ errors: " + " || ".join(_state["errors"][:5])[:1500])
+            "  \u2514 errors: " + " || ".join(_state["errors"][:5])[:1500])
 
     # 7. Scorecard
     try:
@@ -577,7 +761,7 @@ if __name__ == "__main__":
             if tok and _key_looks_real(tok):
                 append_to_cycle_log(tok,
                     datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
-                    + " | v3.5 FATAL: " + tb[-800:])
+                    + " | " + VERSION + " FATAL: " + tb[-800:])
         except Exception:
             pass
         sys.exit(1)
