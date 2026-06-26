@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""DatBotty v3 cloud autonomous loop (v3.6.1 — multi-provider LLM hardening).
+"""DatBotty v3 cloud autonomous loop (v3.7 — Gemini model spread, light canary, pacing).
 
 Key design: NOTHING can crash the script silently. Every failure is captured
 and written to the DatBotty Cycle Log Notion page so we have visible proof
@@ -17,11 +17,24 @@ v3.6 changes (LLM reliability):
   and writes a per-provider PROVIDER CANARY line to the cycle log.
 
 v3.6.1 changes:
-- Cerebras: corrected model IDs (gpt-oss-120b is the current production model;
-  the old llama-3.3-70b/llama3.1-8b IDs were 404ing). Broader fallback list.
-- Gemini: free-tier quota cuts make gemini-2.0-flash frequently return 429
-  (limit:0), so we now try gemini-2.5-flash first and, on a 429, fall through
-  to the next candidate model before parking the provider in cooldown.
+- Cerebras: corrected model IDs (gpt-oss-120b is the current production model).
+- Gemini: try gemini-2.5-flash first, fall through models on a 429.
+
+v3.7 changes (free-quota efficiency — per Tammy):
+- Gemini now lists the full set of CURRENT free-tier models (2.5-flash-lite,
+  2.0-flash-lite, 2.0-flash, 2.5-flash, flash-latest, 1.5-flash). Pro models
+  are paid-only since Apr 2026 and are deliberately excluded.
+- Per-call model rotation (_rotated_models): each LLM call starts on a
+  different model so routine work SPREADS across all of a provider's free
+  models. Each free Gemini model has its own ~1,000-1,500 RPD bucket, so
+  rotating across 6 models gives well over 1,000 Gemini calls/day before any
+  single model's daily cap is hit.
+- Lightweight canary: the health canary now pings each provider's smallest
+  model (canary_model, e.g. gemini-2.5-flash-lite) instead of the powerful
+  models, so health checks do not burn the scarce 2.5-flash quota.
+- Inter-call pacing (_pace_llm): a minimum spacing between outbound LLM HTTP
+  calls within a run, so back-to-back tasks cannot burst past per-minute RPM
+  limits. Cross-run pacing still comes from provider + model rotation.
 
 Flow per cycle:
 1. Heartbeat-first: write 'cycle start' line to cycle log immediately.
@@ -54,7 +67,7 @@ CYCLE_LOG_TITLE     = "DatBotty Cycle Log"
 NOTION_VERSION      = "2022-06-28"
 MAX_TASKS_PER_RUN   = 10
 REPLENISH_THRESHOLD = 3
-VERSION             = "v3.6.1"
+VERSION             = "v3.7"
 
 AUDIT_TASK_TYPES = {
     "site_audit", "ga4_injection", "formatting_fix",
@@ -140,56 +153,85 @@ def _select(prop):
 
 
 # ---------------------------------------------------------------------------
-# LLM providers (v3.6 — multi-model fallback, 429 backoff, rotation, canary)
+# LLM providers (v3.7 — multi-model spread, light canary, 429 backoff, pacing)
 # ---------------------------------------------------------------------------
 
-# Each provider lists candidate models tried in order. A 404/400 model error
-# falls through to the next model rather than failing the whole provider, which
-# makes the canary resilient to free-tier model-name drift (the cause of the
-# Gemini/Cerebras 404s).
+# Each provider lists candidate models. Per-call rotation (see _rotated_models)
+# spreads work across all of them so each free model's daily quota is used
+# rather than hammering one model. canary_model is the smallest/cheapest model,
+# used only for health checks so the canary never burns the powerful models'
+# scarce free quota.
 PROVIDERS = [
     {
         "name": "gemini",
         "env": ["GEMINI_API_KEY", "GOOGLE_API_KEY"],
         "kind": "gemini",
-        "models": ["gemini-2.5-flash", "gemini-flash-latest",
-                   "gemini-2.0-flash", "gemini-1.5-flash-latest"],
+        # CURRENT free-tier Gemini models (Pro is paid-only since Apr 2026).
+        # Lighter/higher-RPD models first; rotation spreads load across all.
+        "models": ["gemini-2.5-flash-lite", "gemini-2.0-flash-lite",
+                   "gemini-2.0-flash", "gemini-2.5-flash",
+                   "gemini-flash-latest", "gemini-1.5-flash"],
+        "canary_model": "gemini-2.5-flash-lite",
     },
     {
         "name": "groq",
         "env": ["GROQ_API_KEY"],
         "kind": "openai",
         "base": "https://api.groq.com/openai/v1/chat/completions",
-        "models": ["llama-3.3-70b-versatile", "llama-3.1-8b-instant"],
+        "models": ["llama-3.1-8b-instant", "llama-3.3-70b-versatile"],
+        "canary_model": "llama-3.1-8b-instant",
     },
     {
         "name": "cerebras",
         "env": ["CEREBRAS_API_KEY"],
         "kind": "openai",
         "base": "https://api.cerebras.ai/v1/chat/completions",
-        "models": ["gpt-oss-120b", "llama-3.3-70b", "llama3.1-8b",
+        "models": ["llama3.1-8b", "gpt-oss-120b", "llama-3.3-70b",
                    "qwen-3-32b", "llama-4-scout-17b-16e-instruct"],
+        "canary_model": "llama3.1-8b",
     },
     {
         "name": "mistral",
         "env": ["MISTRAL_API_KEY"],
         "kind": "openai",
         "base": "https://api.mistral.ai/v1/chat/completions",
-        "models": ["mistral-small-latest", "open-mistral-7b"],
+        "models": ["open-mistral-7b", "mistral-small-latest"],
+        "canary_model": "open-mistral-7b",
     },
     {
         "name": "openrouter",
         "env": ["OPENROUTER_API_KEY"],
         "kind": "openai",
         "base": "https://openrouter.ai/api/v1/chat/completions",
-        "models": ["meta-llama/llama-3.3-70b-instruct:free",
-                   "meta-llama/llama-3.1-8b-instruct:free"],
+        "models": ["meta-llama/llama-3.1-8b-instruct:free",
+                   "meta-llama/llama-3.3-70b-instruct:free"],
+        "canary_model": "meta-llama/llama-3.1-8b-instruct:free",
     },
 ]
 
 # Providers that 429'd or hard-failed during this process run are parked here
 # so we stop hammering them for the rest of the cycle.
 _provider_cooldown = set()
+
+# Global LLM call counter — used to rotate model choice within a provider so
+# usage spreads across all of a provider's free models (multiplying effective
+# daily quota) instead of always consuming the first model's RPD.
+_llm_call_count = 0
+
+# Minimum spacing between outbound LLM HTTP calls within a single process run,
+# so several tasks running back-to-back cannot burst past per-minute RPM limits.
+# Each GitHub Actions run is a fresh process, so this paces within a run;
+# cross-run pacing comes from provider + model rotation.
+_MIN_LLM_INTERVAL_S = 1.5
+_last_llm_call_ts = 0.0
+
+
+def _pace_llm():
+    global _last_llm_call_ts
+    wait = _MIN_LLM_INTERVAL_S - (time.time() - _last_llm_call_ts)
+    if wait > 0:
+        time.sleep(wait)
+    _last_llm_call_ts = time.time()
 
 
 class _RateLimited(Exception):
@@ -206,6 +248,7 @@ def _http_json(url, body, headers, timeout=90, max_retries=3):
     """POST JSON with retry/backoff. Raises _RateLimited / _ModelNotFound /
     the original error so the caller can decide whether to rotate model or
     provider."""
+    _pace_llm()
     attempt = 0
     while True:
         try:
@@ -279,17 +322,34 @@ def _provider_key(p):
                  if _key_looks_real(os.environ.get(k))), None)
 
 
-def _try_provider(p, sys_p, usr_p):
-    """Try a single provider across its candidate models. Returns a dict with
+def _rotated_models(p):
+    """Rotate the starting model per call so free-tier quota is spread across
+    all of a provider's models instead of always consuming the first one's
+    RPD. Combined with the per-minute provider rotation this lets us task the
+    free Gemini models well over 1,000 times/day before any single model caps."""
+    models = p["models"]
+    if len(models) <= 1:
+        return list(models)
+    offset = _llm_call_count % len(models)
+    return [models[(offset + i) % len(models)] for i in range(len(models))]
+
+
+def _try_provider(p, sys_p, usr_p, models=None):
+    """Try a single provider across candidate models. Returns a dict with
     ok=True/False. On a 429 we fall through to the next candidate model (a
     per-model free-tier quota does not necessarily affect the others), and only
-    park the provider in cooldown if every model was rate-limited."""
+    park the provider in cooldown if every model was rate-limited. Pass an
+    explicit `models` list (e.g. the light canary_model) to restrict the call
+    to specific models."""
     key = _provider_key(p)
     if not key:
         return {"ok": False, "provider": p["name"], "error": "no valid key"}
+    global _llm_call_count
+    _llm_call_count += 1
     last_err = "no model succeeded"
     rate_limited = False
-    for model in p["models"]:
+    candidates = models if models is not None else _rotated_models(p)
+    for model in candidates:
         try:
             if p["kind"] == "gemini":
                 out = _call_gemini(key, model, sys_p, usr_p)
@@ -345,10 +405,12 @@ def execute_llm(sys_p, usr_p):
 
 
 def provider_canary(token):
-    """Ping EVERY provider with a tiny prompt and record per-provider health,
-    then write a PROVIDER CANARY line to the cycle log. Unlike execute_llm this
-    does not stop at the first success and ignores cooldown, so it proves which
-    of the five providers are actually returning valid responses."""
+    """Ping EVERY provider with a tiny prompt on its LIGHTEST model and record
+    per-provider health, then write a PROVIDER CANARY line to the cycle log.
+    Using canary_model (not the powerful models) keeps health checks from
+    burning the scarce free quota of models like gemini-2.5-flash. Unlike
+    execute_llm this does not stop at the first success and ignores cooldown,
+    so it proves which of the five providers are returning valid responses."""
     sys_p = "You are a health check. Reply with exactly: OK"
     usr_p = "Reply with exactly: OK"
     results = {}
@@ -359,7 +421,8 @@ def provider_canary(token):
             results[name] = {"ok": False, "detail": "no key"}
             parts.append(name + "=NOKEY")
             continue
-        res = _try_provider(p, sys_p, usr_p)
+        light = [p.get("canary_model", p["models"][0])]
+        res = _try_provider(p, sys_p, usr_p, models=light)
         if res.get("ok"):
             results[name] = {"ok": True, "model": res.get("model")}
             parts.append(name + "=OK(" + str(res.get("model")) + ")")
