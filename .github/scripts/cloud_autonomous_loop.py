@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""DatBotty v3 cloud autonomous loop (v3.9 — slow bounded self-trigger restores cadence).
+"""DatBotty v3 cloud autonomous loop (v3.8 — cycle-log hygiene, no self-trigger storm).
 
 Key design: NOTHING can crash the script silently. Every failure is captured
 and written to the DatBotty Cycle Log Notion page so we have visible proof
@@ -41,7 +41,7 @@ v3.7 changes (free-quota efficiency — per Tammy):
   calls within a run, so back-to-back tasks cannot burst past per-minute RPM
   limits. Cross-run pacing still comes from provider + model rotation.
 
-v3.8 changes (cycle-log hygiene — per Tammy):
+v3.8 changes (cycle-log hygiene + cadence — per Tammy):
 - Cycle-log self-trim (trim_cycle_log): each cycle keeps only the most recent
   ~50 loop log lines on the DatBotty Cycle Log page; older loop-written lines
   are deleted while the policy callout/headings are preserved. The page can no
@@ -50,19 +50,12 @@ v3.8 changes (cycle-log hygiene — per Tammy):
 - No per-cycle heartbeat block: the start-of-cycle environment line is logged
   to stdout only and folded into the single END summary line, so idle cycles
   no longer spam the Cycle Log.
+- Self-trigger DISABLED by default: the workflow's schedule cron is the sole
+  cadence driver. Chained self-dispatch (which queued a new run every cycle and
+  flooded the log + burned quota) is off unless ENABLE_SELF_TRIGGER=1.
 - Replenish never auto-approves publish-tier tasks: only read_only /
   bounded_write backlog items are auto-promoted; publish-tier stays in Backlog
   for explicit human approval (the rare high-risk gate).
-
-v3.9 changes (cadence reliability — per Tammy):
-- Bounded self-trigger restored. v3.8 disabled self-dispatch entirely, which
-  left cadence dependent on GitHub's unreliable schedule cron (the loop could
-  stall 45+ min). v3.9 re-enables self-dispatch but with a HARD floor: each run
-  sleeps until the cycle has lasted ~TARGET_CYCLE_INTERVAL_S (~10 min) and then
-  dispatches exactly ONE follow-up run. One run in -> at most one run out, so
-  the loop stays alive on a steady ~10-min cadence with NO every-~30s storm.
-  Public-repo Actions minutes are free, so the brief idle hold is acceptable.
-  Set DISABLE_SELF_TRIGGER=1 to fall back to schedule-cron only.
 
 Flow per cycle:
 1. Audit (catches any failure, falls back to baseline).
@@ -70,9 +63,8 @@ Flow per cycle:
 3. Auto-replenish from Backlog if low (never publish-tier).
 4. Process tasks one-by-one (each isolated in try/except). Canary tasks ping
    all providers; other read_only tasks generate an LLM artifact.
-5. ALWAYS write ONE final cycle summary line, then trim the Cycle Log tail.
-6. Sleep to the target interval, then self-dispatch ONE follow-up run (bounded
-   ~10-min cadence; DISABLE_SELF_TRIGGER=1 for cron-only).
+5. Self-trigger is DISABLED by default (cron drives cadence).
+6. ALWAYS write ONE final cycle summary line, then trim the Cycle Log tail.
 """
 from __future__ import annotations
 import argparse
@@ -97,9 +89,7 @@ NOTION_VERSION      = "2022-06-28"
 MAX_TASKS_PER_RUN   = 10
 REPLENISH_THRESHOLD = 3
 CYCLE_LOG_KEEP      = 50
-TARGET_CYCLE_INTERVAL_S = 600    # ~10 min between cloud runs (slow, anti-storm)
-SELF_TRIGGER_MAX_SLEEP_S = 540   # never hold the runner idle more than 9 min
-VERSION             = "v3.9"
+VERSION             = "v3.8"
 
 AUDIT_TASK_TYPES = {
     "site_audit", "ga4_injection", "formatting_fix",
@@ -687,4 +677,234 @@ def replenish_queue(token, db_id, current_count):
                 _patch("https://api.notion.com/v1/pages/" + row["id"],
                     json.dumps({"properties": {
                         "Status": {"status": {"name": "Approved"}},
-                        "Approved by Tammy": {"checkbox": True
+                        "Approved by Tammy": {"checkbox": True},
+                    }}).encode(), _notion_headers(token))
+                promoted += 1
+            except Exception as e:
+                _state["warnings"].append("promote fail: " + str(e)[:80])
+        log("replenished", promoted=promoted)
+        return promoted
+    except Exception as e:
+        _state["errors"].append("replenish: " + type(e).__name__ + ": " + str(e)[:120])
+        return 0
+
+
+def make_artifact(task, audit):
+    instructions = (task.get("instructions") or "").strip()
+    name = (task.get("task") or "improve offbeatinc.com").strip()
+    ctx = (
+        "LIVE AUDIT (offbeatinc.com, CrashyCrash/offbeat-website): "
+        + str(audit["checked"]) + "/" + str(audit["html_files_total"]) + " pages. "
+        "GA4 missing (" + str(len(audit["missing_ga4"])) + "): "
+        + ", ".join(audit["missing_ga4"][:15]) + ". "
+        "Formatting bug pages: " + ", ".join(audit["formatting_bug"]) + "."
+    )
+    prompt = (instructions + "\n\n---\n" + ctx) if instructions else (
+        "Task: " + name + "\n\nBe specific. Use exact filenames. Include code.\n\n" + ctx)
+    sys_p = (
+        "You are DatBotty, autonomous web agent for offbeatinc.com (DJ gear/software site, "
+        "129 HTML pages, CrashyCrash/offbeat-website). Specific + actionable only. "
+        "Exact filenames + code. No vague suggestions. Max 1200 chars output."
+    )
+    res = execute_llm(sys_p, prompt)
+    if res["ok"]:
+        tag = res["provider"] + "/" + res["model"]
+        return {"ok": True, "text": "[" + tag + "]\n\n" + res["content"]}
+    err_summary = "; ".join(k + "=" + str(v)[:80] for k, v in res.get("errors", {}).items())[:600]
+    return {"ok": False, "text": "ALL_PROVIDERS_FAILED: " + err_summary}
+
+
+def _is_canary(task):
+    name = (task.get("task") or "").lower()
+    return ("canary" in name) or ("provider health" in name)
+
+
+def process_tasks(token, tasks, audit):
+    now = datetime.now(timezone.utc)
+    wrote, attempted = 0, 0
+    for t in tasks:
+        if t.get("tier") != "read_only" or not t.get("id"):
+            continue
+        if attempted >= MAX_TASKS_PER_RUN:
+            break
+        attempted += 1
+        try:
+            t0 = time.time()
+            log("working", task=t["task"][:60])
+            if _is_canary(t):
+                can = provider_canary(token)
+                ok = can["ok_count"] == len(PROVIDERS)
+                stamp = (
+                    "Loop " + VERSION + " | " + now.strftime("%Y-%m-%d %H:%M UTC")
+                    + " | Provider canary " + str(can["ok_count"]) + "/"
+                    + str(len(PROVIDERS)) + " OK")
+                body_text = can["line"]
+            else:
+                art = make_artifact(t, audit)
+                ok = art["ok"]
+                stamp = (
+                    "Loop " + VERSION + " | " + now.strftime("%Y-%m-%d %H:%M UTC")
+                    + " | " + str(audit["checked"]) + "/" + str(audit["html_files_total"])
+                    + " pages | GA4 missing: " + str(len(audit["missing_ga4"]))
+                    + " | llm_ok: " + str(art["ok"]))
+                body_text = art["text"]
+            evidence = (stamp + "\n\n" + body_text)[:1900]
+            props = {
+                "Result / Evidence": {"rich_text": [{"text": {"content": evidence}}]},
+                "Last run": {"date": {"start": now.isoformat()}},
+            }
+            if ok:
+                props["Status"] = {"status": {"name": "Done"}}
+            _patch("https://api.notion.com/v1/pages/" + t["id"],
+                json.dumps({"properties": props}).encode(), _notion_headers(token))
+            wrote += 1
+            log("done", task=t["task"][:60], ok=ok, s=round(time.time()-t0, 1))
+        except Exception as e:
+            _state["errors"].append("task '" + t["task"][:40] + "': "
+                + type(e).__name__ + ": " + str(e)[:100])
+            log("task_err", task=t["task"][:40], e=str(e)[:120])
+    _state["tasks_attempted"] = attempted
+    _state["tasks_written"] = wrote
+    return wrote
+
+
+# ---------------------------------------------------------------------------
+# Self-trigger (DISABLED by default in v3.8)
+# ---------------------------------------------------------------------------
+
+def self_trigger():
+    """Disabled by default in v3.8. The workflow's schedule cron is the sole
+    cadence driver. Chained self-dispatch is what queued a fresh run every cycle
+    and flooded the Cycle Log + burned free-LLM quota, so we no longer
+    re-dispatch automatically. Set ENABLE_SELF_TRIGGER=1 only for a deliberate
+    one-off catch-up burst."""
+    if os.environ.get("ENABLE_SELF_TRIGGER") != "1":
+        log("self_trigger_skipped", reason="cron drives cadence")
+        return False
+    pat = os.environ.get("GH_PAT")
+    if not _key_looks_real(pat):
+        _state["warnings"].append("GH_PAT not exposed in workflow env — self-trigger disabled")
+        return False
+    try:
+        url = ("https://api.github.com/repos/" + OFFBEAT_OWNER + "/" + OFFBEAT_REPO
+               + "/actions/workflows/datbotty-autonomous-loop.yml/dispatches")
+        body = json.dumps({"ref": "main"}).encode()
+        req = urllib.request.Request(url, data=body,
+            headers={**gh_headers(pat), "Content-Type": "application/json"}, method="POST")
+        urllib.request.urlopen(req, timeout=30)
+        _state["self_triggered"] = True
+        log("self_trigger_ok")
+        return True
+    except Exception as e:
+        _state["errors"].append("self_trigger: " + type(e).__name__ + ": " + str(e)[:120])
+        return False
+
+
+# ---------------------------------------------------------------------------
+# Main
+# ---------------------------------------------------------------------------
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--once", action="store_true")
+    parser.add_argument("--skip-audit", action="store_true")
+    args = parser.parse_args()
+
+    log("cycle_start", v=VERSION)
+    t_start = time.time()
+
+    token = os.environ.get("NOTION_TOKEN")
+    if not _key_looks_real(token):
+        log("abort", reason="NOTION_TOKEN not interpolated or missing")
+        return 1
+    _state["notion_ok"] = True
+
+    # 1. Environment summary (console only; folded into the single END line so we
+    #    NEVER write a bare heartbeat block to the Cycle Log every cycle).
+    env_summary = (
+        "GH_PAT=" + ("set" if _key_looks_real(os.environ.get("GH_PAT")) else "missing")
+        + " GITHUB_TOKEN=" + ("set" if os.environ.get("GITHUB_TOKEN") else "missing")
+        + " providers=" + (",".join([p for p in
+            ["GEMINI", "GROQ", "CEREBRAS", "MISTRAL", "OPENROUTER"]
+            if _key_looks_real(os.environ.get(p + "_API_KEY"))]) or "none"))
+    log("env", summary=env_summary)
+
+    # 2. Audit (safe)
+    audit = audit_site_safe() if not args.skip_audit else DEFAULT_AUDIT
+    _state["audit_pages"] = audit["checked"]
+    _state["audit_total"] = audit["html_files_total"]
+    _state["missing_ga4"] = len(audit["missing_ga4"])
+    _state["format_bugs"] = len(audit["formatting_bug"])
+
+    # 3. Find queue
+    db_id = find_queue_db(token)
+    if not db_id:
+        _state["errors"].append("queue DB not found by search")
+
+    # 4. Read + replenish + process
+    tasks = []
+    if db_id:
+        tasks = read_approved_tasks(token, db_id)
+        promoted = replenish_queue(token, db_id, len(tasks))
+        _state["promoted"] = promoted
+        if promoted:
+            tasks = read_approved_tasks(token, db_id)
+        if tasks:
+            process_tasks(token, tasks, audit)
+
+    # 5. Self-trigger (disabled by default — cron drives cadence)
+    self_trigger()
+
+    elapsed = round(time.time() - t_start, 1)
+
+    # 6. ONE final cycle-summary line (the heartbeat), then trim the tail.
+    end_line = (
+        datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
+        + " | " + VERSION + " END"
+        + " | tasks_done=" + str(_state["tasks_written"]) + "/" + str(_state["tasks_attempted"])
+        + " | promoted=" + str(_state["promoted"])
+        + " | audit=" + str(_state["audit_pages"]) + "/" + str(_state["audit_total"])
+        + " | ga4_missing=" + str(_state["missing_ga4"])
+        + " | llm_ok=" + (",".join(_state["llm_successes"][:5]) or "none")
+        + " | self_trig=" + str(_state["self_triggered"])
+        + " | err=" + str(len(_state["errors"]))
+        + " | " + env_summary
+        + " | s=" + str(elapsed)
+    )
+    append_to_cycle_log(token, end_line)
+    if _state["errors"]:
+        append_to_cycle_log(token,
+            "  \u2514 errors: " + " || ".join(_state["errors"][:5])[:1500])
+
+    # Cycle-log hygiene: keep only a short rolling tail of loop log lines.
+    trim_cycle_log(token)
+
+    # 7. Scorecard
+    try:
+        with open("loop-scorecard.json", "w") as f:
+            json.dump({**_state, "elapsed_s": elapsed}, f, indent=2)
+    except Exception:
+        pass
+
+    log("cycle_end", **{k: v for k, v in _state.items() if k != "cycle_log_page_id"},
+        elapsed_s=elapsed)
+    return 0
+
+
+if __name__ == "__main__":
+    try:
+        sys.exit(main())
+    except SystemExit:
+        raise
+    except Exception:
+        tb = traceback.format_exc()[-1500:]
+        log("fatal", tb=tb[-500:])
+        try:
+            tok = os.environ.get("NOTION_TOKEN")
+            if tok and _key_looks_real(tok):
+                append_to_cycle_log(tok,
+                    datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
+                    + " | " + VERSION + " FATAL: " + tb[-800:])
+        except Exception:
+            pass
+        sys.exit(1)
