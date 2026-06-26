@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""DatBotty v3 cloud autonomous loop (v3.6 — multi-provider LLM hardening).
+"""DatBotty v3 cloud autonomous loop (v3.6.1 — multi-provider LLM hardening).
 
 Key design: NOTHING can crash the script silently. Every failure is captured
 and written to the DatBotty Cycle Log Notion page so we have visible proof
@@ -15,6 +15,13 @@ v3.6 changes (LLM reliability):
   begin with the same provider.
 - A real Provider Health Canary pings ALL five providers (not stop-at-first)
   and writes a per-provider PROVIDER CANARY line to the cycle log.
+
+v3.6.1 changes:
+- Cerebras: corrected model IDs (gpt-oss-120b is the current production model;
+  the old llama-3.3-70b/llama3.1-8b IDs were 404ing). Broader fallback list.
+- Gemini: free-tier quota cuts make gemini-2.0-flash frequently return 429
+  (limit:0), so we now try gemini-2.5-flash first and, on a 429, fall through
+  to the next candidate model before parking the provider in cooldown.
 
 Flow per cycle:
 1. Heartbeat-first: write 'cycle start' line to cycle log immediately.
@@ -47,7 +54,7 @@ CYCLE_LOG_TITLE     = "DatBotty Cycle Log"
 NOTION_VERSION      = "2022-06-28"
 MAX_TASKS_PER_RUN   = 10
 REPLENISH_THRESHOLD = 3
-VERSION             = "v3.6"
+VERSION             = "v3.6.1"
 
 AUDIT_TASK_TYPES = {
     "site_audit", "ga4_injection", "formatting_fix",
@@ -145,8 +152,8 @@ PROVIDERS = [
         "name": "gemini",
         "env": ["GEMINI_API_KEY", "GOOGLE_API_KEY"],
         "kind": "gemini",
-        "models": ["gemini-2.0-flash", "gemini-2.5-flash",
-                   "gemini-flash-latest", "gemini-1.5-flash-latest"],
+        "models": ["gemini-2.5-flash", "gemini-flash-latest",
+                   "gemini-2.0-flash", "gemini-1.5-flash-latest"],
     },
     {
         "name": "groq",
@@ -160,7 +167,8 @@ PROVIDERS = [
         "env": ["CEREBRAS_API_KEY"],
         "kind": "openai",
         "base": "https://api.cerebras.ai/v1/chat/completions",
-        "models": ["llama-3.3-70b", "llama3.3-70b", "llama3.1-8b"],
+        "models": ["gpt-oss-120b", "llama-3.3-70b", "llama3.1-8b",
+                   "qwen-3-32b", "llama-4-scout-17b-16e-instruct"],
     },
     {
         "name": "mistral",
@@ -273,11 +281,14 @@ def _provider_key(p):
 
 def _try_provider(p, sys_p, usr_p):
     """Try a single provider across its candidate models. Returns a dict with
-    ok=True/False. On 429 it parks the provider in the per-run cooldown."""
+    ok=True/False. On a 429 we fall through to the next candidate model (a
+    per-model free-tier quota does not necessarily affect the others), and only
+    park the provider in cooldown if every model was rate-limited."""
     key = _provider_key(p)
     if not key:
         return {"ok": False, "provider": p["name"], "error": "no valid key"}
     last_err = "no model succeeded"
+    rate_limited = False
     for model in p["models"]:
         try:
             if p["kind"] == "gemini":
@@ -291,11 +302,15 @@ def _try_provider(p, sys_p, usr_p):
             last_err = "model_not_found(" + str(e) + ")"
             continue
         except _RateLimited:
-            _provider_cooldown.add(p["name"])
-            return {"ok": False, "provider": p["name"], "error": "rate_limited", "rate_limited": True}
+            rate_limited = True
+            last_err = "rate_limited"
+            continue
         except Exception as e:
             last_err = type(e).__name__ + ": " + str(e)[:120]
             continue
+    if rate_limited:
+        _provider_cooldown.add(p["name"])
+        return {"ok": False, "provider": p["name"], "error": "rate_limited", "rate_limited": True}
     return {"ok": False, "provider": p["name"], "error": last_err}
 
 
