@@ -1,9 +1,14 @@
 #!/usr/bin/env python3
-"""DatBotty v3 cloud autonomous loop (v3.7 — Gemini model spread, light canary, pacing).
+"""DatBotty v3 cloud autonomous loop (v3.8 — cycle-log hygiene, no self-trigger storm).
 
 Key design: NOTHING can crash the script silently. Every failure is captured
 and written to the DatBotty Cycle Log Notion page so we have visible proof
 from inside the actual GitHub Actions run environment.
+
+This is the CLOUD PLAN/AUDIT surface only (see .github/CLOUD_LOOP.md). It writes
+plans/audit results to Notion and NEVER commits or publishes site changes — the
+local Hermes engine (github.com/CrashyCrash/datbotty-hermes) is the only actor
+that edits the site, autonomously on free models within bounded safety rules.
 
 v3.6 changes (LLM reliability):
 - Each provider tries a list of candidate models; a 404/400 model error falls
@@ -36,21 +41,37 @@ v3.7 changes (free-quota efficiency — per Tammy):
   calls within a run, so back-to-back tasks cannot burst past per-minute RPM
   limits. Cross-run pacing still comes from provider + model rotation.
 
+v3.8 changes (cycle-log hygiene + cadence — per Tammy):
+- Cycle-log self-trim (trim_cycle_log): each cycle keeps only the most recent
+  ~50 loop log lines on the DatBotty Cycle Log page; older loop-written lines
+  are deleted while the policy callout/headings are preserved. The page can no
+  longer grow without bound (bounded deletes/run so a huge log converges over
+  a few cycles).
+- No per-cycle heartbeat block: the start-of-cycle environment line is logged
+  to stdout only and folded into the single END summary line, so idle cycles
+  no longer spam the Cycle Log.
+- Self-trigger DISABLED by default: the workflow's schedule cron is the sole
+  cadence driver. Chained self-dispatch (which queued a new run every cycle and
+  flooded the log + burned quota) is off unless ENABLE_SELF_TRIGGER=1.
+- Replenish never auto-approves publish-tier tasks: only read_only /
+  bounded_write backlog items are auto-promoted; publish-tier stays in Backlog
+  for explicit human approval (the rare high-risk gate).
+
 Flow per cycle:
-1. Heartbeat-first: write 'cycle start' line to cycle log immediately.
-2. Run audit (catches any failure, falls back to baseline).
-3. Read queue (catches failures).
-4. Auto-replenish from Backlog if low.
-5. Process tasks one-by-one (each isolated in try/except). Canary tasks ping
+1. Audit (catches any failure, falls back to baseline).
+2. Read queue (catches failures).
+3. Auto-replenish from Backlog if low (never publish-tier).
+4. Process tasks one-by-one (each isolated in try/except). Canary tasks ping
    all providers; other read_only tasks generate an LLM artifact.
-6. Self-trigger next run via GH_PAT (if set).
-7. ALWAYS write final cycle summary line.
+5. Self-trigger is DISABLED by default (cron drives cadence).
+6. ALWAYS write ONE final cycle summary line, then trim the Cycle Log tail.
 """
 from __future__ import annotations
 import argparse
 import json
 import os
 import random
+import re
 import sys
 import time
 import traceback
@@ -67,7 +88,8 @@ CYCLE_LOG_TITLE     = "DatBotty Cycle Log"
 NOTION_VERSION      = "2022-06-28"
 MAX_TASKS_PER_RUN   = 10
 REPLENISH_THRESHOLD = 3
-VERSION             = "v3.7"
+CYCLE_LOG_KEEP      = 50
+VERSION             = "v3.8"
 
 AUDIT_TASK_TYPES = {
     "site_audit", "ga4_injection", "formatting_fix",
@@ -85,13 +107,14 @@ _state = {
     "tasks_attempted": 0,
     "tasks_written": 0,
     "promoted": 0,
-    "llm_attempts": [],   # list of provider names tried
-    "llm_successes": [],  # list of provider names that worked
+    "llm_attempts": [],
+    "llm_successes": [],
     "audit_pages": 0,
     "audit_total": 0,
     "missing_ga4": 0,
     "format_bugs": 0,
     "self_triggered": False,
+    "cycle_log_trimmed": 0,
     "cycle_log_page_id": None,
 }
 
@@ -120,6 +143,12 @@ def _post(url, body, headers, timeout=60):
 
 def _patch(url, body, headers, timeout=60):
     req = urllib.request.Request(url, data=body, headers=headers, method="PATCH")
+    with urllib.request.urlopen(req, timeout=timeout) as r:
+        return r.read()
+
+
+def _delete(url, headers, timeout=30):
+    req = urllib.request.Request(url, headers=headers, method="DELETE")
     with urllib.request.urlopen(req, timeout=timeout) as r:
         return r.read()
 
@@ -156,18 +185,11 @@ def _select(prop):
 # LLM providers (v3.7 — multi-model spread, light canary, 429 backoff, pacing)
 # ---------------------------------------------------------------------------
 
-# Each provider lists candidate models. Per-call rotation (see _rotated_models)
-# spreads work across all of them so each free model's daily quota is used
-# rather than hammering one model. canary_model is the smallest/cheapest model,
-# used only for health checks so the canary never burns the powerful models'
-# scarce free quota.
 PROVIDERS = [
     {
         "name": "gemini",
         "env": ["GEMINI_API_KEY", "GOOGLE_API_KEY"],
         "kind": "gemini",
-        # CURRENT free-tier Gemini models (Pro is paid-only since Apr 2026).
-        # Lighter/higher-RPD models first; rotation spreads load across all.
         "models": ["gemini-2.5-flash-lite", "gemini-2.0-flash-lite",
                    "gemini-2.0-flash", "gemini-2.5-flash",
                    "gemini-flash-latest", "gemini-1.5-flash"],
@@ -209,19 +231,8 @@ PROVIDERS = [
     },
 ]
 
-# Providers that 429'd or hard-failed during this process run are parked here
-# so we stop hammering them for the rest of the cycle.
 _provider_cooldown = set()
-
-# Global LLM call counter — used to rotate model choice within a provider so
-# usage spreads across all of a provider's free models (multiplying effective
-# daily quota) instead of always consuming the first model's RPD.
 _llm_call_count = 0
-
-# Minimum spacing between outbound LLM HTTP calls within a single process run,
-# so several tasks running back-to-back cannot burst past per-minute RPM limits.
-# Each GitHub Actions run is a fresh process, so this paces within a run;
-# cross-run pacing comes from provider + model rotation.
 _MIN_LLM_INTERVAL_S = 1.5
 _last_llm_call_ts = 0.0
 
@@ -245,9 +256,6 @@ class _ModelNotFound(Exception):
 
 
 def _http_json(url, body, headers, timeout=90, max_retries=3):
-    """POST JSON with retry/backoff. Raises _RateLimited / _ModelNotFound /
-    the original error so the caller can decide whether to rotate model or
-    provider."""
     _pace_llm()
     attempt = 0
     while True:
@@ -298,7 +306,6 @@ def _call_openai_compat(base, key, model, sys_p, usr_p, max_tok=1800):
     headers = {"Authorization": "Bearer " + key,
                "Content-Type": "application/json",
                "User-Agent": "datbotty",
-               # OpenRouter asks for these; harmless for the other providers.
                "HTTP-Referer": "https://offbeatinc.com",
                "X-Title": "DatBotty Offbeat Loop"}
     data = _http_json(base, body, headers)
@@ -307,10 +314,9 @@ def _call_openai_compat(base, key, model, sys_p, usr_p, max_tok=1800):
 
 
 def _key_looks_real(key):
-    """Detect if a secret got resolved properly vs literal '$ secrets.X '."""
     if not key:
         return False
-    if "secrets." in key or "${{" in key or key.startswith("$"):
+    if "secrets." in key or key.startswith("$"):
         return False
     if len(key) < 10:
         return False
@@ -323,10 +329,6 @@ def _provider_key(p):
 
 
 def _rotated_models(p):
-    """Rotate the starting model per call so free-tier quota is spread across
-    all of a provider's models instead of always consuming the first one's
-    RPD. Combined with the per-minute provider rotation this lets us task the
-    free Gemini models well over 1,000 times/day before any single model caps."""
     models = p["models"]
     if len(models) <= 1:
         return list(models)
@@ -335,12 +337,6 @@ def _rotated_models(p):
 
 
 def _try_provider(p, sys_p, usr_p, models=None):
-    """Try a single provider across candidate models. Returns a dict with
-    ok=True/False. On a 429 we fall through to the next candidate model (a
-    per-model free-tier quota does not necessarily affect the others), and only
-    park the provider in cooldown if every model was rate-limited. Pass an
-    explicit `models` list (e.g. the light canary_model) to restrict the call
-    to specific models."""
     key = _provider_key(p)
     if not key:
         return {"ok": False, "provider": p["name"], "error": "no valid key"}
@@ -375,16 +371,12 @@ def _try_provider(p, sys_p, usr_p, models=None):
 
 
 def _rotated_providers():
-    """Round-robin starting offset (changes each minute) so we do not always
-    begin with the same provider and burn it down to a 429."""
     n = len(PROVIDERS)
     offset = int(time.time() // 60) % n
     return [PROVIDERS[(offset + i) % n] for i in range(n)]
 
 
 def execute_llm(sys_p, usr_p):
-    """Return the first provider that succeeds, rotating start order and
-    skipping providers already parked in cooldown."""
     errors = {}
     for p in _rotated_providers():
         name = p["name"]
@@ -405,12 +397,6 @@ def execute_llm(sys_p, usr_p):
 
 
 def provider_canary(token):
-    """Ping EVERY provider with a tiny prompt on its LIGHTEST model and record
-    per-provider health, then write a PROVIDER CANARY line to the cycle log.
-    Using canary_model (not the powerful models) keeps health checks from
-    burning the scarce free quota of models like gemini-2.5-flash. Unlike
-    execute_llm this does not stop at the first success and ignores cooldown,
-    so it proves which of the five providers are returning valid responses."""
     sys_p = "You are a health check. Reply with exactly: OK"
     usr_p = "Reply with exactly: OK"
     results = {}
@@ -463,7 +449,6 @@ DEFAULT_AUDIT = {
 
 
 def audit_site_safe():
-    """Always returns an audit dict. Never raises."""
     try:
         t0 = time.time()
         tree_url = ("https://api.github.com/repos/" + OFFBEAT_OWNER + "/"
@@ -496,7 +481,7 @@ def audit_site_safe():
 
 
 # ---------------------------------------------------------------------------
-# Notion: cycle log (heartbeat + final summary)
+# Notion: cycle log (single summary line per cycle + self-trim)
 # ---------------------------------------------------------------------------
 
 def _notion_search(token, query, filter_type="page"):
@@ -517,7 +502,6 @@ def find_cycle_log_id(token):
             if CYCLE_LOG_TITLE in _rich(title_parts):
                 _state["cycle_log_page_id"] = r["id"]
                 return r["id"]
-        # fallback: any page whose title matches by alternate property keys
         for r in results:
             props = r.get("properties", {})
             for k, v in props.items():
@@ -547,6 +531,69 @@ def append_to_cycle_log(token, text):
     except Exception as e:
         _state["errors"].append("cycle_log_append: " + type(e).__name__ + ": " + str(e)[:120])
         return False
+
+
+def _notion_list_children(token, page_id):
+    """Return all child blocks of a page, oldest first, following pagination."""
+    blocks = []
+    cursor = None
+    for _ in range(60):
+        url = "https://api.notion.com/v1/blocks/" + page_id + "/children?page_size=100"
+        if cursor:
+            url += "&start_cursor=" + cursor
+        data = json.loads(_get(url, headers=_notion_headers(token)))
+        blocks.extend(data.get("results", []))
+        if not data.get("has_more"):
+            break
+        cursor = data.get("next_cursor")
+        if not cursor:
+            break
+    return blocks
+
+
+_LOG_LINE_RE = re.compile(r"^\s*20\d\d-\d\d-\d\d")
+
+
+def _is_log_line_block(block):
+    """True only for loop-written log paragraphs (start with YYYY-MM-DD). Policy
+    callouts, headings, and human notes are NOT matched, so trim never removes
+    them."""
+    if block.get("type") != "paragraph":
+        return False
+    txt = _rich(block.get("paragraph", {}).get("rich_text", []))
+    return bool(_LOG_LINE_RE.match(txt))
+
+
+def trim_cycle_log(token, keep=CYCLE_LOG_KEEP, max_deletes=300):
+    """Keep the Cycle Log short: delete the OLDEST loop-written log lines,
+    preserving the most recent `keep` of them and ALL non-log blocks. Bounded to
+    `max_deletes`/run so an already-huge log converges over a few cycles without
+    runaway calls or tripping Notion's rate limit."""
+    page_id = find_cycle_log_id(token)
+    if not page_id:
+        return 0
+    try:
+        blocks = _notion_list_children(token, page_id)
+    except Exception as e:
+        _state["warnings"].append("trim_list: " + type(e).__name__ + ": " + str(e)[:100])
+        return 0
+    log_blocks = [b for b in blocks if _is_log_line_block(b)]
+    excess = len(log_blocks) - keep
+    if excess <= 0:
+        return 0
+    to_delete = log_blocks[:excess][:max_deletes]
+    deleted = 0
+    for b in to_delete:
+        try:
+            _delete("https://api.notion.com/v1/blocks/" + b["id"], _notion_headers(token))
+            deleted += 1
+            time.sleep(0.34)
+        except Exception as e:
+            _state["warnings"].append("trim_del: " + type(e).__name__ + ": " + str(e)[:80])
+            break
+    _state["cycle_log_trimmed"] = deleted
+    log("cycle_log_trimmed", deleted=deleted, log_lines=len(log_blocks), kept=keep)
+    return deleted
 
 
 # ---------------------------------------------------------------------------
@@ -593,7 +640,6 @@ def read_approved_tasks(token, db_id):
                 "last_run": lr,
                 "has_evidence": bool(ev),
             })
-        # Sort: no-evidence first, then by priority, then by oldest last_run
         tasks.sort(key=lambda t: (
             t["has_evidence"],
             priority_order.get(t["priority"], 9),
@@ -607,18 +653,26 @@ def read_approved_tasks(token, db_id):
 
 
 def replenish_queue(token, db_id, current_count):
+    """Promote Backlog -> Approved when the approved pool is low. NEVER
+    auto-approves publish-tier tasks — those require explicit human approval
+    (the rare high-risk gate), so they are skipped and left in Backlog."""
     if current_count >= REPLENISH_THRESHOLD:
         return 0
     try:
         body = json.dumps({
             "filter": {"property": "Status", "status": {"equals": "Backlog"}},
-            "page_size": 10
+            "page_size": 25
         }).encode()
         backlog = json.loads(_post(
             "https://api.notion.com/v1/databases/" + db_id + "/query",
             body, _notion_headers(token))).get("results", [])
         promoted = 0
-        for row in backlog[:5]:
+        for row in backlog:
+            if promoted >= 5:
+                break
+            tier = _select(row.get("properties", {}).get("Safety Tier"))
+            if tier == "publish":
+                continue
             try:
                 _patch("https://api.notion.com/v1/pages/" + row["id"],
                     json.dumps({"properties": {
@@ -715,10 +769,18 @@ def process_tasks(token, tasks, audit):
 
 
 # ---------------------------------------------------------------------------
-# Self-trigger
+# Self-trigger (DISABLED by default in v3.8)
 # ---------------------------------------------------------------------------
 
 def self_trigger():
+    """Disabled by default in v3.8. The workflow's schedule cron is the sole
+    cadence driver. Chained self-dispatch is what queued a fresh run every cycle
+    and flooded the Cycle Log + burned free-LLM quota, so we no longer
+    re-dispatch automatically. Set ENABLE_SELF_TRIGGER=1 only for a deliberate
+    one-off catch-up burst."""
+    if os.environ.get("ENABLE_SELF_TRIGGER") != "1":
+        log("self_trigger_skipped", reason="cron drives cadence")
+        return False
     pat = os.environ.get("GH_PAT")
     if not _key_looks_real(pat):
         _state["warnings"].append("GH_PAT not exposed in workflow env — self-trigger disabled")
@@ -757,15 +819,15 @@ def main():
         return 1
     _state["notion_ok"] = True
 
-    # 1. Heartbeat: prove we got here.
-    now = datetime.now(timezone.utc)
-    heartbeat = (now.strftime("%Y-%m-%d %H:%M:%S UTC") + " | " + VERSION + " START"
-        + " | GH_PAT=" + ("set" if _key_looks_real(os.environ.get("GH_PAT")) else "missing")
-        + " | GITHUB_TOKEN=" + ("set" if os.environ.get("GITHUB_TOKEN") else "missing")
-        + " | providers_set=" + ",".join([p for p in
+    # 1. Environment summary (console only; folded into the single END line so we
+    #    NEVER write a bare heartbeat block to the Cycle Log every cycle).
+    env_summary = (
+        "GH_PAT=" + ("set" if _key_looks_real(os.environ.get("GH_PAT")) else "missing")
+        + " GITHUB_TOKEN=" + ("set" if os.environ.get("GITHUB_TOKEN") else "missing")
+        + " providers=" + (",".join([p for p in
             ["GEMINI", "GROQ", "CEREBRAS", "MISTRAL", "OPENROUTER"]
-            if _key_looks_real(os.environ.get(p + "_API_KEY"))]))
-    append_to_cycle_log(token, heartbeat)
+            if _key_looks_real(os.environ.get(p + "_API_KEY"))]) or "none"))
+    log("env", summary=env_summary)
 
     # 2. Audit (safe)
     audit = audit_site_safe() if not args.skip_audit else DEFAULT_AUDIT
@@ -790,12 +852,12 @@ def main():
         if tasks:
             process_tasks(token, tasks, audit)
 
-    # 5. Self-trigger
+    # 5. Self-trigger (disabled by default — cron drives cadence)
     self_trigger()
 
     elapsed = round(time.time() - t_start, 1)
 
-    # 6. Final cycle log
+    # 6. ONE final cycle-summary line (the heartbeat), then trim the tail.
     end_line = (
         datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
         + " | " + VERSION + " END"
@@ -806,12 +868,16 @@ def main():
         + " | llm_ok=" + (",".join(_state["llm_successes"][:5]) or "none")
         + " | self_trig=" + str(_state["self_triggered"])
         + " | err=" + str(len(_state["errors"]))
+        + " | " + env_summary
         + " | s=" + str(elapsed)
     )
     append_to_cycle_log(token, end_line)
     if _state["errors"]:
         append_to_cycle_log(token,
             "  \u2514 errors: " + " || ".join(_state["errors"][:5])[:1500])
+
+    # Cycle-log hygiene: keep only a short rolling tail of loop log lines.
+    trim_cycle_log(token)
 
     # 7. Scorecard
     try:
@@ -831,7 +897,6 @@ if __name__ == "__main__":
     except SystemExit:
         raise
     except Exception:
-        # Last-resort: try to write a fatal-error line to cycle log.
         tb = traceback.format_exc()[-1500:]
         log("fatal", tb=tb[-500:])
         try:
