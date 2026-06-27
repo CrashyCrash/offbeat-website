@@ -636,6 +636,7 @@ def read_approved_tasks(token, db_id):
                 "type": _select(p.get("Task Type")),
                 "tier": _select(p.get("Safety Tier")),
                 "priority": _select(p.get("Priority")) or "P3",
+                "target": _rich(p.get("Target", {}).get("rich_text", [])),
                 "instructions": _rich(p.get("Instructions", {}).get("rich_text", [])),
                 "last_run": lr,
                 "has_evidence": bool(ev),
@@ -650,6 +651,59 @@ def read_approved_tasks(token, db_id):
     except Exception as e:
         _state["errors"].append("read_queue: " + type(e).__name__ + ": " + str(e)[:120])
         return []
+
+
+def is_local_executor_ready(task):
+    """Return False for rows that are plans/batches, not one bounded write.
+
+    The local Hermes executor can safely consume rows that name one concrete
+    task. Broad plan rows make the queue look non-empty while giving Hermes no
+    bounded unit to execute.
+    """
+    tier = task.get("tier") or ""
+    if tier not in {"read_only", "bounded_write", "publish"}:
+        return False
+    text = " ".join([
+        task.get("task") or "",
+        task.get("target") or "",
+        task.get("instructions") or "",
+    ]).lower()
+    broad_markers = [
+        "~70", "38 slugs", "each page", "every file", "for each page",
+        "all hero", "all pages", "one row per page", "approval rows",
+        "image execution queue", "missing-page list",
+    ]
+    return not any(marker in text for marker in broad_markers)
+
+
+def quarantine_non_executable_approved(token, tasks):
+    moved = 0
+    now = datetime.now(timezone.utc).isoformat()
+    for t in tasks:
+        if is_local_executor_ready(t):
+            continue
+        if t.get("tier") == "read_only":
+            continue
+        evidence = (
+            "Cloud loop " + VERSION + " moved this Approved row to Needs review on "
+            + now + " because it is a broad plan/batch, not a single bounded "
+            "Hermes execution unit. Decompose into one concrete row per file, "
+            "page, or small change before re-approval."
+        )
+        try:
+            _patch("https://api.notion.com/v1/pages/" + t["id"],
+                json.dumps({"properties": {
+                    "Status": {"status": {"name": "Needs review"}},
+                    "Approved by Tammy": {"checkbox": False},
+                    "Result / Evidence": {"rich_text": [{"text": {"content": evidence[:1900]}}]},
+                    "Last run": {"date": {"start": now}},
+                }}).encode(), _notion_headers(token))
+            moved += 1
+        except Exception as e:
+            _state["warnings"].append("quarantine fail: " + str(e)[:80])
+    if moved:
+        log("non_executable_approved_quarantined", moved=moved)
+    return moved
 
 
 def replenish_queue(token, db_id, current_count):
@@ -845,7 +899,11 @@ def main():
     tasks = []
     if db_id:
         tasks = read_approved_tasks(token, db_id)
-        promoted = replenish_queue(token, db_id, len(tasks))
+        quarantined = quarantine_non_executable_approved(token, tasks)
+        if quarantined:
+            tasks = read_approved_tasks(token, db_id)
+        executable_count = sum(1 for t in tasks if is_local_executor_ready(t))
+        promoted = replenish_queue(token, db_id, executable_count)
         _state["promoted"] = promoted
         if promoted:
             tasks = read_approved_tasks(token, db_id)
