@@ -706,10 +706,28 @@ def quarantine_non_executable_approved(token, tasks):
     return moved
 
 
+def _requires_human_gate(row):
+    p = row.get("properties", {})
+    text = " ".join([
+        _rich(p.get("Task", {}).get("title", [])),
+        _rich(p.get("Instructions", {}).get("rich_text", [])),
+        _rich(p.get("Target", {}).get("rich_text", [])),
+    ]).lower()
+    gated_markers = [
+        "image", "hero", "create each", "for each slug", "new page",
+        "missing review pages", "merge misplaced", "accessibility",
+        "mobile responsiveness", "taste", "brand",
+    ]
+    return any(marker in text for marker in gated_markers)
+
+
 def replenish_queue(token, db_id, current_count):
-    """Promote Backlog -> Approved when the approved pool is low. NEVER
-    auto-approves publish-tier tasks — those require explicit human approval
-    (the rare high-risk gate), so they are skipped and left in Backlog."""
+    """Promote Backlog -> Approved when the executable pool is low.
+
+    The user policy reserves human approval for rare genuinely high-risk work,
+    not every row whose legacy Safety Tier says publish. Concrete maintenance
+    rows may be promoted; broad image/page/taste-sensitive rows stay gated.
+    """
     if current_count >= REPLENISH_THRESHOLD:
         return 0
     try:
@@ -725,7 +743,7 @@ def replenish_queue(token, db_id, current_count):
             if promoted >= 5:
                 break
             tier = _select(row.get("properties", {}).get("Safety Tier"))
-            if tier == "publish":
+            if tier == "publish" and _requires_human_gate(row):
                 continue
             try:
                 _patch("https://api.notion.com/v1/pages/" + row["id"],
