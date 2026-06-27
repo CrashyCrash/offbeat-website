@@ -671,7 +671,8 @@ def is_local_executor_ready(task):
     broad_markers = [
         "~70", "38 slugs", "each page", "every file", "for each page",
         "all hero", "all pages", "one row per page", "approval rows",
-        "image execution queue", "missing-page list",
+        "image execution queue", "missing-page list", "all external links",
+        "link-rot", "title/meta",
     ]
     return not any(marker in text for marker in broad_markers)
 
@@ -716,7 +717,8 @@ def _requires_human_gate(row):
     gated_markers = [
         "image", "hero", "create each", "for each slug", "new page",
         "missing review pages", "merge misplaced", "accessibility",
-        "mobile responsiveness", "taste", "brand",
+        "mobile responsiveness", "taste", "brand", "all external links",
+        "link-rot", "title/meta",
     ]
     return any(marker in text for marker in gated_markers)
 
