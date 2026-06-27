@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""DatBotty v3 cloud autonomous loop (v3.8 — cycle-log hygiene, no self-trigger storm).
+"""DatBotty v3 cloud autonomous loop (v3.9 — executable row decomposition).
 
 Key design: NOTHING can crash the script silently. Every failure is captured
 and written to the DatBotty Cycle Log Notion page so we have visible proof
@@ -53,14 +53,20 @@ v3.8 changes (cycle-log hygiene + cadence — per Tammy):
 - Self-trigger DISABLED by default: the workflow's schedule cron is the sole
   cadence driver. Chained self-dispatch (which queued a new run every cycle and
   flooded the log + burned quota) is off unless ENABLE_SELF_TRIGGER=1.
-- Replenish never auto-approves publish-tier tasks: only read_only /
-  bounded_write backlog items are auto-promoted; publish-tier stays in Backlog
-  for explicit human approval (the rare high-risk gate).
+
+v3.9 changes (Hermes throughput):
+- When the Approved queue has fewer than REPLENISH_THRESHOLD executable rows,
+  the cloud loop creates small, concrete Approved rows from deterministic audit
+  signals and local repo inspection. These rows are one-file or one-page tasks
+  with explicit acceptance proof, so Hermes can execute continuously without
+  Codex/manual decomposition.
+- The cloud loop still never edits website files; it only writes Notion queue
+  rows and audit evidence. Hermes remains the sole publishing actor.
 
 Flow per cycle:
 1. Audit (catches any failure, falls back to baseline).
 2. Read queue (catches failures).
-3. Auto-replenish from Backlog if low (never publish-tier).
+3. Auto-replenish/decompose queue rows if executable work is low.
 4. Process tasks one-by-one (each isolated in try/except). Canary tasks ping
    all providers; other read_only tasks generate an LLM artifact.
 5. Self-trigger is DISABLED by default (cron drives cadence).
@@ -89,7 +95,7 @@ NOTION_VERSION      = "2022-06-28"
 MAX_TASKS_PER_RUN   = 10
 REPLENISH_THRESHOLD = 3
 CYCLE_LOG_KEEP      = 50
-VERSION             = "v3.8"
+VERSION             = "v3.9"
 
 AUDIT_TASK_TYPES = {
     "site_audit", "ga4_injection", "formatting_fix",
@@ -107,6 +113,7 @@ _state = {
     "tasks_attempted": 0,
     "tasks_written": 0,
     "promoted": 0,
+    "decomposed": 0,
     "llm_attempts": [],
     "llm_successes": [],
     "audit_pages": 0,
@@ -178,6 +185,11 @@ def _rich(parts):
 
 def _select(prop):
     v = (prop or {}).get("select")
+    return v.get("name") if v else None
+
+
+def _status(prop):
+    v = (prop or {}).get("status")
     return v.get("name") if v else None
 
 
@@ -653,6 +665,155 @@ def read_approved_tasks(token, db_id):
         return []
 
 
+def _prop_title(row):
+    return _rich(row.get("properties", {}).get("Task", {}).get("title", []))
+
+
+def _query_queue_rows(token, db_id, statuses=None, page_size=100):
+    filters = []
+    if statuses:
+        status_filters = [
+            {"property": "Status", "status": {"equals": status}}
+            for status in statuses
+        ]
+        if len(status_filters) == 1:
+            filters.append(status_filters[0])
+        else:
+            filters.append({"or": status_filters})
+    filters.append({"property": "Repo", "select": {"equals": "offbeat-website"}})
+    body = {"filter": {"and": filters}, "page_size": page_size}
+    data = json.loads(_post(
+        "https://api.notion.com/v1/databases/" + db_id + "/query",
+        json.dumps(body).encode(), _notion_headers(token)))
+    return data.get("results", [])
+
+
+def _create_queue_row(token, db_id, title, priority, tier, target, instructions, acceptance, task_type="site_audit"):
+    props = {
+        "Task": {"title": [{"text": {"content": title[:1900]}}]},
+        "Status": {"status": {"name": "Approved"}},
+        "Approved by Tammy": {"checkbox": True},
+        "Repo": {"select": {"name": "offbeat-website"}},
+        "Priority": {"select": {"name": priority}},
+        "Safety Tier": {"select": {"name": tier}},
+        "Task Type": {"select": {"name": task_type}},
+        "Target": {"rich_text": [{"text": {"content": target[:1900]}}]},
+        "Instructions": {"rich_text": [{"text": {"content": instructions[:1900]}}]},
+        "Acceptance / Proof": {"rich_text": [{"text": {"content": acceptance[:1900]}}]},
+        "Source plan": {"rich_text": [{"text": {"content": "cloud loop deterministic decomposition " + VERSION}}]},
+    }
+    body = json.dumps({"parent": {"database_id": db_id}, "properties": props}).encode()
+    data = json.loads(_post("https://api.notion.com/v1/pages", body, _notion_headers(token)))
+    return data.get("id", "")
+
+
+def _html_files_local(limit=None):
+    files = []
+    for name in sorted(os.listdir(".")):
+        if name.endswith(".html") and os.path.isfile(name):
+            files.append(name)
+            if limit and len(files) >= limit:
+                break
+    return files
+
+
+def _pages_missing_target_blank_safety(max_pages=20):
+    pages = []
+    anchor_re = re.compile(r"<a\b[^>]*target=[\"']_blank[\"'][^>]*>", re.I)
+    rel_re = re.compile(r"\brel=[\"']([^\"']*)[\"']", re.I)
+    for path in _html_files_local():
+        try:
+            html = open(path, "r", encoding="utf-8", errors="replace").read()
+        except Exception:
+            continue
+        bad = 0
+        for anchor in anchor_re.findall(html):
+            rel = rel_re.search(anchor)
+            rel_text = rel.group(1).lower() if rel else ""
+            if "noopener" not in rel_text or "noreferrer" not in rel_text:
+                bad += 1
+        if bad:
+            pages.append((path, bad))
+            if len(pages) >= max_pages:
+                break
+    return pages
+
+
+def decompose_executable_rows(token, db_id, current_count, audit):
+    """Create small Approved rows when the queue has no executable work.
+
+    This is planning/audit-only: it writes Notion rows, never website files.
+    Rows are deliberately one-file or one-page so Hermes can execute without
+    broad judgment calls.
+    """
+    if current_count >= REPLENISH_THRESHOLD:
+        return 0
+    existing_rows = _query_queue_rows(
+        token, db_id, statuses=["Approved", "Backlog", "Needs review", "Done"], page_size=100)
+    existing_titles = {_prop_title(row).strip().lower() for row in existing_rows}
+    created = 0
+
+    candidates = []
+    candidates.append({
+        "title": "Regenerate sitemap.xml only from current root HTML files",
+        "priority": "P2",
+        "tier": "publish",
+        "target": "sitemap.xml",
+        "instructions": (
+            "Regenerate only sitemap.xml from current root-level public .html files. "
+            "Use https://offbeatinc.com/<filename> loc values, exclude private/dev files, "
+            "do not edit robots.txt or any HTML page."
+        ),
+        "acceptance": "sitemap.xml includes every current public root HTML page exactly once; git diff --check passes; no other file changed.",
+        "task_type": "site_audit",
+    })
+    candidates.append({
+        "title": "Verify robots.txt sitemap directive only",
+        "priority": "P2",
+        "tier": "publish",
+        "target": "robots.txt",
+        "instructions": (
+            "Inspect robots.txt and update only its Sitemap directive if needed so it points to "
+            "https://offbeatinc.com/sitemap.xml. Do not change crawl policy or HTML files."
+        ),
+        "acceptance": "robots.txt has one correct Sitemap directive; git diff --check passes; no unrelated file changed.",
+        "task_type": "site_audit",
+    })
+
+    for path, count in _pages_missing_target_blank_safety(max_pages=8):
+        candidates.append({
+            "title": "Add noopener/noreferrer on target blank links in " + path,
+            "priority": "P2",
+            "tier": "publish",
+            "target": path,
+            "instructions": (
+                "Edit only " + path + ". For anchors with target=\"_blank\", ensure rel contains "
+                "noopener and noreferrer while preserving any existing rel tokens such as nofollow or sponsored. "
+                "Do not rewrite text, hrefs, layout, or unrelated markup."
+            ),
+            "acceptance": (
+                path + " has zero target=_blank anchors missing noopener or noreferrer; "
+                "HTML closing tags remain present; git diff --check passes."
+            ),
+            "task_type": "link_audit",
+        })
+
+    for item in candidates:
+        if created >= max(0, REPLENISH_THRESHOLD - current_count):
+            break
+        if item["title"].strip().lower() in existing_titles:
+            continue
+        try:
+            row_id = _create_queue_row(token, db_id, **item)
+            log("decomposed_row_created", row=row_id[:8], title=item["title"][:80])
+            existing_titles.add(item["title"].strip().lower())
+            created += 1
+        except Exception as e:
+            _state["warnings"].append("decompose create fail: " + str(e)[:100])
+    _state["decomposed"] += created
+    return created
+
+
 def is_local_executor_ready(task):
     """Return False for rows that are plans/batches, not one bounded write.
 
@@ -927,6 +1088,10 @@ def main():
         _state["promoted"] = promoted
         if promoted:
             tasks = read_approved_tasks(token, db_id)
+            executable_count = sum(1 for t in tasks if is_local_executor_ready(t))
+        decomposed = decompose_executable_rows(token, db_id, executable_count, audit)
+        if decomposed:
+            tasks = read_approved_tasks(token, db_id)
         if tasks:
             process_tasks(token, tasks, audit)
 
@@ -941,6 +1106,7 @@ def main():
         + " | " + VERSION + " END"
         + " | tasks_done=" + str(_state["tasks_written"]) + "/" + str(_state["tasks_attempted"])
         + " | promoted=" + str(_state["promoted"])
+        + " | decomposed=" + str(_state["decomposed"])
         + " | audit=" + str(_state["audit_pages"]) + "/" + str(_state["audit_total"])
         + " | ga4_missing=" + str(_state["missing_ga4"])
         + " | llm_ok=" + (",".join(_state["llm_successes"][:5]) or "none")
