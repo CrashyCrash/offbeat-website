@@ -285,7 +285,7 @@ PROVIDERS = [
         "name": "openmodel-deepseek",
         "env": ["OPENMODEL_API_KEY"],
         "kind": "anthropic",
-        "base": "https://api.openmodel.ai",
+        "base": "https://api.openmodel.ai/v1",
         "models": ["deepseek-v4-flash", "deepseek-v4-pro"],
         "canary_model": "deepseek-v4-flash",
     },
@@ -383,7 +383,9 @@ def _call_openai_compat(base, key, model, sys_p, usr_p, max_tok=1800):
 
 def _call_anthropic_compat(base, key, model, sys_p, usr_p, max_tok=1800):
     endpoint = base.rstrip("/")
-    if not endpoint.endswith("/messages"):
+    if "api.openmodel.ai" in endpoint and not endpoint.endswith("/messages"):
+        endpoint += "/messages"
+    elif not endpoint.endswith("/messages"):
         endpoint += "/v1/messages"
     body = json.dumps({
         "model": model,
