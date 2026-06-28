@@ -879,6 +879,30 @@ def _pages_with_formatting_bug(audit, max_pages=10):
     return seen[:max_pages]
 
 
+def _pages_with_visual_quality_targets(max_pages=12):
+    pages = []
+    markers = (
+        'class="product-card"',
+        'class="verdict-box"',
+        'class="format-score-card"',
+        'class="affiliate-cta-box"',
+        "Troubleshooting and When to Seek Help",
+        "[common cause]",
+        "Ready to upgrade your sound?",
+    )
+    for path in _html_files_local():
+        try:
+            html = open(path, "r", encoding="utf-8", errors="replace").read()
+        except Exception:
+            continue
+        score = sum(1 for marker in markers if marker in html)
+        if score >= 2:
+            pages.append((path, score))
+            if len(pages) >= max_pages:
+                break
+    return pages
+
+
 def _pages_with_legacy_affiliate_tag(max_pages=10):
     return _pages_with_text("offbeatdj-20", max_pages=max_pages)
 
@@ -1024,22 +1048,27 @@ def decompose_executable_rows(token, db_id, current_count, audit):
             "task_type": "content_quality_fix",
         })
 
-    for path in _pages_missing_ga4(audit, max_pages=30):
+    for path, score in _pages_with_visual_quality_targets(max_pages=20):
         candidates.append({
-            "title": "Add GA4 G-9MG87ETLPT to " + path,
+            "title": "Repair visible page structure and card formatting in " + path,
             "priority": "P1",
             "tier": "publish",
             "target": path,
             "instructions": (
-                "Edit only " + path + ". Add the standard Google Analytics 4 tag for "
-                "G-9MG87ETLPT in the document head, matching the existing site pattern. "
-                "Do not rewrite body content, layout, affiliate links, or unrelated markup."
+                "Edit only " + path + " and shared CSS if needed. Inspect the page visually "
+                "against the normalized public source and repair obvious reader-facing layout "
+                "problems: dumped text inside cards, malformed verdict/callout boxes, placeholder "
+                "sections, overflowing pills/buttons, or AI-slop blocks. Do not rewrite the whole "
+                "page or create new content; preserve factual copy and affiliate links unless a "
+                "visible broken placeholder must be removed. Produce local screenshot or DOM/CSS "
+                "evidence before committing."
             ),
             "acceptance": (
-                path + " contains exactly one gtag/js?id=G-9MG87ETLPT script and one "
-                "gtag('config', 'G-9MG87ETLPT') call; git diff --check passes."
+                path + " is visibly more structured/scannable; no placeholder/common-cause text "
+                "remains in the repaired area; screenshot or DOM/CSS evidence is recorded; "
+                "git diff --check passes."
             ),
-            "task_type": "ga4_injection",
+            "task_type": "visual_quality_fix",
         })
 
     for path in _pages_with_formatting_bug(audit, max_pages=25):
@@ -1060,114 +1089,10 @@ def decompose_executable_rows(token, db_id, current_count, audit):
             "task_type": "formatting_fix",
         })
 
-    for path, count in _pages_with_duplicate_rel_attrs(max_pages=30):
-        candidates.append({
-            "title": "Remove duplicate rel attributes in anchors in " + path,
-            "priority": "P2",
-            "tier": "publish",
-            "target": path,
-            "instructions": (
-                "Edit only " + path + ". For any anchor tag with more than one rel attribute, "
-                "merge the rel token values into a single rel attribute, preserving tokens such "
-                "as sponsored, nofollow, noopener, and noreferrer. Do not rewrite hrefs, visible "
-                "copy, layout, or unrelated markup."
-            ),
-            "acceptance": (
-                path + " has zero anchor tags with duplicate rel attributes; existing rel token "
-                "intent is preserved; git diff --check passes."
-            ),
-            "task_type": "link_audit",
-        })
-
-    for path, count in _pages_with_empty_anchors(max_pages=20):
-        candidates.append({
-            "title": "Remove empty anchor tags in " + path,
-            "priority": "P2",
-            "tier": "publish",
-            "target": path,
-            "instructions": (
-                "Edit only " + path + ". Remove empty anchor elements that contain no visible "
-                "text, image, aria-label, or useful content. Preserve surrounding text, links, "
-                "navigation, layout, and all non-empty anchors."
-            ),
-            "acceptance": (
-                path + " has zero empty <a></a> elements and no surrounding content was "
-                "rewritten; git diff --check passes."
-            ),
-            "task_type": "link_audit",
-        })
-
-    for path in _pages_with_format_score_card_target_blank_gap(max_pages=30):
-        candidates.append({
-            "title": "Fix format-score-card external-link safety in " + path,
-            "priority": "P2",
-            "tier": "publish",
-            "target": path,
-            "instructions": (
-                "Edit only " + path + ". Inside existing .format-score-card verdict cards, "
-                "ensure any target=\"_blank\" anchors include noopener and noreferrer while "
-                "preserving existing rel tokens and all card copy. Do not redesign the card."
-            ),
-            "acceptance": (
-                path + " keeps its format-score-card verdict cards and every target=_blank "
-                "anchor inside those cards includes noopener and noreferrer; git diff --check passes."
-            ),
-            "task_type": "verdict_card_css",
-        })
-
-    for path, count in _pages_missing_target_blank_safety(max_pages=50):
-        candidates.append({
-            "title": "Add noopener/noreferrer on target blank links in " + path,
-            "priority": "P2",
-            "tier": "publish",
-            "target": path,
-            "instructions": (
-                "Edit only " + path + ". For anchors with target=\"_blank\", ensure rel contains "
-                "noopener and noreferrer while preserving any existing rel tokens such as nofollow or sponsored. "
-                "Do not rewrite text, hrefs, layout, or unrelated markup."
-            ),
-            "acceptance": (
-                path + " has zero target=_blank anchors missing noopener or noreferrer; "
-                "HTML closing tags remain present; git diff --check passes."
-            ),
-            "task_type": "link_audit",
-        })
-
-    for path in _pages_with_legacy_widget_tag(max_pages=40):
-        candidates.append({
-            "title": "Normalize Amazon widget affiliate tag in " + path,
-            "priority": "P1",
-            "tier": "publish",
-            "target": path,
-            "instructions": (
-                "Edit only " + path + ". Replace Amazon widget data-tag value offbeatdj-20 "
-                "with offbeatinc-20. Do not change visible copy, product links, layout, or "
-                "non-Amazon affiliate references."
-            ),
-            "acceptance": (
-                path + " contains no data-tag=\"offbeatdj-20\" strings and preserves the "
-                "amazon-widget-container markup with data-tag=\"offbeatinc-20\"; git diff --check passes."
-            ),
-            "task_type": "affiliate_fix",
-        })
-
-    for path in _pages_with_legacy_affiliate_tag(max_pages=40):
-        candidates.append({
-            "title": "Normalize legacy Amazon affiliate tag in " + path,
-            "priority": "P1",
-            "tier": "publish",
-            "target": path,
-            "instructions": (
-                "Edit only " + path + ". Replace legacy Amazon affiliate tag value "
-                "offbeatdj-20 with offbeatinc-20 in Amazon links/widgets only. Do not change "
-                "product URLs, visible copy, layout, or non-Amazon tracking parameters."
-            ),
-            "acceptance": (
-                path + " contains zero offbeatdj-20 strings and preserves Amazon links/widgets "
-                "with offbeatinc-20; git diff --check passes."
-            ),
-            "task_type": "affiliate_fix",
-        })
+    # Do not replenish with GA4-only, noopener-only, duplicate-rel-only, or
+    # affiliate-tag-only rows. Those are audit checks, not productive autonomous
+    # value work, and they previously caused Hermes to publish tiny changes while
+    # visually broken pages remained broken.
 
     for item in candidates:
         if created >= max(0, REPLENISH_THRESHOLD - current_count):
