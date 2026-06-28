@@ -106,7 +106,35 @@ NOTION_VERSION      = "2022-06-28"
 MAX_TASKS_PER_RUN   = 10
 REPLENISH_THRESHOLD = 80
 CYCLE_LOG_KEEP      = 50
-VERSION             = "v3.10"
+VERSION             = "v3.11"
+
+# Public-source guardrail:
+# The local Hermes executor must only operate on the normalized public-page
+# corpus. These legacy affiliate/internal files were accidentally present in
+# the old v2 clone and must never be queued, approved, sitemaped, or edited as
+# public site work.
+NON_PUBLIC_HTML_EXACT = {
+    "affiliate-tools.html",
+    "dj-affiliate-programs-guide.html",
+    "dj-affiliate-programs.html",
+    "dj-tools-and-sampling-platforms-affiliates.html",
+    "how-to-start-a-dj-blog.html",
+    "music-distribution-affiliate-programs.html",
+    "music-distribution-affiliates.html",
+    "pioneer-dj-affiliate.html",
+    "plugin-boutique-affiliate-review.html",
+    "rekordbox-vs-serato-deep-dive.html",
+    "serato-affiliate-program.html",
+    "splice-affiliate-program-review.html",
+    "sweetwater-affiliate-program.html",
+    "zzounds-affiliate-program-review.html",
+}
+NON_PUBLIC_HTML_PATTERNS = (
+    "-affiliate-program",
+    "affiliate-program",
+    "affiliate-tools",
+    "affiliates.html",
+)
 
 AUDIT_TASK_TYPES = {
     "site_audit", "ga4_injection", "formatting_fix",
@@ -520,7 +548,7 @@ def audit_site_safe():
                     + OFFBEAT_REPO + "/git/trees/main?recursive=1")
         tree = json.loads(_get(tree_url, headers=gh_headers()).decode())
         html_files = [n["path"] for n in tree.get("tree", [])
-                      if n.get("type") == "blob" and n["path"].endswith(".html")]
+                      if n.get("type") == "blob" and is_public_html_path(n["path"])]
         missing_ga4, fmt_bug = [], []
         for path in html_files:
             raw = ("https://raw.githubusercontent.com/" + OFFBEAT_OWNER
@@ -769,10 +797,21 @@ def _create_queue_row(token, db_id, title, priority, tier, target, instructions,
     return data.get("id", "")
 
 
+def is_public_html_path(path):
+    """True only for root public HTML pages eligible for Hermes website work."""
+    if not path or "/" in path or not path.endswith(".html"):
+        return False
+    name = os.path.basename(path)
+    lowered = name.lower()
+    if lowered in NON_PUBLIC_HTML_EXACT:
+        return False
+    return not any(marker in lowered for marker in NON_PUBLIC_HTML_PATTERNS)
+
+
 def _html_files_local(limit=None):
     files = []
     for name in sorted(os.listdir(".")):
-        if name.endswith(".html") and os.path.isfile(name):
+        if is_public_html_path(name) and os.path.isfile(name):
             files.append(name)
             if limit and len(files) >= limit:
                 break
@@ -1159,11 +1198,17 @@ def is_local_executor_ready(task):
         task.get("target") or "",
         task.get("instructions") or "",
     ]).lower()
+    target = (task.get("target") or "").strip()
+    if target.endswith(".html") and not is_public_html_path(os.path.basename(target)):
+        return False
+    if "/home/igpu/desktop/ai projects/datbotty/offbeat-website" in text:
+        return False
     broad_markers = [
         "~70", "38 slugs", "each page", "every file", "for each page",
         "all hero", "all pages", "one row per page", "approval rows",
         "image execution queue", "missing-page list", "all external links",
         "link-rot", "title/meta",
+        "affiliate program", "affiliate-program",
     ]
     return not any(marker in text for marker in broad_markers)
 
@@ -1178,9 +1223,10 @@ def quarantine_non_executable_approved(token, tasks):
             continue
         evidence = (
             "Cloud loop " + VERSION + " moved this Approved row to Needs review on "
-            + now + " because it is a broad plan/batch, not a single bounded "
-            "Hermes execution unit. Decompose into one concrete row per file, "
-            "page, or small change before re-approval."
+            + now + " because it is either a broad plan/batch, targets a non-public "
+            "affiliate/internal page, references the old v2 offbeat clone, or is not "
+            "one bounded Hermes execution unit. Decompose into one concrete normalized "
+            "public-page row before re-approval."
         )
         try:
             _patch("https://api.notion.com/v1/pages/" + t["id"],
