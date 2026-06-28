@@ -93,7 +93,7 @@ QUEUE_DB_NAME       = "Approved Work Queue"
 CYCLE_LOG_TITLE     = "DatBotty Cycle Log"
 NOTION_VERSION      = "2022-06-28"
 MAX_TASKS_PER_RUN   = 10
-REPLENISH_THRESHOLD = 3
+REPLENISH_THRESHOLD = 8
 CYCLE_LOG_KEEP      = 50
 VERSION             = "v3.9"
 
@@ -739,6 +739,75 @@ def _pages_missing_target_blank_safety(max_pages=20):
     return pages
 
 
+def _pages_with_text(needle, max_pages=20):
+    pages = []
+    for path in _html_files_local():
+        try:
+            html = open(path, "r", encoding="utf-8", errors="replace").read()
+        except Exception:
+            continue
+        if needle in html:
+            pages.append(path)
+            if len(pages) >= max_pages:
+                break
+    return pages
+
+
+def _pages_missing_ga4(audit, max_pages=12):
+    pages = []
+    for path in audit.get("missing_ga4", []) or []:
+        if path in _html_files_local() and os.path.isfile(path):
+            pages.append(path)
+            if len(pages) >= max_pages:
+                break
+    return pages
+
+
+def _pages_with_formatting_bug(audit, max_pages=10):
+    seen = []
+    for path in audit.get("formatting_bug", []) or []:
+        if path in _html_files_local() and os.path.isfile(path):
+            seen.append(path)
+    for path in _pages_with_text(FORMATTING_BUG_MARKER, max_pages=max_pages):
+        if path not in seen:
+            seen.append(path)
+        if len(seen) >= max_pages:
+            break
+    return seen[:max_pages]
+
+
+def _pages_with_legacy_affiliate_tag(max_pages=10):
+    return _pages_with_text("offbeatdj-20", max_pages=max_pages)
+
+
+def _pages_with_format_score_card_target_blank_gap(max_pages=10):
+    pages = []
+    anchor_re = re.compile(r"<a\b[^>]*target=[\"']_blank[\"'][^>]*>", re.I)
+    rel_re = re.compile(r"\brel=[\"']([^\"']*)[\"']", re.I)
+    for path in _html_files_local():
+        try:
+            html = open(path, "r", encoding="utf-8", errors="replace").read()
+        except Exception:
+            continue
+        if "format-score-card" not in html:
+            continue
+        has_gap = False
+        for card in re.findall(r"<div\b[^>]*class=[\"'][^\"']*format-score-card[^\"']*[\"'][\\s\\S]*?</div>", html, re.I):
+            for anchor in anchor_re.findall(card):
+                rel = rel_re.search(anchor)
+                rel_text = rel.group(1).lower() if rel else ""
+                if "noopener" not in rel_text or "noreferrer" not in rel_text:
+                    has_gap = True
+                    break
+            if has_gap:
+                break
+        if has_gap:
+            pages.append(path)
+            if len(pages) >= max_pages:
+                break
+    return pages
+
+
 def decompose_executable_rows(token, db_id, current_count, audit):
     """Create small Approved rows when the queue has no executable work.
 
@@ -780,7 +849,79 @@ def decompose_executable_rows(token, db_id, current_count, audit):
         "task_type": "site_audit",
     })
 
-    for path, count in _pages_missing_target_blank_safety(max_pages=8):
+    for path in _pages_missing_ga4(audit, max_pages=10):
+        candidates.append({
+            "title": "Add GA4 G-9MG87ETLPT to " + path,
+            "priority": "P1",
+            "tier": "publish",
+            "target": path,
+            "instructions": (
+                "Edit only " + path + ". Add the standard Google Analytics 4 tag for "
+                "G-9MG87ETLPT in the document head, matching the existing site pattern. "
+                "Do not rewrite body content, layout, affiliate links, or unrelated markup."
+            ),
+            "acceptance": (
+                path + " contains exactly one gtag/js?id=G-9MG87ETLPT script and one "
+                "gtag('config', 'G-9MG87ETLPT') call; git diff --check passes."
+            ),
+            "task_type": "ga4_injection",
+        })
+
+    for path in _pages_with_formatting_bug(audit, max_pages=10):
+        candidates.append({
+            "title": "Remove r27 full-width orphan class in " + path,
+            "priority": "P1",
+            "tier": "publish",
+            "target": path,
+            "instructions": (
+                "Edit only " + path + ". Find the r27-buying-checkpoint section and remove "
+                "the full-width-section class/markup that makes it a full-width orphan. "
+                "Preserve the checkpoint content, heading, internal links, and surrounding article layout."
+            ),
+            "acceptance": (
+                path + " no longer contains '" + FORMATTING_BUG_MARKER + "'; the "
+                "r27-buying-checkpoint content remains present; git diff --check passes."
+            ),
+            "task_type": "formatting_fix",
+        })
+
+    for path in _pages_with_legacy_affiliate_tag(max_pages=10):
+        candidates.append({
+            "title": "Normalize legacy Amazon affiliate tag in " + path,
+            "priority": "P1",
+            "tier": "publish",
+            "target": path,
+            "instructions": (
+                "Edit only " + path + ". Replace legacy Amazon affiliate tag value "
+                "offbeatdj-20 with offbeatinc-20 in Amazon links/widgets only. Do not change "
+                "product URLs, visible copy, layout, or non-Amazon tracking parameters."
+            ),
+            "acceptance": (
+                path + " contains zero offbeatdj-20 strings and preserves Amazon links/widgets "
+                "with offbeatinc-20; git diff --check passes."
+            ),
+            "task_type": "affiliate_fix",
+        })
+
+    for path in _pages_with_format_score_card_target_blank_gap(max_pages=10):
+        candidates.append({
+            "title": "Fix format-score-card external-link safety in " + path,
+            "priority": "P2",
+            "tier": "publish",
+            "target": path,
+            "instructions": (
+                "Edit only " + path + ". Inside existing .format-score-card verdict cards, "
+                "ensure any target=\"_blank\" anchors include noopener and noreferrer while "
+                "preserving existing rel tokens and all card copy. Do not redesign the card."
+            ),
+            "acceptance": (
+                path + " keeps its format-score-card verdict cards and every target=_blank "
+                "anchor inside those cards includes noopener and noreferrer; git diff --check passes."
+            ),
+            "task_type": "verdict_card_css",
+        })
+
+    for path, count in _pages_missing_target_blank_safety(max_pages=12):
         candidates.append({
             "title": "Add noopener/noreferrer on target blank links in " + path,
             "priority": "P2",
