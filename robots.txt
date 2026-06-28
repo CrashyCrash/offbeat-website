@@ -1,3 +1,15 @@
+<!-- Documentation Claim Review
+last_previous_update: 2026-06-13T16:30:46-04:00
+reviewed_verified_updated: 2026-06-21T18:03:18Z
+classification: local-only verification required
+useful_information_remains: yes
+next_required_action: Use as local/reference material only until page-specific evidence is rechecked.
+verified_current_claims: 0
+struck_superseded_claims: 1
+unverified_claims: 1
+-->
+
+~~Reviewed 2026-06-21T18:03:18Z: This document is classified as local-only verification required; its dated instructions/status claims are not current operating policy unless restated in README.md, ROADMAP.md, AGENTS.md, docs/GOVERNANCE.md, or active Notion authority. Reason: Use as local/reference material only until page-specific evidence is rechecked.~~
 User-agent: *
 Disallow:
 Sitemap: https://offbeatinc.com/sitemap.xml
