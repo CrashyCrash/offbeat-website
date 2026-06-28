@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""DatBotty v3 cloud autonomous loop (v3.9 — executable row decomposition).
+"""DatBotty v3 cloud autonomous loop (v3.10 — high-throughput row factory).
 
 Key design: NOTHING can crash the script silently. Every failure is captured
 and written to the DatBotty Cycle Log Notion page so we have visible proof
@@ -63,6 +63,17 @@ v3.9 changes (Hermes throughput):
 - The cloud loop still never edits website files; it only writes Notion queue
   rows and audit evidence. Hermes remains the sole publishing actor.
 
+v3.10 changes (throughput + advanced free model pools):
+- Raise the executable row floor so Hermes has a real backlog instead of
+  starving between hourly cloud cycles.
+- Add OpenModel and BTL Runtime DeepSeek providers to the remote read-only
+  canary/artifact pool when their GitHub Action secrets are present.
+- Page through existing Notion rows before creating new work so Done rows older
+  than the first Notion page still suppress duplicates.
+- Expand deterministic decomposition caps across GA4, formatting, content,
+  verdict-card, link-safety, and affiliate rows while keeping every row bounded
+  to one file/page and leaving all website edits to Hermes.
+
 Flow per cycle:
 1. Audit (catches any failure, falls back to baseline).
 2. Read queue (catches failures).
@@ -93,9 +104,9 @@ QUEUE_DB_NAME       = "Approved Work Queue"
 CYCLE_LOG_TITLE     = "DatBotty Cycle Log"
 NOTION_VERSION      = "2022-06-28"
 MAX_TASKS_PER_RUN   = 10
-REPLENISH_THRESHOLD = 14
+REPLENISH_THRESHOLD = 80
 CYCLE_LOG_KEEP      = 50
-VERSION             = "v3.9"
+VERSION             = "v3.10"
 
 AUDIT_TASK_TYPES = {
     "site_audit", "ga4_injection", "formatting_fix",
@@ -242,6 +253,22 @@ PROVIDERS = [
                    "meta-llama/llama-3.3-70b-instruct:free"],
         "canary_model": "meta-llama/llama-3.1-8b-instruct:free",
     },
+    {
+        "name": "openmodel-deepseek",
+        "env": ["OPENMODEL_API_KEY"],
+        "kind": "anthropic",
+        "base": "https://api.openmodel.ai",
+        "models": ["deepseek-v4-flash", "deepseek-v4-pro"],
+        "canary_model": "deepseek-v4-flash",
+    },
+    {
+        "name": "btl-runtime",
+        "env": ["BTL_RUNTIME_API_KEY"],
+        "kind": "openai",
+        "base": "https://api.badtheorylabs.com/v1/chat/completions",
+        "models": ["deepseek-v4-flash", "deepseek-v4-pro"],
+        "canary_model": "deepseek-v4-flash",
+    },
 ]
 
 _provider_cooldown = set()
@@ -326,6 +353,29 @@ def _call_openai_compat(base, key, model, sys_p, usr_p, max_tok=1800):
             .get("message", {}).get("content", "") or "").strip()
 
 
+def _call_anthropic_compat(base, key, model, sys_p, usr_p, max_tok=1800):
+    endpoint = base.rstrip("/")
+    if not endpoint.endswith("/messages"):
+        endpoint += "/v1/messages"
+    body = json.dumps({
+        "model": model,
+        "system": sys_p,
+        "messages": [{"role": "user", "content": usr_p}],
+        "max_tokens": max_tok,
+    }).encode()
+    headers = {"x-api-key": key,
+               "anthropic-version": "2023-06-01",
+               "Content-Type": "application/json",
+               "User-Agent": "datbotty"}
+    data = _http_json(endpoint, body, headers)
+    parts = data.get("content") or []
+    text = []
+    for part in parts:
+        if isinstance(part, dict) and part.get("type") == "text":
+            text.append(part.get("text", ""))
+    return "\n".join(t for t in text if t).strip()
+
+
 def _key_looks_real(key):
     if not key:
         return False
@@ -362,6 +412,8 @@ def _try_provider(p, sys_p, usr_p, models=None):
         try:
             if p["kind"] == "gemini":
                 out = _call_gemini(key, model, sys_p, usr_p)
+            elif p["kind"] == "anthropic":
+                out = _call_anthropic_compat(p["base"], key, model, sys_p, usr_p)
             else:
                 out = _call_openai_compat(p["base"], key, model, sys_p, usr_p)
             if out:
@@ -682,11 +734,20 @@ def _query_queue_rows(token, db_id, statuses=None, page_size=100):
         else:
             filters.append({"or": status_filters})
     filters.append({"property": "Repo", "select": {"equals": "offbeat-website"}})
-    body = {"filter": {"and": filters}, "page_size": page_size}
-    data = json.loads(_post(
-        "https://api.notion.com/v1/databases/" + db_id + "/query",
-        json.dumps(body).encode(), _notion_headers(token)))
-    return data.get("results", [])
+    rows = []
+    cursor = None
+    while True:
+        body = {"filter": {"and": filters}, "page_size": min(page_size, 100)}
+        if cursor:
+            body["start_cursor"] = cursor
+        data = json.loads(_post(
+            "https://api.notion.com/v1/databases/" + db_id + "/query",
+            json.dumps(body).encode(), _notion_headers(token)))
+        rows.extend(data.get("results", []))
+        cursor = data.get("next_cursor")
+        if not data.get("has_more") or not cursor or len(rows) >= 500:
+            break
+    return rows
 
 
 def _create_queue_row(token, db_id, title, priority, tier, target, instructions, acceptance, task_type="site_audit"):
@@ -800,6 +861,39 @@ def _pages_with_affiliate_program_spam(max_pages=5):
     return pages
 
 
+def _pages_with_duplicate_rel_attrs(max_pages=20):
+    pages = []
+    anchor_re = re.compile(r"<a\b[^>]*>", re.I)
+    for path in _html_files_local():
+        try:
+            html = open(path, "r", encoding="utf-8", errors="replace").read()
+        except Exception:
+            continue
+        bad = sum(1 for anchor in anchor_re.findall(html)
+                  if len(re.findall(r"\brel\s*=", anchor, re.I)) > 1)
+        if bad:
+            pages.append((path, bad))
+            if len(pages) >= max_pages:
+                break
+    return pages
+
+
+def _pages_with_empty_anchors(max_pages=20):
+    pages = []
+    empty_re = re.compile(r"<a\b([^>]*)>\s*</a>", re.I)
+    for path in _html_files_local():
+        try:
+            html = open(path, "r", encoding="utf-8", errors="replace").read()
+        except Exception:
+            continue
+        bad = [m.group(0) for m in empty_re.finditer(html)]
+        if bad:
+            pages.append((path, len(bad)))
+            if len(pages) >= max_pages:
+                break
+    return pages
+
+
 def _pages_with_format_score_card_target_blank_gap(max_pages=10):
     pages = []
     anchor_re = re.compile(r"<a\b[^>]*target=[\"']_blank[\"'][^>]*>", re.I)
@@ -869,7 +963,7 @@ def decompose_executable_rows(token, db_id, current_count, audit):
         "task_type": "site_audit",
     })
 
-    for path, count in _pages_with_affiliate_program_spam(max_pages=5):
+    for path, count in _pages_with_affiliate_program_spam(max_pages=20):
         candidates.append({
             "title": "Remove off-topic affiliate-program directory block in " + path,
             "priority": "P1",
@@ -889,7 +983,7 @@ def decompose_executable_rows(token, db_id, current_count, audit):
             "task_type": "content_quality_fix",
         })
 
-    for path in _pages_missing_ga4(audit, max_pages=10):
+    for path in _pages_missing_ga4(audit, max_pages=30):
         candidates.append({
             "title": "Add GA4 G-9MG87ETLPT to " + path,
             "priority": "P1",
@@ -907,7 +1001,7 @@ def decompose_executable_rows(token, db_id, current_count, audit):
             "task_type": "ga4_injection",
         })
 
-    for path in _pages_with_formatting_bug(audit, max_pages=10):
+    for path in _pages_with_formatting_bug(audit, max_pages=25):
         candidates.append({
             "title": "Remove r27 full-width orphan class in " + path,
             "priority": "P1",
@@ -925,43 +1019,44 @@ def decompose_executable_rows(token, db_id, current_count, audit):
             "task_type": "formatting_fix",
         })
 
-    for path in _pages_with_legacy_widget_tag(max_pages=10):
+    for path, count in _pages_with_duplicate_rel_attrs(max_pages=30):
         candidates.append({
-            "title": "Normalize Amazon widget affiliate tag in " + path,
-            "priority": "P1",
+            "title": "Remove duplicate rel attributes in anchors in " + path,
+            "priority": "P2",
             "tier": "publish",
             "target": path,
             "instructions": (
-                "Edit only " + path + ". Replace Amazon widget data-tag value offbeatdj-20 "
-                "with offbeatinc-20. Do not change visible copy, product links, layout, or "
-                "non-Amazon affiliate references."
+                "Edit only " + path + ". For any anchor tag with more than one rel attribute, "
+                "merge the rel token values into a single rel attribute, preserving tokens such "
+                "as sponsored, nofollow, noopener, and noreferrer. Do not rewrite hrefs, visible "
+                "copy, layout, or unrelated markup."
             ),
             "acceptance": (
-                path + " contains no data-tag=\"offbeatdj-20\" strings and preserves the "
-                "amazon-widget-container markup with data-tag=\"offbeatinc-20\"; git diff --check passes."
+                path + " has zero anchor tags with duplicate rel attributes; existing rel token "
+                "intent is preserved; git diff --check passes."
             ),
-            "task_type": "affiliate_fix",
+            "task_type": "link_audit",
         })
 
-    for path in _pages_with_legacy_affiliate_tag(max_pages=10):
+    for path, count in _pages_with_empty_anchors(max_pages=20):
         candidates.append({
-            "title": "Normalize legacy Amazon affiliate tag in " + path,
-            "priority": "P1",
+            "title": "Remove empty anchor tags in " + path,
+            "priority": "P2",
             "tier": "publish",
             "target": path,
             "instructions": (
-                "Edit only " + path + ". Replace legacy Amazon affiliate tag value "
-                "offbeatdj-20 with offbeatinc-20 in Amazon links/widgets only. Do not change "
-                "product URLs, visible copy, layout, or non-Amazon tracking parameters."
+                "Edit only " + path + ". Remove empty anchor elements that contain no visible "
+                "text, image, aria-label, or useful content. Preserve surrounding text, links, "
+                "navigation, layout, and all non-empty anchors."
             ),
             "acceptance": (
-                path + " contains zero offbeatdj-20 strings and preserves Amazon links/widgets "
-                "with offbeatinc-20; git diff --check passes."
+                path + " has zero empty <a></a> elements and no surrounding content was "
+                "rewritten; git diff --check passes."
             ),
-            "task_type": "affiliate_fix",
+            "task_type": "link_audit",
         })
 
-    for path in _pages_with_format_score_card_target_blank_gap(max_pages=10):
+    for path in _pages_with_format_score_card_target_blank_gap(max_pages=30):
         candidates.append({
             "title": "Fix format-score-card external-link safety in " + path,
             "priority": "P2",
@@ -979,7 +1074,7 @@ def decompose_executable_rows(token, db_id, current_count, audit):
             "task_type": "verdict_card_css",
         })
 
-    for path, count in _pages_missing_target_blank_safety(max_pages=12):
+    for path, count in _pages_missing_target_blank_safety(max_pages=50):
         candidates.append({
             "title": "Add noopener/noreferrer on target blank links in " + path,
             "priority": "P2",
@@ -995,6 +1090,42 @@ def decompose_executable_rows(token, db_id, current_count, audit):
                 "HTML closing tags remain present; git diff --check passes."
             ),
             "task_type": "link_audit",
+        })
+
+    for path in _pages_with_legacy_widget_tag(max_pages=40):
+        candidates.append({
+            "title": "Normalize Amazon widget affiliate tag in " + path,
+            "priority": "P1",
+            "tier": "publish",
+            "target": path,
+            "instructions": (
+                "Edit only " + path + ". Replace Amazon widget data-tag value offbeatdj-20 "
+                "with offbeatinc-20. Do not change visible copy, product links, layout, or "
+                "non-Amazon affiliate references."
+            ),
+            "acceptance": (
+                path + " contains no data-tag=\"offbeatdj-20\" strings and preserves the "
+                "amazon-widget-container markup with data-tag=\"offbeatinc-20\"; git diff --check passes."
+            ),
+            "task_type": "affiliate_fix",
+        })
+
+    for path in _pages_with_legacy_affiliate_tag(max_pages=40):
+        candidates.append({
+            "title": "Normalize legacy Amazon affiliate tag in " + path,
+            "priority": "P1",
+            "tier": "publish",
+            "target": path,
+            "instructions": (
+                "Edit only " + path + ". Replace legacy Amazon affiliate tag value "
+                "offbeatdj-20 with offbeatinc-20 in Amazon links/widgets only. Do not change "
+                "product URLs, visible copy, layout, or non-Amazon tracking parameters."
+            ),
+            "acceptance": (
+                path + " contains zero offbeatdj-20 strings and preserves Amazon links/widgets "
+                "with offbeatinc-20; git diff --check passes."
+            ),
+            "task_type": "affiliate_fix",
         })
 
     for item in candidates:
@@ -1259,7 +1390,7 @@ def main():
         "GH_PAT=" + ("set" if _key_looks_real(os.environ.get("GH_PAT")) else "missing")
         + " GITHUB_TOKEN=" + ("set" if os.environ.get("GITHUB_TOKEN") else "missing")
         + " providers=" + (",".join([p for p in
-            ["GEMINI", "GROQ", "CEREBRAS", "MISTRAL", "OPENROUTER"]
+            ["GEMINI", "GROQ", "CEREBRAS", "MISTRAL", "OPENROUTER", "OPENMODEL", "BTL_RUNTIME"]
             if _key_looks_real(os.environ.get(p + "_API_KEY"))]) or "none"))
     log("env", summary=env_summary)
 
