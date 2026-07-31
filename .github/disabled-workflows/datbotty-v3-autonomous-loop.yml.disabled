@@ -1,3 +1,7 @@
+# DISABLED HISTORICAL WORKFLOW.
+# Do not move this file back into .github/workflows during DatBotty v4 recovery.
+# It belongs to the old v3 Hermes/Notion architecture.
+
 name: DatBotty v3 - Autonomous Loop
 
 on:

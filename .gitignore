@@ -1,0 +1,15 @@
+.env
+.env.*
+!.env.example
+node_modules/
+__pycache__/
+.pytest_cache/
+.venv/
+venv/
+*.log
+*.tmp
+dist/
+build/
+playwright-report/
+test-results/
+lighthouse-reports/

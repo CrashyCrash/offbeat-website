@@ -1,4 +1,10 @@
 #!/usr/bin/env python3
+"""DISABLED HISTORICAL SCRIPT.
+
+Do not run this during DatBotty v4 recovery. It belongs to the old v3
+Hermes/Notion architecture and is preserved only for forensic reference.
+"""
+
 """DatBotty v3 cloud autonomous loop (v3.10 — high-throughput row factory).
 
 Key design: NOTHING can crash the script silently. Every failure is captured
