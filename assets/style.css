@@ -141,7 +141,7 @@ footer { width: 100%; border-top: 1px solid var(--border); background: var(--sur
 .footer-col li { margin: .28rem 0; }
 .footer-col a { color: var(--muted); font-size: .86rem; }
 .footer-bottom { border-top: 1px solid var(--border); padding: 1.1rem; text-align: center; }
-.footer-bottom p { margin: 0; color: var(--muted-2); font-size: .82rem; }
+.footer-bottom p { margin: 0; color: var(--muted); font-size: .82rem; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
 .text-center { text-align: center; }
 .text-muted { color: var(--muted); }
@@ -168,7 +168,7 @@ footer { width: 100%; border-top: 1px solid var(--border); background: var(--sur
 .hero-figure { max-width: min(960px, calc(100vw - 2rem)); }
 .hero-figure img { width: 100%; min-height: 260px; max-height: 520px; aspect-ratio: 16 / 7; object-fit: cover; }
 .hero-figure img.product-photo-img, .ofb-top img.product-photo-img, img.product-photo-img { object-fit: contain; background: #0f0f1a; padding: .65rem; }
-.hero-figure figcaption, .img-attribution { color: var(--muted-2); font-size: .76rem; line-height: 1.35; }
+.hero-figure figcaption, .img-attribution { color: var(--muted); font-size: .76rem; line-height: 1.35; }
 .hero-figure figcaption a, .img-attribution a { color: var(--accent-2); }
 .hub-hero-stat { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin: 0 0 2rem; }
 .hub-stat { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem; text-align: center; }
@@ -564,6 +564,8 @@ footer{background:#08080d!important;border-top:1px solid rgba(124,58,237,.25)!im
 /* Final production touch-up sweep: generated-section polish */
 .polished-list{margin:1rem 0 0;padding-left:1.25rem;display:grid;gap:.55rem;color:var(--text-2);}
 .polished-list li{padding:.55rem .7rem;border:1px solid rgba(255,255,255,.07);border-radius:12px;background:#020204;}
+.polished-list a{border-bottom:1px solid currentColor;text-decoration:none;}
+.polished-list a:hover{text-decoration:none;border-bottom-color:#67e8f9;}
 .spec-grid .spec-card{padding:1rem;border:1px solid rgba(255,255,255,.08);border-radius:14px;background:#020204;}
 .spec-grid .spec-card strong{display:block;margin-bottom:.25rem;color:var(--accent-2);}
 .card-grid > .card{min-height:100%;}
