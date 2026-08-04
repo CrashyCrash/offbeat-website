@@ -20,7 +20,7 @@ jobs:
       - name: Setup SSH verification
         run: |
           mkdir -p ~/.ssh
-          echo "* ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJxbTlvvEXg08+GTxFhincPyUx/aqiH2p1hdwIC8z2xu" > ~/.ssh/allowed_signers
+          echo "git@github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJxbTlvvEXg08+GTxFhincPyUx/aqiH2p1hdwIC8z2xu" > ~/.ssh/allowed_signers
           chmod 600 ~/.ssh/allowed_signers
           git config --global gpg.format ssh
           git config --global gpg.ssh.allowedSignersFile ~/.ssh/allowed_signers
