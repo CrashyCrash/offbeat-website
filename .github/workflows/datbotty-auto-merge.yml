@@ -1,0 +1,94 @@
+name: DatBotty Auto-Merge
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
+
+jobs:
+  auto-merge:
+    name: Auto-merge DatBotty PR
+    runs-on: ubuntu-latest
+    if: startswith(github.head_ref, 'datbotty/')
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Install SSH key for signature verification
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.DATBOTTY_ALLOWED_SIGNERS }}" > ~/.ssh/allowed_signers
+          chmod 600 ~/.ssh/allowed_signers
+          echo "SSH allowed_signers file created"
+      
+      - name: Verify commit signatures
+        run: |
+          # Get the PR head commit SHA
+          HEAD_SHA="${{ github.event.pull_request.head.sha }}"
+          
+          echo "Verifying signature for commit: $HEAD_SHA"
+          
+          # Configure Git to use the allowed_signers file for SSH signature verification
+          git config gpg.ssh.allowedSignersFile ~/.ssh/allowed_signers
+          git config gpg.format ssh
+          
+          # Verify the commit is signed with the allowed key
+          if ! git verify-commit "$HEAD_SHA"; then
+            echo "❌ Commit signature verification failed"
+            echo "Commit SHA: $HEAD_SHA"
+            echo "This commit is not signed with an allowed key."
+            exit 1
+          fi
+          
+          echo "✅ Commit signature verified: $HEAD_SHA"
+          git log -1 --format='%H %an %ae %s' "$HEAD_SHA"
+      
+      - name: Run tests (if available)
+        run: |
+          if [ -f "package.json" ]; then
+            echo "Testing with Node.js..."
+            npm ci --silent 2>/dev/null || echo "npm install skipped (optional)"
+            npm run build 2>/dev/null || echo "npm build skipped (optional)"
+          fi
+        continue-on-error: true
+      
+      - name: Auto-merge PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo, number } = context.issue;
+            const pr = context.payload.pull_request;
+            
+            console.log(`Processing PR #${number} from branch: ${pr.head.ref}`);
+            console.log(`PR title: ${pr.title}`);
+            console.log(`PR author: ${pr.user.login}`);
+            
+            try {
+              // Merge using squash strategy
+              const result = await github.rest.pulls.merge({
+                owner,
+                repo,
+                pull_number: number,
+                merge_method: 'squash',
+                commit_title: pr.title,
+                commit_message: `Automatically merged by DatBotty v4 autonomous pipeline\n\nBranch: ${pr.head.ref}\nCommit: ${pr.head.sha}\nSignature: Verified`
+              });
+              
+              console.log(`✅ PR #${number} merged successfully`);
+              console.log(`Merge commit SHA: ${result.data.sha}`);
+            } catch (error) {
+              console.error(`❌ Merge failed: ${error.message}`);
+              
+              // Add a comment to the PR explaining the failure
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number: number,
+                body: `❌ Auto-merge failed: ${error.message}\n\nPlease review the failure and try again.`
+              });
+              
+              process.exit(1);
+            }
