@@ -30,7 +30,7 @@ jobs:
         run: |
           HEAD_SHA="${{ github.event.pull_request.head.sha }}"
           echo "Verifying: $HEAD_SHA"
-          if git verify-commit "$HEAD_SHA" 2>&1 | grep -q "Good.*signature with ED25519"; then
+          if git verify-commit "$HEAD_SHA" 2>&1 | grep -q "Good.*ED25519"; then
             echo "✅ Signature verified"
           else
             echo "❌ Verification failed"
