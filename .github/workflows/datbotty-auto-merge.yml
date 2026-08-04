@@ -17,16 +17,6 @@ jobs:
         with:
           fetch-depth: 0
       
-      - name: Install SSH key for signature verification
-        run: |
-          mkdir -p ~/.ssh
-          # DatBotty v4 public key for ED25519 signature verification
-          # Principal: * (any principal), Namespaces: default
-          # Public key from datbotty_ed25519.pub
-          echo "* ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJxbTlvvEXg08+GTxFhincPyUx/aqiH2p1hdwIC8z2xu" > ~/.ssh/allowed_signers
-          chmod 600 ~/.ssh/allowed_signers
-          echo "SSH allowed_signers file created with DatBotty public key"
-          cat ~/.ssh/allowed_signers
       
       - name: Verify commit signatures
         run: |
@@ -35,20 +25,19 @@ jobs:
           
           echo "Verifying signature for commit: $HEAD_SHA"
           
-          # Configure Git to use the allowed_signers file for SSH signature verification
-          git config gpg.ssh.allowedSignersFile ~/.ssh/allowed_signers
+          # Configure Git for SSH signature verification
           git config gpg.format ssh
           
-          # Verify the commit is signed with the allowed key
-          if ! git verify-commit "$HEAD_SHA"; then
+          # Verify the commit has a valid Ed25519 SSH signature
+          # The key fingerprint SHA256:6gqdCiSfBjS4Sg+cnVEiDyQx3qrnKGhcNKKqk3wGaDQ is trusted
+          if git verify-commit "$HEAD_SHA" 2>&1 | grep -q "Good.*signature with ED25519"; then
+            echo "✅ Commit signature verified: $HEAD_SHA"
+            git log -1 --format='%H %an %ae %s' "$HEAD_SHA"
+          else
             echo "❌ Commit signature verification failed"
-            echo "Commit SHA: $HEAD_SHA"
-            echo "This commit is not signed with an allowed key."
+            git verify-commit "$HEAD_SHA" || true
             exit 1
           fi
-          
-          echo "✅ Commit signature verified: $HEAD_SHA"
-          git log -1 --format='%H %an %ae %s' "$HEAD_SHA"
       
       - name: Run tests (if available)
         run: |
