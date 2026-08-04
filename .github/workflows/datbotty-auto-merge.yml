@@ -17,6 +17,22 @@ jobs:
         with:
           fetch-depth: 0
       
+      - name: Setup SSH signature verification
+        run: |
+          # Create the allowed_signers file with the correct format
+          # Format: <principal> <key-type> <public-key>
+          mkdir -p ~/.ssh
+          
+          # DatBotty public key (Ed25519)
+          echo "* ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJxbTlvvEXg08+GTxFhincPyUx/aqiH2p1hdwIC8z2xu" > ~/.ssh/allowed_signers
+          chmod 600 ~/.ssh/allowed_signers
+          
+          # Configure git for SSH signature verification
+          git config --global gpg.format ssh
+          git config --global gpg.ssh.allowedSignersFile ~/.ssh/allowed_signers
+          
+          echo "✅ SSH signature verification setup complete"
+          cat ~/.ssh/allowed_signers
       
       - name: Verify commit signatures
         run: |
@@ -25,11 +41,7 @@ jobs:
           
           echo "Verifying signature for commit: $HEAD_SHA"
           
-          # Configure Git for SSH signature verification
-          git config gpg.format ssh
-          
           # Verify the commit has a valid Ed25519 SSH signature
-          # The key fingerprint SHA256:6gqdCiSfBjS4Sg+cnVEiDyQx3qrnKGhcNKKqk3wGaDQ is trusted
           if git verify-commit "$HEAD_SHA" 2>&1 | grep -q "Good.*signature with ED25519"; then
             echo "✅ Commit signature verified: $HEAD_SHA"
             git log -1 --format='%H %an %ae %s' "$HEAD_SHA"
