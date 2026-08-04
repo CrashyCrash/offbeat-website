@@ -20,9 +20,13 @@ jobs:
       - name: Install SSH key for signature verification
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.DATBOTTY_ALLOWED_SIGNERS }}" > ~/.ssh/allowed_signers
+          # DatBotty v4 public key for ED25519 signature verification
+          # Principal: * (any principal), Namespaces: default
+          # Public key from datbotty_ed25519.pub
+          echo "* ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJxbTlvvEXg08+GTxFhincPyUx/aqiH2p1hdwIC8z2xu" > ~/.ssh/allowed_signers
           chmod 600 ~/.ssh/allowed_signers
-          echo "SSH allowed_signers file created"
+          echo "SSH allowed_signers file created with DatBotty public key"
+          cat ~/.ssh/allowed_signers
       
       - name: Verify commit signatures
         run: |
