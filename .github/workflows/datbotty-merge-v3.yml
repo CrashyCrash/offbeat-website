@@ -12,7 +12,7 @@ jobs:
     if: startswith(github.head_ref, 'datbotty/')
     permissions:
       pull-requests: write
-      contents: read
+      contents: write
     
     steps:
       - name: Checkout code
