@@ -1,0 +1,61 @@
+name: DatBotty Merge v3
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
+
+jobs:
+  merge-datbotty:
+    name: Auto-merge DatBotty PRs
+    runs-on: ubuntu-latest
+    if: startswith(github.head_ref, 'datbotty/')
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Setup SSH verification
+        run: |
+          mkdir -p ~/.ssh
+          echo "* ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJxbTlvvEXg08+GTxFhincPyUx/aqiH2p1hdwIC8z2xu" > ~/.ssh/allowed_signers
+          chmod 600 ~/.ssh/allowed_signers
+          git config --global gpg.format ssh
+          git config --global gpg.ssh.allowedSignersFile ~/.ssh/allowed_signers
+          echo "✅ SSH verification setup"
+      
+      - name: Verify signature
+        run: |
+          HEAD_SHA="${{ github.event.pull_request.head.sha }}"
+          echo "Verifying: $HEAD_SHA"
+          if git verify-commit "$HEAD_SHA" 2>&1 | grep -q "Good.*signature with ED25519"; then
+            echo "✅ Signature verified"
+          else
+            echo "❌ Verification failed"
+            git verify-commit "$HEAD_SHA" || true
+            exit 1
+          fi
+      
+      - name: Merge PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo, number } = context.issue;
+            const pr = context.payload.pull_request;
+            console.log(`Merging PR #${number} from ${pr.head.ref}`);
+            try {
+              await github.rest.pulls.merge({
+                owner,
+                repo,
+                pull_number: number,
+                merge_method: 'squash',
+                commit_title: pr.title,
+                commit_message: `Autonomous merge by DatBotty v4\n\nBranch: ${pr.head.ref}\nCommit: ${pr.head.sha}`
+              });
+              console.log(`✅ Merged PR #${number}`);
+            } catch (error) {
+              console.error(`❌ Merge failed: ${error.message}`);
+              process.exit(1);
+            }
