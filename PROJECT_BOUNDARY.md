@@ -37,3 +37,4 @@ Expected:
 - Remote is `CrashyCrash/offbeat-website`.
 - Working tree is clean before a task starts.
 - The `find` command prints nothing.
+Phase 6 after-deployment-trigger proof marker B.
