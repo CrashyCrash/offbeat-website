@@ -1,0 +1,48 @@
+name: DatBotty Review Gate
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened, edited]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  deterministic:
+    name: DatBotty Deterministic Gate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out trusted policy source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          fetch-depth: 0
+      - name: Fetch exact candidate commit
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: git fetch --no-tags origin "pull/${PR_NUMBER}/head:refs/datbotty-gate/head"
+      - name: Validate deterministic provenance and package invariants
+        env:
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: python3 .github/scripts/datbotty_pr_gate.py --repo . --event "$GITHUB_EVENT_PATH" --head "$HEAD_SHA" --mode deterministic
+
+  t1:
+    name: DatBotty T1 Review
+    needs: deterministic
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out trusted policy source in fresh context
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          fetch-depth: 0
+      - name: Fetch exact candidate commit
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: git fetch --no-tags origin "pull/${PR_NUMBER}/head:refs/datbotty-gate/head"
+      - name: Independently review exact candidate and provenance
+        env:
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: python3 .github/scripts/datbotty_pr_gate.py --repo . --event "$GITHUB_EVENT_PATH" --head "$HEAD_SHA" --mode t1
