@@ -75,7 +75,7 @@ class GateReject(RuntimeError):
 
 
 def git(repo: Path, *args: str) -> str:
-    result = subprocess.run(["git", "--no-pager", "--no-replace-objects", "-c", "core.hooksPath=/dev/null", "-c", "core.fsmonitor=false", *args], cwd=repo, capture_output=True, text=True, timeout=30)
+    result = subprocess.run(["git", "--no-pager", "--no-replace-objects", "-c", "safe.directory=" + str(repo.resolve()), "-c", "core.hooksPath=/dev/null", "-c", "core.fsmonitor=false", *args], cwd=repo, capture_output=True, text=True, timeout=30)
     if result.returncode:
         raise GateReject(f"git {' '.join(args)} failed: {result.stderr.strip()}")
     return result.stdout.strip()
