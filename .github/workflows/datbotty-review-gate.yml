@@ -1,48 +1,72 @@
 name: DatBotty Review Gate
 
 on:
-  pull_request:
+  pull_request_target:
     branches: [main]
     types: [opened, synchronize, reopened, edited]
 
 permissions:
   contents: read
   pull-requests: read
+  statuses: write
+
+concurrency:
+  group: datbotty-review-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
 
 jobs:
-  deterministic:
-    name: DatBotty Deterministic Gate
+  review:
+    name: Trusted deterministic and signed semantic review
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
-      - name: Check out trusted policy source
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.base.sha }}
           fetch-depth: 0
-      - name: Fetch exact candidate commit
+          persist-credentials: false
+      - name: Verify both gates on the exact candidate
         env:
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-        run: git fetch --no-tags origin "pull/${PR_NUMBER}/head:refs/datbotty-gate/head"
-      - name: Validate deterministic provenance and package invariants
-        env:
+          GH_TOKEN: ${{ github.token }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
-        run: python3 .github/scripts/datbotty_pr_gate.py --repo . --event "$GITHUB_EVENT_PATH" --head "$HEAD_SHA" --mode deterministic
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          status() {
+            gh api "repos/$GITHUB_REPOSITORY/statuses/$HEAD_SHA" -f state="$1" -f context="$2" -f target_url="https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" >/dev/null
+          }
+          status pending 'DatBotty Deterministic Gate'
+          status pending 'DatBotty T1 Review'
+          trap "status failure 'DatBotty Deterministic Gate'; status failure 'DatBotty T1 Review'" ERR
+          git fetch --no-tags origin "pull/${PR_NUMBER}/head:refs/datbotty-gate/head"
+          python3 .github/scripts/datbotty_pr_gate.py --repo . --event "$GITHUB_EVENT_PATH" --head "$HEAD_SHA" --mode deterministic
+          status success 'DatBotty Deterministic Gate'
+          trap "status failure 'DatBotty T1 Review'" ERR
+          python3 .github/scripts/datbotty_pr_gate.py --repo . --event "$GITHUB_EVENT_PATH" --head "$HEAD_SHA" --mode t1
+          status success 'DatBotty T1 Review'
 
-  t1:
-    name: DatBotty T1 Review
-    needs: deterministic
+  merge:
+    name: Policy-gated low-risk merge
+    if: vars.DATBOTTY_LOW_RISK_AUTOMERGE == 'true'
+    needs: review
     runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+      pull-requests: write
+      statuses: read
+      checks: read
     steps:
-      - name: Check out trusted policy source in fresh context
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.base.sha }}
           fetch-depth: 0
-      - name: Fetch exact candidate commit
+          persist-credentials: false
+      - name: Merge only the unchanged approved candidate
         env:
+          GH_TOKEN: ${{ github.token }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
-        run: git fetch --no-tags origin "pull/${PR_NUMBER}/head:refs/datbotty-gate/head"
-      - name: Independently review exact candidate and provenance
-        env:
-          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
-        run: python3 .github/scripts/datbotty_pr_gate.py --repo . --event "$GITHUB_EVENT_PATH" --head "$HEAD_SHA" --mode t1
+        run: |
+          git fetch --no-tags origin "pull/${PR_NUMBER}/head:refs/datbotty-gate/head"
+          python3 .github/scripts/datbotty_merge.py
