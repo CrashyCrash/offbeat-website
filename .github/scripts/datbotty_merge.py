@@ -63,6 +63,21 @@ def assert_merge_ready(pr: dict, main: str, statuses: list, checks: list,
         raise GateReject("provider merge policy is not clean")
 
 
+def assert_pages_source(pages: dict) -> None:
+    if (pages.get('build_type') != 'legacy' or pages.get('source') != {'branch': 'main', 'path': '/'}
+            or pages.get('cname') != 'offbeatinc.com'):
+        raise GateReject('unexpected Offbeat Pages publishing source')
+
+
+def request_pages_build(merge_sha: str) -> dict:
+    if gh('api', f'repos/{REPO}/git/ref/heads/main')['object']['sha'] != merge_sha:
+        raise GateReject('main moved before Pages build request')
+    result = gh('api', '--method', 'POST', f'repos/{REPO}/pages/builds')
+    if result.get('status') not in ('queued', 'building', 'built'):
+        raise GateReject('Pages build request was not accepted')
+    return result
+
+
 def main() -> None:
     event = json.loads(Path(os.environ["GITHUB_EVENT_PATH"]).read_text())
     number = event["pull_request"]["number"]
@@ -82,11 +97,15 @@ def main() -> None:
     base = gh("api", f"repos/{REPO}/git/ref/heads/main")["object"]["sha"]
     run_url = f'https://github.com/{REPO}/actions/runs/{os.environ["GITHUB_RUN_ID"]}'
     assert_merge_ready(pr, base, statuses, checks["check_runs"], reviews, threads, run_url)
+    assert_pages_source(gh('api', f'repos/{REPO}/pages'))
     result = gh("api", "--method", "PUT", f"repos/{REPO}/pulls/{number}/merge",
                 body={"sha": sha, "merge_method": "merge", "commit_title": f"Merge governed DatBotty candidate {sha[:12]} (#{number})"})
     if result.get("merged") is not True:
         raise GateReject("provider refused merge")
-    print(json.dumps({"candidate_sha": sha, "base_sha": base, "merge_sha": result["sha"], "pr": number}, sort_keys=True))
+    print(json.dumps({"candidate_sha": sha, "base_sha": base, "merge_sha": result["sha"], "pr": number}, sort_keys=True), flush=True)
+    # GITHUB_TOKEN pushes do not trigger legacy Pages builds. Request it only
+    # after governed merge; publisher still requires exact live-byte proof.
+    print(json.dumps({'merge_sha': result['sha'], 'pages_build_request': request_pages_build(result['sha'])}, sort_keys=True))
 
 
 if __name__ == "__main__":
