@@ -17,7 +17,7 @@ import sys
 import tempfile
 import time
 import xml.etree.ElementTree as ET
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from urllib.parse import urlparse
 
 
@@ -38,12 +38,33 @@ PROFILE_FILES = {
     "bootstrap-robots-cleanup": ["robots.txt"],
     "accessibility-about-skip-link": ["about.html"],
     "accessibility-reduced-motion": ["assets/style.css"],
+    "offbeat-658-pkg-1": ["sitemap.xml", "index.html", "all-dj-guides.html", "dj-controllers-hub.html", "dj-software-hub.html", "dj-gear-hub.html", "dj-skills-performance-hub.html"],
+    "offbeat-658-pkg-2": ["best-dj-controllers-2026.html", "best-dj-controllers-under-200.html", "best-dj-controllers-under-300.html", "best-dj-controllers-under-500-2026.html", "best-dj-controllers-under-1000.html", "dj-controllers-hub.html"],
+    "offbeat-658-pkg-3": ["best-dj-software.html", "best-dj-software-beginners-2026.html", "best-free-dj-software-2026.html", "dj-software-hub.html", "rekordbox-vs-serato.html", "serato-vs-rekordbox-vs-traktor.html", "virtual-dj-vs-serato.html"],
+    "offbeat-658-pkg-4": ["best-dj-controllers-2026.html", "best-dj-headphones-2026.html", "best-dj-mixer-under-500.html", "best-dj-laptop-2026.html", "disclosure.html"],
+    "offbeat-658-pkg-5": ["index.html", "about.html", "contact.html", "disclosure.html", "privacy.html", "404.html"],
+    "offbeat-658-pkg-6": ["index.html", "all-dj-guides.html", "beginner-dj-hub.html", "dj-controllers-hub.html", "dj-software-hub.html", "dj-gear-hub.html", "dj-skills-performance-hub.html"],
 }
 PACKAGE_PURPOSE = {
     "canary-sitemap-lastmod": "Correct sitemap lastmod dates using existing page Git history only.",
     "bootstrap-robots-cleanup": "Remove invalid markup; retain the minimal public crawler policy.",
     "accessibility-about-skip-link": "Add the existing site skip-link pattern to About so keyboard users can bypass navigation.",
     "accessibility-reduced-motion": "Respect reduced-motion preferences by disabling smooth scrolling only for users requesting reduced motion.",
+    "offbeat-658-pkg-1": "Current production integrity and discoverability repairs within the reviewed #658 allowlist.",
+    "offbeat-658-pkg-2": "Controller buying-guide quality and internal-link improvements using repository-grounded facts only.",
+    "offbeat-658-pkg-3": "DJ-software information-architecture and internal-link improvements using repository-grounded facts only.",
+    "offbeat-658-pkg-4": "Affiliate/conversion correctness without inventing claims, prices, availability, or identifiers.",
+    "offbeat-658-pkg-5": "Objectively verifiable accessibility and core-UX repairs without redesign.",
+    "offbeat-658-pkg-6": "Structured-data and metadata correctness bound to visible page content.",
+}
+SUBSET_PACKAGES = frozenset({f"offbeat-658-pkg-{index}" for index in range(1, 7)})
+PACKAGE_PROFILES = {
+    "offbeat-658-pkg-1": "offbeat_site_integrity",
+    "offbeat-658-pkg-2": "offbeat_content_batch",
+    "offbeat-658-pkg-3": "offbeat_content_batch",
+    "offbeat-658-pkg-4": "offbeat_conversion_batch",
+    "offbeat-658-pkg-5": "offbeat_accessibility_batch",
+    "offbeat-658-pkg-6": "offbeat_structured_data_batch",
 }
 SKIP_LINK = '<a class="skip-link" href="#main-content">Skip to content</a>'
 MOTION_RULE = '@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }'
@@ -178,6 +199,165 @@ def check_sitemap(repo: Path, head: str, parent: str) -> str:
     return f"sitemap URLs/order/history dates verified ({len(after)} URLs)"
 
 
+
+def validate_package_binding(provenance: dict, changed: list[str]) -> None:
+    """Bind provenance to the reviewed allowlist and the commit's actual paths."""
+    package = provenance["package_id"]
+    if package not in PROFILE_FILES:
+        raise GateReject("package has no approved verification profile")
+    allowed = sorted(PROFILE_FILES[package])
+    if sorted(provenance["target_files"]) != allowed:
+        raise GateReject("provenance target files do not match package profile")
+    changed = sorted(changed)
+    if package in SUBSET_PACKAGES:
+        if not changed or not set(changed).issubset(set(allowed)):
+            raise GateReject(f"changed paths {changed!r} exceed the reviewed package allowlist")
+    elif changed != allowed:
+        raise GateReject(f"changed paths {changed!r} are not the exact profile authorization")
+
+
+def _head_text(repo: Path, head: str, path: str) -> str:
+    return git(repo, "show", f"{head}:{path}")
+
+
+def _candidate_path_exists(repo: Path, head: str, path: str) -> bool:
+    result = subprocess.run(
+        ["git", "--no-pager", "--no-replace-objects", "-c", "safe.directory=" + str(repo.resolve()),
+         "-c", "core.hooksPath=/dev/null", "cat-file", "-e", f"{head}:{path}"],
+        cwd=repo, capture_output=True, text=True, timeout=30,
+    )
+    return result.returncode == 0
+
+
+def _check_internal_links(repo: Path, head: str, changed: list[str]) -> None:
+    missing: list[str] = []
+    for name in changed:
+        if not name.endswith(".html"):
+            continue
+        text = _head_text(repo, head, name)
+        for href in re.findall(r'''\bhref\s*=\s*["']([^"']+)["']''', text, flags=re.I):
+            parsed = urlparse(href)
+            if parsed.scheme or parsed.netloc or href.startswith(("#", "mailto:", "tel:", "javascript:")):
+                continue
+            raw = parsed.path
+            if not raw:
+                continue
+            if raw.startswith("/"):
+                target = PurePosixPath(raw.lstrip("/"))
+            else:
+                target = PurePosixPath(name).parent / raw
+            if target.name == "":
+                target = target / "index.html"
+            if ".." in target.parts or not _candidate_path_exists(repo, head, str(target)):
+                missing.append(f"{name}:{href}")
+    if missing:
+        raise GateReject("broken internal links: " + ", ".join(missing[:10]))
+
+
+def _check_metadata(repo: Path, head: str, changed: list[str]) -> None:
+    bad: list[str] = []
+    for name in changed:
+        if not name.endswith(".html"):
+            continue
+        text = _head_text(repo, head, name)
+        if not re.search(r"<title>\s*\S", text, re.I):
+            bad.append(f"{name}:title")
+        if not re.search(r'''<meta\s+[^>]*name=["']description["'][^>]*content=["']\S''', text, re.I):
+            bad.append(f"{name}:description")
+    if bad:
+        raise GateReject("missing required metadata: " + ", ".join(bad))
+
+
+def _check_sitemap_targets(repo: Path, head: str) -> None:
+    for loc, _date in sitemap_entries(_head_text(repo, head, "sitemap.xml")):
+        path = urlparse(loc).path.lstrip("/") or "index.html"
+        if not _candidate_path_exists(repo, head, path):
+            raise GateReject(f"sitemap target is absent from candidate: {path}")
+
+
+def _check_conversion(repo: Path, head: str, changed: list[str]) -> None:
+    disclosure = _head_text(repo, head, "disclosure.html")
+    if "affiliate" not in disclosure.lower():
+        raise GateReject("affiliate disclosure is missing")
+    unsafe: list[str] = []
+    for name in changed:
+        if not name.endswith(".html"):
+            continue
+        text = _head_text(repo, head, name)
+        for anchor in re.findall(r"<a\b[^>]*>", text, flags=re.I):
+            if not re.search(r'''href=["']https?://''', anchor, re.I):
+                continue
+            if not re.search(r'''target=["']_blank["']''', anchor, re.I):
+                continue
+            match = re.search(r'''rel=["']([^"']*)["']''', anchor, re.I)
+            rel = set((match.group(1).lower().split() if match else []))
+            if not {"noopener", "noreferrer"}.issubset(rel):
+                unsafe.append(name)
+    if unsafe:
+        raise GateReject("unsafe target=_blank outbound links: " + ", ".join(sorted(set(unsafe))))
+
+
+def _check_accessibility_batch(repo: Path, head: str, changed: list[str]) -> None:
+    issues: list[str] = []
+    for name in changed:
+        if not name.endswith(".html"):
+            continue
+        text = _head_text(repo, head, name)
+        ids = re.findall(r'''\bid=["']([^"']+)["']''', text, re.I)
+        if len(ids) != len(set(ids)):
+            issues.append(f"{name}:duplicate id")
+        if re.search(r"<img\b(?![^>]*\balt\s*=)[^>]*>", text, re.I):
+            issues.append(f"{name}:image without alt")
+        for target in re.findall(r'''<label\b[^>]*\bfor=["']([^"']+)["']''', text, re.I):
+            if target not in ids:
+                issues.append(f"{name}:missing label target {target}")
+        if "skip-link" not in text:
+            issues.append(f"{name}:missing skip-link")
+    if issues:
+        raise GateReject("accessibility profile failed: " + "; ".join(issues[:10]))
+
+
+def _check_structured_data(repo: Path, head: str, changed: list[str]) -> None:
+    for name in changed:
+        if not name.endswith(".html"):
+            continue
+        text = _head_text(repo, head, name)
+        visible = re.sub(r"<[^>]+>", " ", text)
+        for payload in re.findall(r'''<script[^>]+type=["']application/ld\+json["'][^>]*>(.*?)</script>''', text, re.I | re.S):
+            try:
+                node = json.loads(payload)
+            except json.JSONDecodeError as exc:
+                raise GateReject(f"{name}: invalid JSON-LD: {exc.msg}") from exc
+            nodes = node if isinstance(node, list) else [node]
+            for item in nodes:
+                if isinstance(item, dict):
+                    claim = item.get("headline") or item.get("name")
+                    if isinstance(claim, str) and claim not in visible:
+                        raise GateReject(f"{name}: JSON-LD claim is not visible on-page")
+
+
+def check_offbeat_658(repo: Path, package: str, head: str, changed: list[str], provenance: dict) -> str:
+    profile = PACKAGE_PROFILES[package]
+    required = {"authorized_paths", "git_diff_check", "diff_check", f"profile_{profile}"}
+    checks = provenance["deterministic_checks"]
+    if not required.issubset(checks) or not all(checks[name] is True for name in required):
+        raise GateReject("required package-specific deterministic provenance is missing")
+    if profile in {"offbeat_site_integrity", "offbeat_content_batch"}:
+        _check_internal_links(repo, head, changed)
+    if profile == "offbeat_site_integrity":
+        _check_sitemap_targets(repo, head)
+    elif profile == "offbeat_content_batch":
+        _check_metadata(repo, head, changed)
+    elif profile == "offbeat_conversion_batch":
+        _check_conversion(repo, head, changed)
+    elif profile == "offbeat_accessibility_batch":
+        _check_accessibility_batch(repo, head, changed)
+    elif profile == "offbeat_structured_data_batch":
+        _check_structured_data(repo, head, changed)
+    return f"{profile} provider policy verified for {len(changed)} changed file(s)"
+
+
+
 def validate(repo: Path, event: dict, head: str) -> str:
     pr = event.get("pull_request") or {}
     provenance = parse_provenance(pr.get("body") or "")
@@ -196,8 +376,6 @@ def validate(repo: Path, event: dict, head: str) -> str:
         raise GateReject("candidate ref does not match provenance")
     if provenance["package_id"] not in PROFILE_FILES:
         raise GateReject("package has no approved verification profile")
-    if sorted(provenance["target_files"]) != PROFILE_FILES[provenance["package_id"]]:
-        raise GateReject("provenance target files do not match package profile")
     if not isinstance(provenance["execution_flow_run_id"], str) or not re.fullmatch(r"[0-9a-f-]{36}", provenance["execution_flow_run_id"]):
         raise GateReject("missing or invalid execution-flow provenance")
 
@@ -207,8 +385,7 @@ def validate(repo: Path, event: dict, head: str) -> str:
     if provenance["base_sha"] != parent or pr.get("base", {}).get("sha") != parent:
         raise GateReject("candidate parent, provenance base, and PR base are not identical")
     changed = sorted(filter(None, git(repo, "diff", "--name-only", f"{parent}..{head}").splitlines()))
-    if changed != PROFILE_FILES[provenance["package_id"]]:
-        raise GateReject(f"changed paths {changed!r} are not the exact profile authorization")
+    validate_package_binding(provenance, changed)
     git(repo, "diff", "--no-ext-diff", "--no-textconv", "--check", parent, head)
     for path in changed:
         if not git(repo, "ls-tree", head, "--", path).startswith("100644 blob "):
@@ -218,6 +395,8 @@ def validate(repo: Path, event: dict, head: str) -> str:
     if provenance["package_id"].startswith("accessibility-"):
         path = changed[0]
         return check_accessibility(provenance["package_id"], git(repo, "show", f"{parent}:{path}"), git(repo, "show", f"{head}:{path}"))
+    if provenance["package_id"] in SUBSET_PACKAGES:
+        return check_offbeat_658(repo, provenance["package_id"], head, changed, provenance)
     return check_sitemap(repo, head, parent)
 
 
@@ -231,7 +410,10 @@ def review_packet(repo: Path, provenance: dict, detail: str) -> dict:
               "deterministic_result": {"verdict": "PASS", "detail": detail}, "diff": diff}
     # A diff alone can omit semantic dependencies (e.g. the target anchor and
     # existing skip-link CSS). Bind exact candidate blobs, never executor prose.
-    paths = list(PROFILE_FILES[provenance["package_id"]])
+    if provenance["package_id"] in SUBSET_PACKAGES:
+        paths = sorted(filter(None, git(repo, "diff", "--name-only", f"{base}..{head}").splitlines()))
+    else:
+        paths = list(PROFILE_FILES[provenance["package_id"]])
     if provenance["package_id"] == "accessibility-about-skip-link":
         paths.append("assets/style.css")
     packet["candidate_files"] = {path: git(repo, "show", f"{head}:{path}") for path in paths}
