@@ -229,6 +229,14 @@ def review_packet(repo: Path, provenance: dict, detail: str) -> dict:
     packet = {"repository": "CrashyCrash/offbeat-website", "provenance": provenance,
               "package_purpose": PACKAGE_PURPOSE[provenance["package_id"]], "risk_class": "low",
               "deterministic_result": {"verdict": "PASS", "detail": detail}, "diff": diff}
+    # A diff alone can omit semantic dependencies (e.g. the target anchor and
+    # existing skip-link CSS). Bind exact candidate blobs, never executor prose.
+    paths = list(PROFILE_FILES[provenance["package_id"]])
+    if provenance["package_id"] == "accessibility-about-skip-link":
+        paths.append("assets/style.css")
+    packet["candidate_files"] = {path: git(repo, "show", f"{head}:{path}") for path in paths}
+    if len(canonical(packet)) > 100_000:
+        raise GateReject("oversized semantic review context")
     return packet
 
 
