@@ -15,6 +15,7 @@ else:
 
 REPO = "CrashyCrash/offbeat-website"
 CONTEXTS = {"DatBotty Deterministic Gate", "DatBotty T1 Review"}
+SELF_MERGE_CHECK = "Policy-gated low-risk merge"
 
 
 def gh(*args: str, body: dict | None = None) -> object:
@@ -24,6 +25,17 @@ def gh(*args: str, body: dict | None = None) -> object:
     result = subprocess.run(command, input=json.dumps(body) if body is not None else None,
                             capture_output=True, text=True, timeout=30, check=True)
     return json.loads(result.stdout)
+
+
+def is_current_merge_check(check: dict, run_url: str) -> bool:
+    """Recognize only this still-running Actions merge job.
+
+    Name alone is deliberately insufficient: a similarly named check from any
+    other run remains an unresolved external check and blocks the merge.
+    """
+    return (check.get("name") == SELF_MERGE_CHECK
+            and check.get("status") == "in_progress"
+            and check.get("details_url", "").startswith(run_url + "/job/"))
 
 
 def assert_merge_ready(pr: dict, main: str, statuses: list, checks: list,
@@ -49,7 +61,8 @@ def assert_merge_ready(pr: dict, main: str, statuses: list, checks: list,
             raise GateReject("missing, failed or untrusted required gate: " + name)
     if any(s.get("state") in ("failure", "error", "pending") for s in latest.values()):
         raise GateReject("unresolved status")
-    if any(c.get("status") != "completed" or c.get("conclusion") not in ("success", "neutral", "skipped") for c in checks):
+    external_checks = [c for c in checks if not is_current_merge_check(c, run_url)]
+    if any(c.get("status") != "completed" or c.get("conclusion") not in ("success", "neutral", "skipped") for c in external_checks):
         raise GateReject("unresolved check")
     latest_review = {}
     for review in reviews:
