@@ -15,6 +15,7 @@ import re
 import subprocess
 import sys
 import tempfile
+import time
 import xml.etree.ElementTree as ET
 from pathlib import Path
 from urllib.parse import urlparse
@@ -49,6 +50,7 @@ MOTION_RULE = '@media (prefers-reduced-motion: reduce) { html { scroll-behavior:
 T1_RE = re.compile(r"<!-- datbotty-t1\s*\n(.*?)\n-->", re.DOTALL)
 PUBLIC_KEY = Path(__file__).with_name("reviewer-public.pem")
 REVIEW_MODEL_DIGEST = "a50eda8ed977ab48a12431878896b27ffd5cef552c17af3317d9623b939a7f1e"
+REVIEW_TTL_SECONDS = 1800
 
 
 def canonical(value: object) -> bytes:
@@ -257,12 +259,18 @@ def verify_t1(repo: Path, body: str, packet: dict, public_key: Path | None = Non
     if not isinstance(envelope, dict) or set(envelope) != {"payload", "signature"}:
         raise GateReject("invalid T1 envelope")
     payload = envelope["payload"]
-    if not isinstance(payload, dict) or set(payload) != {"schema_version", "reviewer_source_sha256", "model", "model_digest", "verdict"}:
+    if not isinstance(payload, dict) or set(payload) != {"schema_version", "reviewer_source_sha256", "model", "model_digest", "issued_at", "expires_at", "verdict"}:
         raise GateReject("invalid signed T1 payload")
     if payload["schema_version"] != 1 or payload["reviewer_source_sha256"] != reviewer_source_digest() or payload["model"] != "qwen3.6:27b":
         raise GateReject("T1 reviewer source/model mismatch")
     if payload["model_digest"] != REVIEW_MODEL_DIGEST:
         raise GateReject("missing T1 model digest")
+    issued, expires = payload["issued_at"], payload["expires_at"]
+    now = time.time()
+    if (type(issued) is not int or type(expires) is not int
+            or expires - issued != REVIEW_TTL_SECONDS
+            or issued > now + 30 or now >= expires):
+        raise GateReject("expired, future or invalid T1 validity window")
     key = public_key or PUBLIC_KEY
     with tempfile.TemporaryDirectory(prefix="datbotty-t1-verify-") as tmp:
         data, sig = Path(tmp) / "data", Path(tmp) / "sig"

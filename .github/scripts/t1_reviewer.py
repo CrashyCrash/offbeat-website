@@ -16,6 +16,7 @@ import signal
 import subprocess
 import sys
 import tempfile
+import time
 import urllib.request
 from pathlib import Path
 
@@ -23,7 +24,7 @@ from pathlib import Path
 # supply the verifier module.
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from datbotty_pr_gate import (GateReject, canonical, digest, git, parse_provenance,
-                             parse_verdict, review_packet, reviewer_source_digest, validate, REVIEW_MODEL_DIGEST)
+                             parse_verdict, review_packet, reviewer_source_digest, validate, REVIEW_MODEL_DIGEST, REVIEW_TTL_SECONDS)
 
 REPO = Path("/var/lib/datbotty/executor-bare/offbeat-website.git")
 KEY = Path("/var/lib/datbotty-review/reviewer-private.pem")
@@ -85,7 +86,9 @@ def review(provenance: dict) -> dict:
     if response.get("done") is not True or response.get("done_reason") != "stop" or response.get("model") != MODEL:
         raise GateReject("incomplete or mismatched model response")
     verdict = parse_verdict(response["message"]["content"], packet)
+    issued = int(time.time())
     payload = {"schema_version": 1, "reviewer_source_sha256": reviewer_source_digest(),
+               "issued_at": issued, "expires_at": issued + REVIEW_TTL_SECONDS,
                "model": MODEL, "model_digest": model_digest, "verdict": verdict}
     with tempfile.TemporaryDirectory(prefix="t1-sign-") as tmp:
         data = Path(tmp) / "payload"
