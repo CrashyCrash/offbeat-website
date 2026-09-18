@@ -663,3 +663,5 @@ footer{background:#08080d!important;border-top:1px solid rgba(124,58,237,.25)!im
   .product-card .card-price{justify-self:start;text-align:left;}
   .product-card .card-body{grid-template-columns:1fr;}
 }
+
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
