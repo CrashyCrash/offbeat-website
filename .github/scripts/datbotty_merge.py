@@ -38,6 +38,19 @@ def is_current_merge_check(check: dict, run_url: str) -> bool:
             and check.get("details_url", "").startswith(run_url + "/job/"))
 
 
+def is_current_merge_policy_state(pr: dict, checks: list, run_url: str) -> bool:
+    """Accept the provider's transient state only while this exact job runs.
+
+    The caller has already rejected every non-self unfinished or unacceptable
+    check. GitHub reports ``unstable`` until this job itself completes, so
+    treating that one self-reference as external would deadlock every merge.
+    """
+    return (pr.get("mergeable") is True
+            and (pr.get("mergeable_state") == "clean"
+                 or (pr.get("mergeable_state") == "unstable"
+                     and any(is_current_merge_check(check, run_url) for check in checks))))
+
+
 def assert_merge_ready(pr: dict, main: str, statuses: list, checks: list,
                        reviews: list, threads: dict, run_url: str) -> None:
     p = parse_provenance(pr.get("body", ""))
@@ -72,7 +85,7 @@ def assert_merge_ready(pr: dict, main: str, statuses: list, checks: list,
         raise GateReject("unresolved review rejection")
     if threads.get("pageInfo", {}).get("hasNextPage") is not False or any(t.get("isResolved") is not True for t in threads.get("nodes", [])):
         raise GateReject("unresolved or incomplete review threads")
-    if pr.get("mergeable") is not True or pr.get("mergeable_state") != "clean":
+    if not is_current_merge_policy_state(pr, checks, run_url):
         raise GateReject("provider merge policy is not clean")
 
 
