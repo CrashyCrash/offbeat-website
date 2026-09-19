@@ -17,6 +17,7 @@ import sys
 import tempfile
 import time
 import xml.etree.ElementTree as ET
+from collections import Counter
 from pathlib import Path, PurePosixPath
 from urllib.parse import urlparse
 
@@ -229,12 +230,34 @@ def _candidate_path_exists(repo: Path, head: str, path: str) -> bool:
     return result.returncode == 0
 
 
-def _check_internal_links(repo: Path, head: str, changed: list[str]) -> None:
-    missing: list[str] = []
+def _reject_new_defects(label: str, before: Counter, after: Counter) -> None:
+    introduced = after - before
+    if introduced:
+        detail = ", ".join(f"{key} x{count}" for key, count in sorted(introduced.items()))
+        raise GateReject(f"new {label} defects: {detail}")
+
+
+def _metadata_defects(name: str, text: str) -> Counter:
+    defects: Counter = Counter()
+    if not re.search(r"<title>\s*\S", text, re.I):
+        defects[f"{name}:title"] += 1
+    tags = re.findall(r"<meta\b[^>]*>", text, re.I)
+    has_description = any(
+        re.search(r'''\bname\s*=\s*["']description["']''', tag, re.I)
+        and re.search(r'''\bcontent\s*=\s*["']\s*\S''', tag, re.I)
+        for tag in tags
+    )
+    if not has_description:
+        defects[f"{name}:description"] += 1
+    return defects
+
+
+def _internal_link_defects(repo: Path, commit: str, changed: list[str]) -> Counter:
+    defects: Counter = Counter()
     for name in changed:
         if not name.endswith(".html"):
             continue
-        text = _head_text(repo, head, name)
+        text = _head_text(repo, commit, name)
         for href in re.findall(r'''\bhref\s*=\s*["']([^"']+)["']''', text, flags=re.I):
             parsed = urlparse(href)
             if parsed.scheme or parsed.netloc or href.startswith(("#", "mailto:", "tel:", "javascript:")):
@@ -242,30 +265,72 @@ def _check_internal_links(repo: Path, head: str, changed: list[str]) -> None:
             raw = parsed.path
             if not raw:
                 continue
-            if raw.startswith("/"):
-                target = PurePosixPath(raw.lstrip("/"))
-            else:
-                target = PurePosixPath(name).parent / raw
+            target = PurePosixPath(raw.lstrip("/")) if raw.startswith("/") else PurePosixPath(name).parent / raw
             if target.name == "":
                 target = target / "index.html"
-            if ".." in target.parts or not _candidate_path_exists(repo, head, str(target)):
-                missing.append(f"{name}:{href}")
-    if missing:
-        raise GateReject("broken internal links: " + ", ".join(missing[:10]))
+            if ".." in target.parts or not _candidate_path_exists(repo, commit, str(target)):
+                defects[f"{name}:{href}"] += 1
+    return defects
 
 
-def _check_metadata(repo: Path, head: str, changed: list[str]) -> None:
-    bad: list[str] = []
+def _outbound_defects(name: str, text: str) -> Counter:
+    defects: Counter = Counter()
+    for anchor_tag in re.findall(r"<a\b[^>]*>", text, re.I):
+        if not re.search(r'''href=["']https?://''', anchor_tag, re.I) or not re.search(r'''target=["']_blank["']''', anchor_tag, re.I):
+            continue
+        match = re.search(r'''rel=["']([^"']*)["']''', anchor_tag, re.I)
+        rel = set(match.group(1).lower().split() if match else [])
+        if not {"noopener", "noreferrer"}.issubset(rel):
+            defects[f"{name}:unsafe-target-blank"] += 1
+    return defects
+
+
+def _accessibility_defects(name: str, text: str) -> Counter:
+    defects: Counter = Counter()
+    ids = re.findall(r'''\bid=["']([^"']+)["']''', text, re.I)
+    counts = Counter(ids)
+    for duplicate, count in counts.items():
+        if count > 1:
+            defects[f"{name}:duplicate-id:{duplicate}"] += count - 1
+    defects[f"{name}:image-without-alt"] += len(re.findall(r"<img\b(?![^>]*\balt\s*=)[^>]*>", text, re.I))
+    for target in re.findall(r'''<label\b[^>]*\bfor=["']([^"']+)["']''', text, re.I):
+        if target not in counts:
+            defects[f"{name}:missing-label-target:{target}"] += 1
+    if "skip-link" not in text:
+        defects[f"{name}:missing-skip-link"] += 1
+    return +defects
+
+
+def _structured_data_defects(name: str, text: str) -> Counter:
+    defects: Counter = Counter()
+    visible = re.sub(r"<[^>]+>", " ", text)
+    for payload in re.findall(r'''<script[^>]+type=["']application/ld\+json["'][^>]*>(.*?)</script>''', text, re.I | re.S):
+        try:
+            node = json.loads(payload)
+        except json.JSONDecodeError:
+            defects[f"{name}:invalid-jsonld"] += 1
+            continue
+        for item in node if isinstance(node, list) else [node]:
+            if isinstance(item, dict):
+                claim = item.get("headline") or item.get("name")
+                if isinstance(claim, str) and claim not in visible:
+                    defects[f"{name}:invisible-claim:{claim}"] += 1
+    return defects
+
+
+def _check_internal_links(repo: Path, base: str, head: str, changed: list[str]) -> None:
+    _reject_new_defects("internal-link", _internal_link_defects(repo, base, changed), _internal_link_defects(repo, head, changed))
+
+
+def _check_metadata(repo: Path, base: str, head: str, changed: list[str]) -> None:
+    before: Counter = Counter()
+    after: Counter = Counter()
     for name in changed:
         if not name.endswith(".html"):
             continue
-        text = _head_text(repo, head, name)
-        if not re.search(r"<title>\s*\S", text, re.I):
-            bad.append(f"{name}:title")
-        if not re.search(r'''<meta\s+[^>]*name=["']description["'][^>]*content=["']\S''', text, re.I):
-            bad.append(f"{name}:description")
-    if bad:
-        raise GateReject("missing required metadata: " + ", ".join(bad))
+        before.update(_metadata_defects(name, _head_text(repo, base, name)))
+        after.update(_metadata_defects(name, _head_text(repo, head, name)))
+    _reject_new_defects("metadata", before, after)
 
 
 def _check_sitemap_targets(repo: Path, head: str) -> None:
@@ -275,65 +340,40 @@ def _check_sitemap_targets(repo: Path, head: str) -> None:
             raise GateReject(f"sitemap target is absent from candidate: {path}")
 
 
-def _check_conversion(repo: Path, head: str, changed: list[str]) -> None:
+def _check_conversion(repo: Path, base: str, head: str, changed: list[str]) -> None:
     disclosure = _head_text(repo, head, "disclosure.html")
     if "affiliate" not in disclosure.lower():
         raise GateReject("affiliate disclosure is missing")
-    unsafe: list[str] = []
+    before: Counter = Counter()
+    after: Counter = Counter()
     for name in changed:
         if not name.endswith(".html"):
             continue
-        text = _head_text(repo, head, name)
-        for anchor in re.findall(r"<a\b[^>]*>", text, flags=re.I):
-            if not re.search(r'''href=["']https?://''', anchor, re.I):
-                continue
-            if not re.search(r'''target=["']_blank["']''', anchor, re.I):
-                continue
-            match = re.search(r'''rel=["']([^"']*)["']''', anchor, re.I)
-            rel = set((match.group(1).lower().split() if match else []))
-            if not {"noopener", "noreferrer"}.issubset(rel):
-                unsafe.append(name)
-    if unsafe:
-        raise GateReject("unsafe target=_blank outbound links: " + ", ".join(sorted(set(unsafe))))
+        before.update(_outbound_defects(name, _head_text(repo, base, name)))
+        after.update(_outbound_defects(name, _head_text(repo, head, name)))
+    _reject_new_defects("unsafe outbound-link", before, after)
 
 
-def _check_accessibility_batch(repo: Path, head: str, changed: list[str]) -> None:
-    issues: list[str] = []
+def _check_accessibility_batch(repo: Path, base: str, head: str, changed: list[str]) -> None:
+    before: Counter = Counter()
+    after: Counter = Counter()
     for name in changed:
         if not name.endswith(".html"):
             continue
-        text = _head_text(repo, head, name)
-        ids = re.findall(r'''\bid=["']([^"']+)["']''', text, re.I)
-        if len(ids) != len(set(ids)):
-            issues.append(f"{name}:duplicate id")
-        if re.search(r"<img\b(?![^>]*\balt\s*=)[^>]*>", text, re.I):
-            issues.append(f"{name}:image without alt")
-        for target in re.findall(r'''<label\b[^>]*\bfor=["']([^"']+)["']''', text, re.I):
-            if target not in ids:
-                issues.append(f"{name}:missing label target {target}")
-        if "skip-link" not in text:
-            issues.append(f"{name}:missing skip-link")
-    if issues:
-        raise GateReject("accessibility profile failed: " + "; ".join(issues[:10]))
+        before.update(_accessibility_defects(name, _head_text(repo, base, name)))
+        after.update(_accessibility_defects(name, _head_text(repo, head, name)))
+    _reject_new_defects("accessibility", before, after)
 
 
-def _check_structured_data(repo: Path, head: str, changed: list[str]) -> None:
+def _check_structured_data(repo: Path, base: str, head: str, changed: list[str]) -> None:
+    before: Counter = Counter()
+    after: Counter = Counter()
     for name in changed:
         if not name.endswith(".html"):
             continue
-        text = _head_text(repo, head, name)
-        visible = re.sub(r"<[^>]+>", " ", text)
-        for payload in re.findall(r'''<script[^>]+type=["']application/ld\+json["'][^>]*>(.*?)</script>''', text, re.I | re.S):
-            try:
-                node = json.loads(payload)
-            except json.JSONDecodeError as exc:
-                raise GateReject(f"{name}: invalid JSON-LD: {exc.msg}") from exc
-            nodes = node if isinstance(node, list) else [node]
-            for item in nodes:
-                if isinstance(item, dict):
-                    claim = item.get("headline") or item.get("name")
-                    if isinstance(claim, str) and claim not in visible:
-                        raise GateReject(f"{name}: JSON-LD claim is not visible on-page")
+        before.update(_structured_data_defects(name, _head_text(repo, base, name)))
+        after.update(_structured_data_defects(name, _head_text(repo, head, name)))
+    _reject_new_defects("structured-data", before, after)
 
 
 def check_offbeat_658(repo: Path, package: str, head: str, changed: list[str], provenance: dict) -> str:
@@ -342,19 +382,20 @@ def check_offbeat_658(repo: Path, package: str, head: str, changed: list[str], p
     checks = provenance["deterministic_checks"]
     if not required.issubset(checks) or not all(checks[name] is True for name in required):
         raise GateReject("required package-specific deterministic provenance is missing")
+    base = provenance["base_sha"]
     if profile in {"offbeat_site_integrity", "offbeat_content_batch"}:
-        _check_internal_links(repo, head, changed)
+        _check_internal_links(repo, base, head, changed)
     if profile == "offbeat_site_integrity":
         _check_sitemap_targets(repo, head)
     elif profile == "offbeat_content_batch":
-        _check_metadata(repo, head, changed)
+        _check_metadata(repo, base, head, changed)
     elif profile == "offbeat_conversion_batch":
-        _check_conversion(repo, head, changed)
+        _check_conversion(repo, base, head, changed)
     elif profile == "offbeat_accessibility_batch":
-        _check_accessibility_batch(repo, head, changed)
+        _check_accessibility_batch(repo, base, head, changed)
     elif profile == "offbeat_structured_data_batch":
-        _check_structured_data(repo, head, changed)
-    return f"{profile} provider policy verified for {len(changed)} changed file(s)"
+        _check_structured_data(repo, base, head, changed)
+    return f"{profile} provider policy verified for {len(changed)} changed file(s); no baseline regression"
 
 
 
