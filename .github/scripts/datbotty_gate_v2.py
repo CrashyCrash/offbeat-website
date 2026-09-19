@@ -141,6 +141,7 @@ def load_authority(repo: Path, base_sha: str) -> dict:
         "reviewer_source_sha256",
         "review_ttl_seconds",
         "volatile_claim_evidence_required",
+        "volatile_claims_allowed",
     }
     if set(value) != required:
         raise GateReject("protected authority fields are ambiguous")
@@ -320,6 +321,10 @@ def _validate_volatile_evidence(
         if evidence:
             raise GateReject("volatile evidence supplied without a detected volatile claim")
         return
+    if authority["volatile_claims_allowed"] is not True:
+        raise GateReject(
+            "volatile commercial claims are outside rescue-v1 standing authority"
+        )
     if authority["volatile_claim_evidence_required"] is not True:
         return
 
