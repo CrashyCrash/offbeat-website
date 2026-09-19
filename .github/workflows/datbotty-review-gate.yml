@@ -16,15 +16,19 @@ concurrency:
 
 jobs:
   review:
-    name: Trusted deterministic and signed semantic review
+    name: Trusted Gate v2 deterministic and signed semantic review
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 6
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.base.sha }}
           fetch-depth: 0
           persist-credentials: false
+
+      - name: Self-test protected Gate v2 source
+        run: python3 .github/scripts/test_datbotty_gate_v2.py
+
       - name: Verify both gates on the exact candidate
         env:
           GH_TOKEN: ${{ github.token }}
@@ -34,16 +38,16 @@ jobs:
         run: |
           set -euo pipefail
           status() {
-            gh api "repos/$GITHUB_REPOSITORY/statuses/$HEAD_SHA" -f state="$1" -f context="$2" -f target_url="https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" >/dev/null
+            gh api "repos/$GITHUB_REPOSITORY/statuses/$HEAD_SHA"               -f state="$1" -f context="$2"               -f target_url="https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" >/dev/null
           }
           status pending 'DatBotty Deterministic Gate'
           status pending 'DatBotty T1 Review'
           trap "status failure 'DatBotty Deterministic Gate'; status failure 'DatBotty T1 Review'" ERR
           git fetch --no-tags origin "pull/${PR_NUMBER}/head:refs/datbotty-gate/head"
-          python3 .github/scripts/datbotty_pr_gate.py --repo . --event "$GITHUB_EVENT_PATH" --head "$HEAD_SHA" --mode deterministic
+          python3 .github/scripts/datbotty_gate_v2.py             --repo . --event "$GITHUB_EVENT_PATH" --head "$HEAD_SHA" --mode deterministic
           status success 'DatBotty Deterministic Gate'
           trap "status failure 'DatBotty T1 Review'" ERR
-          python3 .github/scripts/datbotty_pr_gate.py --repo . --event "$GITHUB_EVENT_PATH" --head "$HEAD_SHA" --mode t1
+          python3 .github/scripts/datbotty_gate_v2.py             --repo . --event "$GITHUB_EVENT_PATH" --head "$HEAD_SHA" --mode t1
           status success 'DatBotty T1 Review'
 
   merge:
