@@ -457,6 +457,7 @@ def verify_t1(
         "expires_at",
         "model",
         "model_digest",
+        "verification_sha256",
         "binding",
         "verdict",
     }:
@@ -468,6 +469,8 @@ def verify_t1(
         or payload["model_digest"] != authority["reviewer_model_digest"]
     ):
         raise GateReject("T1 model identity mismatch")
+    if payload["verification_sha256"] != provenance["deterministic"]["verification_sha256"]:
+        raise GateReject("T1 deterministic evidence hash mismatch")
     issued = payload["issued_at"]
     expires = payload["expires_at"]
     current = int(time.time()) if now is None else now
