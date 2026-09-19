@@ -27,7 +27,9 @@ jobs:
           persist-credentials: false
 
       - name: Self-test protected Gate v2 source
-        run: python3 .github/scripts/test_datbotty_gate_v2.py
+        run: |
+          python3 .github/scripts/test_datbotty_gate_v2.py
+          python3 .github/scripts/test_datbotty_merge_v2.py
 
       - name: Verify both gates on the exact candidate
         env:
