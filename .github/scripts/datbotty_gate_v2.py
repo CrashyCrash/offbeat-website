@@ -138,6 +138,7 @@ def load_authority(repo: Path, base_sha: str) -> dict:
         "required_verification_checks",
         "reviewer_model",
         "reviewer_model_digest",
+        "reviewer_source_sha256",
         "review_ttl_seconds",
         "volatile_claim_evidence_required",
     }
@@ -469,6 +470,8 @@ def verify_t1(
         or payload["model_digest"] != authority["reviewer_model_digest"]
     ):
         raise GateReject("T1 model identity mismatch")
+    if payload["reviewer_source_sha256"] != authority["reviewer_source_sha256"]:
+        raise GateReject("T1 reviewer source digest mismatch")
     if payload["verification_sha256"] != provenance["deterministic"]["verification_sha256"]:
         raise GateReject("T1 deterministic evidence hash mismatch")
     issued = payload["issued_at"]
