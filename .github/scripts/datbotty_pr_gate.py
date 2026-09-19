@@ -252,6 +252,26 @@ def _metadata_defects(name: str, text: str) -> Counter:
     return defects
 
 
+VOLATILE_COMMERCIAL_RE = re.compile(
+    r"""(?ix)
+    (?:
+        \$\s?\d+(?:[.,]\d+)?(?:\s*(?:/|per\s+)(?:mo(?:nth)?|yr|year))?
+        |\bfree\b
+        |\b(?:monthly|annual|yearly|subscription|one[- ]time)\b
+    )
+    """
+)
+
+
+def _volatile_commercial_claims(name: str, text: str) -> Counter:
+    visible = re.sub(r"<[^>]+>", " ", text)
+    claims: Counter = Counter()
+    for match in VOLATILE_COMMERCIAL_RE.finditer(visible):
+        token = re.sub(r"\s+", " ", match.group(0).strip().lower())
+        claims[f"{name}:{token}"] += 1
+    return claims
+
+
 def _internal_link_defects(repo: Path, commit: str, changed: list[str]) -> Counter:
     defects: Counter = Counter()
     for name in changed:
@@ -333,6 +353,17 @@ def _check_metadata(repo: Path, base: str, head: str, changed: list[str]) -> Non
     _reject_new_defects("metadata", before, after)
 
 
+def _check_volatile_commercial_claims(repo: Path, base: str, head: str, changed: list[str]) -> None:
+    before: Counter = Counter()
+    after: Counter = Counter()
+    for name in changed:
+        if not name.endswith(".html"):
+            continue
+        before.update(_volatile_commercial_claims(name, _head_text(repo, base, name)))
+        after.update(_volatile_commercial_claims(name, _head_text(repo, head, name)))
+    _reject_new_defects("volatile commercial-claim", before, after)
+
+
 def _check_sitemap_targets(repo: Path, head: str) -> None:
     for loc, _date in sitemap_entries(_head_text(repo, head, "sitemap.xml")):
         path = urlparse(loc).path.lstrip("/") or "index.html"
@@ -378,7 +409,7 @@ def _check_structured_data(repo: Path, base: str, head: str, changed: list[str])
 
 def check_offbeat_658(repo: Path, package: str, head: str, changed: list[str], provenance: dict) -> str:
     profile = PACKAGE_PROFILES[package]
-    required = {"authorized_paths", "git_diff_check", "diff_check", f"profile_{profile}"}
+    required = {"authorized_paths", "git_diff_check", "diff_check", "volatile_commercial_claims", f"profile_{profile}"}
     checks = provenance["deterministic_checks"]
     if not required.issubset(checks) or not all(checks[name] is True for name in required):
         raise GateReject("required package-specific deterministic provenance is missing")
@@ -395,7 +426,8 @@ def check_offbeat_658(repo: Path, package: str, head: str, changed: list[str], p
         _check_accessibility_batch(repo, base, head, changed)
     elif profile == "offbeat_structured_data_batch":
         _check_structured_data(repo, base, head, changed)
-    return f"{profile} provider policy verified for {len(changed)} changed file(s); no baseline regression"
+    _check_volatile_commercial_claims(repo, base, head, changed)
+    return f"{profile} provider policy verified for {len(changed)} changed file(s); no baseline regression or volatile commercial-claim amplification"
 
 
 
