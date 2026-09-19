@@ -57,6 +57,7 @@ AUTHORITY = {
     ],
     "reviewer_model": "qwen3.6:27b",
     "reviewer_model_digest": "a50eda8ed977ab48a12431878896b27ffd5cef552c17af3317d9623b939a7f1e",
+    "reviewer_source_sha256": "8abaad68faf53b18cc0dc31edb3b55ca384930ee9f0fd748831b457688446963",
     "review_ttl_seconds": 1800,
     "volatile_claim_evidence_required": True,
 }
@@ -345,7 +346,7 @@ class GateV2Tests(unittest.TestCase):
         }
         payload = {
             "schema_version": 1,
-            "reviewer_source_sha256": "3" * 64,
+            "reviewer_source_sha256": AUTHORITY["reviewer_source_sha256"],
             "issued_at": now,
             "expires_at": now + 1800,
             "model": AUTHORITY["reviewer_model"],
@@ -397,6 +398,11 @@ class GateV2Tests(unittest.TestCase):
         with self.assertRaisesRegex(GateReject, "deterministic evidence"):
             verify_t1(detail, public_key=pub, now=now)
         detail["provenance"]["t1_review"]["payload"]["verification_sha256"] = p["deterministic"]["verification_sha256"]
+
+        detail["provenance"]["t1_review"]["payload"]["reviewer_source_sha256"] = "0" * 64
+        with self.assertRaisesRegex(GateReject, "reviewer source digest"):
+            verify_t1(detail, public_key=pub, now=now)
+        detail["provenance"]["t1_review"]["payload"]["reviewer_source_sha256"] = AUTHORITY["reviewer_source_sha256"]
 
         detail["provenance"]["t1_review"]["payload"]["binding"]["result_tree"] = "f" * 40
         with self.assertRaisesRegex(GateReject, "binding"):
