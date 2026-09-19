@@ -13,8 +13,7 @@
   "allowed_path_globs": [
     "*.html",
     "sitemap.xml",
-    "robots.txt",
-    "assets/*.css"
+    "robots.txt"
   ],
   "protected_path_globs": [
     ".datbotty/**",
