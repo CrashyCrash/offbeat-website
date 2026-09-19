@@ -28,7 +28,7 @@ AUTHORITY = {
     "max_target_files": 5,
     "max_changed_lines": 1500,
     "allowed_change_status": ["M"],
-    "allowed_path_globs": ["*.html", "sitemap.xml", "robots.txt", "assets/*.css"],
+    "allowed_path_globs": ["*.html", "sitemap.xml", "robots.txt"],
     "protected_path_globs": [
         ".datbotty/**",
         ".github/**",
@@ -233,6 +233,17 @@ class Fixture:
                 "base": {"sha": self.base, "ref": "main"},
             }
         }
+
+
+class ProtectedAuthoritySourceTests(unittest.TestCase):
+    def test_tracked_authority_matches_reviewed_test_fixture(self):
+        root = Path(__file__).resolve().parents[2]
+        actual = strict_json(
+            (root / ".datbotty" / "authority.yml").read_text(
+                encoding="utf-8"
+            )
+        )
+        self.assertEqual(actual, AUTHORITY)
 
 
 class GateV2Tests(unittest.TestCase):
