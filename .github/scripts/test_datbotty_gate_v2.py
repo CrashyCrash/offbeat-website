@@ -350,6 +350,7 @@ class GateV2Tests(unittest.TestCase):
             "expires_at": now + 1800,
             "model": AUTHORITY["reviewer_model"],
             "model_digest": AUTHORITY["reviewer_model_digest"],
+            "verification_sha256": p["deterministic"]["verification_sha256"],
             "binding": binding,
             "verdict": verdict,
         }
@@ -391,6 +392,11 @@ class GateV2Tests(unittest.TestCase):
         }
         verified = verify_t1(detail, public_key=pub, now=now)
         self.assertEqual(verified["verdict"]["verdict"], "ACCEPT")
+
+        detail["provenance"]["t1_review"]["payload"]["verification_sha256"] = "0" * 64
+        with self.assertRaisesRegex(GateReject, "deterministic evidence"):
+            verify_t1(detail, public_key=pub, now=now)
+        detail["provenance"]["t1_review"]["payload"]["verification_sha256"] = p["deterministic"]["verification_sha256"]
 
         detail["provenance"]["t1_review"]["payload"]["binding"]["result_tree"] = "f" * 40
         with self.assertRaisesRegex(GateReject, "binding"):
