@@ -113,9 +113,10 @@ def parse_provenance(body: str) -> dict:
         value = strict_json(matches[0])
     except json.JSONDecodeError as exc:
         raise GateReject(f"invalid datbotty provenance JSON: {exc}") from exc
-    if not isinstance(value, dict) or set(value) != REQUIRED_FIELDS:
+    expected = REQUIRED_FIELDS | ({'work_item'} if isinstance(value,dict) and value.get('schema_version')==2 else set())
+    if not isinstance(value, dict) or set(value) != expected:
         raise GateReject("provenance fields are missing or ambiguous")
-    if value["schema_version"] != 1:
+    if type(value["schema_version"]) is not int or value["schema_version"] not in (1,2):
         raise GateReject("unsupported provenance schema")
     if not isinstance(value["target_files"], list) or not all(isinstance(item, str) for item in value["target_files"]):
         raise GateReject("invalid provenance target_files")
@@ -207,6 +208,14 @@ def validate_package_binding(provenance: dict, changed: list[str]) -> None:
     if package not in PROFILE_FILES:
         raise GateReject("package has no approved verification profile")
     allowed = sorted(PROFILE_FILES[package])
+    if provenance.get('schema_version')==2:
+        item=provenance['work_item']
+        if not isinstance(item,dict) or item.get('package_id')!=package:
+            raise GateReject('work item package mismatch')
+        allowed_item=item.get('target_files')
+        if not isinstance(allowed_item,list) or not allowed_item or not set(allowed_item)<=set(allowed):
+            raise GateReject('work item scope exceeds reviewed package')
+        allowed=sorted(allowed_item)
     if sorted(provenance["target_files"]) != allowed:
         raise GateReject("provenance target files do not match package profile")
     changed = sorted(changed)
@@ -459,6 +468,15 @@ def validate(repo: Path, event: dict, head: str) -> str:
         raise GateReject("candidate parent, provenance base, and PR base are not identical")
     changed = sorted(filter(None, git(repo, "diff", "--name-only", f"{parent}..{head}").splitlines()))
     validate_package_binding(provenance, changed)
+    if provenance['schema_version']==2:
+        if __package__:
+            from .work_discovery import validate_work_item
+        else:
+            from work_discovery import validate_work_item
+        try:
+            validate_work_item(repo,provenance['work_item'],parent,head)
+        except (ValueError,RuntimeError,subprocess.SubprocessError) as exc:
+            raise GateReject('renewable work item rejected: '+str(exc)) from exc
     git(repo, "diff", "--no-ext-diff", "--no-textconv", "--check", parent, head)
     for path in changed:
         if not git(repo, "ls-tree", head, "--", path).startswith("100644 blob "):
@@ -497,7 +515,7 @@ def review_packet(repo: Path, provenance: dict, detail: str) -> dict:
 
 def reviewer_source_digest() -> str:
     folder = Path(__file__).resolve().parent
-    return hashlib.sha256((folder / "datbotty_pr_gate.py").read_bytes() + (folder / "t1_reviewer.py").read_bytes()).hexdigest()
+    return hashlib.sha256((folder / "datbotty_pr_gate.py").read_bytes() + (folder / "t1_reviewer.py").read_bytes() + (folder / "work_discovery.py").read_bytes()).hexdigest()
 
 
 def parse_verdict(raw: str, packet: dict) -> dict:
