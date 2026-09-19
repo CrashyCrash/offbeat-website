@@ -60,6 +60,7 @@ AUTHORITY = {
     "reviewer_source_sha256": "8abaad68faf53b18cc0dc31edb3b55ca384930ee9f0fd748831b457688446963",
     "review_ttl_seconds": 1800,
     "volatile_claim_evidence_required": True,
+    "volatile_claims_allowed": False,
 }
 
 
@@ -314,13 +315,31 @@ class GateV2Tests(unittest.TestCase):
         with self.assertRaisesRegex(GateReject, "scanner_delta"):
             validate_candidate(self.fx.root, self.fx.event(head, p), head)
 
-    def test_volatile_claim_requires_bound_https_evidence(self):
+    def test_volatile_claim_is_forbidden_before_fact_service_enablement(self):
         head = self.fx.commit_candidate(
             "<html><head><title>Fixture</title></head>"
             "<body><p>Available now for $199.</p></body></html>\n"
         )
         p = self.fx.provenance(head)
-        with self.assertRaisesRegex(GateReject, "volatile claim lacks bound evidence"):
+        with self.assertRaisesRegex(
+            GateReject,
+            "volatile commercial claims are outside rescue-v1 standing authority",
+        ):
+            validate_candidate(self.fx.root, self.fx.event(head, p), head)
+
+        claim = "Available now for $199."
+        p["volatile_evidence"] = [
+            {
+                "path": "index.html",
+                "claim_sha256": hashlib.sha256(claim.encode("utf-8")).hexdigest(),
+                "source_url": "https://example.invalid/current",
+                "captured_at": "2026-09-19T00:00:00Z",
+            }
+        ]
+        with self.assertRaisesRegex(
+            GateReject,
+            "volatile commercial claims are outside rescue-v1 standing authority",
+        ):
             validate_candidate(self.fx.root, self.fx.event(head, p), head)
 
     def test_valid_signed_t1_binding_passes_and_tamper_fails(self):
