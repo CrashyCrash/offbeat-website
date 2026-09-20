@@ -18,6 +18,7 @@ import tempfile
 import time
 from datetime import datetime, timezone
 from pathlib import Path
+from urllib.parse import urlsplit
 
 
 class GateReject(RuntimeError):
@@ -314,49 +315,179 @@ def _validate_volatile_evidence(
                         normalized,
                     )
                 )
-    evidence = provenance["volatile_evidence"]
-    if not isinstance(evidence, list):
+
+    supplied = provenance["volatile_evidence"]
+    if not isinstance(supplied, list):
         raise GateReject("volatile_evidence must be a list")
-    if not claims:
-        if evidence:
-            raise GateReject("volatile evidence supplied without a detected volatile claim")
-        return
-    if authority["volatile_claims_allowed"] is not True:
-        raise GateReject(
-            "volatile commercial claims are outside rescue-v1 standing authority"
-        )
-    if authority["volatile_claim_evidence_required"] is not True:
+
+    sealed = provenance.get("contract") or {}
+    contract = sealed.get("contract") if isinstance(sealed, dict) else None
+    opportunity_type = (
+        str(contract.get("opportunity_type") or "")
+        if isinstance(contract, dict)
+        else ""
+    )
+
+    # Enabling evidence-backed fact correction does not grant ordinary rescue
+    # tasks authority to introduce commercial facts.
+    if opportunity_type != "fact_correction":
+        if claims:
+            raise GateReject(
+                "volatile commercial claims require evidence-bound fact_correction authority"
+            )
+        if supplied:
+            raise GateReject(
+                "volatile evidence supplied by a non-fact-correction candidate"
+            )
         return
 
-    indexed = {}
-    for item in evidence:
+    if authority["volatile_claims_allowed"] is not True:
+        raise GateReject(
+            "volatile commercial claims are outside protected fact-correction authority"
+        )
+    if authority["volatile_claim_evidence_required"] is not True:
+        raise GateReject("fact-correction authority requires volatile evidence enforcement")
+    if len(changed_files) != 1 or len(provenance["target_files"]) != 1:
+        raise GateReject("fact correction must be bound to exactly one target file")
+    if changed_files != list(provenance["target_files"]):
+        raise GateReject("fact correction target/change binding mismatch")
+
+    verification = provenance["deterministic"]["verification"]
+    checks = verification.get("checks") if isinstance(verification, dict) else None
+    binding = checks.get("fact_evidence_binding") if isinstance(checks, dict) else None
+    if not isinstance(binding, dict) or binding.get("passed") is not True:
+        raise GateReject("fact correction lacks passed deterministic evidence binding")
+
+    required_binding = {
+        "passed",
+        "detail",
+        "opportunity_id",
+        "path",
+        "source_research_dedup_key",
+        "source_line_sha256",
+        "baseline_line_match_count",
+        "existing_claim_fragment",
+        "baseline_claim_count",
+        "candidate_claim_count",
+        "old_claim_reduced",
+        "normalized_fact",
+        "semantic_anchors",
+        "semantic_anchor_present",
+        "changed_line_count",
+        "bounded_delta",
+        "active_added_lines",
+        "volatile_added_line_count",
+        "fact_evidence",
+        "fact_evidence_sha256",
+        "volatile_evidence",
+    }
+    if set(binding) != required_binding:
+        raise GateReject("fact correction deterministic evidence fields are ambiguous")
+    if (
+        binding["path"] != changed_files[0]
+        or binding["baseline_line_match_count"] != 1
+        or binding["old_claim_reduced"] is not True
+        or binding["semantic_anchor_present"] is not True
+        or binding["bounded_delta"] is not True
+        or binding["active_added_lines"] != []
+    ):
+        raise GateReject("fact correction source/delta binding failed")
+
+    bundle = binding["fact_evidence"]
+    if (
+        not isinstance(bundle, dict)
+        or set(bundle) != {"schema_version", "evidence"}
+        or bundle["schema_version"] != 1
+        or not isinstance(bundle["evidence"], list)
+        or len(bundle["evidence"]) != 1
+    ):
+        raise GateReject("fact evidence bundle malformed")
+    if digest(bundle) != binding["fact_evidence_sha256"]:
+        raise GateReject("fact evidence bundle digest mismatch")
+    receipt = bundle["evidence"][0]
+    required_receipt = {
+        "claim_key",
+        "normalized_fact",
+        "source_url",
+        "source_trust_tier",
+        "retrieved_at",
+        "content_sha256",
+        "supporting_excerpt",
+        "ttl_seconds",
+        "conflict_state",
+    }
+    if not isinstance(receipt, dict) or set(receipt) != required_receipt:
+        raise GateReject("fact evidence receipt malformed")
+    if (
+        receipt["claim_key"] != binding["source_research_dedup_key"]
+        or receipt["normalized_fact"] != binding["normalized_fact"]
+        or receipt["source_trust_tier"] != "first_party"
+        or receipt["conflict_state"] != "clear"
+    ):
+        raise GateReject("fact evidence identity/trust binding failed")
+
+    parsed_url = urlsplit(str(receipt["source_url"]))
+    if (
+        parsed_url.scheme.lower() != "https"
+        or not parsed_url.netloc
+        or parsed_url.username
+        or parsed_url.password
+    ):
+        raise GateReject("fact evidence source must be credential-free HTTPS")
+    content_hash = str(receipt["content_sha256"])
+    if not re.fullmatch(r"[0-9a-f]{64}", content_hash):
+        raise GateReject("fact evidence content digest malformed")
+    excerpt = str(receipt["supporting_excerpt"] or "").strip()
+    if not excerpt:
+        raise GateReject("fact evidence supporting excerpt missing")
+
+    ttl = receipt["ttl_seconds"]
+    if type(ttl) is not int or ttl < 60 or ttl > 7 * 24 * 3600:
+        raise GateReject("fact evidence TTL is outside standing authority")
+    try:
+        retrieved = datetime.fromisoformat(
+            str(receipt["retrieved_at"]).replace("Z", "+00:00")
+        ).astimezone(timezone.utc)
+    except (TypeError, ValueError) as exc:
+        raise GateReject("fact evidence retrieval timestamp invalid") from exc
+    now = datetime.now(timezone.utc)
+    age = (now - retrieved).total_seconds()
+    if age < -300 or age > ttl:
+        raise GateReject("fact evidence is future-dated or expired")
+
+    expected_items = binding["volatile_evidence"]
+    if not isinstance(expected_items, list) or supplied != expected_items:
+        raise GateReject("provider volatile evidence differs from deterministic binding")
+
+    indexed: dict[tuple[str, str], dict] = {}
+    for item in supplied:
         if not isinstance(item, dict) or set(item) != {
             "path",
             "claim_sha256",
-            "source_url",
-            "captured_at",
+            "fact_evidence_sha256",
+            "evidence",
         }:
             raise GateReject("volatile evidence item malformed")
-        if not str(item["source_url"]).startswith("https://"):
-            raise GateReject("volatile evidence source must be HTTPS")
-        try:
-            captured = datetime.fromisoformat(
-                str(item["captured_at"]).replace("Z", "+00:00")
-            )
-        except ValueError as exc:
-            raise GateReject("volatile evidence timestamp invalid") from exc
-        now = datetime.now(timezone.utc)
-        age = (now - captured.astimezone(timezone.utc)).total_seconds()
-        if age < -300 or age > 7 * 24 * 3600:
-            raise GateReject("volatile evidence is future-dated or stale")
-        indexed[(str(item["path"]), str(item["claim_sha256"]))] = item
+        if (
+            item["path"] != changed_files[0]
+            or item["fact_evidence_sha256"] != binding["fact_evidence_sha256"]
+            or item["evidence"] != receipt
+        ):
+            raise GateReject("volatile evidence item is not bound to verified provider receipt")
+        key = (str(item["path"]), str(item["claim_sha256"]))
+        if key in indexed:
+            raise GateReject("duplicate volatile evidence binding")
+        indexed[key] = item
 
-    for path, claim_hash, _claim in claims:
-        if (path, claim_hash) not in indexed:
-            raise GateReject(
-                f"volatile claim lacks bound evidence: {path}:{claim_hash[:12]}"
-            )
-
+    claim_keys = {(path, claim_hash) for path, claim_hash, _claim in claims}
+    if set(indexed) != claim_keys:
+        missing = sorted(claim_keys.difference(indexed))
+        extra = sorted(set(indexed).difference(claim_keys))
+        raise GateReject(
+            f"volatile evidence/claim set mismatch: missing={missing} extra={extra}"
+        )
+    if binding["volatile_added_line_count"] != len(claims):
+        raise GateReject("volatile added-line count differs from deterministic binding")
 
 def validate_candidate(repo: Path, event: dict, head: str) -> dict:
     pr = event.get("pull_request") or {}
