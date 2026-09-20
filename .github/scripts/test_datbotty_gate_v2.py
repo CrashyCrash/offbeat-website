@@ -13,6 +13,7 @@ import unittest
 from datbotty_gate_v2 import (
     GateReject,
     canonical,
+    strict_json,
     validate_candidate,
     verify_t1,
 )
