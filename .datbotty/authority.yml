@@ -1,0 +1,54 @@
+{
+  "schema_version": 2,
+  "halt": false,
+  "allowed_actor": "DatBotty-v4",
+  "branch_prefix": "datbotty/rescue/",
+  "project_id": "proj-website-main",
+  "max_changed_files": 5,
+  "max_target_files": 5,
+  "max_changed_lines": 1500,
+  "allowed_change_status": [
+    "M"
+  ],
+  "allowed_path_globs": [
+    "*.html",
+    "sitemap.xml",
+    "robots.txt"
+  ],
+  "protected_path_globs": [
+    ".datbotty/**",
+    ".github/**",
+    "AGENTS.md",
+    "PROJECT_BOUNDARY.md",
+    "CNAME"
+  ],
+  "allowed_effects": [
+    "content_write"
+  ],
+  "forbidden_effects": [
+    "trust_root_write",
+    "workflow_write",
+    "active_content_write",
+    "credential_access",
+    "account_change",
+    "payment",
+    "outreach",
+    "hardware_change"
+  ],
+  "allowed_risks": [
+    "R0"
+  ],
+  "required_verification_checks": [
+    "contract_scope",
+    "scanner_delta",
+    "git_diff_check",
+    "sealed_candidate",
+    "t1_review"
+  ],
+  "reviewer_model": "qwen3.6:27b",
+  "reviewer_model_digest": "a50eda8ed977ab48a12431878896b27ffd5cef552c17af3317d9623b939a7f1e",
+  "review_ttl_seconds": 1800,
+  "volatile_claim_evidence_required": true,
+  "reviewer_source_sha256": "8abaad68faf53b18cc0dc31edb3b55ca384930ee9f0fd748831b457688446963",
+  "volatile_claims_allowed": false
+}
