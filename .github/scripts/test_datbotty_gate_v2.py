@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import base64
+from datetime import datetime, timezone
 import hashlib
 import json
 from pathlib import Path
@@ -61,7 +62,7 @@ AUTHORITY = {
     "reviewer_source_sha256": "8abaad68faf53b18cc0dc31edb3b55ca384930ee9f0fd748831b457688446963",
     "review_ttl_seconds": 1800,
     "volatile_claim_evidence_required": True,
-    "volatile_claims_allowed": False,
+    "volatile_claims_allowed": True,
 }
 
 
@@ -335,23 +336,141 @@ class GateV2Tests(unittest.TestCase):
         p = self.fx.provenance(head)
         with self.assertRaisesRegex(
             GateReject,
-            "volatile commercial claims are outside rescue-v1 standing authority",
+            "volatile commercial claims require evidence-bound fact_correction authority",
         ):
             validate_candidate(self.fx.root, self.fx.event(head, p), head)
 
-        claim = "Available now for $199."
         p["volatile_evidence"] = [
             {
                 "path": "index.html",
-                "claim_sha256": hashlib.sha256(claim.encode("utf-8")).hexdigest(),
-                "source_url": "https://example.invalid/current",
-                "captured_at": "2026-09-19T00:00:00Z",
+                "claim_sha256": "a" * 64,
+                "fact_evidence_sha256": "b" * 64,
+                "evidence": {},
             }
         ]
         with self.assertRaisesRegex(
             GateReject,
-            "volatile commercial claims are outside rescue-v1 standing authority",
+            "volatile commercial claims require evidence-bound fact_correction authority",
         ):
+            validate_candidate(self.fx.root, self.fx.event(head, p), head)
+
+    def fact_correction_candidate(self) -> tuple[str, dict, dict]:
+        added = (
+            "<html><head><title>Fixture</title></head>"
+            "<body><p>Current annual plan costs $199 per year.</p></body></html>"
+        )
+        head = self.fx.commit_candidate(added + "\n")
+        p = self.fx.provenance(head)
+        contract = p["contract"]["contract"]
+        contract["opportunity_type"] = "fact_correction"
+        contract["task_type"] = "fact_correction"
+        contract["verification_requirements"].insert(2, "fact_evidence_binding")
+        contract["verification_profile"]["required_checks"].insert(
+            2, "fact_evidence_binding"
+        )
+        claim_key = "volatile-fact-research-v1:fixture"
+        normalized_fact = "Current annual plan costs USD 199 per year."
+        receipt = {
+            "claim_key": claim_key,
+            "normalized_fact": normalized_fact,
+            "source_url": "https://provider.example/pricing",
+            "source_trust_tier": "first_party",
+            "retrieved_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+            "content_sha256": "3" * 64,
+            "supporting_excerpt": "annual plan costs $199 per year",
+            "ttl_seconds": 86400,
+            "conflict_state": "clear",
+        }
+        bundle = {"schema_version": 1, "evidence": [receipt]}
+        bundle_sha = digest(bundle)
+        normalized_added = " ".join(added.split())
+        volatile = [
+            {
+                "path": "index.html",
+                "claim_sha256": hashlib.sha256(
+                    normalized_added.encode("utf-8")
+                ).hexdigest(),
+                "fact_evidence_sha256": bundle_sha,
+                "evidence": receipt,
+            }
+        ]
+        binding = {
+            "passed": True,
+            "detail": "evidence-bound factual correction is mechanically consistent",
+            "opportunity_id": 1,
+            "path": "index.html",
+            "source_research_dedup_key": claim_key,
+            "source_line_sha256": "4" * 64,
+            "baseline_line_match_count": 1,
+            "existing_claim_fragment": "$249",
+            "baseline_claim_count": 1,
+            "candidate_claim_count": 0,
+            "old_claim_reduced": True,
+            "normalized_fact": normalized_fact,
+            "semantic_anchors": ["199", "annual"],
+            "semantic_anchor_present": True,
+            "changed_line_count": 2,
+            "bounded_delta": True,
+            "active_added_lines": [],
+            "volatile_added_line_count": 1,
+            "fact_evidence": bundle,
+            "fact_evidence_sha256": bundle_sha,
+            "volatile_evidence": volatile,
+        }
+        verification = p["deterministic"]["verification"]
+        verification["checks"]["fact_evidence_binding"] = binding
+        p["volatile_evidence"] = volatile
+        contract_hash = digest(contract)
+        p["contract_sha256"] = contract_hash
+        p["contract"] = {"contract_hash": contract_hash, "contract": contract}
+        p["deterministic"]["verification_sha256"] = digest(verification)
+        return head, p, self.fx.event(head, p)
+
+    def _refresh_fact_hashes(self, p: dict) -> None:
+        binding = p["deterministic"]["verification"]["checks"]["fact_evidence_binding"]
+        receipt = binding["fact_evidence"]["evidence"][0]
+        bundle_sha = digest(binding["fact_evidence"])
+        binding["fact_evidence_sha256"] = bundle_sha
+        for item in binding["volatile_evidence"]:
+            item["fact_evidence_sha256"] = bundle_sha
+            item["evidence"] = receipt
+        p["volatile_evidence"] = binding["volatile_evidence"]
+        p["deterministic"]["verification_sha256"] = digest(
+            p["deterministic"]["verification"]
+        )
+
+    def test_valid_fresh_first_party_fact_correction_passes(self):
+        head, _p, event = self.fact_correction_candidate()
+        detail = validate_candidate(self.fx.root, event, head)
+        binding = detail["verification"]["checks"]["fact_evidence_binding"]
+        self.assertTrue(binding["passed"])
+        self.assertEqual(binding["volatile_added_line_count"], 1)
+
+    def test_fact_correction_rejects_stale_or_non_first_party_evidence(self):
+        head, p, _event = self.fact_correction_candidate()
+        binding = p["deterministic"]["verification"]["checks"]["fact_evidence_binding"]
+        receipt = binding["fact_evidence"]["evidence"][0]
+        receipt["retrieved_at"] = "2020-01-01T00:00:00Z"
+        self._refresh_fact_hashes(p)
+        with self.assertRaisesRegex(GateReject, "expired"):
+            validate_candidate(self.fx.root, self.fx.event(head, p), head)
+
+        receipt["retrieved_at"] = datetime.now(timezone.utc).isoformat().replace(
+            "+00:00", "Z"
+        )
+        receipt["source_trust_tier"] = "secondary"
+        self._refresh_fact_hashes(p)
+        with self.assertRaisesRegex(GateReject, "identity/trust"):
+            validate_candidate(self.fx.root, self.fx.event(head, p), head)
+
+    def test_fact_correction_rejects_evidence_bundle_tamper(self):
+        head, p, _event = self.fact_correction_candidate()
+        binding = p["deterministic"]["verification"]["checks"]["fact_evidence_binding"]
+        binding["fact_evidence"]["evidence"][0]["normalized_fact"] = "tampered"
+        p["deterministic"]["verification_sha256"] = digest(
+            p["deterministic"]["verification"]
+        )
+        with self.assertRaisesRegex(GateReject, "bundle digest"):
             validate_candidate(self.fx.root, self.fx.event(head, p), head)
 
     def test_valid_signed_t1_binding_passes_and_tamper_fails(self):
