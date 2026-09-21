@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import os
 import subprocess
+import time
 from pathlib import Path
 
 from datbotty_gate_v2 import (
@@ -17,6 +18,11 @@ from datbotty_gate_v2 import (
 REPO = "CrashyCrash/offbeat-website"
 CONTEXTS = {"DatBotty Deterministic Gate", "DatBotty T1 Review"}
 SELF_MERGE_CHECK = "Policy-gated low-risk merge"
+TRANSIENT_READINESS_ERRORS = {
+    "unresolved status",
+    "unresolved check",
+    "provider merge policy is not clean",
+}
 
 
 def gh(*args: str, body: dict | None = None) -> object:
@@ -200,38 +206,54 @@ def main() -> None:
     detail = validate_candidate(Path.cwd(), {"pull_request": pr}, sha)
     verify_t1(detail)
 
-    statuses = gh("api", f"repos/{REPO}/commits/{sha}/statuses?per_page=100")
-    checks = gh("api", f"repos/{REPO}/commits/{sha}/check-runs?per_page=100")
-    reviews = gh("api", f"repos/{REPO}/pulls/{number}/reviews?per_page=100")
-    if len(statuses) >= 100 or checks["total_count"] >= 100 or len(reviews) >= 100:
-        raise GateReject("incomplete provider evidence pagination")
-
     query = (
         'query($number:Int!){repository(owner:"CrashyCrash",name:"offbeat-website")'
         "{pullRequest(number:$number){reviewThreads(first:100)"
         "{nodes{isResolved} pageInfo{hasNextPage}}}}}"
     )
-    threads = gh(
-        "api",
-        "graphql",
-        "-f",
-        "query=" + query,
-        "-F",
-        "number=" + str(number),
-    )["data"]["repository"]["pullRequest"]["reviewThreads"]
-
-    base = gh("api", f"repos/{REPO}/git/ref/heads/main")["object"]["sha"]
     run_url = f'https://github.com/{REPO}/actions/runs/{os.environ["GITHUB_RUN_ID"]}'
-    assert_merge_ready(
-        pr,
-        base,
-        statuses,
-        checks["check_runs"],
-        reviews,
-        threads,
-        run_url,
-        detail,
-    )
+
+    # GitHub can briefly expose a just-completed sibling check as unresolved
+    # when the dependent merge job starts. Retry only those transient provider
+    # index states; every authority, provenance, stale-base, review, or gate
+    # rejection remains immediately terminal.
+    for readiness_attempt in range(6):
+        pr = gh("api", f"repos/{REPO}/pulls/{number}")
+        if sha != pr["head"]["sha"] or sha != event["pull_request"]["head"]["sha"]:
+            raise GateReject("PR changed after review")
+        statuses = gh("api", f"repos/{REPO}/commits/{sha}/statuses?per_page=100")
+        checks = gh("api", f"repos/{REPO}/commits/{sha}/check-runs?per_page=100")
+        reviews = gh("api", f"repos/{REPO}/pulls/{number}/reviews?per_page=100")
+        if len(statuses) >= 100 or checks["total_count"] >= 100 or len(reviews) >= 100:
+            raise GateReject("incomplete provider evidence pagination")
+        threads = gh(
+            "api",
+            "graphql",
+            "-f",
+            "query=" + query,
+            "-F",
+            "number=" + str(number),
+        )["data"]["repository"]["pullRequest"]["reviewThreads"]
+        base = gh("api", f"repos/{REPO}/git/ref/heads/main")["object"]["sha"]
+        try:
+            assert_merge_ready(
+                pr,
+                base,
+                statuses,
+                checks["check_runs"],
+                reviews,
+                threads,
+                run_url,
+                detail,
+            )
+            break
+        except GateReject as exc:
+            if (
+                str(exc) not in TRANSIENT_READINESS_ERRORS
+                or readiness_attempt == 5
+            ):
+                raise
+            time.sleep(2)
     assert_pages_source(gh("api", f"repos/{REPO}/pages"))
 
     result = gh(
