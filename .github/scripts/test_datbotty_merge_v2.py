@@ -171,5 +171,26 @@ class MergeV2Tests(unittest.TestCase):
                 )
 
 
+    def test_transient_readiness_errors_are_narrowly_scoped(self):
+        self.assertEqual(
+            datbotty_merge.TRANSIENT_READINESS_ERRORS,
+            {
+                "unresolved status",
+                "unresolved check",
+                "provider merge policy is not clean",
+            },
+        )
+        self.assertNotIn("stale provider base", datbotty_merge.TRANSIENT_READINESS_ERRORS)
+        self.assertNotIn(
+            "unresolved review rejection",
+            datbotty_merge.TRANSIENT_READINESS_ERRORS,
+        )
+        self.assertNotIn(
+            "missing, failed or untrusted required gate: DatBotty T1 Review",
+            datbotty_merge.TRANSIENT_READINESS_ERRORS,
+        )
+
+
+
 if __name__ == "__main__":
     unittest.main()
