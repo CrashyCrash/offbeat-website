@@ -59,7 +59,7 @@ AUTHORITY = {
     ],
     "reviewer_model": "qwen3.6:27b",
     "reviewer_model_digest": "a50eda8ed977ab48a12431878896b27ffd5cef552c17af3317d9623b939a7f1e",
-    "reviewer_source_sha256": "8abaad68faf53b18cc0dc31edb3b55ca384930ee9f0fd748831b457688446963",
+    "reviewer_source_sha256": "4cea8379b7089d0c9b176bbd59d003f23d17016dff0e0c223fbb1936f4526a07",
     "review_ttl_seconds": 1800,
     "volatile_claim_evidence_required": True,
     "volatile_claims_allowed": True,
