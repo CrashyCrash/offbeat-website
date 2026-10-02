@@ -1,0 +1,110 @@
+[
+  {
+    "page": "best-dj-controllers-2026.html",
+    "claim": "Pioneer DDJ-FLX4 is a current top-pick controller that bundles rekordbox plus Serato DJ Lite (upgradeable to Serato DJ Pro)",
+    "current_text": "At $349, the FLX4 ships with both rekordbox AND Serato DJ Lite (upgradeable to Pro at no extra hardware cost). Its 127mm jog platters have adjustable tension",
+    "conclusion": "PROVEN_CURRENT",
+    "action": "LEAVE",
+    "evidence": {
+      "url": "https://www.pioneerdj.com/en/product/dj-controllers/ddj-flx4/",
+      "fetched_utc": "2026-10-02T02:20Z",
+      "excerpt": "'You can use the DJ software rekordbox, djay, Serato DJ Lite and Traktor Play for free by connecting your PC/Mac to the DDJ-FLX4 ... And if you want to upgrade to Serato DJ Pro, you can buy a license or subscription' — DDJ-FLX4 is listed under DJ controllers on the official Pioneer DJ/AlphaTheta product site (firmware updated Sept 2025)."
+    }
+  },
+  {
+    "page": "best-dj-controllers-2026.html",
+    "claim": "Numark Party Mix II is a current entry-level controller with a built-in beat-synchronized LED light show and plug-and-play Serato DJ Lite",
+    "current_text": "The Party Mix II at $99 is the lowest barrier to entry in DJ hardware. It includes a built-in light show controller — 3 RGB pods sync to the beat — and bundles with Serato DJ Lite.",
+    "conclusion": "PROVEN_CURRENT",
+    "action": "LEAVE",
+    "evidence": {
+      "url": "https://www.numark.com/product/party-mix-ii",
+      "fetched_utc": "2026-10-02T02:20Z",
+      "excerpt": "'The Party Mix II features three multi-colored LEDs with special wide-coverage lenses for a room-filling, beat-synchronized light show' and 'Plug-and-play support for Serato DJ Lite'. Party Mix II remains listed in the active Controllers category (https://www.numark.com/product_category/controllers) alongside the newer Party Mix III."
+    }
+  },
+  {
+    "page": "best-dj-controllers-2026.html",
+    "claim": "Pioneer DDJ-800 is a current controller with a club-style (CDJ-NXS2-era) layout and rekordbox-only software path",
+    "current_text": "The DDJ-800 ($849) mirrors the Pioneer CDJ-NXS2 layout — same 150mm jog platter size, same effects structure, and the same rekordbox track export workflow used in real clubs. It's rekordbox-only (no Serato support).",
+    "conclusion": "PROVEN_CURRENT",
+    "action": "LEAVE",
+    "evidence": {
+      "url": "https://www.pioneerdj.com/en/product/dj-controllers/ddj-800/",
+      "fetched_utc": "2026-10-02T02:20Z",
+      "excerpt": "'Performing on the DDJ-800 feels like you're using a professional NXS2 set-up. The controller's buttons, knobs and faders are arranged in the same way as those on our club-standard CDJ and DJM gear.' — titled '2-channel performance DJ controller for rekordbox' on the official site."
+    }
+  },
+  {
+    "page": "best-dj-controllers-2026.html",
+    "claim": "Denon MC7000 is the current best-value 4-channel Denon controller (positioned as 'Best 4-Channel Under $700' / 'best value for mobile DJs')",
+    "current_text": "Denon MC7000 — Best 4-Channel Under $700 ... At $699 it undercuts Pioneer's 4-channel DDJ-FLX10 ($1,099) by $400, making it the best value for mobile DJs needing multi-deck control.",
+    "conclusion": "PROVEN_STALE",
+    "action": "REWORD",
+    "evidence": {
+      "url": "https://www.denondj.com/mc7000.html",
+      "fetched_utc": "2026-10-02T02:20Z",
+      "excerpt": "HTTP 404 on the official Denon DJ site: no MC7000 product page. The official DJ Controllers category page (https://www.denondj.com/products/dj-controllers.html) lists only the LC6000 / LC6000 PRIME line — 'the LC6000 PRIME is the ultimate DJ Controller' — with no MC7000. Neutrally reworded the section heading/paragraph to drop the unprovable 'Best 4-Channel Under $700' and 'best value' superlatives."
+    }
+  },
+  {
+    "page": "best-dj-controllers-2026.html",
+    "claim": "Pioneer DDJ-FLX10 is a current 4-channel professional controller",
+    "current_text": "At $699 it undercuts Pioneer's 4-channel DDJ-FLX10 ($1,099) by $400",
+    "conclusion": "PROVEN_CURRENT",
+    "action": "LEAVE",
+    "evidence": {
+      "url": "https://www.pioneerdj.com/en/product/dj-controllers/ddj-flx10/",
+      "fetched_utc": "2026-10-02T02:20Z",
+      "excerpt": "'The DDJ-FLX10 is a 4-channel performance DJ controller for rekordbox and Serato DJ Pro. It includes a host of brand-new features including STEMS technology' — listed under DJ controllers on the official site (firmware updated July 2025)."
+    }
+  },
+  {
+    "page": "xdj-az-vs-denon-prime-4-plus.html",
+    "claim": "AlphaTheta XDJ-AZ is a current 4-channel all-in-one system with rekordbox continuity, current Serato support, and current Apple Music streaming access",
+    "current_text": "The XDJ-AZ is the stronger fit for DJs invested in AlphaTheta/Pioneer-style club preparation, rekordbox continuity, and a professional layout. ... current Serato support context. ... strong current Apple Music",
+    "conclusion": "PROVEN_CURRENT",
+    "action": "LEAVE",
+    "evidence": {
+      "url": "https://www.alphatheta.com/en/product/all-in-one-dj-system/xdj-az/",
+      "fetched_utc": "2026-10-02T02:20Z",
+      "excerpt": "'XDJ-AZ — 4-channel professional all-in-one DJ system'; 'you can use rekordbox for Mac/Windows in Performance mode or Serato DJ Pro and there's no need for a paid subscription plan for either'; 'Directly access Apple Music from the XDJ-AZ'. Firmware updates continue (e.g. 'April 9, 2026 — Update: XDJ-AZ Firmware Ver. 1.30')."
+    }
+  },
+  {
+    "page": "xdj-az-vs-denon-prime-4-plus.html",
+    "claim": "Denon DJ Prime 4+ is a current 4-deck standalone system running Engine DJ with broad streaming accessibility",
+    "current_text": "The Prime 4+ is the stronger fit for feature-hungry standalone users who want Engine DJ flexibility, aggressive streaming accessibility, and a mobile/event-friendly all-in-one feature set.",
+    "conclusion": "PROVEN_CURRENT",
+    "action": "LEAVE",
+    "evidence": {
+      "url": "https://www.denondj.com/prime-4-plus.html",
+      "fetched_utc": "2026-10-02T02:20Z",
+      "excerpt": "'The world's most powerful, advanced standalone DJ system is now better than ever ... unrivaled streaming music accessibility ... Engine DJ ... support for more music streaming partners than anyone else on the market, including Apple Music, Amazon Music Unlimited.' Still listed in the official Standalone DJ Systems lineup (https://www.denondj.com/products/dj-systems.html), alongside the newer Prime 4 G2 (Prime 4+ page remains live and buyable)."
+    }
+  },
+  {
+    "page": "ddj-flx2-review.html",
+    "claim": "DDJ-FLX2 is a current compact beginner AlphaTheta/Pioneer controller supporting rekordbox, djay, Serato (DJ Lite), and Traktor Play with USB-C bus power",
+    "current_text": "Its value is that it gives new DJs a very low-friction way into modern app-based DJing with rekordbox, djay, Serato, Traktor Play paths, streaming services, USB-C power, and a compact layout.",
+    "conclusion": "PROVEN_CURRENT",
+    "action": "LEAVE",
+    "evidence": {
+      "url": "https://www.alphatheta.com/en/product/dj-controllers/ddj-flx2/",
+      "fetched_utc": "2026-10-02T02:20Z",
+      "excerpt": "'The DDJ-FLX2 works with a number of DJ applications, including rekordbox, djay, Serato DJ Lite and Traktor Play'; 'It runs on USB bus power ... via USB Type-C'; listed in the AlphaTheta product navigation under DJ controllers (introduced Oct 29, 2024)."
+    }
+  },
+  {
+    "page": "ddj-flx2-review.html",
+    "claim": "DDJ-FLX4 is the longer upgrade path with a strong rekordbox/Serato beginner software path",
+    "current_text": "Buy the FLX4 instead if the buyer already knows they want to learn properly ... Strong rekordbox/Serato beginner path.",
+    "conclusion": "PROVEN_CURRENT",
+    "action": "LEAVE",
+    "evidence": {
+      "url": "https://www.pioneerdj.com/en/product/dj-controllers/ddj-flx4/",
+      "fetched_utc": "2026-10-02T02:20Z",
+      "excerpt": "'You can use the DJ software rekordbox, djay, Serato DJ Lite and Traktor Play for free by connecting your PC/Mac to the DDJ-FLX4 ... if you want to upgrade to Serato DJ Pro, you can buy a license or subscription' — current official product page."
+    }
+  }
+]
