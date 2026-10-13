@@ -22,6 +22,7 @@ SOURCE_CONTEXT = "TDQ Protected Editorial Source"
 REVIEW_CONTEXT = "TDQ Independent Editorial Approval"
 REVIEWER_LOGIN = "copilot-pull-request-reviewer[bot]"
 RELEASE_LABEL = "tdq-editorial-release"
+HOLD_LABEL = "tdq-release-hold"
 BRANCH_RE = re.compile(r"tdq/proof-auto-[0-9a-f]{14}\Z")
 SHA_RE = re.compile(r"[0-9a-f]{40}\Z")
 
@@ -152,8 +153,10 @@ def exact_source(pr, sha, require_label=True):
         raise ValueError("missing PR identity")
     if pr.get("state") != "open":
         raise ValueError("candidate must be an open PR")
-    if require_label and RELEASE_LABEL not in {
-            item.get("name") for item in pr.get("labels") or []}:
+    labels = {item.get("name") for item in pr.get("labels") or []}
+    if HOLD_LABEL in labels:
+        raise ValueError("owner release hold blocks autonomous publication")
+    if require_label and RELEASE_LABEL not in labels:
         raise ValueError("no explicit trusted editorial release authorization label")
     head, base = pr.get("head") or {}, pr.get("base") or {}
     if (head.get("sha") != sha or not BRANCH_RE.fullmatch(head.get("ref") or "")
@@ -186,10 +189,10 @@ def exact_source(pr, sha, require_label=True):
     if gh_api("repos/" + REPOSITORY + "/git/ref/heads/main")["object"]["sha"] != main:
         raise ValueError("protected main moved during analysis")
     current = gh_api("repos/" + REPOSITORY + "/pulls/" + str(number))
-    if (current["head"]["sha"] != sha
-            or (require_label and RELEASE_LABEL not in {
-                label.get("name") for label in current.get("labels") or []})):
-        raise ValueError("candidate changed or release authorization removed")
+    live_labels = {label.get("name") for label in current.get("labels") or []}
+    if (current["head"]["sha"] != sha or HOLD_LABEL in live_labels
+            or (require_label and RELEASE_LABEL not in live_labels)):
+        raise ValueError("candidate changed or release authorization withheld")
     return path
 
 
@@ -277,9 +280,10 @@ def main():
         if gh_api("repos/" + REPOSITORY + "/git/ref/heads/main")["object"]["sha"] != pr["base"]["sha"]:
             raise ValueError("main changed after independent review")
         current = gh_api("repos/" + REPOSITORY + "/pulls/" + str(args.pr))
-        if (current["head"]["sha"] != sha or RELEASE_LABEL not in {
-                label.get("name") for label in current.get("labels") or []}):
-            raise ValueError("candidate head or release authorization changed after review")
+        live_labels = {label.get("name") for label in current.get("labels") or []}
+        if (current["head"]["sha"] != sha or HOLD_LABEL in live_labels
+                or RELEASE_LABEL not in live_labels):
+            raise ValueError("candidate head or release authorization withdrawn after review")
         set_status(sha, REVIEW_CONTEXT, "success", "Non-author Copilot APPROVED exact current source")
         return 0
     except Exception as exc:
