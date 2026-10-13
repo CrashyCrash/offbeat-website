@@ -21,7 +21,6 @@ REPOSITORY = "CrashyCrash/offbeat-website"
 SOURCE_CONTEXT = "TDQ Protected Editorial Source"
 REVIEW_CONTEXT = "TDQ Independent Editorial Approval"
 REVIEWER_LOGIN = "copilot-pull-request-reviewer[bot]"
-RELEASE_LABEL = "tdq-editorial-release"
 BRANCH_RE = re.compile(r"tdq/proof-auto-[0-9a-f]{14}\Z")
 SHA_RE = re.compile(r"[0-9a-f]{40}\Z")
 
