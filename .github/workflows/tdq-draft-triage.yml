@@ -6,7 +6,8 @@ name: TDQ draft source integrity and fact-risk triage
 on:
   pull_request:
     branches: [main]
-    types: [opened, reopened, synchronize, ready_for_review]
+    # Metadata-only edits allow rechecking existing draft heads without new commits.
+    types: [opened, reopened, synchronize, edited, ready_for_review]
 
 permissions:
   contents: read
