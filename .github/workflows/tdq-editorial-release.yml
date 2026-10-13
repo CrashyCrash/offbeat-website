@@ -135,6 +135,13 @@ jobs:
           # protected rules, NEVER the credentialed K11 worker or PR text.
           gh api repos/CrashyCrash/offbeat-website/rulesets/22973860 |
             jq -e '
+              .enforcement == "active"
+              and .target == "branch"
+              and .source == "CrashyCrash/offbeat-website"
+              and (.conditions.ref_name.include | index("refs/heads/main") != null)
+              and ((.conditions.ref_name.exclude // []) | index("refs/heads/main") == null)
+              and (.bypass_actors != null and (.bypass_actors | length == 0))
+              and
               any(.rules[];
                 .type == "pull_request"
                 and .parameters.required_approving_review_count >= 1
@@ -173,6 +180,18 @@ jobs:
                 and
                 ([$statuses[] | select(.context == "TDQ Independent Editorial Approval")][0].state == "success")
             ' >/dev/null
+          # Do not trust an earlier green status after a Copilot dismissal.
+          # Fetch a fresh authentic exact-head GitHub review immediately before
+          # the atomic provider merge, which independently enforces approvals.
+          reviews="$(gh api "repos/CrashyCrash/offbeat-website/pulls/${PR_NUMBER}/reviews?per_page=100")"
+          echo "$reviews" | jq -e --arg h "$EVENT_HEAD" '
+             (length < 100)
+             and
+             ([.[] | select(.user.login == "copilot-pull-request-reviewer[bot]")]
+               | last | .state == "APPROVED" and .commit_id == $h)
+             and
+             ([.[] | select(.state == "CHANGES_REQUESTED")] | length == 0)
+          ' >/dev/null
           # This GitHub Actions token has no owner-user bypass. A 405/409/422
           # from native protection is BLOCKED, not a reason to force a merge.
           gh api --method PUT "repos/CrashyCrash/offbeat-website/pulls/${PR_NUMBER}/merge" \
