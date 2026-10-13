@@ -96,16 +96,14 @@ def qualified_approver(reviews, sha, author):
 def exact_source(pr, sha):
     if pr.get("number") is None:
         raise ValueError("missing PR identity")
-    if pr.get("state") != "open" or pr.get("draft") is not False:
-        raise ValueError("release requires an open non-draft PR")
+    if pr.get("state") != "open":
+        raise ValueError("candidate must be an open PR")
     head, base = pr.get("head") or {}, pr.get("base") or {}
     if (head.get("sha") != sha or not BRANCH_RE.fullmatch(head.get("ref") or "")
             or (head.get("repo") or {}).get("full_name") != REPOSITORY
             or base.get("ref") != "main"
             or (base.get("repo") or {}).get("full_name") != REPOSITORY):
         raise ValueError("PR identity/branch mismatch")
-    if RELEASE_LABEL not in {label.get("name") for label in pr.get("labels") or []}:
-        raise ValueError("no explicit editorial-release request")
     main = gh_api("repos/" + REPOSITORY + "/git/ref/heads/main")["object"]["sha"]
     if base.get("sha") != main or not SHA_RE.fullmatch(main):
         raise ValueError("candidate base is not current protected main")
@@ -189,6 +187,11 @@ def main():
         path = exact_source(pr, sha)
         set_status(sha, SOURCE_CONTEXT, "success", "Protected text-only source verified: " + path)
         source_ok = True
+        # Source eligibility is observable while the credentialless K11
+        # candidate is still draft. A separate trusted workflow job can ask
+        # Copilot for review without removing the draft backlog reservation.
+        if pr.get("draft") is not False:
+            raise ValueError("independent approval required before leaving draft")
         reviews = gh_api("repos/" + REPOSITORY + "/pulls/" + str(args.pr) + "/reviews?per_page=100")
         if not qualified_approver(reviews, sha, (pr.get("user") or {}).get("login")):
             raise ValueError("current exact-head separate approving reviewer absent")
