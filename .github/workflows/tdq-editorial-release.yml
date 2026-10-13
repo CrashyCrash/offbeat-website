@@ -50,3 +50,74 @@ jobs:
         run: |
           set -euo pipefail
           python3 .github/scripts/tdq_release_gate.py --pr "$PR_NUMBER" --expected-head "$PR_HEAD_SHA"
+
+  merge-when-native-protection-allows:
+    # Successful independent review gate is necessary, not sufficient.
+    # GitHub Actions is NOT the owner bypass actor in old DatBotty rulesets.
+    needs: [editorial-release]
+    if: needs.editorial-release.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    permissions:
+      contents: write
+      pull-requests: write
+      statuses: read
+    steps:
+      - name: Recheck current protected native merge policy and exact candidate
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          EVENT_HEAD: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+          # Release authority is the independent GitHub reviewer + native
+          # protected rules, NEVER the credentialed K11 worker or PR text.
+          gh api repos/CrashyCrash/offbeat-website/rulesets/22973860 |
+            jq -e '
+              any(.rules[];
+                .type == "pull_request"
+                and .parameters.required_approving_review_count >= 1
+                and .parameters.dismiss_stale_reviews_on_push == true
+                and .parameters.required_review_thread_resolution == true)
+              and
+              any(.rules[];
+                .type == "required_status_checks"
+                and .parameters.strict_required_status_checks_policy == true
+                and (
+                  [.parameters.required_status_checks[]
+                   | select(.context == "TDQ Protected Editorial Source"
+                            and .integration_id == 15368)] | length == 1)
+                and (
+                  [.parameters.required_status_checks[]
+                   | select(.context == "TDQ Independent Editorial Approval"
+                            and .integration_id == 15368)] | length == 1)
+                and (
+                  [.parameters.required_status_checks[]
+                   | select(.context | startswith("DatBotty "))] | length == 0))
+            ' >/dev/null
+          pr="$(gh api "repos/CrashyCrash/offbeat-website/pulls/${PR_NUMBER}")"
+          echo "$pr" | jq -e --arg h "$EVENT_HEAD" '
+              .state == "open" and .draft == false
+              and .head.sha == $h and .head.repo.full_name == "CrashyCrash/offbeat-website"
+              and .base.ref == "main"
+              and ([.labels[].name] | index("tdq-editorial-release") != null)
+            ' >/dev/null
+          current_main="$(gh api repos/CrashyCrash/offbeat-website/git/ref/heads/main --jq .object.sha)"
+          test "$(echo "$pr" | jq -r .base.sha)" = "$current_main"
+          # Recheck independent GitHub status contexts immediately before merge;
+          # the provider will enforce required contexts/approvals once more.
+          gh api "repos/CrashyCrash/offbeat-website/commits/${EVENT_HEAD}/status" |
+            jq -e '
+              .statuses as $statuses
+              | ([$statuses[] | select(.context == "TDQ Protected Editorial Source")][0].state == "success")
+                and
+                ([$statuses[] | select(.context == "TDQ Independent Editorial Approval")][0].state == "success")
+            ' >/dev/null
+          # This GitHub Actions token has no owner-user bypass. A 405/409/422
+          # from native protection is BLOCKED, not a reason to force a merge.
+          gh api --method PUT "repos/CrashyCrash/offbeat-website/pulls/${PR_NUMBER}/merge" \
+            -f sha="$EVENT_HEAD" -f merge_method=merge \
+            -f commit_title="Release protected verified low-risk TDQ editorial PR #${PR_NUMBER}" |
+            jq -e '.merged == true' >/dev/null
+          echo "GitHub protected merge completed; public live-byte readback remains separate." >> "$GITHUB_STEP_SUMMARY"
