@@ -7,7 +7,7 @@ on:
   pull_request:
     branches: [main]
     # Metadata-only edits allow rechecking existing draft heads without new commits.
-    types: [opened, reopened, synchronize, edited, ready_for_review]
+    types: [opened, reopened, synchronize, edited, labeled, ready_for_review]
 
 permissions:
   contents: read
