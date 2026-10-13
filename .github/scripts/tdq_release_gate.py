@@ -69,11 +69,11 @@ def text_only_and_low_risk(before, after):
     # TDQ already protects executable script blocks; do not leave inline
     # <style> as an unguarded executable/appearance surface.
     for marker in ("style", "template", "svg"):
-        rx = re.compile(r"(?is)<" + marker + r"\\b[^>]*>.*?</" + marker + r"\\s*>")
+        rx = re.compile(r"(?is)<" + marker + r"\b[^>]*>.*?</" + marker + r"\s*>")
         if rx.findall(before.decode("utf-8", "strict")) != rx.findall(after.decode("utf-8", "strict")):
             raise ValueError("protected non-editorial embedded source changed")
     # An SEO-only metadata edit is not sufficient visitor-facing value.
-    main_rx = re.compile(r"(?is)<main\\b[^>]*>(.*?)</main\\s*>")
+    main_rx = re.compile(r"(?is)<main\b[^>]*>(.*?)</main\s*>")
     old_main = main_rx.findall(before.decode("utf-8", "strict"))
     new_main = main_rx.findall(after.decode("utf-8", "strict"))
     if len(old_main) != 1 or len(new_main) != 1 or old_main == new_main:
