@@ -65,6 +65,19 @@ def text_only_and_low_risk(before, after):
     new.feed(after.decode("utf-8", "strict"))
     if old.tokens != new.tokens:
         raise ValueError("editorial release changed HTML structure or attributes")
+    # Raw CSS blocks and source comments aren't source-text editorial changes.
+    # TDQ already protects executable script blocks; do not leave inline
+    # <style> as an unguarded executable/appearance surface.
+    for marker in ("style", "template", "svg"):
+        rx = re.compile(r"(?is)<" + marker + r"\\b[^>]*>.*?</" + marker + r"\\s*>")
+        if rx.findall(before.decode("utf-8", "strict")) != rx.findall(after.decode("utf-8", "strict")):
+            raise ValueError("protected non-editorial embedded source changed")
+    # An SEO-only metadata edit is not sufficient visitor-facing value.
+    main_rx = re.compile(r"(?is)<main\\b[^>]*>(.*?)</main\\s*>")
+    old_main = main_rx.findall(before.decode("utf-8", "strict"))
+    new_main = main_rx.findall(after.decode("utf-8", "strict"))
+    if len(old_main) != 1 or len(new_main) != 1 or old_main == new_main:
+        raise ValueError("no demonstrable reader-visible main content improvement")
     # Existing protected TDQ analyzer also refuses link, media, scripts, forms,
     # event handlers and stylesheets, independently of this stronger guard.
     result = tdq.analyze(before, after, "index.html")
@@ -146,12 +159,12 @@ def selftest():
     assert not qualified_approver(good + [
         {"user": {"login": "someone", "type": "User"},
          "state": "CHANGES_REQUESTED"}], "a" * 40, "CrashyCrash")
-    a = b'<html><body><p>Guaranteed.</p></body></html>'
-    b = b'<html><body><p>More realistic guidance.</p></body></html>'
+    a = b'<html><body><main><p>Guaranteed.</p></main></body></html>'
+    b = b'<html><body><main><p>More realistic guidance.</p></main></body></html>'
     text_only_and_low_risk(a, b)
-    for other in (b'<html><body><div>More realistic guidance.</div></body></html>',
-                  b'<html><body><p class="new">Better.</p></body></html>',
-                  b'<html><body><p>Guaranteed $250 profit.</p></body></html>'):
+    for other in (b'<html><body><main><div>More realistic guidance.</div></main></body></html>',
+                  b'<html><body><main><p class="new">Better.</p></main></body></html>',
+                  b'<html><body><main><p>Guaranteed $250 profit.</p></main></body></html>'):
         try:
             text_only_and_low_risk(a, other)
         except ValueError:
