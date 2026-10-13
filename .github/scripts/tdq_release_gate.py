@@ -7,6 +7,7 @@ This gate *also* requires a genuine exact-head APPROVED GitHub review by a
 different, allowlisted identity. Reviewer configurations are not inferred.
 """
 import argparse
+import difflib
 import json
 import os
 import re
@@ -58,6 +59,28 @@ class Structure(HTMLParser):
     def handle_endtag(self, tag):
         self.tokens.append(("close", tag))
 
+    def handle_decl(self, declaration):
+        # A changed DOCTYPE can switch modern rendering into quirks mode.
+        self.tokens.append(("declaration", declaration))
+
+    def unknown_decl(self, declaration):
+        self.tokens.append(("other-declaration", declaration))
+
+
+def text_line_budget(before, after):
+    lines = difflib.unified_diff(
+        before.decode("utf-8", "strict").splitlines(),
+        after.decode("utf-8", "strict").splitlines(), n=0)
+    additions = deletions = 0
+    for line in lines:
+        if line.startswith("+") and not line.startswith("+++"):
+            additions += 1
+        elif line.startswith("-") and not line.startswith("---"):
+            deletions += 1
+    if additions > 60 or deletions > 60 or additions + deletions > 100:
+        raise ValueError("editorial release exceeded total edited line budget")
+    return additions, deletions
+
 
 def text_only_and_low_risk(before, after):
     old, new = Structure(), Structure()
@@ -83,6 +106,7 @@ def text_only_and_low_risk(before, after):
     result = tdq.analyze(before, after, "index.html")
     if result["risk_lines"] or result["structured_data_changed"]:
         raise ValueError("new factual/commercial claim risk needs stronger review")
+    text_line_budget(before, after)
     return result
 
 
@@ -137,8 +161,8 @@ def exact_source(pr, sha):
     path = paths[0]
     before, after = tdq.git("show", main + ":" + path), tdq.git("show", sha + ":" + path)
     metrics = text_only_and_low_risk(before, after)
-    if metrics["added_lines"] > 60 or max(len(before), len(after)) > 350_000:
-        raise ValueError("editorial scope exceeds bounded source budget")
+    if max(len(before), len(after)) > 350_000:
+        raise ValueError("editorial source size exceeds bounded source budget")
     if gh_api("repos/" + REPOSITORY + "/git/ref/heads/main")["object"]["sha"] != main:
         raise ValueError("protected main moved during analysis")
     if gh_api("repos/" + REPOSITORY + "/pulls/" + str(number))["head"]["sha"] != sha:
@@ -162,7 +186,8 @@ def selftest():
     a = b'<html><body><main><p>Guaranteed.</p></main></body></html>'
     b = b'<html><body><main><p>More realistic guidance.</p></main></body></html>'
     text_only_and_low_risk(a, b)
-    for other in (b'<html><body><main><div>More realistic guidance.</div></main></body></html>',
+    for other in (b'<!DOCTYPE html><html><body><main><p>More realistic guidance.</p></main></body></html>',
+                  b'<html><body><main><div>More realistic guidance.</div></main></body></html>',
                   b'<html><body><main><p class="new">Better.</p></main></body></html>',
                   b'<html><body><main><p>Guaranteed $250 profit.</p></main></body></html>'):
         try:
@@ -171,6 +196,13 @@ def selftest():
             pass
         else:
             raise AssertionError("unapproved source risk must block")
+    try:
+        text_line_budget(b"<main>" + b"\\n".join([b"Old"] * 80) + b"</main>",
+                         b"<main>Short.</main>")
+    except ValueError:
+        pass
+    else:
+        raise AssertionError("large deletions must never evade the line budget")
     print("TDQ_RELEASE_GATE_SELFTEST_OK")
 
 
