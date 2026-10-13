@@ -147,12 +147,12 @@ def qualified_approver(reviews, sha, author):
             and (record.get("user") or {}).get("type") == "Bot")
 
 
-def exact_source(pr, sha):
+def exact_source(pr, sha, require_label=True):
     if pr.get("number") is None:
         raise ValueError("missing PR identity")
     if pr.get("state") != "open":
         raise ValueError("candidate must be an open PR")
-    if RELEASE_LABEL not in {
+    if require_label and RELEASE_LABEL not in {
             item.get("name") for item in pr.get("labels") or []}:
         raise ValueError("no explicit trusted editorial release authorization label")
     head, base = pr.get("head") or {}, pr.get("base") or {}
@@ -186,8 +186,9 @@ def exact_source(pr, sha):
     if gh_api("repos/" + REPOSITORY + "/git/ref/heads/main")["object"]["sha"] != main:
         raise ValueError("protected main moved during analysis")
     current = gh_api("repos/" + REPOSITORY + "/pulls/" + str(number))
-    if current["head"]["sha"] != sha or RELEASE_LABEL not in {
-            label.get("name") for label in current.get("labels") or []}:
+    if (current["head"]["sha"] != sha
+            or (require_label and RELEASE_LABEL not in {
+                label.get("name") for label in current.get("labels") or []})):
         raise ValueError("candidate changed or release authorization removed")
     return path
 
@@ -232,6 +233,8 @@ def selftest():
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--self-test", action="store_true")
+    ap.add_argument("--classify", action="store_true",
+                    help="read-only source eligibility before label grant")
     ap.add_argument("--pr", type=int)
     ap.add_argument("--expected-head")
     args = ap.parse_args()
@@ -243,6 +246,13 @@ def main():
             or os.environ.get("GITHUB_REPOSITORY") != REPOSITORY):
         raise ValueError("invalid protected workflow binding")
     sha = args.expected_head
+    if args.classify:
+        pr = gh_api("repos/" + REPOSITORY + "/pulls/" + str(args.pr))
+        if pr["head"]["sha"] != sha or pr.get("draft") is not True:
+            raise ValueError("pre-release classifier requires unchanged draft")
+        path = exact_source(pr, sha, require_label=False)
+        print("TDQ_EDITORIAL_SOURCE_ELIGIBLE: " + path)
+        return 0
     # In the event of any internal error the last status is failure/pending,
     # never success; publish a success ONLY after the full independent policy.
     set_status(sha, SOURCE_CONTEXT, "pending", "Protected exact-head source check running")
