@@ -21,6 +21,45 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  classify-narrow-editorial-draft:
+    # A trusted GitHub service grants ONLY the pre-authorized, text-only lane.
+    # It does not approve fact claims, move drafts to ready, or merge a PR.
+    if: github.event_name == 'pull_request_target' && (github.event.action == 'opened' || github.event.action == 'reopened' || github.event.action == 'synchronize') && github.event.pull_request.draft == true && github.event.pull_request.head.repo.full_name == github.repository && startsWith(github.event.pull_request.head.ref, 'tdq/proof-auto-')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: read
+    steps:
+      - name: Checkout reviewed protected source only
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Independently classify exact-head editorial safety
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          EVENT_HEAD: ${{ github.event.pull_request.head.sha }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          python3 .github/scripts/tdq_release_gate.py --pr "$PR_NUMBER" --expected-head "$EVENT_HEAD" --classify
+          pr="$(gh api "repos/CrashyCrash/offbeat-website/pulls/${PR_NUMBER}")"
+          echo "$pr" | jq -e --arg h "$EVENT_HEAD" '
+            .head.sha == $h and .state == "open" and .draft == true
+            and .head.repo.full_name == "CrashyCrash/offbeat-website"
+            and ([.labels[].name] | index("tdq-release-hold") == null)
+          ' >/dev/null
+          # Only the trusted GitHub Actions service, after an exact-source
+          # qualification, adds the authorization label. No owner handoff.
+          # The label event triggers another separate protected SHA check.
+          gh api --method POST "repos/CrashyCrash/offbeat-website/issues/${PR_NUMBER}/labels" \
+            -f 'labels[]=tdq-editorial-release' >/dev/null
+
   editorial-release:
     if: github.event.pull_request.head.repo.full_name == github.repository && startsWith(github.event.pull_request.head.ref, 'tdq/proof-auto-')
     runs-on: ubuntu-latest
@@ -77,6 +116,7 @@ jobs:
             and .head.repo.full_name == "CrashyCrash/offbeat-website"
             and (.head.ref | startswith("tdq/proof-auto-"))
             and ([.labels[].name] | index("tdq-editorial-release") != null)
+            and ([.labels[].name] | index("tdq-release-hold") == null)
           ' >/dev/null || exit 0
           current_main="$(gh api repos/CrashyCrash/offbeat-website/git/ref/heads/main --jq .object.sha)"
           test "$(echo "$pr" | jq -r .base.sha)" = "$current_main" || exit 0
@@ -172,6 +212,7 @@ jobs:
               and .head.sha == $h and .head.repo.full_name == "CrashyCrash/offbeat-website"
               and .base.ref == "main"
               and ([.labels[].name] | index("tdq-editorial-release") != null)
+              and ([.labels[].name] | index("tdq-release-hold") == null)
             ' >/dev/null
           current_main="$(gh api repos/CrashyCrash/offbeat-website/git/ref/heads/main --jq .object.sha)"
           test "$(echo "$pr" | jq -r .base.sha)" = "$current_main"
