@@ -24,6 +24,17 @@ REVIEWER_LOGIN = "copilot-pull-request-reviewer[bot]"
 BRANCH_RE = re.compile(r"tdq/proof-auto-[0-9a-f]{14}\Z")
 SHA_RE = re.compile(r"[0-9a-f]{40}\Z")
 
+# TDQ's general triage warns about obvious prices/specs, but it intentionally
+# misses ordinary response-time/availability promises. The *autonomous*
+# release subset must be stricter: refer these new claims for deeper review.
+NEW_FACT_RISK = re.compile(
+    r"(?i)(?:[0-9]|\$|%|\b(?:day|days|week|weeks|month|months|hour|hours|"
+    r"always|never|only|every|typically|guarantee|promise|tested|verified|"
+    r"compatible|free|best|license|copyright|monetization|subscription|"
+    r"pricing|respond|response|availability)\b)"
+)
+
+
 
 def gh_api(endpoint):
     command = ["gh", "api", "--hostname", "github.com", endpoint]
@@ -105,6 +116,12 @@ def text_only_and_low_risk(before, after):
     result = tdq.analyze(before, after, "index.html")
     if result["risk_lines"] or result["structured_data_changed"]:
         raise ValueError("new factual/commercial claim risk needs stronger review")
+    added_lines = [line[1:] for line in difflib.unified_diff(
+        before.decode("utf-8", "strict").splitlines(),
+        after.decode("utf-8", "strict").splitlines(), n=0)
+        if line.startswith("+") and not line.startswith("+++")]
+    if any(NEW_FACT_RISK.search(line) for line in added_lines):
+        raise ValueError("new timing/price/spec/availability claim requires deeper review")
     text_line_budget(before, after)
     return result
 
@@ -188,7 +205,8 @@ def selftest():
     for other in (b'<!DOCTYPE html><html><body><main><p>More realistic guidance.</p></main></body></html>',
                   b'<html><body><main><div>More realistic guidance.</div></main></body></html>',
                   b'<html><body><main><p class="new">Better.</p></main></body></html>',
-                  b'<html><body><main><p>Guaranteed $250 profit.</p></main></body></html>'):
+                  b'<html><body><main><p>Guaranteed $250 profit.</p></main></body></html>',
+                  b'<html><body><main><p>Typically respond within 1-3 days.</p></main></body></html>'):
         try:
             text_only_and_low_risk(a, other)
         except ValueError:
