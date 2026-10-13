@@ -28,6 +28,13 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
+      - name: Protected-base triage self-tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m py_compile .github/scripts/tdq_draft_triage.py
+          python3 .github/scripts/tdq_draft_triage.py --self-test
+
       - name: Validate immutable candidate and source-only scope
         shell: bash
         env:
