@@ -76,6 +76,7 @@ jobs:
             .head.sha == $h and .state == "open" and .draft == true
             and .head.repo.full_name == "CrashyCrash/offbeat-website"
             and (.head.ref | startswith("tdq/proof-auto-"))
+            and ([.labels[].name] | index("tdq-editorial-release") != null)
           ' >/dev/null || exit 0
           current_main="$(gh api repos/CrashyCrash/offbeat-website/git/ref/heads/main --jq .object.sha)"
           test "$(echo "$pr" | jq -r .base.sha)" = "$current_main" || exit 0
@@ -170,6 +171,7 @@ jobs:
               .state == "open" and .draft == false
               and .head.sha == $h and .head.repo.full_name == "CrashyCrash/offbeat-website"
               and .base.ref == "main"
+              and ([.labels[].name] | index("tdq-editorial-release") != null)
             ' >/dev/null
           current_main="$(gh api repos/CrashyCrash/offbeat-website/git/ref/heads/main --jq .object.sha)"
           test "$(echo "$pr" | jq -r .base.sha)" = "$current_main"
@@ -192,7 +194,9 @@ jobs:
              ([.[] | select(.user.login == "copilot-pull-request-reviewer[bot]")]
                | last | .state == "APPROVED" and .commit_id == $h)
              and
-             ([.[] | select(.state == "CHANGES_REQUESTED")] | length == 0)
+             ([.[] | select(.user.login != null)
+               | {key: .user.login, value: .}] | from_entries
+              | [.[] | select(.state == "CHANGES_REQUESTED")] | length == 0)
           ' >/dev/null
           # This GitHub Actions token has no owner-user bypass. A 405/409/422
           # from native protection is BLOCKED, not a reason to force a merge.
