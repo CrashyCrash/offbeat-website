@@ -197,7 +197,7 @@ def selftest():
         else:
             raise AssertionError("unapproved source risk must block")
     try:
-        text_line_budget(b"<main>" + b"\\n".join([b"Old"] * 80) + b"</main>",
+        text_line_budget(b"<main>" + b"\n".join([b"Old"] * 80) + b"</main>",
                          b"<main>Short.</main>")
     except ValueError:
         pass
