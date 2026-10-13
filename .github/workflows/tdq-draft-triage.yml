@@ -1,0 +1,41 @@
+name: TDQ draft source integrity and fact-risk triage
+
+# Runs on GitHub-hosted CPU while the K11's single GPU worker can immediately
+# start another independent objective. This DOES NOT approve semantic accuracy
+# and NEVER merges or deploys a draft.
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, reopened, synchronize, ready_for_review]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tdq-source-review-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  triage:
+    if: startsWith(github.head_ref, 'tdq/proof-auto-') && github.event.pull_request.draft == true
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      # Base code only: do NOT execute candidate-branch scripts or workflows.
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Validate immutable candidate and source-only scope
+        shell: bash
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          set -euo pipefail
+          git -c core.hooksPath=/dev/null fetch --no-tags origin "refs/pull/${PR_NUMBER}/head:refs/heads/tdq-triage-candidate"
+          test "$(git rev-parse refs/heads/tdq-triage-candidate)" = "$HEAD_SHA"
+          python3 .github/scripts/tdq_draft_triage.py --base "$BASE_SHA" --head "$HEAD_SHA" --summary "$GITHUB_STEP_SUMMARY"
