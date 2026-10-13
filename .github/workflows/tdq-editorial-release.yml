@@ -1,7 +1,7 @@
 name: TDQ protected editorial release readiness
 
-# This trusted GitHub Actions workflow is the RELEASE GATE, not a reviewer
-# or a merger. Only main's protected checker executes. PR text/head is data.
+# This trusted GitHub Actions workflow GATES and conditionally MERGES, but
+# cannot supply its own independent factual approval. PR text/head is data.
 # It writes immutable-head status contexts; current main branch protections
 # can require those GitHub-Actions-origin statuses after a reviewed migration.
 on:
@@ -140,7 +140,9 @@ jobs:
               and .source == "CrashyCrash/offbeat-website"
               and (.conditions.ref_name.include | index("refs/heads/main") != null)
               and ((.conditions.ref_name.exclude // []) | index("refs/heads/main") == null)
-              and (.bypass_actors != null and (.bypass_actors | length == 0))
+              and .current_user_can_bypass == "never"
+              and ((.bypass_actors // []) |
+                   all(.[]; .actor_type != "Integration" or .actor_id != 15368))
               and
               any(.rules[];
                 .type == "pull_request"
