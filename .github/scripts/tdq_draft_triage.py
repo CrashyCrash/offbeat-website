@@ -118,6 +118,25 @@ def selftest():
         except ValueError:
             continue
         raise AssertionError("path must fail")
+    try:
+        analyze(old, old, "index.html")
+    except ValueError:
+        pass
+    else:
+        raise AssertionError("unchanged source must not pass")
+    try:
+        analyze(old, new.replace(b"<p>", b'<p onclick="alert(1)">'),
+                "index.html")
+    except ValueError:
+        pass
+    else:
+        raise AssertionError("new event handlers must not pass")
+    # Inert JSON-LD edits are flagged for review, not mistaken for proof.
+    a = (b'<script type="application/ld+json">{"name":"Old"}</script>'
+         b'<a href="x.html">same</a>')
+    b = (b'<script type="application/ld+json">{"name":"New"}</script>'
+         b'<a href="x.html">same</a>')
+    assert analyze(a, b, "index.html")["structured_data_changed"] is True
 
 
 def main():
