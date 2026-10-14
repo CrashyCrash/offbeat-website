@@ -1,0 +1,55 @@
+name: TDQ draft source integrity and fact-risk triage
+
+# Runs on GitHub-hosted CPU while the K11's single GPU worker can immediately
+# start another independent objective. This DOES NOT approve semantic accuracy
+# and NEVER merges or deploys a draft.
+# pull_request_target loads THIS reviewed workflow definition from protected
+# default main. pull_request instead loads an old PR's merge tree, which kept
+# running an obsolete checker that did not exist at its ancient base.
+# Token is read-only, no secrets passed, no PR source checked out or executed.
+on:
+  pull_request_target:
+    branches: [main]
+    # Metadata-only edits allow rechecking existing draft heads without new commits.
+    types: [opened, reopened, synchronize, edited, labeled, ready_for_review]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tdq-source-review-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  triage:
+    if: startsWith(github.head_ref, 'tdq/proof-auto-') && github.event.pull_request.draft == true && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      # Use CURRENT protected main for the trusted checker, not the PR's
+      # potentially stale base SHA. Older drafts predate the checker script.
+      # Never checkout or execute candidate-branch source.
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Protected-base triage self-tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m py_compile .github/scripts/tdq_draft_triage.py
+          python3 .github/scripts/tdq_draft_triage.py --self-test
+
+      - name: Validate immutable candidate and source-only scope
+        shell: bash
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          set -euo pipefail
+          git -c core.hooksPath=/dev/null fetch --no-tags origin "refs/pull/${PR_NUMBER}/head:refs/heads/tdq-triage-candidate"
+          test "$(git rev-parse refs/heads/tdq-triage-candidate)" = "$HEAD_SHA"
+          python3 .github/scripts/tdq_draft_triage.py --base "$BASE_SHA" --head "$HEAD_SHA" --summary "$GITHUB_STEP_SUMMARY"
