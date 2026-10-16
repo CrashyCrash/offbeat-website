@@ -42,6 +42,12 @@ FACT_RISK = re.compile(
     r"copyright|monetiz|tomorrow|today|quickly|immediately|"
     r"day|week|month|hour|year|faster|slow|safe|unsafe)\b)"
 )
+# Bounded changed-character DELTA allowed inside the single reader-visible
+# <main> element (measured by low_risk_editorial). Minification-independent:
+# offbeat pages are single-line per section, so a legitimate short correction
+# sits on one huge source line and must not be rejected by a whole-line byte
+# count, while a wholesale rewrite still yields a delta far above this cap.
+CHANGE_BYTE_BUDGET = 2000
 
 
 def api(endpoint, method="GET", fields=None):
@@ -143,8 +149,24 @@ def low_risk_editorial(old, new, path):
             rem += 1
             changes.append(line[1:])
             removed.append(line[1:])
-    # Even one changed HTML line may be huge; bound total changed bytes too.
-    if add > 40 or rem > 40 or add + rem > 75 or sum(map(len, changes)) > 2500:
+    # Line-count triage bounds (source-line heuristics, unchanged in spirit).
+    if add > 40 or rem > 40 or add + rem > 75:
+        raise ValueError("editorial patch exceeds conservative line budget")
+    # Real size bound: the ACTUAL changed-character delta inside the single
+    # verified <main> element. Everything outside <main> is already forced to be
+    # byte-identical above, and this is minification-independent (diff delta,
+    # not whole minified-line bytes). A small bounded correction stays small;
+    # a wholesale rewrite still produces a delta far above the cap and is
+    # rejected here, exactly as the previous whole-line budget intended.
+    delta = 0
+    for tag, i1, i2, j1, j2 in difflib.SequenceMatcher(
+            None, before_main.group(0), after_main.group(0),
+            autojunk=False).get_opcodes():
+        if tag in ("replace", "delete"):
+            delta += i2 - i1
+        if tag in ("replace", "insert"):
+            delta += j2 - j1
+    if delta > CHANGE_BYTE_BUDGET:
         raise ValueError("editorial patch exceeds conservative size budget")
     # Permit removing an unsupported promotional claim only after the
     # separate actual signed semantic reviewer proves this is net beneficial.
@@ -493,6 +515,24 @@ def selftest():
     original = b'<!doctype html><main><p>Start with free software. You will mix within a week.</p></main>'
     corrected = b'<!doctype html><main><p>Start with free bundled software, practice regularly; no fixed timeline.</p></main>'
     low_risk_editorial(original, corrected, "beginner-dj-hub.html")
+    # Minification-independence: offbeat pages are single-line per section, so
+    # a legitimate short correction sits on one huge source line. The size
+    # bound must measure the changed-character DELTA, not whole-line bytes.
+    fill = (b'<p>Alpha section. </p>' * 60)
+    minif_before = (b'<!doctype html><main>' + fill +
+                    b'<p>By keeping the total under $300 you reduce your financial risk.</p></main>')
+    minif_after = (b'<!doctype html><main>' + fill +
+                   b'<p>Keeping the controller-and-headphones total under $300 reduces your financial risk.</p></main>')
+    low_risk_editorial(minif_before, minif_after, "how-to-get-dj-gigs.html")
+    # A minified wholesale rewrite (large delta) must still be rejected.
+    try:
+        low_risk_editorial(minif_before,
+            b'<!doctype html><main>' + (b'<p>Alpha section. </p>' * 300),
+            "how-to-get-dj-gigs.html")
+    except ValueError:
+        pass
+    else:
+        raise AssertionError("minified wholesale rewrite must not pass")
     try:
         low_risk_editorial(original,
             b'<!doctype html><main><p>Get free lifetime access for $500 today.</p></main>',
