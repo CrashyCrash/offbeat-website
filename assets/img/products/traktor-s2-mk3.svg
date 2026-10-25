@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="100%" height="100%">
+  <rect x="10" y="10" width="580" height="340" rx="14" fill="#14141e" stroke="rgba(56,189,248,0.4)" stroke-width="2"/>
+  <rect x="20" y="20" width="560" height="320" rx="10" fill="#1b1b28"/>
+  <circle cx="120" cy="140" r="78" fill="#0b0b12" stroke="#38bdf8" stroke-width="1.5"/><circle cx="120" cy="140" r="28" fill="#222"/>
+  <circle cx="480" cy="140" r="78" fill="#0b0b12" stroke="#38bdf8" stroke-width="1.5"/><circle cx="480" cy="140" r="28" fill="#222"/>
+  <!-- Traktor RGB Pads -->
+  <g transform="translate(55, 245)"><rect x="0" y="0" width="30" height="20" rx="3" fill="#222" stroke="#38bdf8" stroke-width="1.5"/><rect x="36" y="0" width="30" height="20" rx="3" fill="#222" stroke="#38bdf8" stroke-width="1.5"/><rect x="72" y="0" width="30" height="20" rx="3" fill="#222" stroke="#34d399" stroke-width="1.5"/><rect x="108" y="0" width="30" height="20" rx="3" fill="#222" stroke="#34d399" stroke-width="1.5"/></g>
+  <g transform="translate(415, 245)"><rect x="0" y="0" width="30" height="20" rx="3" fill="#222" stroke="#38bdf8" stroke-width="1.5"/><rect x="36" y="0" width="30" height="20" rx="3" fill="#222" stroke="#38bdf8" stroke-width="1.5"/><rect x="72" y="0" width="30" height="20" rx="3" fill="#222" stroke="#34d399" stroke-width="1.5"/><rect x="108" y="0" width="30" height="20" rx="3" fill="#222" stroke="#34d399" stroke-width="1.5"/></g>
+  <!-- Mixer -->
+  <rect x="235" y="30" width="130" height="300" rx="8" fill="#131320" stroke="rgba(255,255,255,0.08)"/>
+  <text x="300" y="52" fill="#fff" font-size="11" font-weight="bold" font-family="sans-serif" text-anchor="middle">TRAKTOR S2 MK3</text>
+  <text x="300" y="68" fill="#38bdf8" font-size="8" font-family="sans-serif" text-anchor="middle">Traktor Pro 4 License Included</text>
+  <circle cx="270" cy="100" r="10" fill="#2a2a3c"/><circle cx="330" cy="100" r="10" fill="#2a2a3c"/>
+  <circle cx="270" cy="140" r="10" fill="#2a2a3c"/><circle cx="330" cy="140" r="10" fill="#2a2a3c"/>
+  <rect x="268" y="180" width="4" height="50" rx="1" fill="#000"/><rect x="262" y="200" width="16" height="10" rx="2" fill="#aaa"/>
+  <rect x="328" y="180" width="4" height="50" rx="1" fill="#000"/><rect x="322" y="200" width="16" height="10" rx="2" fill="#aaa"/>
+  <rect x="260" y="270" width="80" height="6" rx="2" fill="#000"/><rect x="294" y="263" width="12" height="20" rx="2" fill="#fff"/>
+</svg>

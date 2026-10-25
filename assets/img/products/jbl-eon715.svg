@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 360" width="100%" height="100%">
+  <!-- Trapezoidal PA Cabinet -->
+  <polygon points="110,40 290,40 320,310 80,310" fill="#111" stroke="#38bdf8" stroke-width="2"/>
+  <!-- Perforated Steel Grille Area -->
+  <polygon points="120,55 280,55 305,300 95,300" fill="#181822" stroke="#333"/>
+  <!-- 15-inch Big Woofer Behind Grille -->
+  <circle cx="200" cy="195" r="75" fill="#0d0d14" stroke="#444" stroke-width="2"/>
+  <circle cx="200" cy="195" r="28" fill="#222"/>
+  <!-- High Frequency Horn -->
+  <polygon points="150,70 250,70 230,110 170,110" fill="#0a0a10" stroke="#38bdf8"/>
+  <text x="200" y="290" fill="#38bdf8" font-size="11" font-weight="bold" font-family="sans-serif" text-anchor="middle">JBL EON715 · 1300W</text>
+  <text x="200" y="338" fill="#94a3b8" font-size="10" font-family="sans-serif" text-anchor="middle">Powered PA Mobile Speaker · Bluetooth DSP</text>
+</svg>

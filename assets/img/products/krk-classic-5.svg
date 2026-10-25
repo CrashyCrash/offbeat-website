@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 360" width="100%" height="100%">
+  <!-- Left Speaker -->
+  <rect x="40" y="50" width="145" height="260" rx="10" fill="#111" stroke="#facc15" stroke-width="2"/>
+  <circle cx="112" cy="110" r="18" fill="#1c1c1c" stroke="#333"/>
+  <!-- Iconic Yellow Kevlar Woofer -->
+  <circle cx="112" cy="205" r="46" fill="#eab308" stroke="#ca8a04" stroke-width="3"/>
+  <circle cx="112" cy="205" r="16" fill="#000"/>
+  <!-- Front Slot Bass Port -->
+  <rect x="72" y="272" width="80" height="12" rx="3" fill="#000" stroke="#333"/>
+
+  <!-- Right Speaker -->
+  <rect x="215" y="50" width="145" height="260" rx="10" fill="#111" stroke="#facc15" stroke-width="2"/>
+  <circle cx="287" cy="110" r="18" fill="#1c1c1c" stroke="#333"/>
+  <circle cx="287" cy="205" r="46" fill="#eab308" stroke="#ca8a04" stroke-width="3"/>
+  <circle cx="287" cy="205" r="16" fill="#000"/>
+  <rect x="247" y="272" width="80" height="12" rx="3" fill="#000" stroke="#333"/>
+
+  <text x="200" y="32" fill="#fff" font-size="13" font-family="sans-serif" font-weight="bold" text-anchor="middle">KRK Classic 5 (Pair)</text>
+  <text x="200" y="338" fill="#facc15" font-size="10" font-family="sans-serif" text-anchor="middle">Iconic Yellow Kevlar Driver · Punchy Transients</text>
+</svg>

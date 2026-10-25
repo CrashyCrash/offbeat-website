@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 360" width="100%" height="100%">
+  <!-- Split Headband -->
+  <path d="M120 220 C 110 80, 290 80, 280 220" fill="none" stroke="#252532" stroke-width="14" stroke-linecap="round"/>
+  <path d="M135 220 C 128 115, 272 115, 265 220" fill="none" stroke="#1c1c26" stroke-width="10" stroke-linecap="round"/>
+  <!-- Hinge Mechanisms -->
+  <rect x="105" y="190" width="26" height="36" rx="4" fill="#38384c" stroke="#111"/>
+  <rect x="269" y="190" width="26" height="36" rx="4" fill="#38384c" stroke="#111"/>
+  <!-- Left Earcup (Swiveling) -->
+  <ellipse cx="118" cy="250" rx="36" ry="46" fill="#12121a" stroke="#8b5cf6" stroke-width="2"/>
+  <ellipse cx="118" cy="250" rx="26" ry="34" fill="#2a2a3a"/>
+  <ellipse cx="118" cy="250" rx="14" ry="18" fill="#111"/>
+  <!-- Right Earcup -->
+  <ellipse cx="282" cy="250" rx="36" ry="46" fill="#12121a" stroke="#8b5cf6" stroke-width="2"/>
+  <ellipse cx="282" cy="250" rx="26" ry="34" fill="#2a2a3a"/>
+  <ellipse cx="282" cy="250" rx="14" ry="18" fill="#111"/>
+  <!-- Coiled Cable -->
+  <path d="M118 296 C 118 340, 180 340, 200 340 C 220 340, 240 330, 260 350" fill="none" stroke="#8b5cf6" stroke-width="4" stroke-linecap="round"/>
+  <!-- Label -->
+  <text x="200" y="45" fill="#fff" font-size="13" font-family="sans-serif" font-weight="bold" text-anchor="middle">Sennheiser HD 25</text>
+  <text x="200" y="65" fill="#a78bfa" font-size="10" font-family="sans-serif" text-anchor="middle">Legendary Club Standard · 70Ω</text>
+</svg>

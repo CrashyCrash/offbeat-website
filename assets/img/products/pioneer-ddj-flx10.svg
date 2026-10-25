@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="100%" height="100%">
+  <rect x="8" y="8" width="584" height="344" rx="16" fill="#12111c" stroke="rgba(139,92,246,0.6)" stroke-width="2"/>
+  <rect x="18" y="18" width="564" height="324" rx="10" fill="#181726"/>
+  <!-- 4-Channel Mixer in center -->
+  <rect x="210" y="25" width="180" height="310" rx="8" fill="#12111e" stroke="rgba(255,255,255,0.1)"/>
+  <text x="300" y="44" fill="#fff" font-size="11" font-weight="bold" font-family="sans-serif" text-anchor="middle">DDJ-FLX10 · 4-CH STEMS</text>
+  <!-- 4 Channel Strips -->
+  <g fill="#252438">
+    <circle cx="235" cy="65" r="8"/><circle cx="265" cy="65" r="8"/><circle cx="335" cy="65" r="8"/><circle cx="365" cy="65" r="8"/>
+    <circle cx="235" cy="92" r="8"/><circle cx="265" cy="92" r="8"/><circle cx="335" cy="92" r="8"/><circle cx="365" cy="92" r="8"/>
+    <circle cx="235" cy="119" r="8"/><circle cx="265" cy="119" r="8"/><circle cx="335" cy="119" r="8"/><circle cx="365" cy="119" r="8"/>
+    <circle cx="235" cy="146" r="8"/><circle cx="265" cy="146" r="8"/><circle cx="335" cy="146" r="8"/><circle cx="365" cy="146" r="8"/>
+  </g>
+  <!-- 4 Channel Faders -->
+  <rect x="233" y="180" width="4" height="50" rx="2" fill="#000"/><rect x="228" y="200" width="14" height="10" rx="2" fill="#aaa"/>
+  <rect x="263" y="180" width="4" height="50" rx="2" fill="#000"/><rect x="258" y="195" width="14" height="10" rx="2" fill="#aaa"/>
+  <rect x="333" y="180" width="4" height="50" rx="2" fill="#000"/><rect x="328" y="195" width="14" height="10" rx="2" fill="#aaa"/>
+  <rect x="363" y="180" width="4" height="50" rx="2" fill="#000"/><rect x="358" y="200" width="14" height="10" rx="2" fill="#aaa"/>
+  <!-- Crossfader -->
+  <rect x="250" y="265" width="100" height="6" rx="2" fill="#000"/><rect x="294" y="258" width="12" height="20" rx="2" fill="#fff"/>
+  <!-- Stems Buttons -->
+  <g transform="translate(245, 298)">
+    <rect x="0" y="0" width="30" height="16" rx="3" fill="#ec4899"/><text x="15" y="11" fill="#fff" font-size="8" font-weight="bold" text-anchor="middle">VOCAL</text>
+    <rect x="40" y="0" width="30" height="16" rx="3" fill="#38bdf8"/><text x="55" y="11" fill="#fff" font-size="8" font-weight="bold" text-anchor="middle">DRUM</text>
+    <rect x="80" y="0" width="30" height="16" rx="3" fill="#34d399"/><text x="95" y="11" fill="#fff" font-size="8" font-weight="bold" text-anchor="middle">INST</text>
+  </g>
+  <!-- Large Jog A with Center LCD -->
+  <circle cx="110" cy="140" r="88" fill="#0c0b14" stroke="#8b5cf6" stroke-width="2"/>
+  <circle cx="110" cy="140" r="78" fill="#1c1b2c"/>
+  <circle cx="110" cy="140" r="38" fill="#000" stroke="#38bdf8" stroke-width="2"/>
+  <text x="110" y="138" fill="#38bdf8" font-size="11" font-family="monospace" font-weight="bold" text-anchor="middle">124.0</text>
+  <text x="110" y="152" fill="#34d399" font-size="8" font-family="sans-serif" text-anchor="middle">8A · -0.1%</text>
+  <!-- Large Jog B with Center LCD -->
+  <circle cx="490" cy="140" r="88" fill="#0c0b14" stroke="#8b5cf6" stroke-width="2"/>
+  <circle cx="490" cy="140" r="78" fill="#1c1b2c"/>
+  <circle cx="490" cy="140" r="38" fill="#000" stroke="#38bdf8" stroke-width="2"/>
+  <text x="490" y="138" fill="#38bdf8" font-size="11" font-family="monospace" font-weight="bold" text-anchor="middle">124.0</text>
+  <text x="490" y="152" fill="#34d399" font-size="8" font-family="sans-serif" text-anchor="middle">8A · 0.0%</text>
+  <!-- 8 RGB Pads Deck A -->
+  <g transform="translate(35, 252)">
+    <rect x="0" y="0" width="34" height="24" rx="4" fill="#222" stroke="#8b5cf6" stroke-width="2"/>
+    <rect x="38" y="0" width="34" height="24" rx="4" fill="#222" stroke="#38bdf8" stroke-width="2"/>
+    <rect x="76" y="0" width="34" height="24" rx="4" fill="#222" stroke="#34d399" stroke-width="2"/>
+    <rect x="114" y="0" width="34" height="24" rx="4" fill="#222" stroke="#ec4899" stroke-width="2"/>
+    <rect x="0" y="30" width="34" height="24" rx="4" fill="#222" stroke="#8b5cf6" stroke-width="2"/>
+    <rect x="38" y="30" width="34" height="24" rx="4" fill="#222" stroke="#38bdf8" stroke-width="2"/>
+    <rect x="76" y="30" width="34" height="24" rx="4" fill="#222" stroke="#34d399" stroke-width="2"/>
+    <rect x="114" y="30" width="34" height="24" rx="4" fill="#222" stroke="#ec4899" stroke-width="2"/>
+  </g>
+  <!-- 8 RGB Pads Deck B -->
+  <g transform="translate(415, 252)">
+    <rect x="0" y="0" width="34" height="24" rx="4" fill="#222" stroke="#8b5cf6" stroke-width="2"/>
+    <rect x="38" y="0" width="34" height="24" rx="4" fill="#222" stroke="#38bdf8" stroke-width="2"/>
+    <rect x="76" y="0" width="34" height="24" rx="4" fill="#222" stroke="#34d399" stroke-width="2"/>
+    <rect x="114" y="0" width="34" height="24" rx="4" fill="#222" stroke="#ec4899" stroke-width="2"/>
+    <rect x="0" y="30" width="34" height="24" rx="4" fill="#222" stroke="#8b5cf6" stroke-width="2"/>
+    <rect x="38" y="30" width="34" height="24" rx="4" fill="#222" stroke="#38bdf8" stroke-width="2"/>
+    <rect x="76" y="30" width="34" height="24" rx="4" fill="#222" stroke="#34d399" stroke-width="2"/>
+    <rect x="114" y="30" width="34" height="24" rx="4" fill="#222" stroke="#ec4899" stroke-width="2"/>
+  </g>
+</svg>

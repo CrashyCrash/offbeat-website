@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 360" width="100%" height="100%">
+  <!-- Spherical Wire Mesh Grille -->
+  <circle cx="200" cy="110" r="42" fill="#334155" stroke="#94a3b8" stroke-width="2"/>
+  <ellipse cx="200" cy="110" rx="40" ry="20" fill="none" stroke="#64748b" stroke-width="1.5"/>
+  <rect x="175" y="142" width="50" height="12" rx="2" fill="#1e293b"/>
+  <!-- Tapered Dark Handle -->
+  <polygon points="180,154 220,154 212,280 188,280" fill="#0f172a" stroke="#334155"/>
+  <text x="200" y="210" fill="#94a3b8" font-size="9" font-weight="bold" font-family="sans-serif" text-anchor="middle" transform="rotate(-90 200 210)">SHURE SM58</text>
+  <text x="200" y="315" fill="#fff" font-size="13" font-family="sans-serif" font-weight="bold" text-anchor="middle">Shure SM58 Dynamic Microphone</text>
+  <text x="200" y="335" fill="#a78bfa" font-size="10" font-family="sans-serif" text-anchor="middle">Cardioid Vocal Mic · Indestructible Touring Standard</text>
+</svg>

@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="100%" height="100%">
+  <defs>
+    <linearGradient id="flx4-body" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e1e28"/>
+      <stop offset="100%" stop-color="#12121c"/>
+    </linearGradient>
+    <radialGradient id="flx4-jog" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#2a2a3c"/>
+      <stop offset="70%" stop-color="#14141e"/>
+      <stop offset="85%" stop-color="#222230"/>
+      <stop offset="100%" stop-color="#0c0c12"/>
+    </radialGradient>
+    <linearGradient id="flx4-accent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#38bdf8"/>
+    </linearGradient>
+  </defs>
+  <!-- Chassis -->
+  <rect x="10" y="10" width="580" height="340" rx="16" fill="url(#flx4-body)" stroke="rgba(139, 92, 246, 0.4)" stroke-width="2"/>
+  <rect x="20" y="20" width="560" height="320" rx="12" fill="#14141f" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+  <!-- Deck A Jog -->
+  <circle cx="120" cy="140" r="82" fill="#0a0a10" stroke="rgba(139,92,246,0.5)" stroke-width="2"/>
+  <circle cx="120" cy="140" r="76" fill="url(#flx4-jog)" stroke="#333" stroke-width="1"/>
+  <circle cx="120" cy="140" r="28" fill="#181824" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+  <circle cx="120" cy="140" r="12" fill="#8b5cf6"/>
+  <line x1="120" y1="64" x2="120" y2="80" stroke="#38bdf8" stroke-width="3" stroke-linecap="round"/>
+  <!-- Deck A Pads -->
+  <g transform="translate(45, 245)">
+    <rect x="0" y="0" width="34" height="22" rx="4" fill="#222" stroke="#38bdf8" stroke-width="1.5"/>
+    <rect x="40" y="0" width="34" height="22" rx="4" fill="#222" stroke="#38bdf8" stroke-width="1.5"/>
+    <rect x="80" y="0" width="34" height="22" rx="4" fill="#222" stroke="#38bdf8" stroke-width="1.5"/>
+    <rect x="120" y="0" width="34" height="22" rx="4" fill="#222" stroke="#38bdf8" stroke-width="1.5"/>
+    <rect x="0" y="28" width="34" height="22" rx="4" fill="#222" stroke="#8b5cf6" stroke-width="1.5"/>
+    <rect x="40" y="28" width="34" height="22" rx="4" fill="#222" stroke="#8b5cf6" stroke-width="1.5"/>
+    <rect x="80" y="28" width="34" height="22" rx="4" fill="#222" stroke="#8b5cf6" stroke-width="1.5"/>
+    <rect x="120" y="28" width="34" height="22" rx="4" fill="#222" stroke="#8b5cf6" stroke-width="1.5"/>
+  </g>
+  <!-- Deck A Controls -->
+  <circle cx="45" cy="50" r="14" fill="#222" stroke="#34d399" stroke-width="2"/>
+  <text x="45" y="54" fill="#34d399" font-size="10" font-family="sans-serif" font-weight="bold" text-anchor="middle">CUE</text>
+  <circle cx="45" cy="85" r="14" fill="#222" stroke="#38bdf8" stroke-width="2"/>
+  <polygon points="41,78 52,85 41,92" fill="#38bdf8"/>
+  <rect x="205" y="70" width="10" height="110" rx="3" fill="#0c0c14" stroke="#333"/>
+  <rect x="200" y="115" width="20" height="14" rx="2" fill="#555" stroke="#fff" stroke-width="0.5"/>
+
+  <!-- Mixer Section (Center) -->
+  <rect x="235" y="30" width="130" height="300" rx="8" fill="#181826" stroke="rgba(255,255,255,0.08)"/>
+  <!-- Knobs & Meters -->
+  <circle cx="270" cy="65" r="10" fill="#2a2a3c" stroke="#888"/>
+  <circle cx="330" cy="65" r="10" fill="#2a2a3c" stroke="#888"/>
+  <circle cx="270" cy="98" r="10" fill="#2a2a3c" stroke="#888"/>
+  <circle cx="330" cy="98" r="10" fill="#2a2a3c" stroke="#888"/>
+  <circle cx="270" cy="131" r="10" fill="#2a2a3c" stroke="#888"/>
+  <circle cx="330" cy="131" r="10" fill="#2a2a3c" stroke="#888"/>
+  <circle cx="270" cy="164" r="10" fill="#2a2a3c" stroke="#888"/>
+  <circle cx="330" cy="164" r="10" fill="#2a2a3c" stroke="#888"/>
+  <!-- Channel Faders -->
+  <rect x="267" y="195" width="6" height="55" rx="2" fill="#0a0a10"/>
+  <rect x="258" y="215" width="24" height="12" rx="2" fill="#bbb"/>
+  <rect x="327" y="195" width="6" height="55" rx="2" fill="#0a0a10"/>
+  <rect x="318" y="215" width="24" height="12" rx="2" fill="#bbb"/>
+  <!-- Crossfader -->
+  <rect x="260" y="280" width="80" height="6" rx="2" fill="#0a0a10"/>
+  <rect x="294" y="272" width="12" height="22" rx="2" fill="#ddd"/>
+  <!-- Branding -->
+  <text x="300" y="48" fill="#fff" font-size="10" font-family="sans-serif" font-weight="bold" text-anchor="middle" letter-spacing="1">Pioneer DJ</text>
+  <text x="300" y="318" fill="var(--flame-2, #a78bfa)" font-size="9" font-family="sans-serif" font-weight="bold" text-anchor="middle">DDJ-FLX4</text>
+
+  <!-- Deck B Jog -->
+  <circle cx="480" cy="140" r="82" fill="#0a0a10" stroke="rgba(139,92,246,0.5)" stroke-width="2"/>
+  <circle cx="480" cy="140" r="76" fill="url(#flx4-jog)" stroke="#333" stroke-width="1"/>
+  <circle cx="480" cy="140" r="28" fill="#181824" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+  <circle cx="480" cy="140" r="12" fill="#8b5cf6"/>
+  <line x1="480" y1="64" x2="480" y2="80" stroke="#38bdf8" stroke-width="3" stroke-linecap="round"/>
+  <!-- Deck B Pads -->
+  <g transform="translate(405, 245)">
+    <rect x="0" y="0" width="34" height="22" rx="4" fill="#222" stroke="#38bdf8" stroke-width="1.5"/>
+    <rect x="40" y="0" width="34" height="22" rx="4" fill="#222" stroke="#38bdf8" stroke-width="1.5"/>
+    <rect x="80" y="0" width="34" height="22" rx="4" fill="#222" stroke="#38bdf8" stroke-width="1.5"/>
+    <rect x="120" y="0" width="34" height="22" rx="4" fill="#222" stroke="#38bdf8" stroke-width="1.5"/>
+    <rect x="0" y="28" width="34" height="22" rx="4" fill="#222" stroke="#8b5cf6" stroke-width="1.5"/>
+    <rect x="40" y="28" width="34" height="22" rx="4" fill="#222" stroke="#8b5cf6" stroke-width="1.5"/>
+    <rect x="80" y="28" width="34" height="22" rx="4" fill="#222" stroke="#8b5cf6" stroke-width="1.5"/>
+    <rect x="120" y="28" width="34" height="22" rx="4" fill="#222" stroke="#8b5cf6" stroke-width="1.5"/>
+  </g>
+  <!-- Deck B Pitch & Cue -->
+  <rect x="385" y="70" width="10" height="110" rx="3" fill="#0c0c14" stroke="#333"/>
+  <rect x="380" y="115" width="20" height="14" rx="2" fill="#555" stroke="#fff" stroke-width="0.5"/>
+  <circle cx="555" cy="50" r="14" fill="#222" stroke="#34d399" stroke-width="2"/>
+  <text x="555" y="54" fill="#34d399" font-size="10" font-family="sans-serif" font-weight="bold" text-anchor="middle">CUE</text>
+  <circle cx="555" cy="85" r="14" fill="#222" stroke="#38bdf8" stroke-width="2"/>
+  <polygon points="551,78 562,85 551,92" fill="#38bdf8"/>
+</svg>
