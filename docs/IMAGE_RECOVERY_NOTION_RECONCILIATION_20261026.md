@@ -4,13 +4,13 @@
 
 ## Research source and actual recoverability
 
-Temporarily reconnected historical Notion work showed a June-2026 image-research package for 106 Offbeat pages. The old fully embedded CSV and JSON each contain **116 image candidates**, with page target, source URL, attribution, license, suggested placement/crop, duplicate group, priority, and historic quality/rights confidence. The dataset is overwhelmingly editorial Unsplash/Pexels, not authentic exact-model product photography.
+Temporarily reconnected historical Notion work showed a June-2026 image-research package for 106 Offbeat pages. The actually embedded CSV contains **116 image candidates**; the Notion `images.json` page *claims* 116 but embeds only **49 parseable entries**, with page target, source URL, attribution, license, suggested placement/crop, duplicate group, priority, and historic quality/rights confidence. The dataset is overwhelmingly editorial Unsplash/Pexels, not authentic exact-model product photography.
 
-A June-21 update *claims* a **213-candidate** expansion (N001–N061, Q001–Q004, E001–E032 and further replacement entries), but the Notion page still embeds the **116-row CSV**. Its gallery explicitly says the latest 213-card HTML existed only in an old sandbox under `/data/image-research-complete/index.html`. Thus **213 is not a recoverable catalog until the actual missing file is located**; do not invent N/Q/E rows or use the prose number as coverage proof.
+A June-21 update *claims* a **213-candidate** expansion (N001–N061, Q001–Q004, E001–E032 and further replacement entries), but the Notion page still embeds the **116-row CSV**. The `download-manifest.csv` page likewise claims expansion to 204 entries while embedding only 100 source rows. Its gallery explicitly says the latest 213-card HTML existed only in an old sandbox under `/data/image-research-complete/index.html`. Thus **213 is not a recoverable catalog until the actual missing file is located**; do not invent N/Q/E rows or use the prose number as coverage proof.
 
 The 10-item Notion image execution queue had `Ready for Agent` and `Not Run` for every item on 2026-10-26. The approximately 100-image self-host task failed its single-page/single-asset scope gate and remained `Needs review`. This documents a failed historical path from research to production; later independent GitHub adoptions must be evaluated on their actual commits.
 
-## Actual priority: real product images, not more generic cards
+The historical research data (116-row CSV, 100 license-proof sections, 106-page coverage table, 100 download rows, and manufacturer contact list) has now been preserved in the private Forgotten-Value recovery branch for use after Notion is disconnected.\n\n## Actual priority: real product images, not more generic cards
 
 Candidate families that require validated source/license/model matching and, often, manufacturer permission:
 
