@@ -1,0 +1,155 @@
+[
+  {
+    "width": 1440,
+    "file": "pioneer-ddj-flx4-review.html",
+    "violations": []
+  },
+  {
+    "width": 1440,
+    "file": "how-to-connect-dj-controller-to-speakers.html",
+    "violations": []
+  },
+  {
+    "width": 1440,
+    "file": "how-to-mix-music-beginners.html",
+    "violations": []
+  },
+  {
+    "width": 1440,
+    "file": "how-to-record-dj-mix.html",
+    "violations": [
+      {
+        "id": "link-in-text-block",
+        "impact": "serious",
+        "help": "Links must be distinguishable without relying on color",
+        "nodes": [
+          {
+            "target": [
+              "p > a[rel=\"nofollow noopener sponsored\"][target=\"_blank\"]"
+            ],
+            "summary": "Fix any of the following:\n  The link has insufficient color contrast of 1.63:1 with the surrounding text. (Minimum contrast is 3:1, link text: #06b6d4, surrounding text: #cbd5e1)\n  The link has no styling (such as underline) to distinguish it from the surrounding text"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "width": 390,
+    "file": "pioneer-ddj-flx4-review.html",
+    "violations": [
+      {
+        "id": "scrollable-region-focusable",
+        "impact": "serious",
+        "help": "Scrollable region must have keyboard access",
+        "nodes": [
+          {
+            "target": [
+              ".article-section:nth-child(5) > .comparison-table-wrap"
+            ],
+            "summary": "Fix any of the following:\n  Element should have focusable content\n  Element should be focusable"
+          },
+          {
+            "target": [
+              ".article-section:nth-child(7) > .comparison-table-wrap"
+            ],
+            "summary": "Fix any of the following:\n  Element should have focusable content\n  Element should be focusable"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "width": 390,
+    "file": "how-to-connect-dj-controller-to-speakers.html",
+    "violations": [
+      {
+        "id": "scrollable-region-focusable",
+        "impact": "serious",
+        "help": "Scrollable region must have keyboard access",
+        "nodes": [
+          {
+            "target": [
+              ".full-width-section.article-section:nth-child(2) > .comparison-table-wrapper"
+            ],
+            "summary": "Fix any of the following:\n  Element should have focusable content\n  Element should be focusable"
+          },
+          {
+            "target": [
+              ".table-wrap"
+            ],
+            "summary": "Fix any of the following:\n  Element should have focusable content\n  Element should be focusable"
+          },
+          {
+            "target": [
+              ".comparison-table-wrap"
+            ],
+            "summary": "Fix any of the following:\n  Element should have focusable content\n  Element should be focusable"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "width": 390,
+    "file": "how-to-mix-music-beginners.html",
+    "violations": [
+      {
+        "id": "scrollable-region-focusable",
+        "impact": "serious",
+        "help": "Scrollable region must have keyboard access",
+        "nodes": [
+          {
+            "target": [
+              ".article-section:nth-child(4) > .comparison-table-wrap"
+            ],
+            "summary": "Fix any of the following:\n  Element should have focusable content\n  Element should be focusable"
+          },
+          {
+            "target": [
+              ".article-section:nth-child(7) > .comparison-table-wrap"
+            ],
+            "summary": "Fix any of the following:\n  Element should have focusable content\n  Element should be focusable"
+          },
+          {
+            "target": [
+              ".article-section:nth-child(9) > .comparison-table-wrap"
+            ],
+            "summary": "Fix any of the following:\n  Element should have focusable content\n  Element should be focusable"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "width": 390,
+    "file": "how-to-record-dj-mix.html",
+    "violations": [
+      {
+        "id": "link-in-text-block",
+        "impact": "serious",
+        "help": "Links must be distinguishable without relying on color",
+        "nodes": [
+          {
+            "target": [
+              "p > a[rel=\"nofollow noopener sponsored\"][target=\"_blank\"]"
+            ],
+            "summary": "Fix any of the following:\n  The link has insufficient color contrast of 1.63:1 with the surrounding text. (Minimum contrast is 3:1, link text: #06b6d4, surrounding text: #cbd5e1)\n  The link has no styling (such as underline) to distinguish it from the surrounding text"
+          }
+        ]
+      },
+      {
+        "id": "scrollable-region-focusable",
+        "impact": "serious",
+        "help": "Scrollable region must have keyboard access",
+        "nodes": [
+          {
+            "target": [
+              ".comparison-table-wrap"
+            ],
+            "summary": "Fix any of the following:\n  Element should have focusable content\n  Element should be focusable"
+          }
+        ]
+      }
+    ]
+  }
+]

@@ -1,0 +1,27 @@
+{
+  "checks": [
+    "1440: article search -> matching guide -> practical next action",
+    "1440: navigation/search/next routes fit; no local HTTP errors or script exceptions",
+    "1024: article search -> matching guide -> practical next action",
+    "1024: navigation/search/next routes fit; no local HTTP errors or script exceptions",
+    "768: article search -> matching guide -> practical next action",
+    "768: navigation/search/next routes fit; no local HTTP errors or script exceptions",
+    "390: article search -> matching guide -> practical next action",
+    "390: navigation/search/next routes fit; no local HTTP errors or script exceptions",
+    "320: article search -> matching guide -> practical next action",
+    "320: navigation/search/next routes fit; no local HTTP errors or script exceptions",
+    "no-JavaScript: native header form reaches complete browsable catalog"
+  ],
+  "metrics": [
+    {
+      "width": 1440,
+      "searchTop": 340.5625,
+      "firstCardTop": 845.875
+    },
+    {
+      "width": 390,
+      "searchTop": 420.671875,
+      "firstCardTop": 917.765625
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "checks": [
+    "1440: all 113 destinations visible",
+    "1440: search FLX4 (3 results)",
+    "1440: search FLX-4 (3 results)",
+    "1440: search review FLX4 (1 results)",
+    "1440: search FLX4 review (1 results)",
+    "1440: search RÉKORDBOX (5 results)",
+    "1440: search headphones under 100 (1 results)",
+    "1440: search record mix (4 results)",
+    "1440: empty state and reset with focus",
+    "1440: topic AND query, URL restore",
+    "1440: article navigation and back preserves results",
+    "1440: unknown topic and hostile query handled as text",
+    "1440: keyboard query and reset",
+    "390: all 113 destinations visible",
+    "390: search FLX4 (3 results)",
+    "390: search FLX-4 (3 results)",
+    "390: search review FLX4 (1 results)",
+    "390: search FLX4 review (1 results)",
+    "390: search RÉKORDBOX (5 results)",
+    "390: search headphones under 100 (1 results)",
+    "390: search record mix (4 results)",
+    "390: empty state and reset with focus",
+    "390: topic AND query, URL restore",
+    "390: article navigation and back preserves results",
+    "390: unknown topic and hostile query handled as text",
+    "390: keyboard query and reset",
+    "no-JavaScript: all destinations and starter routes usable; inert controls hidden"
+  ],
+  "passed": 27
+}
