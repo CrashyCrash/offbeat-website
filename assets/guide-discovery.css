@@ -133,3 +133,12 @@
   .guide-discovery > h2 { font-size: 1.5rem; }
   .discovery-sub { font-size: .94rem; }
 }
+
+.discovery-routes { margin: .75rem 0 0; padding: .6rem .8rem; background: var(--surface-2); border: 1px solid var(--border-2); border-radius: 8px; }
+.discovery-routes summary { cursor: pointer; color: var(--accent-2); font-weight: 650; min-height: 32px; padding: .2rem 0; }
+.discovery-routes summary:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 3px; }
+.guide-discovery.has-query .discovery-routes { display: none; }
+.catalog-hero .hero-eyebrow { display: none; }
+.catalog-hero .hero-inner { padding: .5rem; }
+.catalog-hero .hero-sub { font-size: 1rem; }
+.guide-discovery .discovery-sub { margin-bottom: .5rem; }
