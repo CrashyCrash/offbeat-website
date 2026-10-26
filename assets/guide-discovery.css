@@ -1,0 +1,135 @@
+/* Offbeat Inc. — Guide discovery (all-dj-guides.html)
+   Scoped enhancements only; uses design tokens from assets/style.css.
+   No dependencies. Pages without this file are unaffected. */
+
+[hidden] { display: none !important; }
+
+/* Hero CTA that jumps straight to the searchable catalog */
+.gd-hero-actions { margin: 1.4rem 0 0; }
+.gd-hero-actions .btn { min-height: 44px; }
+
+/* Search + filter toolbar */
+.guide-discovery { margin-top: 0; }
+.discovery-sub { max-width: 680px; }
+
+.discovery-controls { margin: 1.1rem 0 0; max-width: 720px; }
+.discovery-controls label { display: block; margin: 0 0 .45rem; font-size: .95rem; font-weight: 750; color: var(--text); }
+.discovery-controls input[type="search"] {
+  width: 100%;
+  min-height: 48px;
+  padding: .8rem 1rem;
+  font: inherit;
+  font-size: 1rem;
+  color: var(--text);
+  background: var(--surface-2);
+  border: 1px solid var(--border-2);
+  border-radius: 10px;
+}
+.discovery-controls input[type="search"]::placeholder { color: var(--muted-2); }
+.discovery-actions { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .75rem; }
+
+/* Topic filter chips */
+.discovery-chips { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; margin: 1.05rem 0 0; }
+.discovery-chips-label, .discovery-paths-label {
+  margin: 0 0 .25rem;
+  font-size: .74rem;
+  font-weight: 850;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  min-height: 44px;
+  padding: .42rem .9rem;
+  font: inherit;
+  font-size: .9rem;
+  font-weight: 650;
+  line-height: 1.2;
+  color: var(--text-2);
+  background: var(--surface-2);
+  border: 1px solid var(--border-2);
+  border-radius: 999px;
+  cursor: pointer;
+  text-decoration: none;
+}
+.chip:hover { border-color: rgba(6,182,212,.55); color: #67e8f9; text-decoration: none; }
+.chip[aria-pressed="true"] { background: rgba(124,58,237,.16); border-color: rgba(124,58,237,.55); color: #c4b5fd; }
+.chip .chip-count { font-size: .8rem; font-weight: 750; color: var(--muted-2); }
+.chip[aria-pressed="true"] .chip-count { color: #a78bfa; }
+
+/* Result count */
+.discovery-count { margin: 1.05rem 0 0; font-size: .92rem; color: var(--muted); }
+
+/* Starter paths */
+.discovery-paths { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; margin: 1.05rem 0 0; }
+.discovery-paths .chip { color: var(--accent-2); background: rgba(6,182,212,.08); border-color: rgba(6,182,212,.35); }
+.discovery-paths .chip:hover { color: white; }
+
+/* Empty state */
+.discovery-empty {
+  margin: 1.15rem 0 0;
+  padding: 1rem 1.15rem;
+  color: var(--text-2);
+  background: rgba(6,182,212,.06);
+  border: 1px solid rgba(6,182,212,.32);
+  border-left: 3px solid var(--accent-2);
+  border-radius: var(--radius);
+}
+.discovery-empty .btn { margin-top: .55rem; }
+
+/* Topic badge on catalog cards */
+.card-topic {
+  display: inline-block;
+  margin: 0 0 .6rem;
+  padding: .2rem .65rem;
+  font-size: .68rem;
+  font-weight: 850;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--accent-2);
+  background: rgba(6,182,212,.08);
+  border: 1px solid rgba(6,182,212,.32);
+  border-radius: 999px;
+}
+
+/* Visible keyboard focus for the discovery controls */
+.discovery-controls input[type="search"]:focus-visible,
+.chip:focus-visible,
+.discovery-empty .btn:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 2px; }
+
+@media (max-width: 560px) {
+  .discovery-actions { flex-direction: column; }
+  .discovery-actions .btn { width: 100%; }
+  .discovery-chips-label, .discovery-paths-label { width: 100%; }
+}
+
+/* The catalog is a tool: keep the finding controls ahead of decoration. */
+.catalog-hero { padding: 1.5rem 1rem .5rem; }
+.catalog-hero h1 { font-size: clamp(2rem, 5vw, 3rem); margin: .65rem 0; }
+.catalog-hero .hero-sub { margin-bottom: .5rem; }
+.catalog-hero .hero-eyebrow { padding: .25rem .75rem; }
+.catalog-hero + .content-wrap { padding-top: 1rem; }
+.discovery-select { display: none; margin-top: .8rem; }
+.discovery-select label { display: block; margin-bottom: .3rem; font-weight: 700; }
+.discovery-select select { width: 100%; min-height: 48px; padding: .65rem; background: var(--surface-2); color: var(--text); border: 1px solid var(--border-2); border-radius: 8px; font: inherit; }
+.guide-section { scroll-margin-top: 11rem; }
+@media (max-width: 760px) {
+  .discovery-chips { display: none; }
+  .discovery-select:not([hidden]) { display: block; }
+  .catalog-hero .hero-eyebrow { display: none; }
+  .catalog-hero { padding: 1rem 1rem 0; }
+  .discovery-actions { flex-direction: row; }
+  .discovery-actions .btn { width: auto; flex: 1; padding: .65rem; font-size: .85rem; }
+}
+
+.catalog-hero .hero-inner { padding: .75rem .5rem 1rem; }
+.catalog-hero .hero-sub { max-width: 52rem; }
+.guide-discovery.has-query .discovery-paths { display: none; }
+@media (max-width: 760px) {
+  .catalog-hero .hero-sub { font-size: 1rem; line-height: 1.45; }
+  .guide-discovery > h2 { font-size: 1.5rem; }
+  .discovery-sub { font-size: .94rem; }
+}

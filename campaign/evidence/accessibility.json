@@ -1,0 +1,22 @@
+[
+  {
+    "width": 1440,
+    "port": 8960,
+    "violations": []
+  },
+  {
+    "width": 1440,
+    "port": 8961,
+    "violations": []
+  },
+  {
+    "width": 390,
+    "port": 8960,
+    "violations": []
+  },
+  {
+    "width": 390,
+    "port": 8961,
+    "violations": []
+  }
+]
