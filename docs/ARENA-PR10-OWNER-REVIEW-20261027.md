@@ -1,0 +1,78 @@
+## Subsequent Arena patch — commit f580788, independent browser acceptance PENDING
+
+Arena pushed five more commits to the **same** [fork PR #10](https://github.com/Crashicorn/offbeat-website/pull/10), advancing its head from the previously inspected `21bb4978` to `f580788397fc5836ffcb026cc7c0e0f74d7170c6`. Direct GitHub comparison confirms 5 commits, 12 changed files. The implementation now tests passive reversible included leads, credits the DM-40D box cable, reserves source-output capacity between speaker lines and labels unsupported two-pair paths as unresolved. Reported figures: FLX4 + DM-40D **$478** (previously $490); FLX4 + two DM-40D retail pairs **$627** (hardware present but routing unresolved and not ready); FLX4 beginner desk **$527** (previously $539).
+
+**Progress, not signoff:** Arena ran real-page jsdom tests and site checks (reported clean), but explicitly did not run the rewritten **real Chromium `tests/test_buying_journeys.js`**, nor capture mobile/desktop screenshots at the new SHA. The user's praise and old K11 :8878 preview were for the **prior** `21bb4978` commit. The new patch retains historical unverified cases: multi-output FLX10 remains conservative when only an estimated cable route exists, and legacy `assets/rig-builder.js` has outdated hardcoded cable logic outside the current flow.
+
+**Distinct, owner-accessible build:** After updating the Forgotten-Value `campaign/overnight-20261026` checkout, execute `bash tools/open-offbeat-pr10-f580788-preview.sh` on K11. The helper validates the exact new remote SHA and opens a **separate** static preview on [Rig Studio :8879](http://127.0.0.1:8879/build-your-dj-setup.html) and [speaker guide :8879](http://127.0.0.1:8879/best-dj-monitor-speakers.html), leaving the older :8878 preview intact for comparison. The :8879 preview **does not start until the helper is run**. Real-browser retest should independently compare old/new, assert ownership/cost/wiring and N4 mobile geometry, and preserve screenshots and results before any integration recommendation.
+
+# Offbeat Arena development — 2026-10-27 owner review and exact preview
+
+**Source under review:** [Crashicorn/offbeat-website PR #10](https://github.com/Crashicorn/offbeat-website/pull/10), branch `arena/849667ed-offbeat-website`, commit `21bb497833f4309facda1e968ecc4d4e14a79657`. This is a cumulative *fork development* candidate stacked on PR #9 and earlier Arena work. It **is not deployed on `CrashyCrash/offbeat-website` or offbeatinc.com**. Never assume fork GitHub Pages publishes that same SHA without checking its actual deployed source.
+
+## Owner: how to see the actual new website
+
+Open `/home/igpu/Desktop/AI-Projects/fv-campaign-20261026/OPEN-MY-PROJECTS.html` on K11. The October 27 corrected version puts site links at top; if the local checkout is stale, run `git pull --ff-only` in that checkout.
+
+**Simplest one-command local preview:**
+
+```bash
+cd /home/igpu/Desktop/AI-Projects/fv-campaign-20261026
+git pull --ff-only
+bash tools/open-offbeat-pr10-preview.sh
+```
+
+The helper checks that GitHub's actual PR #10 HEAD matches the exact reviewed SHA, adds a separate read-only-intent worktree without changing original repo branches, starts a loopback-only static server, and opens Rig Studio. On the K11 (only after the script succeeds):
+
+- [Rig Studio](http://127.0.0.1:8878/build-your-dj-setup.html)
+- [New speaker connection planner](http://127.0.0.1:8878/best-dj-monitor-speakers.html)
+- [Beginner controller choice](http://127.0.0.1:8878/best-dj-controllers-for-beginners.html)
+- [Headphone guide](http://127.0.0.1:8878/best-dj-headphones-2026.html)
+
+The server is nonproduction, local to K11, and should not be mistaken for a public Pages deployment. If the helper cannot verify HEAD or a port is occupied, it stops instead of silently displaying unrelated bytes.
+
+Independent QA: [Forgotten-Value campaign review](https://github.com/CrashyCrash/Forgotten-Value/blob/campaign/overnight-20261026/projects/offbeat-website/evidence/offbeat-pr10-acceptance-20261027/VERDICT.md) and [test ledger](https://github.com/CrashyCrash/Forgotten-Value/blob/campaign/overnight-20261026/projects/offbeat-website/evidence/offbeat-pr10-acceptance-20261027/TESTS.md). Its author-suite count is **7/8**, not 8/8. The failing `tests/test_buying_journeys.js:163` expects a second DM-40D pair to cost +$149 while the implementation adds a $12 additional cable (+$161). The test expectation needs to be reconciled with physical signal topology. The independent Chromium review is useful evidence; the owner has not visually approved this cumulative site for publication.
+
+## Actual owner browser review — positive (October 27, K11)
+
+The owner successfully ran Forgotten-Value's exact-head preview helper. It verified and served commit `21bb497833f4309facda1e968ecc4d4e14a79657` locally at `127.0.0.1:8878`, and opened working URLs for Rig Studio and `best-dj-monitor-speakers.html`.
+
+**First-hand owner feedback:** **“Offbeat's Rig Studio is significantly more user-friendly than the last time I used it. The best-dj-monitor-speakers.html looks to be quite helpful, too.”** The owner supplied full-page screenshots of both pages showing the updated dark/cool-blue/purple designs and visible equipment-planning interfaces. This is **positive usability feedback on these reviewed pages**, not a production approval, affiliate-link audit, factual equipment accuracy signoff or whole-site visual acceptance.
+
+**Preserve the actual gains.** Do not replace/rewrite the working Rig Studio, speaker guide, page structure, styling or interaction flows merely to fix the two remaining wiring issues. Prioritize targeted compatibility/cost corrections in the common `gear-connections.js` path, owner-trustworthy explanations, and narrowly scoped improvements with real browser tests. Favor authentic source-verified product photos and crisp technical diagrams; no synthetic product renders, warm rust palette, generic sitewide redesign or unnecessary editorial overhauls. Continue maintaining an exact-SHA, owner-openable preview.
+
+## Newly confirmed included-cable overcharge — buyer-facing pricing
+
+**Correction to the prior broad engineering ACCEPT:** [Offbeat issue #1038](https://github.com/CrashyCrash/offbeat-website/issues/1038) establishes an additional, source-verifiable cost error:
+
+- Pioneer officially lists the [FLX4 stereo RCA master outputs](https://www.pioneerdj.com/en/product/dj-controllers/ddj-flx4/).
+- Pioneer officially lists the [DM-40D stereo 3.5 mm input](https://www.pioneerdj.com/en/product/monitor-speakers/dm-40d/) **and** a [3.5 mm stereo-to-dual-RCA converter cable in its box](https://pioneernz.co.nz/pages/specifications-dm40d).
+- That *passive* cable can be connected in reverse orientation, from **FLX4 RCA master → DM-40D 3.5 mm stereo input**. The catalog includes it as `from:"jack35",to:"rca"`, but the shared `assets/gear-connections.js:134–146` only tests this orientation. Therefore the new speaker planner's FLX4 + DM-40D example unnecessarily bills `$12` for a separate RCA-to-RCA lead, advertising `$490` instead of the physically feasible `$478` included-cable subtotal (assuming the official supplied accessories are present).
+- Fix the model only for **passive reversible assemblies**; do not reverse active electronics, directional adapters, or phantom-power connections. Cross-check product box contents and connectable terminal types.
+
+This was missed by the overnight reviewer, whose tested cases passed on their narrower expectations. The independent acceptance verdict is therefore **CONDITIONAL for integration**, not an unconditional ready-to-publish signoff. The second-pair fan-out gap documented below is separate.
+
+## Source-verified multi-pair routing gap — owner-facing risk
+
+Manufacturer sources:
+- [Pioneer DJ DDJ-FLX4 official specification](https://www.pioneerdj.com/en/news/2022/ddj-flx4-2-channel-dj-controller-for-multiple-dj-applications/): **MASTER × 1 (RCA stereo)**, **HEADPHONES × 1 (3.5-mm stereo)**, not two independent master stereo buses.
+- [Pioneer DJ DM-40D specification](https://www.pioneerdj.com/en/product/monitor-speakers/dm-40d/): stereo RCA input ×1 and 3.5-mm stereo input ×1 on the powered cabinet, with supplied speaker cord connecting the passive cabinet; headphone jack is not a specified line/distribution output.
+- [Official DM-40D contents/inputs](https://pioneernz.co.nz/pages/specifications-dm40d): one 3.5-mm-to-RCA converter cable and a passive-speaker cord are included; **do not conflate the interspeaker cord with a controller-to-monitors audio lead**.
+
+The code at Arena PR #10 `21bb4978`, `assets/gear-connections.js:112–236`, determines compatible cable types and quantities **per speaker shopping slot** and iterates available controller outputs to find a matching jack, but does **not** reserve/count available output buses or validate the simultaneous fan-out of a single master output to multiple speaker systems. `assets/rig-studio.js` aggregates cable needs for speaker slots; the test `tests/test_buying_journeys.js:157–163` doubles a DM-40D pair and asserts that the second box requires a second cable, but supplies no distribution/available-output proof.
+
+Therefore **2 × DM-40D pairs + DDJ-FLX4** is **NOT demonstrated to be a complete connectable rig merely by adding a second $12 cable**. One FLX4 RCA stereo master output does not provide two dedicated independent stereo master pairs. A properly planned additional pair needs a separately validated splitting/distribution/output route with honest cost and electrical suitability, or the UI must mark the second pair's route as unresolved. Do not assume the FLX4 headphone/cue output can serve as a second full-range stereo master, or imply that a standard pair of RCA leads supplies extra source jacks.
+
+**Requested correction before broader catalog release:** add a multi-output/port-capacity/fan-out constraint to the shared connection planner; distinguish two stereo destinations from two source buses, treat unsupported extra-pair configurations as unresolved with an explicit remedy, and write browser tests that assert no false “ready” wiring/cost. Then update the stale `161 !== 149` author test based on the corrected real topology—not merely by changing 149 to 161 without proving a signal path. This risk was **outside** the earlier independent review's single-pair verified paths; do not invalidate those passes, but do not overstate full planner coverage.
+
+## Integration conditions
+
+1. **Clarify signal distribution for 2 × DM-40D pairs or any multi-pair configuration.** Two pairs may need extra outputs, splitting or an active distribution stage, not just an extra cable. Determine the actual controller's output count/routing and how a second stereo signal reaches both pairs; do not bill or draw unprovided hardware as connected. Differentiate "extra cable physically attached" from "plausible connection path." The model should say unavailable/needs distribution when appropriate, with truthful cost or allowance; add actual browser tests.
+2. Reconcile the stale author test and verify all appropriate suites on the exact integration SHA, including proper assets and browser interactions.
+3. Independently review the actual Rig Studio, speaker planner, software matrix and guide UI at desktop/mobile sizes with the owner's MacBook/real browser if useful. Re-check model identity, prices, rights/attribution and product specifications before publication.
+4. **Do not bulk merge stacked Arena branches into production** until their ancestry, existing protected offbeatinc.com behavior, missing images, editorial claims, analytics/consent and external links have undergone selective regression review. No production release authorized by this document.
+5. Favor visitor-visible buying reliability and authentic model-matched photographs, not another TaskDatty architecture project or test-count-driven editorial polish.
+
+## Separate overnight records
+
+The broader Oct 26–27 local-Qwen run produced a playable music audition and a nonproduction AfterLotto candidate review, but the owner found **most navigation links broken in the dashboard-linked :8002 older preview**. The user has asked to correct those other project records and then **focus this conversation exclusively on Offbeat**. Avoid importing an AfterLotto acceptance claim into Offbeat release gates or starting unrelated campaigns.
