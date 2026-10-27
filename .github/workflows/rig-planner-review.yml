@@ -1,0 +1,55 @@
+name: Rig planner security regression (review only)
+
+# Untrusted candidate source runs without secrets or write privileges.
+# This is a review check, not a release approval or publisher.
+on:
+  push:
+    branches:
+      - fix/arena-rig-share-safety-20261026
+  pull_request:
+    branches:
+      - review/arena-rig-original-20261026
+    paths:
+      - assets/rig-builder.js
+      - tests/rig-builder-security.test.js
+      - tests/rig-builder-browser.cjs
+      - .github/workflows/rig-planner-review.yml
+
+permissions:
+  contents: read
+
+jobs:
+  rig-planner:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Check out exact candidate
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Use Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Parse planner and tests
+        run: |
+          node --check assets/rig-builder.js
+          node --check tests/rig-builder-security.test.js
+          node --check tests/rig-builder-browser.cjs
+      - name: Execute committed regression suite
+        run: node --test tests/rig-builder-security.test.js
+      - name: Browser-check real planner at desktop and mobile sizes
+        shell: bash
+        run: |
+          set -euo pipefail
+          CHROME_BIN="$(command -v google-chrome || command -v chromium || command -v chromium-browser)"
+          test -x "$CHROME_BIN"
+          npm install --no-save --no-package-lock --no-audit --no-fund --ignore-scripts puppeteer-core@24.26.1
+          python3 -m http.server 8099 --bind 127.0.0.1 >/tmp/rig-http.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+          for i in $(seq 1 20); do
+            if curl -fsS http://127.0.0.1:8099/build-your-dj-setup.html -o /dev/null; then break; fi
+            sleep 0.25
+          done
+          CHROME_BIN="$CHROME_BIN" node tests/rig-builder-browser.cjs
