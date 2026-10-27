@@ -25,6 +25,17 @@ The server is nonproduction, local to K11, and should not be mistaken for a publ
 
 Independent QA: [Forgotten-Value campaign review](https://github.com/CrashyCrash/Forgotten-Value/blob/campaign/overnight-20261026/projects/offbeat-website/evidence/offbeat-pr10-acceptance-20261027/VERDICT.md) and [test ledger](https://github.com/CrashyCrash/Forgotten-Value/blob/campaign/overnight-20261026/projects/offbeat-website/evidence/offbeat-pr10-acceptance-20261027/TESTS.md). Its author-suite count is **7/8**, not 8/8. The failing `tests/test_buying_journeys.js:163` expects a second DM-40D pair to cost +$149 while the implementation adds a $12 additional cable (+$161). The test expectation needs to be reconciled with physical signal topology. The independent Chromium review is useful evidence; the owner has not visually approved this cumulative site for publication.
 
+## Newly confirmed included-cable overcharge — buyer-facing pricing
+
+**Correction to the prior broad engineering ACCEPT:** [Offbeat issue #1038](https://github.com/CrashyCrash/offbeat-website/issues/1038) establishes an additional, source-verifiable cost error:
+
+- Pioneer officially lists the [FLX4 stereo RCA master outputs](https://www.pioneerdj.com/en/product/dj-controllers/ddj-flx4/).
+- Pioneer officially lists the [DM-40D stereo 3.5 mm input](https://www.pioneerdj.com/en/product/monitor-speakers/dm-40d/) **and** a [3.5 mm stereo-to-dual-RCA converter cable in its box](https://pioneernz.co.nz/pages/specifications-dm40d).
+- That *passive* cable can be connected in reverse orientation, from **FLX4 RCA master → DM-40D 3.5 mm stereo input**. The catalog includes it as `from:"jack35",to:"rca"`, but the shared `assets/gear-connections.js:134–146` only tests this orientation. Therefore the new speaker planner's FLX4 + DM-40D example unnecessarily bills `$12` for a separate RCA-to-RCA lead, advertising `$490` instead of the physically feasible `$478` included-cable subtotal (assuming the official supplied accessories are present).
+- Fix the model only for **passive reversible assemblies**; do not reverse active electronics, directional adapters, or phantom-power connections. Cross-check product box contents and connectable terminal types.
+
+This was missed by the overnight reviewer, whose tested cases passed on their narrower expectations. The independent acceptance verdict is therefore **CONDITIONAL for integration**, not an unconditional ready-to-publish signoff. The second-pair fan-out gap documented below is separate.
+
 ## Source-verified multi-pair routing gap — owner-facing risk
 
 Manufacturer sources:
