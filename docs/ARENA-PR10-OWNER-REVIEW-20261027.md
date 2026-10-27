@@ -25,6 +25,14 @@ The server is nonproduction, local to K11, and should not be mistaken for a publ
 
 Independent QA: [Forgotten-Value campaign review](https://github.com/CrashyCrash/Forgotten-Value/blob/campaign/overnight-20261026/projects/offbeat-website/evidence/offbeat-pr10-acceptance-20261027/VERDICT.md) and [test ledger](https://github.com/CrashyCrash/Forgotten-Value/blob/campaign/overnight-20261026/projects/offbeat-website/evidence/offbeat-pr10-acceptance-20261027/TESTS.md). Its author-suite count is **7/8**, not 8/8. The failing `tests/test_buying_journeys.js:163` expects a second DM-40D pair to cost +$149 while the implementation adds a $12 additional cable (+$161). The test expectation needs to be reconciled with physical signal topology. The independent Chromium review is useful evidence; the owner has not visually approved this cumulative site for publication.
 
+## Actual owner browser review — positive (October 27, K11)
+
+The owner successfully ran Forgotten-Value's exact-head preview helper. It verified and served commit `21bb497833f4309facda1e968ecc4d4e14a79657` locally at `127.0.0.1:8878`, and opened working URLs for Rig Studio and `best-dj-monitor-speakers.html`.
+
+**First-hand owner feedback:** **“Offbeat's Rig Studio is significantly more user-friendly than the last time I used it. The best-dj-monitor-speakers.html looks to be quite helpful, too.”** The owner supplied full-page screenshots of both pages showing the updated dark/cool-blue/purple designs and visible equipment-planning interfaces. This is **positive usability feedback on these reviewed pages**, not a production approval, affiliate-link audit, factual equipment accuracy signoff or whole-site visual acceptance.
+
+**Preserve the actual gains.** Do not replace/rewrite the working Rig Studio, speaker guide, page structure, styling or interaction flows merely to fix the two remaining wiring issues. Prioritize targeted compatibility/cost corrections in the common `gear-connections.js` path, owner-trustworthy explanations, and narrowly scoped improvements with real browser tests. Favor authentic source-verified product photos and crisp technical diagrams; no synthetic product renders, warm rust palette, generic sitewide redesign or unnecessary editorial overhauls. Continue maintaining an exact-SHA, owner-openable preview.
+
 ## Newly confirmed included-cable overcharge — buyer-facing pricing
 
 **Correction to the prior broad engineering ACCEPT:** [Offbeat issue #1038](https://github.com/CrashyCrash/offbeat-website/issues/1038) establishes an additional, source-verifiable cost error:
