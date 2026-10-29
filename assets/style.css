@@ -2416,6 +2416,8 @@ h3.mini {
 .booth-brand { font-size: .75rem; color: var(--muted); text-transform: uppercase; font-weight: 600; }
 .booth-model { font-size: 1.05rem; font-weight: 700; color: #fff; margin: .1rem 0; font-family: var(--display); }
 .booth-price { font-size: .95rem; font-weight: 700; color: var(--flame-2); }
+.booth-package-detail { display: block; margin-top: .4rem; font-size: .78rem; line-height: 1.4; color: var(--text-2); max-width: 38ch; }
+.speaker-package-detail { margin-top: .35rem; font-weight: 600; }
 .price--owned { color: var(--mint); }
 .booth-swap-btn {
   margin-top: .8rem; padding: .4rem .6rem; border-radius: var(--r-xs);
