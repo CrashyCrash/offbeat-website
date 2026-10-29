@@ -1,5 +1,43 @@
 # October 28 implementation progress — image and standalone research acted upon
 
+## October 28 evening — Battle Mode report intake, no file handoffs required
+
+**Access limitation discovered:** Battle Mode agents could create `.md` output files in their sandbox, but the owner cannot retrieve these files/attachments. Future external assignments must return **only concise, in-chat, copyable plain-text findings** (one plaintext block with source URLs, explicit verification tiers); no `/tmp`, generated files, attachments or handoff artifacts. The user already provided the full text of the responses for Battles 1, 2, and 4 directly as pasted text, so those do **not** need re-export. Battle 3 never completed; Battle 5's two responses had limited indexed search and no usable verified outbound merchant destinations.
+
+**Latest Arena state independently checked:** [cumulative fork PR #14](https://github.com/Crashicorn/offbeat-website/pull/14) advanced to exact head `49d87fa66e4f94d18ea77a323d92e61eaf873541` (draft). Read of its current `xdj-az-vs-denon-prime-4-plus.html` confirms the old erroneous *Spotify support itself uncertain* wording has been replaced by manufacturer-confirmed native StreamingDirectPlay with Spotify Premium. Current integrated evidence lists inclusion of [Bedroom Starter PR #11](https://github.com/Crashicorn/offbeat-website/pull/11), 7-question Software Advisor, three licensed editorial images, four buying guides and cross-journey wiring. Evidence claims local browser tests; owner visual acceptance and independent deployment review remain separate. The **older head `6d701ec6` and release-blocker text in historical entries below are superseded, not current status.**
+
+### Battle 1: Software Advisor audit — proposed test fixtures, NOT independent implementation acceptance
+
+- 12 user cases spanning DDJ-FLX4/FLX2/FLX10, PRIME 4+, SC6000 + mixer, XDJ-AZ, NI controllers, Linux, mobile, no-hardware practice, streaming and pro usage. High-value checks: Serato Lite-vs-Pro hardware unlock; SC6000 *accessory* vs unlock; rekordbox Free hardware unlock vs paid add-ons; actual DVS/recording/Stems gates; 36-month comparison of perpetual/annual/monthly costs; Engine DJ standalone-vs-desktop distinction. Agent could not access Offbeat advisor; no claims of live behavior validated.
+- **Caution:** Agent labels whole scenarios VERIFIED while making sweeping entitlement claims (e.g. all Serato DVS forces Suite, blanket paid rekordbox Core for Stems, VirtualDJ Free alongside controller use, Serato iOS Suite). Treat all as *assertions requiring per-device/per-plan vendor checks*, not an accepted specification or pricing database. One independently confirmed baseline: [Serato DJ Lite product page](https://serato.com/dj/lite) explicitly provides **basic free Stems**, while advanced **Stems FX and set recording** belong to Pro; [Serato's hardware licensing explanation](https://support.serato.com/hc/en-us/articles/202260274-Understanding-Serato-DJ-compatible-hardware-licensing) distinguishes Lite/Pro hardware unlock. No blind import into Advisor.
+
+### Battle 2: Standalone streaming compatibility — strong new firmware lead
+
+- Agent reports the [AlphaTheta XDJ-AZ firmware-support changelog](https://support.alphatheta.com/en-US/articles/37072403941145) lists a **Ver. 2.00 [NEW] Spotify StreamingDirectPlay** entry and Apple Music playback improvement. This is a *specific positive version-source lead*, stronger than inference from v1.30 silence; independently fetched support page returned 403/stale mirror, so **full current manufacturer changelog text and dates have not been independently read by this session**. Current official [XDJ-AZ product page](https://alphatheta.com/en/product/all-in-one-dj-system/xdj-az/black/) confirms Spotify native support and Premium requirement. Agent says version 2.00 but separately admits its Oct 6 release date was not verified; avoid presenting date as manufacturer-verified without direct release documentation.
+- Agent's multi-device matrix (AZ, OMNIS-DUO, PRIME 4/4+, GO/GO+, SC6000, CDJ-3000) is **incomplete**: agent says Engine's model-by-service grid was truncated and GO+ Apple Music remains PARTIAL. Its pasted table nevertheless marks more cells definitively; adjudicate only with live official per-model evidence. Do not treat absence from a finite page as universal impossibility.
+- Engine DJ streaming vs desktop/software distinction and generation-specific Apple/Amazon capabilities remain valuable review targets. Avoid republishing broad 'verified-negative across all devices' without contemporaneous direct official support evidence.
+
+### Battle 3: Rig Studio connectivity
+
+**No completed response.** Do not count as verified output, do not invent an attachment or restart broad research. Optional focused in-chat fixtures only if evidence available.
+
+### Battle 4: Manufacturer photo permissions
+
+- Both responses converge on **no newly cleared, current exact-model photos**. inMusic press contact `inmusic@jessuppr.com` remains a *contact, not permission*. Useful request clauses: exact model and image identifiers, authority over photographer rights, monetized editorial/affiliate adjacency, thumbnails/cropping/self-hosting, credit, territory, duration/archival and revocation; no messages sent.
+- **Conflicting AlphaTheta contacts:** one response supplies `marketing.us@pioneerdj.com` from trade-show/historical listings; the other could not establish any current direct press inbox and recommends an official contact form routed to PR/image licensing. **Do not use the unverified email as an established current press address.** One answer mentions Yamaha Japan product-introduction press-image licensing, while the other cites Yamaha US personal/non-commercial site terms and dealer-only media access; these are different scopes and not blanket clearance for OFFBEAT affiliate pages.
+- No new manufacturer asset should be published without file-specific clear rights evidence; no contact was sent.
+
+### Battle 5: Affiliate buying journeys — hypotheses, not URL checks
+
+- Two agents report only indexed text of publicly visible Offbeat pages. They **could not inspect actual outbound hrefs or verify merchant product destinations**; one says disclosure only names Amazon, the other says Sweetwater via FlexOffers and Guitar Center via Impact. Treat this as contradictory **source snapshots**, not a factual approval/disclosure finding.
+- Proposed potential defects: obsolete DDJ-200/DDJ-400/DDJ-1000 or FLX6 recommendations, generic buy CTAs above named products, static prices adjacent to affiliate links, product variants/pairs, link-to-wrong-category risk, and unclear rights behind manufacturer-labeled images. Some may already be fixed in newer Arena development. **Reproduce actual HTML and hrefs at exact source SHA before changing content**; do not publish either agent's pattern-guessed merchant URLs.
+- Engineering concept worth preserving: exact-model/variant item registry, validated merchant destination types, owned-gear deduction, required accessory bundles and last-checked status. This is backlog design only; no affiliate enrollment evidence, no verified links, no approved photos, no completed code.
+
+**Outcome:** Reports have been distilled into existing owner-side research instead of new duplicate artifacts. No external source is allowed to silently override the installed site's factual checks, authenticated affiliate approvals or manufacturing image rights. Prioritize validation by Arena/other browser-capable agent in existing controlled fork, not further low-quota Battle research.
+
+---
+
+
 The external Battle Mode/GLM research in [this draft docs PR #1045](https://github.com/CrashyCrash/offbeat-website/pull/1045) has produced two independently scoped **nonproduction** deliveries, followed by a cumulative integration, rather than remaining only reports:
 
 - **[Codex standalone buying guide PR #13](https://github.com/Crashicorn/offbeat-website/pull/13)**, DRAFT, exact head `0b730a1c278258953152e23e0cc8d0c847bc93b9`. Four scoped hardware guides + real-Chromium test and evidence; recovered the interrupted Qwen SC6000 partial diff. [Manufacturer/acceptance notes](https://github.com/CrashyCrash/offbeat-website/issues/1041). Source of truth still requires **one correction**: current [AlphaTheta XDJ-AZ product page](https://alphatheta.com/en/product/all-in-one-dj-system/xdj-az/black/) now expressly confirms Spotify StreamingDirectPlay with Spotify Premium on current firmware; do not overstate unresolved compatibility based on old v1.30 PDF.
