@@ -58,8 +58,10 @@ async function visit(browser, width, suffix = "", denyStorage = false) {
       assert.match(includedLabel, /Speaker Package Includes Audio Cable/);
       // Connection map is live to the selected equipment, not a static
       // decorative cable animation or a claim of physically tested routing.
-      const initialRoutes = await page.$eval(".rig-route", nodes =>
-        nodes.map(node => ({ key: node.dataset.route, status: node.dataset.status, text: node.textContent })));
+      const initialRoutes = await page.evaluate(() =>
+        Array.from(document.querySelectorAll(".rig-route")).map(node => ({
+          key: node.dataset.route, status: node.dataset.status, text: node.textContent
+        })));
       assert.equal(initialRoutes.length, 3, "host, room audio and headphone cue must be separate routes");
       assert.equal(initialRoutes.find(r => r.key === "master").status, "included",
         "starter's manufacturer-bundled speaker lead should be shown as included");
