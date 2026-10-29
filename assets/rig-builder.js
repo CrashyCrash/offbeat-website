@@ -1021,6 +1021,27 @@
     return currentRig.items.find(function (s) { return s.category === category; }) || null;
   }
 
+  // Speaker listings price a PACKAGE, not necessarily one physical cabinet.
+  // The catalog explicitly distinguishes stereo pairs from individual PA boxes.
+  // Surface that distinction anywhere a buyer can change quantities or prices.
+  function speakerPackageSummary(slot, item) {
+    if (!slot || slot.category !== "speakers" || !item) return "";
+    var qty = Math.max(1, Number(slot.qty) || 1);
+    var label = String(item.box_label || "") + " " + String(item.model || "");
+    var units = Number(item.speaker_units);
+    if (units === 2 || (units !== 1 && /\\bpair\\b/i.test(label))) {
+      return qty + (qty === 1 ? " stereo pair (2 physical speakers)" :
+        " stereo pairs (" + (qty * 2) + " physical speakers)") +
+        "; the listed price covers " + (qty === 1 ? "the pair" : "all selected pairs") + ".";
+    }
+    if (units === 1 || /\\bsingle\\b/i.test(label)) {
+      return qty + (qty === 1 ? " individual PA cabinet" : " individual PA cabinets") +
+        (qty === 1 ? "; a second cabinet is NOT included." :
+          "; the price covers " + qty + " separate cabinets.");
+    }
+    return "Package quantity not verified in the catalog; confirm included speaker units before buying.";
+  }
+
   function renderBoothSlot(slot, label, icon, isMain) {
     var item = getSlotItem(slot);
     var isOwned = Boolean(slot.owned) || Boolean(item && item.no_purchase === true);
@@ -1057,6 +1078,8 @@
             <span class="booth-price ${isOwned ? 'price--owned' : ''}">
               ${isOwned ? '<s>$' + (item.price * (slot.qty || 1)) + '</s> (Owned)' : '$' + (item.price * (slot.qty || 1))}
             </span>
+            ${slot.category === "speakers" ? '<span class="booth-package-detail">' +
+              escapeHtml(speakerPackageSummary(slot, item)) + '</span>' : ''}
           </div>
         </div>
         <div class="booth-card-footer">
@@ -1107,6 +1130,8 @@
                 <button type="button" class="btn-item-info" data-action="inspect-item" data-item-id="${item.id}">Specs</button>
               </div>
               <p class="item-tagline">${escapeHtml(item.tagline || item.ideal_for || '')}</p>
+              ${slot.category === "speakers" ? '<p class="item-tagline speaker-package-detail">' +
+                escapeHtml(speakerPackageSummary(slot, item)) + '</p>' : ''}
               ${item.slug ? `<a href="${item.slug}" class="item-guide-link">Read Offbeat Guide →</a>` : ''}
             </div>
           </div>
