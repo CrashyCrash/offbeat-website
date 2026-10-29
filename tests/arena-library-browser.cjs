@@ -47,6 +47,12 @@ function visibleCount(page) {
       }
       // Buyer clarity: controller-only price brackets, real image and rig link.
       await page.goto(base + "/index.html", { waitUntil: "load" });
+      await page.$eval(".budget-category-intro img", img =>
+        img.scrollIntoView({ block: "center", behavior: "instant" }));
+      await page.waitForFunction(() => {
+        const img = document.querySelector(".budget-category-intro img");
+        return img && img.complete && img.naturalWidth > 0;
+      }, { timeout: 5000 });
       const budget = await page.evaluate(() => {
         const section = document.querySelector('[aria-labelledby="budget"]');
         const img = section?.querySelector(".budget-category-intro img");
@@ -68,7 +74,10 @@ function visibleCount(page) {
         "best-standalone-dj-systems.html"
       ]);
       assert.equal(budget.planner, "build-your-dj-setup.html");
-      await page.click(".budget-category-intro a");
+      await Promise.all([
+        page.waitForNavigation({ waitUntil: "load" }),
+        page.click(".budget-category-intro a")
+      ]);
       assert.equal(new URL(page.url()).pathname, "/build-your-dj-setup.html",
         "complete-rig path must reach the working planner");
 
