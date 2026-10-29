@@ -2445,6 +2445,61 @@ h3.mini {
 .cable-title { font-size: .82rem; font-weight: 600; color: var(--text); }
 .cable-change { font-size: .75rem; color: var(--cyan); font-weight: 700; }
 
+/* Connection map: routing is based on catalog evidence, not a simulated hookup. */
+.rig-route-map {
+  margin-top: 1.1rem;
+  padding: clamp(1rem, 2.4vw, 1.4rem);
+  border: 1px solid rgba(56, 189, 248, .25);
+  border-radius: var(--r-md);
+  background: linear-gradient(135deg, rgba(56, 189, 248, .07), rgba(139, 92, 246, .04));
+}
+.rig-route-map-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: .5rem 1rem;
+  align-items: baseline;
+  flex-wrap: wrap;
+  margin-bottom: .8rem;
+}
+.rig-route-map-heading strong { color: #fff; font-family: var(--display); font-size: 1.05rem; }
+.rig-route-map-heading span { color: var(--muted); font-size: .78rem; }
+.rig-route-map-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .75rem; }
+.rig-route {
+  min-width: 0;
+  padding: .85rem;
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  background: var(--panel);
+}
+.rig-route-label { display: block; color: #fff; font-size: .86rem; margin-bottom: .7rem; }
+.rig-route-endpoints { display: grid; grid-template-columns: minmax(0, 1fr) 2.5rem minmax(0, 1fr); gap: .4rem; align-items: center; }
+.rig-route-endpoints > span:not(.rig-route-wire) { min-width: 0; overflow-wrap: anywhere; font-size: .78rem; color: var(--text); }
+.rig-route-wire { height: 3px; border-radius: 1rem; background: var(--line-strong); position: relative; overflow: hidden; }
+.rig-route[data-status="included"] .rig-route-wire,
+.rig-route[data-status="listed"] .rig-route-wire { background: rgba(52, 211, 153, .25); }
+.rig-route[data-status="included"] .rig-route-wire::after,
+.rig-route[data-status="listed"] .rig-route-wire::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent 0%, var(--mint) 45%, transparent 70%);
+  transform: translateX(-100%);
+  animation: rig-route-flow 2s linear infinite;
+}
+.rig-route[data-status="missing"] { border-color: rgba(251, 191, 36, .4); }
+.rig-route[data-status="missing"] .rig-route-wire { background: repeating-linear-gradient(90deg, var(--amber) 0 5px, transparent 5px 9px); }
+.rig-route[data-status="blocked"] { border-color: rgba(248, 113, 113, .4); }
+.rig-route[data-status="blocked"] .rig-route-wire { background: rgba(248, 113, 113, .6); }
+.rig-route p { color: var(--text-2); font-size: .77rem; line-height: 1.5; margin: .7rem 0 0; }
+.rig-route-disclaimer { color: var(--muted); font-size: .75rem; line-height: 1.5; margin: .8rem 0 0; }
+@keyframes rig-route-flow { to { transform: translateX(150%); } }
+@media (max-width: 800px) {
+  .rig-route-map-grid { grid-template-columns: 1fr; }
+  .rig-route-endpoints { grid-template-columns: minmax(0, 1fr) 3.5rem minmax(0, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rig-route[data-status="included"] .rig-route-wire::after,
+  .rig-route[data-status="listed"] .rig-route-wire::after { animation: none; transform: none; }
+}
+
 /* Compatibility Section */
 .rig-compat-section { margin: 2rem 0; }
 .compat-box {
