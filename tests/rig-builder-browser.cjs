@@ -96,6 +96,21 @@ async function visit(browser, width, suffix = "", denyStorage = false) {
         const actualSpend = await page.$eval(".metric-val--spend", el => el.textContent.trim());
         assert.equal(actualSpend, expectedPrice, id + " purchase cost must match advertised total");
       }
+      // A single JBL PA cabinet is NOT a stereo pair. The buyer must see
+      // physical-unit counts at both the visual booth and shopping row.
+      await page.click('[data-preset-id="mobile-pro"]');
+      const singleBooth = await page.$eval(".booth-package-detail", el => el.textContent.trim());
+      const singleTable = await page.$eval(".speaker-package-detail", el => el.textContent.trim());
+      assert.match(singleBooth, /1 individual PA cabinet; a second cabinet is NOT included/);
+      assert.equal(singleTable, singleBooth, "booth and checkout must agree on included cabinets");
+      assert.equal(await page.$eval(".metric-val--spend", el => el.textContent.trim()), "$3,052",
+        "clarifying package contents must not silently change the buyer's budget");
+      await page.click('[data-preset-id="bedroom-starter"]');
+      const pairBooth = await page.$eval(".booth-package-detail", el => el.textContent.trim());
+      const pairTable = await page.$eval(".speaker-package-detail", el => el.textContent.trim());
+      assert.match(pairBooth, /1 stereo pair \(2 physical speakers\)/);
+      assert.equal(pairTable, pairBooth);
+      assert.deepEqual(errors, [], "speaker package labels must not throw");
       await context.close();
       console.log("PASS: " + width + "px real catalog/render/owned-budget/no-overflow");
     }
