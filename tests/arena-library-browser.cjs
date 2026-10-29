@@ -45,6 +45,33 @@ function visibleCount(page) {
         assert.ok(state.overflow <= 1, path + " overflows at " + width + "px: " + state.overflow);
         assert.deepEqual(errors, [], path + " browser errors at " + width + "px");
       }
+      // Buyer clarity: controller-only price brackets, real image and rig link.
+      await page.goto(base + "/index.html", { waitUntil: "load" });
+      const budget = await page.evaluate(() => {
+        const section = document.querySelector('[aria-labelledby="budget"]');
+        const img = section?.querySelector(".budget-category-intro img");
+        return {
+          heading: section?.querySelector("#budget")?.textContent,
+          explanation: section?.querySelector(".budget-category-intro .section-sub")?.textContent,
+          imageLoaded: Boolean(img?.complete && img.naturalWidth > 0),
+          paths: [...(section?.querySelectorAll(".path-grid .path-card") || [])].map(a => a.getAttribute("href")),
+          planner: section?.querySelector(".budget-category-intro a")?.getAttribute("href")
+        };
+      });
+      assert.match(budget.heading, /DJ controllers by price and format/);
+      assert.match(budget.explanation, /not complete DJ setups/i);
+      assert.equal(budget.imageLoaded, true, "controller category image must load");
+      assert.deepEqual(budget.paths, [
+        "best-dj-controllers-under-200.html",
+        "best-dj-controllers-under-500-2026.html",
+        "best-dj-controllers-under-1000.html",
+        "best-standalone-dj-systems.html"
+      ]);
+      assert.equal(budget.planner, "build-your-dj-setup.html");
+      await page.click(".budget-category-intro a");
+      assert.equal(new URL(page.url()).pathname, "/build-your-dj-setup.html",
+        "complete-rig path must reach the working planner");
+
       await page.goto(base + "/all-dj-guides.html", { waitUntil: "load" });
       const total = await page.$$eval(".library-item", els => els.length);
       assert.ok(total >= 100, "library must contain real guide links");

@@ -692,6 +692,12 @@ details > ul { padding-left: 2.4rem; }
 .intro-text { font-size: 1.08rem; color: var(--text); line-height: 1.66; }
 
 /* "decision path" tiles used on hubs and flagships */
+/* Homepage controller-budget gateway: category and complete-rig distinction. */
+.budget-category-intro { display: grid; grid-template-columns: minmax(160px, 240px) minmax(0, 1fr); align-items: center; gap: 1.1rem; margin: 0 0 1rem; }
+.budget-category-intro img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; border-radius: var(--r-sm); }
+.budget-category-intro .section-sub { margin: 0 0 .55rem; }
+.budget-category-intro a { color: var(--flame-2); font-weight: 600; }
+@media (max-width: 600px) { .budget-category-intro { grid-template-columns: minmax(0, 1fr); } .budget-category-intro img { max-height: 180px; } }
 .path-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: .8rem; margin: 1.2rem 0; }
 .path-card {
   display: flex; flex-direction: column; gap: .25rem; padding: 1rem 1.1rem;
