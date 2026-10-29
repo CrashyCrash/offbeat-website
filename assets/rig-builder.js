@@ -1029,12 +1029,12 @@
     var qty = Math.max(1, Number(slot.qty) || 1);
     var label = String(item.box_label || "") + " " + String(item.model || "");
     var units = Number(item.speaker_units);
-    if (units === 2 || (units !== 1 && /\\bpair\\b/i.test(label))) {
+    if (units === 2 || (units !== 1 && /\bpair\b/i.test(label))) {
       return qty + (qty === 1 ? " stereo pair (2 physical speakers)" :
         " stereo pairs (" + (qty * 2) + " physical speakers)") +
         "; the listed price covers " + (qty === 1 ? "the pair" : "all selected pairs") + ".";
     }
-    if (units === 1 || /\\bsingle\\b/i.test(label)) {
+    if (units === 1 || /\bsingle\b/i.test(label)) {
       return qty + (qty === 1 ? " individual PA cabinet" : " individual PA cabinets") +
         (qty === 1 ? "; a second cabinet is NOT included." :
           "; the price covers " + qty + " separate cabinets.");
