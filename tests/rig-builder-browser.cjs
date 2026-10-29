@@ -56,6 +56,16 @@ async function visit(browser, width, suffix = "", denyStorage = false) {
         "default must not upsell a separate audio cable");
       const includedLabel = await page.$eval(".cable-title", el => el.textContent.trim());
       assert.match(includedLabel, /Speaker Package Includes Audio Cable/);
+      // Connection map is live to the selected equipment, not a static
+      // decorative cable animation or a claim of physically tested routing.
+      const initialRoutes = await page.$eval(".rig-route", nodes =>
+        nodes.map(node => ({ key: node.dataset.route, status: node.dataset.status, text: node.textContent })));
+      assert.equal(initialRoutes.length, 3, "host, room audio and headphone cue must be separate routes");
+      assert.equal(initialRoutes.find(r => r.key === "master").status, "included",
+        "starter's manufacturer-bundled speaker lead should be shown as included");
+      assert.equal(initialRoutes.find(r => r.key === "host").status, "review",
+        "mobile host must never appear physically verified");
+      assert.match(initialRoutes.find(r => r.key === "host").text, /power are conditional/);
       // Starter assumes a compatible phone already owned, not a forced laptop purchase.
       assert.equal(metrics.spend, "$597", "starter excludes a new laptop and stand");
       assert.match(initialAlerts, /Mobile Host, USB Audio and Power Need Verification/);
@@ -131,6 +141,8 @@ async function visit(browser, width, suffix = "", denyStorage = false) {
     assert.match(missingState.tag, /Incompatible Configuration/);
     assert.match(missingState.alerts, /DJ Controller or Mixer Required/);
     assert.ok(missingState.readiness <= 40);
+    assert.equal(await missingController.page.$eval('[data-route="master"]', el => el.dataset.status),
+      "blocked", "missing controller must stop the visual audio route");
     await missingController.context.close();
     console.log("PASS: accessory-only shared rig visibly blocked as incomplete");
 
@@ -237,6 +249,8 @@ async function visit(browser, width, suffix = "", denyStorage = false) {
       Number(el.textContent.replace(/[^\d.]/g, "")));
     const fixSelector = '[data-action="auto-fix-cable"][data-cable-id="cable-xlr-xlr"]';
     assert.ok(await cableFix.page.$(fixSelector), "XLR suggestion must be available");
+    assert.equal(await cableFix.page.$eval('[data-route="master"]', el => el.dataset.status),
+      "missing", "unrelated RCA cable must not animate as a valid XLR connection");
     await cableFix.page.click(fixSelector);
     const cableFixResult = await cableFix.page.evaluate(() => ({
       state: JSON.parse(localStorage.getItem("offbeat.rig.active")),
@@ -252,6 +266,8 @@ async function visit(browser, width, suffix = "", denyStorage = false) {
     assert.equal(addedCable[0].owned, false, "new cable is not automatically owned");
     assert.equal(cableFixResult.spend, spendBeforeCable + 28, "only new cable price increases spend");
     assert.match(cableFixResult.alerts, /Listed Audio Connection Match/);
+    assert.equal(await cableFix.page.$eval('[data-route="master"]', el => el.dataset.status),
+      "listed", "adding a matching XLR pair must update the live route map");
     assert.deepEqual(cableFix.errors, [], "no JS errors after cable auto-fix");
     await cableFix.context.close();
     console.log("PASS: connection fix adds XLR without discarding owned RCA cables");
@@ -356,6 +372,8 @@ async function visit(browser, width, suffix = "", denyStorage = false) {
     const mobileUnsupported = await visit(browser, 390, mobileRigLink("pioneer-ddj-flx10"));
     const blocked = await mobileUnsupported.page.$eval(".compat-items-grid", el => el.textContent);
     assert.match(blocked, /Mobile Host Not Verified for This Controller/);
+    assert.equal(await mobileUnsupported.page.$eval('[data-route="host"]', el => el.dataset.status),
+      "blocked", "unsupported phone/controller route must not show animated host compatibility");
     assert.deepEqual(mobileUnsupported.errors, [], "unverified mobile host UI must not throw");
     await mobileUnsupported.context.close();
     console.log("PASS: GRV6 supported two-deck mobile journey; unverified controller blocked");
