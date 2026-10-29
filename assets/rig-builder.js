@@ -711,6 +711,106 @@
     return null;
   }
 
+  /* ----------------------------------------------------- Live route explanation */
+  // A planning diagram must reflect the SAME checks as the shopping advisor.
+  // Animated paths mean only that catalog-listed connectors/cables appear to
+  // match; they never claim the equipment is plugged in or tested.
+  function renderSignalPathMap(compatibility) {
+    var controllerSlot = findSlot("controllers");
+    var speakerSlot = findSlot("speakers");
+    var headphoneSlot = findSlot("headphones");
+    var hostSlot = findSlot("laptops");
+    var controller = controllerSlot && getSlotItem(controllerSlot);
+    var speaker = speakerSlot && getSlotItem(speakerSlot);
+    var headphone = headphoneSlot && getSlotItem(headphoneSlot);
+    var host = hostSlot && getSlotItem(hostSlot);
+    var checks = compatibility.checks || [];
+    var hasCheck = function (title) {
+      return checks.some(function (check) { return check.title === title; });
+    };
+
+    var hostStatus = "review", hostDetail = "Choose a controller and playback host.";
+    if (!controller) {
+      hostStatus = "blocked";
+    } else if (controller.standalone) {
+      hostStatus = "review";
+      hostDetail = "Standalone playback listed. Check media format, firmware and source selection.";
+    } else if (!host || hasCheck("Host Computer Required") ||
+               hasCheck("Host Computer Required for DJing") ||
+               hasCheck("Mobile Host Not Verified for This Controller")) {
+      hostStatus = "blocked";
+      hostDetail = "No qualified playback host. Resolve the host warning before buying.";
+    } else if (host.id === "existing-mobile-device") {
+      hostDetail = "Mobile USB/audio and power are conditional; check this exact phone and app.";
+    } else {
+      hostDetail = "Computer + DJ software + USB. Verify drivers and software unlocks.";
+    }
+
+    var masterStatus = "review", masterDetail = "Select a controller and speakers to plan a room output.";
+    if (!controller) {
+      masterStatus = "blocked";
+    } else if (!speaker) {
+      masterDetail = "No speaker output selected; headphones-only practice may still work.";
+    } else if (hasCheck("Included Speaker Cable Matches")) {
+      masterStatus = "included";
+      masterDetail = "Matching 3.5 mm / RCA lead listed as included with the speaker package.";
+    } else if (hasCheck("Listed Audio Connection Match")) {
+      masterStatus = "listed";
+      masterDetail = "Selected cable matches listed output/input connectors; verify wiring and levels.";
+    } else if (hasCheck("Audio Cable Needed")) {
+      masterStatus = "missing";
+      masterDetail = "A matching cable is not selected. Use the recommendation below.";
+    } else {
+      masterDetail = "Connector or cable route needs manual confirmation.";
+    }
+    if (compatibility.requiresManualReview && (masterStatus === "included" || masterStatus === "listed")) {
+      masterStatus = "review";
+      masterDetail += " Additional devices require independent routing checks.";
+    }
+
+    var cueStatus = "review", cueDetail = "Select headphones to plan the cue output.";
+    if (!controller) {
+      cueStatus = "blocked";
+    } else if (headphone) {
+      if (hasCheck("Headphone Connector Adapter Needed")) {
+        cueStatus = "missing";
+        cueDetail = "Check the required adapter direction and whether it is included.";
+      } else {
+        cueStatus = "listed";
+        cueDetail = "Headphone jack is listed; confirm cue routing and the physical plug.";
+      }
+      if (compatibility.requiresManualReview) {
+        cueStatus = "review";
+        cueDetail += " Additional devices need separate checks.";
+      }
+    }
+
+    var routes = [
+      { key: "host", label: "Playback source", from: host ? host.model : "No host selected",
+        to: controller ? controller.model : "No controller", status: hostStatus, detail: hostDetail },
+      { key: "master", label: "Room audio", from: controller ? controller.model : "No controller",
+        to: speaker ? speaker.model : "No speakers selected", status: masterStatus, detail: masterDetail },
+      { key: "cue", label: "Headphone cue", from: controller ? controller.model : "No controller",
+        to: headphone ? headphone.model : "No headphones selected", status: cueStatus, detail: cueDetail }
+    ];
+    return `<div class="rig-route-map" role="group" aria-label="DJ equipment connection planning">
+      <div class="rig-route-map-heading">
+        <strong>Connection map</strong>
+        <span>Live to your selected rig · planning only</span>
+      </div>
+      <div class="rig-route-map-grid">${routes.map(function (route) {
+        return `<div class="rig-route" data-route="${route.key}" data-status="${route.status}">
+          <strong class="rig-route-label">${escapeHtml(route.label)}</strong>
+          <div class="rig-route-endpoints"><span>${escapeHtml(route.from)}</span>
+            <span class="rig-route-wire" aria-hidden="true"></span>
+            <span>${escapeHtml(route.to)}</span></div>
+          <p>${escapeHtml(route.detail)}</p>
+        </div>`;
+      }).join("")}</div>
+      <p class="rig-route-disclaimer">Moving signals indicate a catalog-listed or included path, not a tested physical connection. Amber and grey paths need verification. See the compatibility checks below.</p>
+    </div>`;
+  }
+
   /* ---------------------------------------------------------------- Render */
   function renderApp() {
     var stats = calculateRigStats();
@@ -821,6 +921,7 @@
             ${renderBoothSlot(findSlot("controllers") || { slotId: "core-ctrl", category: "controllers", itemId: null }, "DJ Controller / Decks & Mixer", "🎛️", true)}
             ${renderBoothSlot(findSlot("headphones") || { slotId: "core-hp", category: "headphones", itemId: null }, "DJ Headphones", "🎧")}
           </div>
+          ${renderSignalPathMap(stats.compatibility)}
         </div>
       </section>
 
