@@ -103,6 +103,13 @@ async function visit(browser, width, suffix = "", denyStorage = false) {
       const singleTable = await page.$eval(".speaker-package-detail", el => el.textContent.trim());
       assert.match(singleBooth, /1 individual PA cabinet; a second cabinet is NOT included/);
       assert.equal(singleTable, singleBooth, "booth and checkout must agree on included cabinets");
+      await page.$eval(".speaker-package-detail", el =>
+        el.closest("tr").querySelector('[data-action="step-qty"][data-step="1"]').click());
+      assert.match(await page.$eval(".speaker-package-detail", el => el.textContent.trim()),
+        /2 individual PA cabinets; the price covers 2 separate cabinets/);
+      assert.equal(await page.$eval(".metric-val--spend", el => el.textContent.trim()), "$3,601",
+        "adding a second cabinet must add exactly one cabinet's cost");
+      await page.click('[data-preset-id="mobile-pro"]');
       assert.equal(await page.$eval(".metric-val--spend", el => el.textContent.trim()), "$3,052",
         "clarifying package contents must not silently change the buyer's budget");
       await page.click('[data-preset-id="bedroom-starter"]');
@@ -110,6 +117,12 @@ async function visit(browser, width, suffix = "", denyStorage = false) {
       const pairTable = await page.$eval(".speaker-package-detail", el => el.textContent.trim());
       assert.match(pairBooth, /1 stereo pair \(2 physical speakers\)/);
       assert.equal(pairTable, pairBooth);
+      await page.$eval(".speaker-package-detail", el =>
+        el.closest("tr").querySelector('[data-action="step-qty"][data-step="1"]').click());
+      assert.match(await page.$eval(".speaker-package-detail", el => el.textContent.trim()),
+        /2 stereo pairs \(4 physical speakers\)/);
+      assert.equal(await page.$eval(".metric-val--spend", el => el.textContent.trim()), "$746",
+        "adding a second pair must add one pair price, not one speaker price");
       assert.deepEqual(errors, [], "speaker package labels must not throw");
       await context.close();
       console.log("PASS: " + width + "px real catalog/render/owned-budget/no-overflow");
