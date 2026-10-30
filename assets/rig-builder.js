@@ -279,10 +279,14 @@
   // Owning the old product does not mean owning its replacement.
   function replaceSlotItem(slot, itemId) {
     var item = getItem(itemId);
-    if (!slot || !item || slot.category !== item.category) return false;
+    if (!slot || !item) return false;
+    // Preserve established cross-category replacement for non-speaker slots,
+    // but never let an alternate category bypass a speaker-role restriction.
+    if ((slot.category === "speakers" || item.category === "speakers") && slot.category !== item.category) return false;
     if (slot.category === "speakers" && !isSpeakerEligibleForRole(item, speakerRoleForSlot(slot))) return false;
     if (slot.itemId !== item.id) slot.owned = false;
     slot.itemId = item.id;
+    slot.category = item.category;
     if (slot.category === "speakers") slot.role = speakerRoleForItem(item);
     return true;
   }
