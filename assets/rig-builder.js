@@ -808,6 +808,10 @@
     } else {
       masterDetail = "Connector or cable route needs manual confirmation.";
     }
+    if (hasCheck("Audience PA System Not Selected")) {
+      masterStatus = "blocked";
+      masterDetail = "A studio monitor cable match is not audience PA. Select a venue-rated powered PA system.";
+    }
     if (compatibility.requiresManualReview && (masterStatus === "included" || masterStatus === "listed")) {
       masterStatus = "review";
       masterDetail += " Additional devices require independent routing checks.";
