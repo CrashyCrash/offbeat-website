@@ -60,7 +60,8 @@ function harness(storageDisabled) {
       { id: "sennheiser-hd25", category: "headphones", price: 149 }
     ],
     categories: [],
-    presets: []
+    presets: [],
+    meta: { disclosure: "Test disclosure" }
   });
   return { api: window.__testRig, memory, window, lastUrl: () => lastUrl };
 }
