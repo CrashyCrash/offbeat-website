@@ -433,6 +433,7 @@
     {
       "id": "pioneer-dm40d",
       "category": "speakers",
+      "speaker_role": "nearfield",
       "brand": "Pioneer DJ",
       "model": "DM-40D (Pair)",
       "price": 149,
@@ -459,6 +460,7 @@
     {
       "id": "pioneer-dm50d",
       "category": "speakers",
+      "speaker_role": "nearfield",
       "brand": "Pioneer DJ",
       "model": "DM-50D (Pair)",
       "price": 199,
@@ -484,6 +486,7 @@
     {
       "id": "krk-rokit-5-g4",
       "category": "speakers",
+      "speaker_role": "nearfield",
       "brand": "KRK",
       "model": "Classic 5 (Pair)",
       "price": 299,
@@ -510,6 +513,7 @@
     {
       "id": "yamaha-hs5",
       "category": "speakers",
+      "speaker_role": "nearfield",
       "brand": "Yamaha",
       "model": "HS5 (Pair)",
       "price": 398,
@@ -779,6 +783,7 @@
   "presets": [
     {
       "id": "bedroom-starter",
+      "context": "studio",
       "name": "The Bedroom Starter",
       "badge": "Est. $597 total",
       "desc": "DDJ-FLX4, HD 25 and DM-40D with included speaker cable. Assumes you already own a compatible phone/tablet; verify rekordbox mobile, USB connection and separate 9V/3A power (not priced). No laptop purchase is required for this supported route.",
@@ -791,6 +796,7 @@
     },
     {
       "id": "club-ready",
+      "context": "studio",
       "name": "The Club-Ready Rig",
       "badge": "Est. $3,230 total",
       "desc": "Club-standard 4-channel controller with jog displays, industry-standard HD 25 headphones, bi-amped Yamaha 5-inch monitors, balanced XLR cabling, and USB 3.2 flash drive for CDJ export.",
@@ -806,6 +812,7 @@
     },
     {
       "id": "mobile-pro",
+      "context": "audience",
       "name": "The Mobile & Wedding Pro",
       "badge": "Est. $3,052 total",
       "desc": "Standalone 4-channel console with 10-inch touchscreen (no laptop required), 15-inch 1300W JBL PA speaker, Shure SM58 vocal mic, headphones, and balanced cables.",
@@ -821,6 +828,7 @@
     },
     {
       "id": "traktor-techno",
+      "context": "studio",
       "name": "The Traktor Techno Specialist",
       "badge": "Est. $1,780 total",
       "desc": "Precision Traktor Kontrol S2 MK3 controller, Sony MDR-7506 reference monitoring, punchy KRK Classic 5 monitors, RCA-to-TRS cables, and laptop riser.",
