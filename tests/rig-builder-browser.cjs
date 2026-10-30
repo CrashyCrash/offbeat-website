@@ -141,6 +141,47 @@ async function visit(browser, width, suffix = "", denyStorage = false) {
         /2 stereo pairs \(4 physical speakers\)/);
       assert.equal(await page.$eval(".metric-val--spend", el => el.textContent.trim()), "$746",
         "adding a second pair must add one pair price, not one speaker price");
+      // Role-gated speaker pickers: a studio monitor is never offered as
+      // audience PA, and a PA cabinet cannot be injected into a monitor slot.
+      await page.click('[data-preset-id="bedroom-starter"]');
+      await page.click('.booth-card [data-action="pick"][data-category="speakers"]');
+      assert.ok(await page.$('.btn-select-item[data-item-id="pioneer-dm40d"]'),
+        "monitor picker must offer actual nearfield monitors");
+      assert.equal(await page.$('.btn-select-item[data-item-id="jbl-eon-715"]'), null,
+        "monitor picker must exclude crowd PA");
+      const initialRoleSpend = await page.$eval(".metric-val--spend", el => el.textContent.trim());
+      await page.$eval(".btn-select-item", el => { el.dataset.itemId = "jbl-eon-715"; el.click(); });
+      assert.equal(await page.$eval("#rig-modal-container", el => el.hidden), false,
+        "forged ineligible monitor selection must be refused");
+      await page.click(".picker-close");
+      assert.equal(await page.$eval(".metric-val--spend", el => el.textContent.trim()), initialRoleSpend,
+        "forged selection must not alter purchases");
+
+      await page.click('[data-action="open-add-slot"]');
+      await page.click('[data-action="add-new-slot"][data-speaker-role="audience_pa"]');
+      assert.ok(await page.$('.btn-select-item[data-item-id="jbl-eon-715"]'),
+        "crowd PA picker must offer catalog-confirmed PA");
+      assert.equal(await page.$('.btn-select-item[data-item-id="pioneer-dm40d"]'), null,
+        "crowd PA picker must exclude nearfield monitors");
+      await page.$eval(".btn-select-item", el => { el.dataset.itemId = "pioneer-dm40d"; el.click(); });
+      assert.equal(await page.$eval("#rig-modal-container", el => el.hidden), false,
+        "forged ineligible PA selection must be refused");
+      await page.click('.btn-select-item[data-item-id="jbl-eon-715"]');
+      assert.match(await page.$eval(".rig-spec-table", el => el.textContent), /Crowd-Facing PA/);
+      assert.match(await page.$eval(".rig-spec-table", el => el.textContent), /DJ Booth Monitors/);
+      await page.click('[data-action="set-listening-context"][data-context="audience"]');
+      assert.doesNotMatch(await page.$eval(".compat-items-grid", el => el.textContent),
+        /Audience PA System Not Selected/, "real PA plus booth monitors must satisfy the PA selection check");
+      assert.match(await page.$eval('[data-route="master"]', el => el.textContent), /EON715/,
+        "audience routing must describe the PA, not the first nearfield monitor");
+      const sharedRoleUrl = page.url();
+      assert.match(sharedRoleUrl, /[?&]rig=/);
+      await page.goto(sharedRoleUrl, { waitUntil: "load" });
+      await page.waitForSelector(".rig-dashboard-shell");
+      assert.match(await page.$eval(".rig-spec-table", el => el.textContent), /Crowd-Facing PA/,
+        "speaker roles must survive shared URL reload");
+      assert.match(await page.$eval(".rig-spec-table", el => el.textContent), /DJ Booth Monitors/);
+      assert.deepEqual(errors, [], "role-gated speaker journeys must not throw");
       assert.deepEqual(errors, [], "speaker package labels must not throw");
       await context.close();
       console.log("PASS: " + width + "px real catalog/render/owned-budget/no-overflow");
