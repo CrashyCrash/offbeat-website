@@ -2336,6 +2336,13 @@ h3.mini {
   background: rgba(139, 92, 246, .18); border-color: var(--flame-2); color: #fff;
   transform: translateY(-1px);
 }
+.rig-preset-pill[data-action="set-listening-context"][aria-pressed="true"] {
+  background: rgba(139, 92, 246, .28); border-color: var(--flame-2); color: #fff;
+  box-shadow: inset 0 0 0 1px rgba(167, 139, 250, .3);
+}
+.rig-preset-pill[data-action="set-listening-context"]:focus-visible {
+  outline: 3px solid var(--flame-2); outline-offset: 3px;
+}
 .preset-badge {
   font-size: .74rem; font-weight: 700; color: var(--flame-2);
   background: rgba(139, 92, 246, .15); padding: .1rem .4rem; border-radius: var(--r-xs);
