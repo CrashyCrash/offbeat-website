@@ -49,7 +49,8 @@ function harness(storageDisabled) {
     presetPriceBadge: presetPriceBadge,
     recommendNextUpgrade: recommendNextUpgrade,
     renderModularTableRow: renderModularTableRow,
-    renderCompareGridContent: renderCompareGridContent
+    renderCompareGridContent: renderCompareGridContent,
+    loadPresetData: loadPresetData
   };
 ` + hook);
   vm.runInNewContext(injected, { window, document, URLSearchParams, console, atob, btoa });
@@ -769,4 +770,65 @@ test("vendor-qualified GRV6 mobile routing and PRIME 4+ booth sockets", () => {
   const unsupported = api.runDeepCompatibilityChecks();
   assert.ok(unsupported.fatalErrors > 0, "unverified controller mobile route remains fail-closed");
   assert.ok(unsupported.checks.some(check => check.title === "Mobile Host Not Verified for This Controller"));
+});
+
+test("audience use rejects nearfield monitors even when XLR connectors and cable match", () => {
+  const { api } = harness(false);
+  api.setCatalog({ items: [
+    { id: "ctrl", category: "controllers", brand: "Example", model: "Deck", price: 900,
+      standalone: true, master_outputs: ["XLR (Balanced)"] },
+    { id: "near", category: "speakers", model: "Studio Monitor", price: 250,
+      speaker_role: "nearfield", inputs: ["XLR (Balanced)"] },
+    { id: "pa", category: "speakers", model: "Powered PA", price: 550,
+      speaker_role: "audience_pa", inputs: ["XLR (Balanced)"] },
+    { id: "xlr", category: "cables", model: "XLR Pair", price: 30 }
+  ], categories: [], presets: [] });
+  const controller = { slotId: "ctrl", category: "controllers", itemId: "ctrl", qty: 1 };
+  const speaker = { slotId: "spk", category: "speakers", itemId: "near", qty: 1 };
+  const cable = { slotId: "cable", category: "cables", itemId: "xlr", qty: 1 };
+  assert.equal(api.normalizeRigState({ context: "audience", items: [controller, speaker, cable] }), true);
+  const bad = api.runDeepCompatibilityChecks();
+  assert.equal(bad.fatalErrors, 1);
+  assert.ok(bad.readiness <= 40);
+  assert.ok(bad.checks.some(c => c.title === "Nearfield Studio Monitors Are Not Audience PA"));
+  assert.ok(bad.checks.some(c => c.title === "Audience PA System Not Selected"));
+
+  assert.equal(api.normalizeRigState({ context: "audience", items: [
+    controller, { ...speaker, itemId: "pa" }, cable
+  ] }), true);
+  const pa = api.runDeepCompatibilityChecks();
+  assert.equal(pa.fatalErrors, 0);
+  assert.equal(pa.requiresManualReview, true, "listed PA is not a venue coverage certificate");
+  assert.ok(pa.readiness <= 50);
+  assert.ok(pa.checks.some(c => c.title === "Audience Coverage and Deployment Need Verification"));
+
+  assert.equal(api.normalizeRigState({ context: "studio", items: [controller, speaker, cable] }), true);
+  const studio = api.runDeepCompatibilityChecks();
+  assert.equal(studio.fatalErrors, 0);
+  assert.ok(!studio.checks.some(c => c.title === "Audience PA System Not Selected"));
+});
+
+test("audience context is validated, shareable and preserved in saved rig sanitization", () => {
+  const { api, window, memory, lastUrl } = harness(false);
+  const selected = { name: "Venue", context: "audience", items: [slot()] };
+  assert.equal(api.normalizeRigState(selected), true);
+  api.saveActiveState();
+  assert.match(lastUrl(), /\\?rig=/);
+  memory["offbeat.rig.active"] = "";
+  window.location.search = new URL(lastUrl(), "https://offbeatinc.com").search;
+  assert.equal(api.normalizeRigState({ name: "Desk", items: [slot()] }), true);
+  api.parseUrlOrLocalState();
+  assert.equal(api.getRig().context, "audience");
+  assert.equal(api.sanitizeRigState({ context: "<script>", items: [slot()] }).context, "studio");
+  assert.equal(api.sanitizeRigState({ items: [slot()] }).context, "studio");
+});
+
+test("mobile preset chooses audience mode; switching presets resets context", () => {
+  const { api } = harness(false);
+  const mobile = { name: "Mobile", context: "audience", slots: { controllers: "pioneer-ddj-flx4" } };
+  const bedroom = { name: "Bedroom", context: "studio", slots: { controllers: "pioneer-ddj-flx4" } };
+  api.loadPresetData(mobile);
+  assert.equal(api.getRig().context, "audience");
+  api.loadPresetData(bedroom);
+  assert.equal(api.getRig().context, "studio");
 });
