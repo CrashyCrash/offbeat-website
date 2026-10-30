@@ -2318,6 +2318,16 @@ h3.mini {
 .rig-subtitle { margin: 0; color: var(--text-2); font-size: .95rem; max-width: 60ch; }
 .rig-dash-actions { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
 
+/* Review the full rig before presenting final save/share/export actions. */
+.rig-finalize-section {
+  margin: 2rem 0;
+  padding: clamp(1rem, 3vw, 1.5rem);
+  border: 1px solid var(--line-accent);
+  border-radius: var(--r-md);
+  background: var(--panel);
+}
+.rig-finalize-section .section-head { margin-bottom: 1rem; }
+
 /* Preset Strip */
 .rig-preset-strip {
   display: flex; flex-wrap: wrap; align-items: center; gap: .5rem;
