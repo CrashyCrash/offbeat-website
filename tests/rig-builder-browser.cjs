@@ -124,6 +124,7 @@ async function visit(browser, width, suffix = "", denyStorage = false) {
       const venueAlerts = await page.$eval(".compat-items-grid", el => el.textContent);
       assert.match(venueAlerts, /Nearfield Studio Monitors Are Not Audience PA/);
       assert.match(venueAlerts, /Audience PA System Not Selected/);
+      assert.equal(await page.$eval('[data-route="master"]', el => el.dataset.status), "blocked");
       assert.match(await page.$eval(".compat-status-tag", el => el.textContent), /Incompatible Configuration/);
       assert.equal(await page.$eval(".metric-val--spend", el => el.textContent.trim()), deskSpend,
         "context switch must not silently add or change purchases");
