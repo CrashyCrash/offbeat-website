@@ -248,7 +248,7 @@ test("RCA cable is not declared compatible with 3.5mm-only master output", () =>
   api.setCatalog({ items: [
     { id: "flx2", category: "controllers", model: "DDJ-FLX2", price: 200,
       master_outputs: ["3.5mm Aux (Unbalanced)"] },
-    { id: "dm40", category: "speakers", model: "DM-40D", price: 180,
+    { id: "dm40", category: "speakers", speaker_role: "nearfield", model: "DM-40D", price: 180,
       inputs: ["RCA (Unbalanced)", "3.5mm Stereo Mini"] },
     { id: "cable-rca-rca", category: "cables", price: 12 }
   ], categories: [], presets: [] });
@@ -268,7 +268,7 @@ test("matching XLR output and input select XLR cable, never RCA fallback", () =>
   api.setCatalog({ items: [
     { id: "flx10", category: "controllers", model: "DDJ-FLX10", price: 1600,
       master_outputs: ["XLR (Balanced)", "RCA (Unbalanced)"] },
-    { id: "hs5", category: "speakers", model: "HS5", price: 400,
+    { id: "hs5", category: "speakers", speaker_role: "nearfield", model: "HS5", price: 400,
       inputs: ["XLR3-31 (Balanced)"] },
     { id: "cable-xlr-xlr", category: "cables", price: 28 }
   ], categories: [], presets: [] });
@@ -555,10 +555,10 @@ test("RCA-only four-channel controllers never receive a fabricated balanced-moni
     { id: "xlr-four", category: "controllers", brand: "Example", model: "XLR Four",
       price: 900, channels: 4, standalone: false, master_outputs: ["XLR (Balanced)"] },
     { id: "hp", category: "headphones", price: 149, jack_type: "3.5mm" },
-    { id: "speakers", category: "speakers", price: 150, inputs: ["RCA (Unbalanced)"] },
+    { id: "speakers", category: "speakers", speaker_role: "nearfield", price: 150, inputs: ["RCA (Unbalanced)"] },
     { id: "host", category: "laptops", price: 999 },
     { id: "laptop-stand-pyle", category: "stands", brand: "Pyle", model: "Laptop Stand", price: 29 },
-    { id: "yamaha-hs5", category: "speakers", brand: "Yamaha", model: "HS5 Pair", price: 398 }
+    { id: "yamaha-hs5", category: "speakers", speaker_role: "nearfield", brand: "Yamaha", model: "HS5 Pair", price: 398 }
   ], categories: [], presets: [] });
   const items = [
     { slotId: "ctrl", category: "controllers", itemId: "rca-four", qty: 1 },

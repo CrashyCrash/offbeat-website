@@ -474,7 +474,7 @@
 
     // A controller without headphones or speakers has no selected listening
     // path. A high readiness score would encourage an incomplete purchase.
-    if (controller && !headphones && !speakers) {
+    if (controller && !headphones && !currentRig.items.some(function (slot) { return slot.category === "speakers"; })) {
       checks.push({
         type: "error", statusLevel: "incompatible",
         title: "Headphones or Speakers Required",
@@ -561,7 +561,7 @@
         });
         warnings++;
       }
-    } else if (controller && !speakers) {
+    } else if (controller && !speakers && !currentRig.items.some(function (slot) { return slot.category === "speakers"; })) {
       checks.push({
         type: "info",
         statusLevel: "workable",
