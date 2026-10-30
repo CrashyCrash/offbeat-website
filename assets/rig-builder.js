@@ -34,6 +34,7 @@
   // Active slot being edited in modal
   var activeModalSlotId = null;
   var activeModalCategory = null;
+  var activeModalSpeakerRole = null;
 
   // DOM Mount Root
   var builderRoot = document.getElementById("rig-app-root");
@@ -139,7 +140,7 @@
         var additive = ["cables", "storage", "microphones", "stands"].indexOf(targetItem.category) !== -1;
         var alreadySelected = currentRig.items.some(function (s) { return s.itemId === targetItem.id; });
         var existingSlot = additive ? null : currentRig.items.find(function (s) {
-          return s.category === targetItem.category;
+          return s.category === targetItem.category && (s.category !== "speakers" || speakerRoleForSlot(s) === speakerRoleForItem(targetItem));
         });
         if (alreadySelected) {
           // An Add-to-Rig link is idempotent even when the item lives in a
@@ -214,7 +215,8 @@
       items.push({
         slotId: id, category: item.category, itemId: item.id,
         qty: item.no_purchase === true ? 1 : (Number.isInteger(slot.qty) && slot.qty >= 1 && slot.qty <= 4 ? slot.qty : 1),
-        owned: item.no_purchase === true || slot.owned === true
+        owned: item.no_purchase === true || slot.owned === true,
+        role: item.category === "speakers" ? speakerRoleForItem(item) : undefined
       });
     });
     if (!items.length) return null;
@@ -253,13 +255,35 @@
     return getItem(slot.itemId);
   }
 
+  // Catalog role evidence, not connector shape, controls speaker selection.
+  function speakerRoleForItem(item) {
+    if (!item || item.category !== "speakers") return null;
+    return item.speaker_role === "audience_pa" || item.speaker_role === "nearfield" ? item.speaker_role : null;
+  }
+  function speakerRoleForSlot(slot) {
+    if (!slot || slot.category !== "speakers") return null;
+    return speakerRoleForItem(getSlotItem(slot)) ||
+      (slot.role === "audience_pa" || slot.role === "nearfield" ? slot.role :
+        (currentRig.context === "audience" ? "audience_pa" : "nearfield"));
+  }
+  function isSpeakerEligibleForRole(item, role) {
+    return Boolean(role && speakerRoleForItem(item) === role);
+  }
+  function preferredSpeakerSlot() {
+    var role = currentRig.context === "audience" ? "audience_pa" : "nearfield";
+    return currentRig.items.find(function (slot) {
+      return slot.category === "speakers" && speakerRoleForItem(getSlotItem(slot)) === role;
+    }) || currentRig.items.find(function (slot) { return slot.category === "speakers"; }) || null;
+  }
+
   // Owning the old product does not mean owning its replacement.
   function replaceSlotItem(slot, itemId) {
     var item = getItem(itemId);
-    if (!slot || !item) return false;
+    if (!slot || !item || slot.category !== item.category) return false;
+    if (slot.category === "speakers" && !isSpeakerEligibleForRole(item, speakerRoleForSlot(slot))) return false;
     if (slot.itemId !== item.id) slot.owned = false;
     slot.itemId = item.id;
-    slot.category = item.category;
+    if (slot.category === "speakers") slot.role = speakerRoleForItem(item);
     return true;
   }
 
@@ -318,7 +342,7 @@
   function runDeepCompatibilityChecks() {
     var controllerSlot = currentRig.items.find(function (s) { return s.category === "controllers"; });
     var headphonesSlot = currentRig.items.find(function (s) { return s.category === "headphones"; });
-    var speakersSlot = currentRig.items.find(function (s) { return s.category === "speakers"; });
+    var speakersSlot = preferredSpeakerSlot();
     var laptopSlot = currentRig.items.find(function (s) { return s.category === "laptops"; });
     var cableSlots = currentRig.items.filter(function (s) { return s.category === "cables"; });
     var microphoneSlots = currentRig.items.filter(function (s) { return s.category === "microphones"; });
@@ -691,7 +715,7 @@
 
     var controllerSlot = currentRig.items.find(function (s) { return s.category === "controllers"; });
     var headphonesSlot = currentRig.items.find(function (s) { return s.category === "headphones"; });
-    var speakersSlot = currentRig.items.find(function (s) { return s.category === "speakers"; });
+    var speakersSlot = preferredSpeakerSlot();
     var laptopSlot = currentRig.items.find(function (s) { return s.category === "laptops"; });
     var standSlot = currentRig.items.find(function (s) { return s.category === "stands"; });
     var storageSlot = currentRig.items.find(function (s) { return s.category === "storage"; });
@@ -762,7 +786,7 @@
   // match; they never claim the equipment is plugged in or tested.
   function renderSignalPathMap(compatibility) {
     var controllerSlot = findSlot("controllers");
-    var speakerSlot = findSlot("speakers");
+    var speakerSlot = preferredSpeakerSlot();
     var headphoneSlot = findSlot("headphones");
     var hostSlot = findSlot("laptops");
     var controller = controllerSlot && getSlotItem(controllerSlot);
@@ -957,7 +981,7 @@
         <div class="rig-booth-stage">
           <!-- Top Row: Monitors, Host Platform, Stands/Media -->
           <div class="booth-top-row">
-            ${renderBoothSlot(findSlot("speakers") || { slotId: "core-spk", category: "speakers", itemId: null }, "Monitors / Speakers", "🔊")}
+            ${renderBoothSlot(preferredSpeakerSlot() || { slotId: "core-spk", category: "speakers", itemId: null, role: currentRig.context === "audience" ? "audience_pa" : "nearfield" }, currentRig.context === "audience" ? "Audience PA / Speakers" : "DJ Booth Monitors", "🔊")}
             ${renderBoothSlot(findSlot("laptops") || { slotId: "core-host", category: "laptops", itemId: null }, "Host Platform / OS", "💻")}
             ${renderBoothSlot(findSlot("stands") || findSlot("storage") || findSlot("microphones") || { slotId: "core-stand", category: "stands", itemId: null }, "Stands, Mics & Media", "🏗️")}
           </div>
@@ -1023,7 +1047,8 @@
               <button type="button" data-action="add-new-slot" data-category="microphones">🎤 Add Vocal / Host Microphone</button>
               <button type="button" data-action="add-new-slot" data-category="stands">🏗️ Add DJ Laptop Stand / Riser</button>
               <button type="button" data-action="add-new-slot" data-category="storage">💾 Add USB Media / Flash Drive</button>
-              <button type="button" data-action="add-new-slot" data-category="speakers">🔊 Add Extra Monitor / PA Speaker</button>
+              <button type="button" data-action="add-new-slot" data-category="speakers" data-speaker-role="nearfield">🔊 Add DJ Booth Monitors</button>
+              <button type="button" data-action="add-new-slot" data-category="speakers" data-speaker-role="audience_pa">📢 Add Crowd-Facing PA</button>
               <button type="button" data-action="add-new-slot" data-category="cables">🔌 Add Audio Cable / Adapter</button>
               <button type="button" data-action="add-new-slot" data-category="controllers">🎛️ Add Second Controller / Deck</button>
             </div>
@@ -1105,7 +1130,7 @@
 
     if (!item) {
       return `
-        <div class="booth-card booth-card--empty ${isMain ? 'booth-card--main' : ''}" data-action="pick" data-slot-id="${slot.slotId}" data-category="${slot.category}">
+        <div class="booth-card booth-card--empty ${isMain ? 'booth-card--main' : ''}" data-action="pick" data-slot-id="${slot.slotId}" data-category="${slot.category}" data-speaker-role="${slot.category === "speakers" ? speakerRoleForSlot(slot) : ""}">
           <span class="booth-card-role">${icon} ${escapeHtml(label)}</span>
           <div class="booth-empty-content">
             <span class="booth-plus">+</span>
@@ -1125,7 +1150,7 @@
             ${isOwned ? '✓ Owned' : '🛒 Need'}
           </button>
         </div>
-        <div class="booth-card-body" data-action="pick" data-slot-id="${slot.slotId}" data-category="${slot.category}">
+        <div class="booth-card-body" data-action="pick" data-slot-id="${slot.slotId}" data-category="${slot.category}" data-speaker-role="${slot.category === "speakers" ? speakerRoleForSlot(slot) : ""}">
           <div class="booth-thumb-wrap">
             <img src="${item.image}" alt="${escapeHtml(item.brand + ' ' + item.model)}" loading="lazy" class="booth-thumb">
           </div>
@@ -1140,7 +1165,7 @@
           </div>
         </div>
         <div class="booth-card-footer">
-          <button type="button" class="booth-swap-btn" data-action="pick" data-slot-id="${slot.slotId}" data-category="${slot.category}">
+          <button type="button" class="booth-swap-btn" data-action="pick" data-slot-id="${slot.slotId}" data-category="${slot.category}" data-speaker-role="${slot.category === "speakers" ? speakerRoleForSlot(slot) : ""}">
             Swap Gear →
           </button>
           <button type="button" class="booth-spec-btn" data-action="inspect-item" data-item-id="${item.id}" title="View detailed hardware specs">
@@ -1160,9 +1185,9 @@
     if (!item) {
       return `
         <tr class="rig-row rig-row--empty">
-          <td><span class="cat-pill">${catMeta ? catMeta.icon : ''} ${catMeta ? catMeta.name : slot.category}</span></td>
+          <td><span class="cat-pill">${slot.category === "speakers" ? (speakerRoleForSlot(slot) === "audience_pa" ? "📢 Crowd-Facing PA" : "🔊 DJ Booth Monitors") : ((catMeta ? catMeta.icon : "") + " " + (catMeta ? catMeta.name : slot.category))}</span></td>
           <td colspan="4"><span class="empty-slot-msg">No item selected</span></td>
-          <td><button type="button" class="btn btn-sm" data-action="pick" data-slot-id="${slot.slotId}" data-category="${slot.category}">Select Component</button></td>
+          <td><button type="button" class="btn btn-sm" data-action="pick" data-slot-id="${slot.slotId}" data-category="${slot.category}" data-speaker-role="${slot.category === "speakers" ? speakerRoleForSlot(slot) : ""}">Select Component</button></td>
         </tr>
       `;
     }
@@ -1176,7 +1201,7 @@
     return `
       <tr class="rig-row ${isOwned ? 'rig-row--owned' : ''}">
         <td class="cell-cat">
-          <span class="cat-pill">${catMeta ? catMeta.icon : ''} ${catMeta ? catMeta.name : slot.category}</span>
+          <span class="cat-pill">${slot.category === "speakers" ? (speakerRoleForSlot(slot) === "audience_pa" ? "📢 Crowd-Facing PA" : "🔊 DJ Booth Monitors") : ((catMeta ? catMeta.icon : "") + " " + (catMeta ? catMeta.name : slot.category))}</span>
         </td>
         <td class="cell-item">
           <div class="item-summary-box">
@@ -1213,7 +1238,7 @@
         </td>
         <td class="cell-actions">
           <div class="retail-btn-stack">
-            <button type="button" class="btn-swap-inline" data-action="pick" data-slot-id="${slot.slotId}" data-category="${slot.category}">Swap</button>
+            <button type="button" class="btn-swap-inline" data-action="pick" data-slot-id="${slot.slotId}" data-category="${slot.category}" data-speaker-role="${slot.category === "speakers" ? speakerRoleForSlot(slot) : ""}">Swap</button>
             ${isPlatformPlaceholder ? '<span class="owned-sub">' + (item.id === "existing-mobile-device" ? 'Existing phone/tablet — verify compatibility and power' : 'Setup mode — no hardware purchase') + '</span>' : `
             <a href="${sweetwaterUrl}" target="_blank" rel="nofollow noopener sponsored" class="btn-retail btn-retail--sw" title="Search Sweetwater">Sweetwater ↗</a>
             <a href="${amazonUrl}" target="_blank" rel="nofollow noopener sponsored" class="btn-retail btn-retail--amz" title="Search model on Amazon">Amazon ↗</a>
@@ -1270,13 +1295,17 @@
   }
 
   /* ------------------------------------------------------------- Modal */
-  function openPickerModal(slotId, category) {
+  function openPickerModal(slotId, category, requestedRole) {
     activeModalSlotId = slotId;
     activeModalCategory = category;
-    var catMeta = CATALOG.categories.find(function (c) { return c.id === category; });
-    var items = CATALOG.items.filter(function (i) { return i.category === category; });
-
     var activeSlot = currentRig.items.find(function (s) { return s.slotId === slotId; });
+    activeModalSpeakerRole = category === "speakers" ? (activeSlot ? speakerRoleForSlot(activeSlot) :
+      (requestedRole === "nearfield" || requestedRole === "audience_pa" ? requestedRole :
+        (currentRig.context === "audience" ? "audience_pa" : "nearfield"))) : null;
+    var catMeta = CATALOG.categories.find(function (c) { return c.id === category; });
+    var items = CATALOG.items.filter(function (i) {
+      return i.category === category && (category !== "speakers" || isSpeakerEligibleForRole(i, activeModalSpeakerRole));
+    });
     var currentItemId = activeSlot ? activeSlot.itemId : null;
 
     var modalHtml = `
@@ -1285,7 +1314,7 @@
           <div class="picker-header">
             <div>
               <span class="picker-eyebrow">${catMeta ? catMeta.icon : ''} Component Selector</span>
-              <h3 id="picker-modal-title">Select ${catMeta ? catMeta.name : 'Component'}</h3>
+              <h3 id="picker-modal-title">Select ${category === "speakers" ? (activeModalSpeakerRole === "audience_pa" ? "Crowd-Facing PA" : "DJ Booth Monitors") : (catMeta ? catMeta.name : "Component")}</h3>
             </div>
             <button type="button" class="picker-close" data-action="close-modal" aria-label="Close dialog">✕</button>
           </div>
@@ -1586,6 +1615,7 @@
     document.body.classList.remove("modal-open");
     activeModalSlotId = null;
     activeModalCategory = null;
+    activeModalSpeakerRole = null;
   }
 
   /* -------------------------------------------------- Compare Modal */
@@ -1764,6 +1794,9 @@
       if (action === "select-item" || btn.classList.contains("btn-select-item") || btn.classList.contains("picker-card")) {
         var itemId = btn.getAttribute("data-item-id");
         if (activeModalSlotId && itemId) {
+          var pickedItem = getItem(itemId);
+          if (!pickedItem || pickedItem.category !== activeModalCategory ||
+              (activeModalCategory === "speakers" && !isSpeakerEligibleForRole(pickedItem, activeModalSpeakerRole))) return;
           var targetSlot = currentRig.items.find(function (s) { return s.slotId === activeModalSlotId; });
           if (targetSlot) {
             if (!replaceSlotItem(targetSlot, itemId)) return;
@@ -1771,6 +1804,7 @@
             currentRig.items.push({
               slotId: activeModalSlotId,
               category: activeModalCategory,
+              role: activeModalCategory === "speakers" ? activeModalSpeakerRole : undefined,
               itemId: itemId,
               qty: 1,
               owned: false
@@ -1829,7 +1863,7 @@
       } else if (action === "pick") {
         var slotId = btn.getAttribute("data-slot-id");
         var category = btn.getAttribute("data-category");
-        if (slotId && category) openPickerModal(slotId, category);
+        if (slotId && category) openPickerModal(slotId, category, btn.getAttribute("data-speaker-role"));
       } else if (action === "inspect-item") {
         var inspId = btn.getAttribute("data-item-id");
         if (inspId) openInspectorModal(inspId);
@@ -1878,7 +1912,7 @@
           if (!replaceSlotItem(targetFixSlot, fixItemId)) return;
         } else {
           var fixItem = getItem(fixItemId);
-          if (fixItem) {
+          if (fixItem && (fixItem.category !== "speakers" || speakerRoleForItem(fixItem))) {
             currentRig.items.push({
               slotId: fixSlotId,
               category: fixItem.category,
@@ -1905,7 +1939,7 @@
         var menuElem = document.getElementById("add-slot-menu");
         if (menuElem) menuElem.hidden = true;
         var newSlotId = "extra-" + addCat + "-" + Date.now();
-        openPickerModal(newSlotId, addCat);
+        openPickerModal(newSlotId, addCat, btn.getAttribute("data-speaker-role"));
       } else if (action === "copy-checklist") {
         copyChecklistToClipboard();
       } else if (action === "save-rig") {
