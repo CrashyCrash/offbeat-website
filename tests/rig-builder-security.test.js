@@ -180,6 +180,41 @@ test("replacing an owned product resets the new purchase to not-owned", () => {
   assert.ok(api.calculateRigStats().purchaseCost >= 149);
 });
 
+test("speaker slots reject cross-role substitutions and normalize forged shared roles", () => {
+  const { api } = harness(false);
+  api.setCatalog({
+    items: [
+      { id: "pioneer-ddj-flx4", category: "controllers", price: 299 },
+      { id: "pioneer-dm40d", category: "speakers", speaker_role: "nearfield", price: 149 },
+      { id: "yamaha-hs5", category: "speakers", speaker_role: "nearfield", price: 200 },
+      { id: "jbl-eon-715", category: "speakers", speaker_role: "audience_pa", price: 549 },
+      { id: "unknown-speaker", category: "speakers", price: 50 }
+    ], categories: [], presets: [], meta: { disclosure: "Test disclosure" }
+  });
+  const state = {
+    context: "audience",
+    items: [
+      { slotId: "desk", category: "speakers", itemId: "pioneer-dm40d", role: "audience_pa", qty: 1, owned: true },
+      { slotId: "pa", category: "speakers", itemId: "jbl-eon-715", role: "nearfield", qty: 1, owned: true }
+    ]
+  };
+  assert.equal(api.normalizeRigState(state), true);
+  const [monitor, pa] = api.getRig().items;
+  assert.equal(monitor.role, "nearfield", "untrusted role cannot promote a nearfield monitor to PA");
+  assert.equal(pa.role, "audience_pa", "untrusted role cannot demote a PA into a monitor");
+  assert.equal(api.replaceSlotItem(monitor, "jbl-eon-715"), false);
+  assert.equal(api.replaceSlotItem(pa, "pioneer-dm40d"), false);
+  assert.equal(api.replaceSlotItem(pa, "unknown-speaker"), false);
+  assert.equal(api.replaceSlotItem(pa, "pioneer-ddj-flx4"), false);
+  assert.equal(monitor.itemId, "pioneer-dm40d");
+  assert.equal(pa.itemId, "jbl-eon-715");
+  assert.equal(monitor.owned, true);
+  assert.equal(pa.owned, true);
+  assert.equal(api.replaceSlotItem(monitor, "yamaha-hs5"), true);
+  assert.equal(monitor.owned, false, "valid replacement must reset owned flag");
+  assert.equal(monitor.role, "nearfield");
+});
+
 test("RCA cable is not declared compatible with 3.5mm-only master output", () => {
   const { api } = harness(false);
   api.setCatalog({ items: [
