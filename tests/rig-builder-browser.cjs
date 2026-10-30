@@ -99,6 +99,11 @@ async function visit(browser, width, suffix = "", denyStorage = false) {
       // A single JBL PA cabinet is NOT a stereo pair. The buyer must see
       // physical-unit counts at both the visual booth and shopping row.
       await page.click('[data-preset-id="mobile-pro"]');
+      assert.equal(await page.$eval('[data-context="audience"]', el => el.getAttribute("aria-pressed")), "true",
+        "mobile wedding preset must default to audience mode");
+      assert.match(await page.$eval(".compat-items-grid", el => el.textContent),
+        /Audience Coverage and Deployment Need Verification/,
+        "one PA cabinet must not be misrepresented as venue-ready");
       const singleBooth = await page.$eval(".booth-package-detail", el => el.textContent.trim());
       const singleTable = await page.$eval(".speaker-package-detail", el => el.textContent.trim());
       assert.match(singleBooth, /1 individual PA cabinet; a second cabinet is NOT included/);
@@ -113,6 +118,18 @@ async function visit(browser, width, suffix = "", denyStorage = false) {
       assert.equal(await page.$eval(".metric-val--spend", el => el.textContent.trim()), "$3,052",
         "clarifying package contents must not silently change the buyer's budget");
       await page.click('[data-preset-id="bedroom-starter"]');
+      assert.equal(await page.$eval('[data-context="studio"]', el => el.getAttribute("aria-pressed")), "true");
+      const deskSpend = await page.$eval(".metric-val--spend", el => el.textContent.trim());
+      await page.click('[data-action="set-listening-context"][data-context="audience"]');
+      const venueAlerts = await page.$eval(".compat-items-grid", el => el.textContent);
+      assert.match(venueAlerts, /Nearfield Studio Monitors Are Not Audience PA/);
+      assert.match(venueAlerts, /Audience PA System Not Selected/);
+      assert.match(await page.$eval(".compat-status-tag", el => el.textContent), /Incompatible Configuration/);
+      assert.equal(await page.$eval(".metric-val--spend", el => el.textContent.trim()), deskSpend,
+        "context switch must not silently add or change purchases");
+      await page.click('[data-action="set-listening-context"][data-context="studio"]');
+      assert.doesNotMatch(await page.$eval(".compat-items-grid", el => el.textContent),
+        /Audience PA System Not Selected/);
       const pairBooth = await page.$eval(".booth-package-detail", el => el.textContent.trim());
       const pairTable = await page.$eval(".speaker-package-detail", el => el.textContent.trim());
       assert.match(pairBooth, /1 stereo pair \(2 physical speakers\)/);
