@@ -47,6 +47,24 @@ async function visit(browser, width, suffix = "", denyStorage = false) {
   try {
     for (const width of [1440, 390]) {
       const { page, context, errors, metrics } = await visit(browser, width);
+      // Owner workflow: build and review first, then save/share/export.
+      // The final actions must remain functional on both desktop and mobile.
+      const layoutOrder = await page.$eval(
+        ".rig-booth-section, .rig-table-section, .rig-finalize-section",
+        nodes => nodes.map(node => node.className)
+      );
+      assert.deepEqual(layoutOrder, [
+        "rig-booth-section", "rig-table-section", "rig-finalize-section"
+      ], "save/share/export must follow the visual booth and itemized shopping list");
+      assert.equal(await page.$('.rig-dash-header [data-action="save-rig"]'), null,
+        "saving an unfinished rig must not be the first dashboard action");
+      assert.ok(await page.$('.rig-finalize-section [data-action="save-rig"]'),
+        "save remains available after the completed rig");
+      await page.click('.rig-finalize-section [data-action="open-export-modal"]');
+      await page.waitForSelector(".picker-dialog--export");
+      await page.click(".picker-close");
+      assert.deepEqual(errors, [], "post-build export must not cause browser errors");
+
       // HD 25 already includes a native 3.5mm plug; do not upsell an adapter.
       const initialAlerts = await page.$eval(".compat-items-grid", el => el.textContent);
       assert.doesNotMatch(initialAlerts, /Headphone Connector Adapter Needed|Headphone Jack Adapter Advisory/);
