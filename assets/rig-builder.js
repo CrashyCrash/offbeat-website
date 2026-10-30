@@ -22,6 +22,7 @@
   // Active Rig State (Supports modular items, quantities, and owned gear)
   var currentRig = {
     name: "My Custom DJ Rig",
+    context: "studio",
     items: [
       { slotId: "core-ctrl", category: "controllers", itemId: "pioneer-ddj-flx4", qty: 1, owned: false },
       { slotId: "core-hp", category: "headphones", itemId: "sennheiser-hd25", qty: 1, owned: false },
@@ -219,6 +220,7 @@
     if (!items.length) return null;
     return {
       name: typeof data.name === "string" ? data.name.slice(0, 80) : "My Custom DJ Rig",
+      context: data.context === "audience" ? "audience" : "studio",
       items: items
     };
   }
@@ -330,6 +332,49 @@
     var fatalErrors = 0;
     var warnings = 0;
     var requiresManualReview = false;
+
+    // Studio monitors are nearfield listening equipment, not crowd PA.
+    // The visitor chooses the listening context; a venue rig cannot receive
+    // a green compatibility verdict merely because RCA/XLR plugs fit.
+    if (currentRig.context === "audience") {
+      var speakerChoices = currentRig.items.filter(function (slot) {
+        return slot.category === "speakers";
+      }).map(getSlotItem).filter(Boolean);
+      var hasAudiencePA = speakerChoices.some(function (item) {
+        return item.speaker_role === "audience_pa";
+      });
+      var hasNearfield = speakerChoices.some(function (item) {
+        return item.speaker_role === "nearfield";
+      });
+      if (hasNearfield) {
+        warnings++;
+        requiresManualReview = true;
+        checks.push({
+          type: "warning", statusLevel: "workable",
+          title: "Nearfield Studio Monitors Are Not Audience PA",
+          desc: "Selected desktop/studio monitors are designed for close listening, not projecting sound to a crowd. Do not use them as the event PA; choose venue-rated powered PA cabinets and verify coverage, placement and levels.",
+          fixCableId: null
+        });
+      }
+      if (!hasAudiencePA) {
+        fatalErrors++;
+        checks.push({
+          type: "error", statusLevel: "incompatible",
+          title: "Audience PA System Not Selected",
+          desc: "This rig is intended for a party or audience, but no catalog-confirmed audience PA is selected. A matching audio connector or nearfield monitor does not establish adequate sound reinforcement. Select an appropriate powered PA system.",
+          fixCableId: null
+        });
+      } else {
+        warnings++;
+        requiresManualReview = true;
+        checks.push({
+          type: "warning", statusLevel: "workable",
+          title: "Audience Coverage and Deployment Need Verification",
+          desc: "A powered PA cabinet is selected, but room size, audience count, speaker quantity, stands, power, cable lengths, bass coverage and safe sound levels have not been verified. One cabinet is not a guaranteed stereo or venue-ready system.",
+          fixCableId: null
+        });
+      }
+    }
 
     // The shopping list supports multiple controllers, speakers and other core
     // devices, but the connection engine evaluates only the first of each.
@@ -847,6 +892,14 @@
               <strong>${escapeHtml(p.name)}</strong> <span class="preset-badge">${escapeHtml(presetPriceBadge(p))}</span>
             </button>`;
           }).join("")}
+        </div>
+
+        <!-- Listening context controls: required to distinguish nearfield from crowd PA -->
+        <div class="rig-preset-strip" role="group" aria-label="Where will this rig be used?">
+          <span class="preset-label">Listening context:</span>
+          <button type="button" class="rig-preset-pill" data-action="set-listening-context" data-context="studio" aria-pressed="${currentRig.context !== 'audience'}">Desk / studio practice</button>
+          <button type="button" class="rig-preset-pill" data-action="set-listening-context" data-context="audience" aria-pressed="${currentRig.context === 'audience'}">Party / live audience</button>
+          <span class="preset-label">Venue mode checks PA suitability; it does not certify coverage.</span>
         </div>
 
         <!-- Metric Cards -->
@@ -1740,6 +1793,12 @@
             renderApp();
           }
         }
+      } else if (action === "set-listening-context") {
+        var nextContext = btn.getAttribute("data-context");
+        if (nextContext !== "studio" && nextContext !== "audience") return;
+        currentRig.context = nextContext;
+        saveActiveState();
+        renderApp();
       } else if (action === "toggle-sound") {
         soundEnabled = !soundEnabled;
         safeStorageSet("offbeat.rig.sfx", soundEnabled ? "on" : "muted");
@@ -1888,6 +1947,7 @@
 
   function loadPresetData(preset) {
     currentRig.name = preset.name;
+    currentRig.context = preset.context === "audience" ? "audience" : "studio";
     currentRig.items = convertPresetToItems(preset);
     saveActiveState();
     renderApp();
@@ -1906,6 +1966,7 @@
       "=========================================",
       "  OFFBEAT DJ RIG SHOPPING CHECKLIST",
       "  " + currentRig.name,
+      "  Listening context: " + (currentRig.context === "audience" ? "party / live audience" : "desk / studio"),
       "=========================================",
       ""
     ];
@@ -1944,7 +2005,7 @@
         var clean = sanitizeRigState(entry);
         if (!clean) return null;
         return {
-          name: clean.name, items: clean.items,
+          name: clean.name, context: clean.context, items: clean.items,
           totalCost: calculateCustomRigValuation(clean.items.filter(function (slot) { return !slot.owned; })),
           date: typeof entry.date === "string" ? entry.date.slice(0, 32) : "Saved"
         };
@@ -1961,6 +2022,7 @@
     var saved = getSavedRigs();
     saved.unshift({
       name: currentRig.name,
+      context: currentRig.context,
       items: JSON.parse(JSON.stringify(currentRig.items)),
       totalCost: stats.purchaseCost,
       date: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
