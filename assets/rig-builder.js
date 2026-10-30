@@ -273,7 +273,19 @@
     var role = currentRig.context === "audience" ? "audience_pa" : "nearfield";
     return currentRig.items.find(function (slot) {
       return slot.category === "speakers" && speakerRoleForItem(getSlotItem(slot)) === role;
-    }) || currentRig.items.find(function (slot) { return slot.category === "speakers"; }) || null;
+    }) || null;
+  }
+
+  // A different-role speaker may remain in the shopping list. The booth must
+  // show an actionable missing-role slot, never relabel a studio monitor as PA.
+  // Avoid slot ID collisions with existing or imported/shared equipment.
+  function missingSpeakerSlot(role) {
+    var base = role === "audience_pa" ? "core-audience-pa" : "core-dj-monitor";
+    var id = base, suffix = 1;
+    while (currentRig.items.some(function (slot) { return slot.slotId === id; })) {
+      id = base + "-" + suffix++;
+    }
+    return { slotId: id, category: "speakers", itemId: null, role: role };
   }
 
   // Owning the old product does not mean owning its replacement.
@@ -985,7 +997,7 @@
         <div class="rig-booth-stage">
           <!-- Top Row: Monitors, Host Platform, Stands/Media -->
           <div class="booth-top-row">
-            ${renderBoothSlot(preferredSpeakerSlot() || { slotId: "core-spk", category: "speakers", itemId: null, role: currentRig.context === "audience" ? "audience_pa" : "nearfield" }, currentRig.context === "audience" ? "Audience PA / Speakers" : "DJ Booth Monitors", "🔊")}
+            ${renderBoothSlot(preferredSpeakerSlot() || missingSpeakerSlot(currentRig.context === "audience" ? "audience_pa" : "nearfield"), currentRig.context === "audience" ? "Audience PA / Speakers" : "DJ Booth Monitors", "🔊")}
             ${renderBoothSlot(findSlot("laptops") || { slotId: "core-host", category: "laptops", itemId: null }, "Host Platform / OS", "💻")}
             ${renderBoothSlot(findSlot("stands") || findSlot("storage") || findSlot("microphones") || { slotId: "core-stand", category: "stands", itemId: null }, "Stands, Mics & Media", "🏗️")}
           </div>
@@ -1258,7 +1270,7 @@
   function getCableSummaryText() {
     var cables = currentRig.items.filter(function (s) { return s.category === "cables"; });
     if (cables.length === 0) {
-      var controllerSlot = findSlot("controllers"), speakerSlot = findSlot("speakers");
+      var controllerSlot = findSlot("controllers"), speakerSlot = preferredSpeakerSlot();
       if (controllerSlot && speakerSlot &&
           includedSpeakerCableMatches(getSlotItem(controllerSlot), getSlotItem(speakerSlot))) {
         return "Speaker Package Includes Audio Cable";

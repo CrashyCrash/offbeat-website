@@ -128,7 +128,28 @@ async function visit(browser, width, suffix = "", denyStorage = false) {
       assert.match(await page.$eval(".compat-status-tag", el => el.textContent), /Incompatible Configuration/);
       assert.equal(await page.$eval(".metric-val--spend", el => el.textContent.trim()), deskSpend,
         "context switch must not silently add or change purchases");
+      // A desk-to-party switch must offer a usable PA picker directly in the
+      // booth, rather than relabeling the monitor and trapping Swap in nearfield.
+      assert.ok(await page.$('.booth-card--empty[data-speaker-role="audience_pa"]'),
+        "audience booth must show missing PA, not the selected desk monitor");
+      assert.equal(await page.$eval(".cable-title", el => el.textContent.trim()),
+        "No Audio Cables Selected", "a studio monitor's included cable cannot satisfy missing audience PA");
+      await page.click('.booth-card--empty[data-speaker-role="audience_pa"]');
+      assert.ok(await page.$('.btn-select-item[data-item-id="jbl-eon-715"]'),
+        "direct booth PA picker must offer catalog-confirmed PA");
+      assert.equal(await page.$('.btn-select-item[data-item-id="pioneer-dm40d"]'), null,
+        "direct booth PA picker must not offer nearfield monitors");
+      await page.click('.btn-select-item[data-item-id="jbl-eon-715"]');
+      assert.match(await page.$eval(".booth-card .booth-model", el => el.textContent), /EON715/);
+      const mixedSpeakerTable = await page.$eval(".rig-spec-table", el => el.textContent);
+      assert.match(mixedSpeakerTable, /DM-40D/, "existing studio monitors must remain selected");
+      assert.match(mixedSpeakerTable, /EON715/, "PA must be added rather than overwriting monitors");
+      assert.notEqual(await page.$eval('[data-route="master"]', el => el.dataset.status), "blocked",
+        "room path should no longer be blocked for missing PA after selection");
       await page.click('[data-action="set-listening-context"][data-context="studio"]');
+      assert.match(await page.$eval(".booth-card .booth-model", el => el.textContent), /DM-40D/,
+        "switching back must select studio monitors without deleting the PA");
+      await page.click('[data-preset-id="bedroom-starter"]');
       assert.doesNotMatch(await page.$eval(".compat-items-grid", el => el.textContent),
         /Audience PA System Not Selected/);
       const pairBooth = await page.$eval(".booth-package-detail", el => el.textContent.trim());

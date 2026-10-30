@@ -44,6 +44,8 @@ function harness(storageDisabled) {
     getSavedRigs: getSavedRigs,
     renderSavedRigsList: renderSavedRigsList,
     replaceSlotItem: replaceSlotItem,
+    preferredSpeakerSlot: preferredSpeakerSlot,
+    missingSpeakerSlot: missingSpeakerSlot,
     runDeepCompatibilityChecks: runDeepCompatibilityChecks,
     calculateRigStats: calculateRigStats,
     presetPriceBadge: presetPriceBadge,
@@ -213,6 +215,32 @@ test("speaker slots reject cross-role substitutions and normalize forged shared 
   assert.equal(api.replaceSlotItem(monitor, "yamaha-hs5"), true);
   assert.equal(monitor.owned, false, "valid replacement must reset owned flag");
   assert.equal(monitor.role, "nearfield");
+});
+
+test("audience booth exposes a collision-free PA slot without repurposing owned monitors", () => {
+  const { api } = harness(false);
+  api.setCatalog({
+    items: [
+      { id: "pioneer-dm40d", category: "speakers", speaker_role: "nearfield", price: 149 },
+      { id: "jbl-eon-715", category: "speakers", speaker_role: "audience_pa", price: 549 }
+    ], categories: [], presets: [], meta: { disclosure: "Test disclosure" }
+  });
+  assert.equal(api.normalizeRigState({
+    context: "audience",
+    items: [{ slotId: "core-audience-pa", category: "speakers", itemId: "pioneer-dm40d", qty: 1, owned: true }]
+  }), true);
+  assert.equal(api.preferredSpeakerSlot(), null,
+    "a nearfield monitor must never occupy the audience PA booth slot");
+  const missing = api.missingSpeakerSlot("audience_pa");
+  assert.equal(missing.role, "audience_pa");
+  assert.notEqual(missing.slotId, "core-audience-pa",
+    "a placeholder must not collide with an imported or saved monitor slot");
+  assert.equal(api.replaceSlotItem(api.getRig().items[0], "jbl-eon-715"), false);
+  api.getRig().items.push({ ...missing, itemId: "jbl-eon-715", qty: 1, owned: false });
+  assert.equal(api.preferredSpeakerSlot().itemId, "jbl-eon-715");
+  assert.equal(api.getRig().items[0].itemId, "pioneer-dm40d");
+  api.getRig().context = "studio";
+  assert.equal(api.preferredSpeakerSlot().itemId, "pioneer-dm40d");
 });
 
 test("RCA cable is not declared compatible with 3.5mm-only master output", () => {
