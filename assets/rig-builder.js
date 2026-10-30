@@ -919,11 +919,7 @@
               ${soundEnabled ? '🔊 Audio FX: ON' : '🔇 Audio FX: OFF'}
             </button>
 
-            <!-- Export / Share Actions -->
-            <button type="button" class="btn btn-secondary btn-sm" data-action="open-export-modal">📤 Share &amp; Export</button>
-            <button type="button" class="btn btn-secondary btn-sm" data-action="copy-checklist">📋 Checklist</button>
-            <button type="button" class="btn btn-secondary btn-sm" data-action="save-rig">💾 Save</button>
-            <button type="button" class="btn btn-secondary btn-sm" data-action="open-compare">⚖️ Compare</button>
+            <!-- Preset selection belongs before building; save/share/export do not. -->
             <button type="button" class="btn btn-sm" data-action="random-rig">🎲 Preset</button>
           </div>
         </div>
@@ -1101,6 +1097,20 @@
         <p class="table-note">
           ${CATALOG.meta.disclosure} <a href="disclosure.html">Read our full affiliate disclosure</a>.
         </p>
+      </section>
+
+      <!-- Actions belong AFTER the visual builder, compatibility checks and shopping list. -->
+      <section class="rig-finalize-section" aria-labelledby="rig-finalize-title">
+        <div class="section-head">
+          <h3 id="rig-finalize-title">Keep or share this setup</h3>
+          <p>Review the equipment, connections and purchase estimate above before saving or exporting your rig.</p>
+        </div>
+        <div class="rig-dash-actions">
+          <button type="button" class="btn btn-secondary btn-sm" data-action="save-rig">💾 Save rig</button>
+          <button type="button" class="btn btn-secondary btn-sm" data-action="open-export-modal">📤 Share &amp; Export</button>
+          <button type="button" class="btn btn-secondary btn-sm" data-action="copy-checklist">📋 Copy checklist</button>
+          <button type="button" class="btn btn-secondary btn-sm" data-action="open-compare">⚖️ Compare saved rigs</button>
+        </div>
       </section>
 
       <!-- Saved Rigs & Comparison Section -->
