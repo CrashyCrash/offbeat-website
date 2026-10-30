@@ -166,6 +166,7 @@ async function visit(browser, width, suffix = "", denyStorage = false) {
       await page.$eval(".btn-select-item", el => { el.dataset.itemId = "pioneer-dm40d"; el.click(); });
       assert.equal(await page.$eval("#rig-modal-container", el => el.hidden), false,
         "forged ineligible PA selection must be refused");
+      await page.$eval(".btn-select-item", el => { el.dataset.itemId = "jbl-eon-715"; });
       await page.click('.btn-select-item[data-item-id="jbl-eon-715"]');
       assert.match(await page.$eval(".rig-spec-table", el => el.textContent), /Crowd-Facing PA/);
       assert.match(await page.$eval(".rig-spec-table", el => el.textContent), /DJ Booth Monitors/);
