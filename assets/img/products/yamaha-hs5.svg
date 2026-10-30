@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 360" width="100%" height="100%">
+  <!-- Left Speaker -->
+  <rect x="40" y="50" width="145" height="260" rx="10" fill="#12111c" stroke="rgba(255,255,255,0.12)" stroke-width="2"/>
+  <!-- 1-inch Dome Tweeter -->
+  <circle cx="112" cy="110" r="22" fill="#08080c" stroke="#333"/>
+  <circle cx="112" cy="110" r="14" fill="#222" stroke="#555"/>
+  <!-- Iconic 5-inch White Cone Woofer -->
+  <circle cx="112" cy="215" r="48" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+  <circle cx="112" cy="215" r="16" fill="#1e293b"/>
+  <!-- Glowing Yamaha Logo -->
+  <circle cx="112" cy="285" r="5" fill="#38bdf8"/>
+
+  <!-- Right Speaker -->
+  <rect x="215" y="50" width="145" height="260" rx="10" fill="#12111c" stroke="rgba(255,255,255,0.12)" stroke-width="2"/>
+  <circle cx="287" cy="110" r="22" fill="#08080c" stroke="#333"/>
+  <circle cx="287" cy="110" r="14" fill="#222" stroke="#555"/>
+  <circle cx="287" cy="215" r="48" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+  <circle cx="287" cy="215" r="16" fill="#1e293b"/>
+  <circle cx="287" cy="285" r="5" fill="#38bdf8"/>
+
+  <text x="200" y="32" fill="#fff" font-size="13" font-family="sans-serif" font-weight="bold" text-anchor="middle">Yamaha HS5 (Pair)</text>
+  <text x="200" y="338" fill="#94a3b8" font-size="10" font-family="sans-serif" text-anchor="middle">Bi-Amped Studio Reference · Balanced XLR/TRS</text>
+</svg>

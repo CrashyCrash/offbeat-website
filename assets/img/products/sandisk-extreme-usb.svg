@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 360" width="100%" height="100%">
+  <!-- Metal USB Stick Body -->
+  <rect x="110" y="110" width="180" height="110" rx="12" fill="#1e1e28" stroke="#ef4444" stroke-width="2"/>
+  <rect x="120" y="120" width="120" height="90" rx="6" fill="#111"/>
+  <!-- USB-A Connector Head -->
+  <rect x="290" y="130" width="45" height="70" rx="4" fill="#cbd5e1" stroke="#94a3b8" stroke-width="1.5"/>
+  <rect x="305" y="145" width="20" height="12" fill="#0284c7"/>
+  <rect x="305" y="173" width="20" height="12" fill="#0284c7"/>
+  <text x="180" y="165" fill="#fff" font-size="12" font-weight="bold" font-family="sans-serif">SanDisk</text>
+  <text x="180" y="185" fill="#ef4444" font-size="10" font-weight="bold" font-family="sans-serif">Extreme PRO 128GB</text>
+  <text x="200" y="275" fill="#fff" font-size="13" font-family="sans-serif" font-weight="bold" text-anchor="middle">High-Speed Club USB 3.2</text>
+  <text x="200" y="298" fill="#38bdf8" font-size="10" font-family="sans-serif" text-anchor="middle">420 MB/s Solid-State Speed for CDJs</text>
+</svg>

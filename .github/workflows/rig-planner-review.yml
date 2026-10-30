@@ -1,0 +1,92 @@
+name: Arena relaunch qualification (review only)
+
+# Untrusted candidate source runs without secrets or write privileges.
+# This is a review check, not a release approval or publisher.
+on:
+  push:
+    branches:
+      - fix/arena-rig-share-safety-20261026
+      - review/arena-relaunch-safety-integrated-20261027
+  pull_request:
+    branches:
+      - review/arena-rig-original-20261026
+      - main
+    paths:
+      - assets/rig-builder.js
+      - assets/beatmatch-trainer.js
+      - tests/beatmatch-cue.test.js
+      - tests/test_trainer_e2e.js
+      - tests/rig-builder-security.test.js
+      - tests/rig-builder-browser.cjs
+      - tests/arena-library-browser.cjs
+      - assets/matrix-tool.js
+      - controller-software-compatibility-matrix.html
+      - assets/site.js
+      - assets/quick-search.js
+      - all-dj-guides.html
+      - assets/search-index.json
+      - tools/build_index.py
+      - .github/workflows/rig-planner-review.yml
+      - tools/check_site.py
+      - tests/check_site_structure.py
+
+permissions:
+  contents: read
+
+jobs:
+  rig-planner:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Check out exact candidate
+        uses: actions/checkout@v4
+        with:
+          # Default pull_request checkout uses a synthetic merge ref, NOT the
+          # candidate head. Validate the actual head SHA on PR and push runs.
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - name: Verify exact candidate checkout
+        env:
+          EXPECTED_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+        run: test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
+      - name: Use Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Parse planner and tests
+        run: |
+          node --check assets/rig-builder.js
+          node --check assets/beatmatch-trainer.js
+          node --check tests/beatmatch-cue.test.js
+          node --check tests/test_trainer_e2e.js
+          node --check assets/matrix-tool.js
+          node --check assets/site.js
+          node --check assets/quick-search.js
+          node --check tests/rig-builder-security.test.js
+          node --check tests/rig-builder-browser.cjs
+          node --check tests/arena-library-browser.cjs
+          node --check tests/buyer-fact-consistency.test.cjs
+      - name: Validate all site pages, links, media, structure and metadata
+        run: |
+          python3 tools/check_site.py
+          python3 tests/check_site_structure.py
+          python3 -m py_compile tools/build_index.py
+      - name: Execute committed regression suite
+        run: node --test tests/rig-builder-security.test.js tests/beatmatch-cue.test.js tests/buyer-fact-consistency.test.cjs
+      - name: Browser-check real planner, library and trainer at desktop and mobile sizes
+        shell: bash
+        run: |
+          set -euo pipefail
+          CHROME_BIN="$(command -v google-chrome || command -v chromium || command -v chromium-browser)"
+          test -x "$CHROME_BIN"
+          npm install --no-save --no-package-lock --no-audit --no-fund --ignore-scripts puppeteer-core@24.26.1
+          python3 -m http.server 8099 --bind 127.0.0.1 >/tmp/rig-http.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+          for i in $(seq 1 20); do
+            if curl -fsS http://127.0.0.1:8099/build-your-dj-setup.html -o /dev/null; then break; fi
+            sleep 0.25
+          done
+          CHROME_BIN="$CHROME_BIN" node tests/rig-builder-browser.cjs
+          CHROME_BIN="$CHROME_BIN" node tests/arena-library-browser.cjs
+          CHROME_BIN="$CHROME_BIN" node tests/test_trainer_e2e.js

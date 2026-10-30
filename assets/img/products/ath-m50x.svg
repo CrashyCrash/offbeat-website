@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 360" width="100%" height="100%">
+  <!-- Broad Padded Headband -->
+  <path d="M115 220 C 105 70, 295 70, 285 220" fill="none" stroke="#181822" stroke-width="22" stroke-linecap="round"/>
+  <path d="M125 180 C 120 85, 280 85, 275 180" fill="none" stroke="#2c2c3e" stroke-width="12" stroke-linecap="round"/>
+  <!-- Silver Accented Earcups -->
+  <ellipse cx="115" cy="245" rx="42" ry="54" fill="#12121a" stroke="#94a3b8" stroke-width="2"/>
+  <ellipse cx="115" cy="245" rx="32" ry="42" fill="#20202e"/>
+  <circle cx="115" cy="245" r="18" fill="#12121a" stroke="#38bdf8" stroke-width="2"/>
+  <polygon points="115,236 122,248 108,248" fill="#38bdf8"/>
+
+  <ellipse cx="285" cy="245" rx="42" ry="54" fill="#12121a" stroke="#94a3b8" stroke-width="2"/>
+  <ellipse cx="285" cy="245" rx="32" ry="42" fill="#20202e"/>
+  <circle cx="285" cy="245" r="18" fill="#12121a" stroke="#38bdf8" stroke-width="2"/>
+  <polygon points="285,236 292,248 278,248" fill="#38bdf8"/>
+  <!-- Label -->
+  <text x="200" y="45" fill="#fff" font-size="13" font-family="sans-serif" font-weight="bold" text-anchor="middle">Audio-Technica ATH-M50x</text>
+  <text x="200" y="65" fill="#38bdf8" font-size="10" font-family="sans-serif" text-anchor="middle">45mm Large-Aperture Drivers · 90° Swivel</text>
+</svg>

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 360" width="100%" height="100%">
+  <path d="M120 220 C 110 80, 290 80, 280 220" fill="none" stroke="#181824" stroke-width="16" stroke-linecap="round"/>
+  <circle cx="118" cy="240" r="36" fill="#12121a" stroke="#8b5cf6" stroke-width="2"/>
+  <circle cx="282" cy="240" r="36" fill="#12121a" stroke="#8b5cf6" stroke-width="2"/>
+  <text x="200" y="45" fill="#fff" font-size="13" font-family="sans-serif" font-weight="bold" text-anchor="middle">Pioneer HDJ-CUE1</text>
+  <text x="200" y="65" fill="#a78bfa" font-size="10" font-family="sans-serif" text-anchor="middle">Punchy Low-End · DJ Fold Mechanism</text>
+</svg>

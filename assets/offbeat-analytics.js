@@ -162,6 +162,10 @@
     b.addEventListener('click', function () { handle(action); });
     return b;
   }
+  function privacyLink() {
+    var a = el('a', { 'class': 'ob-consent-link', href: 'privacy.html' }, 'Privacy');
+    return a;
+  }
   function ensureUI() {
     if (!document.body) return null;
     if (UI && UI_IN_BODY) return UI;
@@ -171,33 +175,54 @@
     UI_IN_BODY = true;
     return UI;
   }
+
+  function dismissUI() {
+    if (UI && UI.parentNode) {
+      try { UI.parentNode.removeChild(UI); } catch (e) { }
+    }
+    UI_IN_BODY = false;
+  }
+
   function refresh(consent) {
+    // When consent has been decided (granted or denied), dismiss and completely remove UI
+    if (consent === 'granted' || consent === 'denied') {
+      dismissUI();
+      return;
+    }
+
     var box = ensureUI();
     if (!box) return;
-    var pill = (consent === 'granted' || consent === 'denied');
-    box.setAttribute('class', 'ob-consent' + (pill ? ' ob-consent--pill' : ''));
+    box.setAttribute('class', 'ob-consent');
     var p = el('span', { 'class': 'ob-consent-text' });
     var row = el('div', { 'class': 'ob-consent-actions' });
+
     if (consent === 'unknown') {
-      p.textContent = 'Allow Offbeat to use Google Analytics to see which guides are helpful? With your consent we send only minimal page-level data — the path of the page you viewed, plus the standard pseudonymous browser and device details Google attaches to analytics hits. You can change or withdraw this choice at any time.';
+      p.textContent = 'We use privacy-friendly analytics to learn which DJ guides are helpful. No ad tracking.';
       row.appendChild(button('Allow analytics', 'grant'));
-      row.appendChild(button('Do not allow', 'deny'));
+      row.appendChild(button('Necessary only', 'deny'));
+      row.appendChild(privacyLink());
     } else if (consent === 'reask') {
-      p.textContent = 'Change your analytics choice. If you switch off, we stop analytics, clear Google’s analytics cookies, and reload the page once so the analytics tag is fully removed.';
+      p.textContent = 'Change your analytics choice. You can allow analytics or withdraw consent at any time.';
       row.appendChild(button('Allow analytics', 'grant'));
-      row.appendChild(button('Do not allow (withdraw)', 'withdraw'));
-    } else if (consent === 'denied') {
-      p.textContent = 'Analytics is off.';
-      row.appendChild(button('Turn on analytics', 'grant'));
-    } else { // granted
-      p.textContent = 'Analytics is on (minimal page-level data only).';
-      row.appendChild(button('Change choice', 'reask'));
-      row.appendChild(button('Withdraw consent', 'withdraw'));
+      row.appendChild(button('Necessary only', 'withdraw'));
+      row.appendChild(privacyLink());
     }
+
     var restoreFocus = box.contains && box.contains(document.activeElement);
     while (box.firstChild) box.removeChild(box.firstChild);
     box.appendChild(p); box.appendChild(row);
     if (restoreFocus && row.firstChild) row.firstChild.focus();
+  }
+
+  // Allow reopening consent preferences from footer or settings link
+  if (typeof document !== 'undefined') {
+    document.addEventListener('click', function (e) {
+      var trigger = e.target && e.target.closest && e.target.closest('[data-reopen-consent]');
+      if (trigger) {
+        e.preventDefault();
+        handle('reask');
+      }
+    });
   }
 
   /* ---- withdrawal: explicit denial + cookie expiry + clean teardown --------
@@ -278,10 +303,14 @@
     var hook = window.__OFFBEAT_ANALYTICS_TEST;
     if (hook && typeof hook.inject === 'function') { hook.inject(); }
     else if (!document.querySelector('script[src*="googletagmanager.com/gtag/js"]')) {
-      var s = el('script', null);
-      s.async = true; s.src = GA_SRC; s.setAttribute('crossorigin', 'anonymous');
-      s.onerror = function () { /* blocked: page still works */ };
-      (document.head || document.documentElement).appendChild(s);
+      var host = (window.location && (window.location.hostname || window.location.host)) || '';
+      var isPreviewHost = /(github\.io|localhost|127\.0\.0\.1|e2b\.app)/i.test(host);
+      if (!isPreviewHost) {
+        var s = el('script', null);
+        s.async = true; s.src = GA_SRC; s.setAttribute('crossorigin', 'anonymous');
+        s.onerror = function () { /* blocked: page still works */ };
+        (document.head || document.documentElement).appendChild(s);
+      }
     }
     // 3) Explicit update — the visitor affirmed consent, so grant analytics;
     //    the three advertising consent types remain denied.

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 360" width="100%" height="100%">
+  <rect x="55" y="50" width="290" height="185" rx="8" fill="#0a0a12" stroke="#38bdf8" stroke-width="2"/>
+  <rect x="65" y="60" width="270" height="165" rx="4" fill="#0c1220"/>
+  <text x="75" y="80" fill="#38bdf8" font-size="10" font-family="monospace">REKORDBOX / SERATO [ASIO]</text>
+  <path d="M75 120 Q 120 80, 160 140 T 240 100 T 325 120" fill="none" stroke="#38bdf8" stroke-width="3"/>
+  <path d="M75 160 Q 120 180, 160 130 T 240 170 T 325 150" fill="none" stroke="#34d399" stroke-width="3"/>
+  <polygon points="35,245 365,245 385,270 15,270" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5"/>
+  <text x="200" y="310" fill="#fff" font-size="13" font-family="sans-serif" font-weight="bold" text-anchor="middle">Core i7 Windows DJ Laptop</text>
+  <text x="200" y="330" fill="#38bdf8" font-size="10" font-family="sans-serif" text-anchor="middle">16GB RAM · Dedicated USB-A &amp; USB-C Ports</text>
+</svg>

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="100%" height="100%">
+  <rect x="10" y="10" width="580" height="340" rx="14" fill="#141420" stroke="rgba(56,189,248,0.5)" stroke-width="2"/>
+  <!-- Tilted 10.1 inch HD Touchscreen in top center -->
+  <rect x="180" y="20" width="240" height="110" rx="8" fill="#08080f" stroke="#38bdf8" stroke-width="2"/>
+  <rect x="190" y="30" width="220" height="80" rx="4" fill="#0e1726"/>
+  <!-- Waveform lines on screen -->
+  <path d="M195 60 Q 220 35, 245 75 T 295 50 T 345 80 T 400 60" fill="none" stroke="#38bdf8" stroke-width="3"/>
+  <path d="M195 85 Q 220 100, 245 70 T 295 90 T 345 65 T 400 85" fill="none" stroke="#34d399" stroke-width="3"/>
+  <text x="300" y="44" fill="#fff" font-size="9" font-family="sans-serif" font-weight="bold" text-anchor="middle">ENGINE DJ STANDALONE · 4-DECK</text>
+  <!-- 4-Channel Mixer below screen -->
+  <rect x="190" y="140" width="220" height="195" rx="6" fill="#1c1c2e" stroke="rgba(255,255,255,0.08)"/>
+  <g fill="#444"><circle cx="215" cy="160" r="7"/><circle cx="245" cy="160" r="7"/><circle cx="355" cy="160" r="7"/><circle cx="385" cy="160" r="7"/></g>
+  <g fill="#444"><circle cx="215" cy="182" r="7"/><circle cx="245" cy="182" r="7"/><circle cx="355" cy="182" r="7"/><circle cx="385" cy="182" r="7"/></g>
+  <!-- Jogs -->
+  <circle cx="100" cy="200" r="75" fill="#0a0a12" stroke="#38bdf8" stroke-width="1.5"/>
+  <circle cx="100" cy="200" r="68" fill="#202032"/>
+  <circle cx="100" cy="200" r="28" fill="#000" stroke="#34d399" stroke-width="1.5"/>
+  <circle cx="500" cy="200" r="75" fill="#0a0a12" stroke="#38bdf8" stroke-width="1.5"/>
+  <circle cx="500" cy="200" r="68" fill="#202032"/>
+  <circle cx="500" cy="200" r="28" fill="#000" stroke="#34d399" stroke-width="1.5"/>
+  <text x="300" y="325" fill="#38bdf8" font-size="10" font-weight="bold" font-family="sans-serif" text-anchor="middle">DENON DJ PRIME 4+</text>
+</svg>
