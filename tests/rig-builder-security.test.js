@@ -813,7 +813,7 @@ test("audience context is validated, shareable and preserved in saved rig saniti
   const selected = { name: "Venue", context: "audience", items: [slot()] };
   assert.equal(api.normalizeRigState(selected), true);
   api.saveActiveState();
-  assert.match(lastUrl(), /\\?rig=/);
+  assert.match(lastUrl(), /\?rig=/);
   memory["offbeat.rig.active"] = "";
   window.location.search = new URL(lastUrl(), "https://offbeatinc.com").search;
   assert.equal(api.normalizeRigState({ name: "Desk", items: [slot()] }), true);
