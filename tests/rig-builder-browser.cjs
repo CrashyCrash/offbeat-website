@@ -49,10 +49,10 @@ async function visit(browser, width, suffix = "", denyStorage = false) {
       const { page, context, errors, metrics } = await visit(browser, width);
       // Owner workflow: build and review first, then save/share/export.
       // The final actions must remain functional on both desktop and mobile.
-      const layoutOrder = await page.$eval(
-        ".rig-booth-section, .rig-table-section, .rig-finalize-section",
-        nodes => nodes.map(node => node.className)
-      );
+      const layoutOrder = await page.evaluate(() => Array.from(
+        document.querySelectorAll(".rig-booth-section, .rig-table-section, .rig-finalize-section"),
+        node => node.className
+      ));
       assert.deepEqual(layoutOrder, [
         "rig-booth-section", "rig-table-section", "rig-finalize-section"
       ], "save/share/export must follow the visual booth and itemized shopping list");
